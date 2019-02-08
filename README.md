@@ -43,15 +43,19 @@ Now in your child components you can make use of `useQuery`
 ```js
 import { useQuery } from 'graphql-hooks';
 
-const HOMEPAGE_QUERY = `query HomePage {
-  users {
+const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
+  users(limit: $limit) {
     id
     name
   }
 }`;
 
 function MyComponent() {
-  const { loading, error, data } = useQuery(HOMEPAGE_QUERY);
+  const { loading, error, data } = useQuery(HOMEPAGE_QUERY, {
+    variables: {
+      limit: 10
+    }
+  });
 
   if (loading) return 'Loading...';
   if (error) return 'Something Bad Happened';
