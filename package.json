@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Graphql Hooks",
   "main": "src/index.js",
   "scripts": {
