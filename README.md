@@ -16,14 +16,14 @@
 
 or
 
-`yard add graphql-hooks`
+`yarn add graphql-hooks`
 
 ## Quick Start
 
-First, you'll need to create a client and wrap your app with the provider:
+First you'll need to create a client and wrap your app with the provider:
 
 ```js
-const { createClient, ClientContext } = require('graphql-hooks');
+import { createClient, ClientContext } from 'graphql-hooks';
 
 const client = createClient({
   endpoint: '/graphql'
