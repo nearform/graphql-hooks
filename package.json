@@ -18,7 +18,7 @@
     "apollo"
   ],
   "author": "Brian Mullan <bmullan91@gmail.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^16.8.1"
   },
@@ -42,10 +42,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/bmullan91/graphql-hooks.git"
+    "url": "git://github.com/nearform/graphql-hooks.git"
   },
   "bugs": {
-    "url": "https://github.com/bmullan91/graphql-hooks"
+    "url": "https://github.com/nearform/graphql-hooks"
   },
-  "homepage": "https://github.com/bmullan91/graphql-hooks#readme"
+  "homepage": "https://github.com/nearform/graphql-hooks#readme"
 }
