@@ -4,7 +4,8 @@
   "description": "In memory cache for graphql-hooks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "pretty-quick"
   },
   "keywords": [
     "graphql",
@@ -19,5 +20,19 @@
   "license": "Apache-2.0",
   "dependencies": {
     "tiny-lru": "^6.0.1"
+  },
+  "devDependencies": {
+    "husky": "^1.3.1",
+    "prettier": "^1.16.4",
+    "pretty-quick": "^1.10.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "singleQuote": true
   }
 }
