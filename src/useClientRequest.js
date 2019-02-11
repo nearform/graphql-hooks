@@ -7,11 +7,13 @@ const actionTypes = {
   REQUEST_FAILURE: 'REQUEST_FAILURE'
 };
 
-const initialState = {
-  error: null,
-  loading: true,
-  data: null
-};
+function getInitialState(data) {
+  return {
+    data,
+    error: null,
+    loading: !data
+  };
+}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -39,12 +41,51 @@ function reducer(state, action) {
 
 function useClientRequest(query, opts = {}) {
   const client = React.useContext(ClientContext);
+  const { useCache } = opts;
+  const cacheKeyObject = {
+    query,
+    ...opts
+  };
+
+  const initialState = getInitialState(getCacheHit(cacheKeyObject));
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  async function fetchData({ variables = opts.variables } = {}) {
+  function getCacheHit(key) {
+    return useCache && !opts.skipCache && client.cache
+      ? client.cache.get(key) || null
+      : null;
+  }
+
+  // arguments to fetchData override the useClientRequest arguments
+  async function fetchData({ skipCache, ...overrideOpts } = {}) {
+    const revisedOptions = {
+      ...opts,
+      ...overrideOpts
+    };
+    const revisedcacheKeyObject = {
+      ...cacheKeyObject,
+      ...revisedOptions
+    };
+
+    const cacheHit = skipCache ? null : getCacheHit(revisedcacheKeyObject);
+
+    if (cacheHit) {
+      dispatch({
+        type: actionTypes.REQUEST_SUCCESS,
+        data: cacheHit
+      });
+
+      return cacheHit;
+    }
+
     try {
       dispatch({ type: actionTypes.REQUEST_LOADING });
-      const data = await client.request(query, variables);
+      const data = await client.request(query, revisedOptions.variables);
+
+      if (useCache && client.cache) {
+        client.cache.set(revisedcacheKeyObject, data);
+      }
+
       dispatch({
         type: actionTypes.REQUEST_SUCCESS,
         data
