@@ -1,7 +1,8 @@
 const LRU = require('tiny-lru')
+const fnv1a = require('@sindresorhus/fnv1a')
 
 function generateKey(keyObj) {
-  return JSON.stringify(keyObj)
+  return fnv1a(JSON.stringify(keyObj)).toString(36)
 }
 
 module.exports = function memCache({ size = 100, ttl = 0, initialState } = {}) {
@@ -14,14 +15,18 @@ module.exports = function memCache({ size = 100, ttl = 0, initialState } = {}) {
   }
 
   return {
-    get: (keyObj) => lru.get(generateKey(keyObj)),
+    get: keyObj => lru.get(generateKey(keyObj)),
     set: (keyObj, data) => lru.set(generateKey(keyObj), data),
-    delete: (keyObj) => lru.delete(generateKey(keyObj)),
+    delete: keyObj => lru.delete(generateKey(keyObj)),
     clear: () => lru.clear(),
     keys: () => lru.keys(),
-    getInitialState: () => lru.keys().reduce((initialState, key) => ({
-      ...initialState,
-      [key]: lru.get(key)
-    }), {})
+    getInitialState: () =>
+      lru.keys().reduce(
+        (initialState, key) => ({
+          ...initialState,
+          [key]: lru.get(key)
+        }),
+        {}
+      )
   }
 }
