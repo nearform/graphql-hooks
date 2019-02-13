@@ -1,2 +1,3 @@
 node_modules
 graphql-hooks-*.*.*.tgz
+/coverage
