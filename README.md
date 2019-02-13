@@ -1,5 +1,7 @@
 # graphql-hooks
 
+[![CircleCI](https://circleci.com/gh/nearform/graphql-hooks/tree/master.svg?style=svg)](https://circleci.com/gh/nearform/graphql-hooks/tree/master)
+
 🎣 Minimal hooks-first graphql client.
 
 ## Features
