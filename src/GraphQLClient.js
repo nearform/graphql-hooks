@@ -118,13 +118,13 @@ class GraphQLClient {
       result = this.generateResult({
         fetchError: error
       });
-    } finally {
-      if (result.error && this.logErrors) {
-        this.logErrorResult({ result, operation });
-      }
-
-      return result;
     }
+
+    if (result.error && this.logErrors) {
+      this.logErrorResult({ result, operation });
+    }
+
+    return result;
   }
 }
 
