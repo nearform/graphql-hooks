@@ -1,7 +1,12 @@
 class GraphQLClient {
   constructor(config) {
+    // validate config
+    if (!config.fetch || typeof config.fetch !== 'function') {
+      throw new Error('GraphQLClient: config.fetch must be a function');
+    }
+
     this.cache = config.cache;
-    this.headers = config.headers || [];
+    this.headers = config.headers || {};
     this.ssrMode = config.ssrMode;
     this.ssrPromises = [];
     this.url = config.url;
