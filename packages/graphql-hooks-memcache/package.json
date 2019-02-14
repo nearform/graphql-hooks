@@ -36,5 +36,13 @@
     "printWidth": 80,
     "singleQuote": true,
     "semi": false
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nearform/graphql-hooks-memcache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nearform/graphql-hooks-memcache"
+  },
+  "homepage": "https://github.com/nearform/graphql-hooks-memcache#readme"
 }
