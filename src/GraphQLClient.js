@@ -7,7 +7,7 @@ class GraphQLClient {
     this.url = config.url;
     this.fetch = config.fetch;
     this.fetchOptions = config.fetchOptions || {};
-    this.logErrors = config.logErrors;
+    this.logErrors = config.logErrors !== undefined ? config.logErrors : true;
     this.onError = config.onError;
   }
 
