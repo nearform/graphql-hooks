@@ -23,7 +23,7 @@ class GraphQLClient {
 
   logErrorResult({ result, operation }) {
     if (this.onError) {
-      return this.onError(result);
+      return this.onError({ result, operation });
     }
 
     console.error(`GraphQL Hooks Error`);
