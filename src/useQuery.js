@@ -15,7 +15,6 @@ module.exports = function useQuery(query, opts = {}) {
     ...opts
   });
 
-  // TODO revise this logic
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
     // result may already be in the cache from previous SSR iterations
     if (!state.data && !state.error) {
