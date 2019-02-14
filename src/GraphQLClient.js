@@ -82,7 +82,7 @@ class GraphQLClient {
     let result;
 
     try {
-      const response = await fetch(this.url, {
+      const response = await this.fetch(this.url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
