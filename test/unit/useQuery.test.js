@@ -1,4 +1,4 @@
-import useQuery from '../../src/useQuery';
+import { useQuery } from '../../src';
 
 describe('useQuery', () => {
   it('runs a test', () => {});
