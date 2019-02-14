@@ -48,9 +48,8 @@ function useClientRequest(query, initialOpts = {}) {
   };
 
   const cacheKey = client.getCacheKey(operation, initialOpts);
-  const intialCacheHit = initialOpts.skipCache
-    ? null
-    : client.cache.get(cacheKey);
+  const intialCacheHit =
+    initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey);
   const [state, dispatch] = React.useReducer(reducer, {
     ...intialCacheHit,
     cacheHit: !!intialCacheHit,
@@ -71,9 +70,10 @@ function useClientRequest(query, initialOpts = {}) {
     };
 
     const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts);
-    const cacheHit = revisedOpts.skipCache
-      ? null
-      : client.cache.get(revisedCacheKey);
+    const cacheHit =
+      revisedOpts.skipCache || !client.cache
+        ? null
+        : client.cache.get(revisedCacheKey);
 
     if (cacheHit) {
       dispatch({
