@@ -30,7 +30,7 @@ import { GraphQLClient, ClientContext } from 'graphql-hooks';
 
 const client = new GraphQLClient({
   url: '/graphql',
-  fetch // pass your prefered polyfill here
+  fetch // pass your preferred polyfill here
 });
 
 function App() {
