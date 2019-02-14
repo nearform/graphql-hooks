@@ -75,7 +75,7 @@ class GraphQLClient {
   getCacheKey(operation, options = {}) {
     const fetchOptions = {
       ...this.fetchOptions,
-      ...options.fetchOptionsOverride
+      ...options.fetchOptionsOverrides
     };
     return {
       operation,
@@ -99,7 +99,7 @@ class GraphQLClient {
           operationName: operation.operationName
         }),
         ...this.fetchOptions,
-        ...options.fetchOptionsOverride
+        ...options.fetchOptionsOverrides
       });
 
       if (!response.ok) {
