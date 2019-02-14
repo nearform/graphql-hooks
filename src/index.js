@@ -1,11 +1,11 @@
 const ClientContext = require('./ClientContext');
-const createClient = require('./createClient');
+const GraphQLClient = require('./GraphQLClient');
 const useClientRequest = require('./useClientRequest');
 const useQuery = require('./useQuery');
 
 module.exports = {
   ClientContext,
-  createClient,
+  GraphQLClient,
   useClientRequest,
   useQuery,
   // alias

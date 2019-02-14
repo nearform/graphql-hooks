@@ -2,104 +2,101 @@ const React = require('react');
 const ClientContext = require('./ClientContext');
 
 const actionTypes = {
-  REQUEST_LOADING: 'REQUEST_LOADING',
-  REQUEST_SUCCESS: 'REQUEST_SUCCESS',
-  REQUEST_FAILURE: 'REQUEST_FAILURE'
+  LOADING: 'LOADING',
+  CACHE_HIT: 'CACHE_HIT',
+  REQUEST_RESULT: 'REQUEST_RESULT'
 };
-
-function getInitialState(data) {
-  return {
-    data,
-    error: null,
-    loading: !data
-  };
-}
 
 function reducer(state, action) {
   switch (action.type) {
-    case actionTypes.REQUEST_LOADING:
+    case actionTypes.LOADING:
       return {
         ...state,
         loading: true
       };
-    case actionTypes.REQUEST_SUCCESS:
+    case actionTypes.CACHE_HIT:
       return {
-        ...state,
-        loading: false,
-        data: action.data
+        ...action.result,
+        cacheHit: true,
+        loading: false
       };
-    case actionTypes.REQUEST_FAILURE:
+    case actionTypes.REQUEST_RESULT:
       return {
-        ...state,
-        loading: false,
-        error: action.error
+        ...action.result,
+        cacheHit: false,
+        loading: false
       };
     default:
       return state;
   }
 }
 
-function useClientRequest(query, opts = {}) {
+/*
+  options include:
+
+  opts.variables: Object
+  opts.operationName: String
+  opts.fetchOptionsOverrides: Object
+  opts.skipCache: Boolean
+*/
+function useClientRequest(query, initialOpts = {}) {
   const client = React.useContext(ClientContext);
-  const { useCache } = opts;
-  const cacheKeyObject = {
+  const operation = {
     query,
-    ...opts
+    variables: initialOpts.variables,
+    operationName: initialOpts.operationName
   };
 
-  const initialState = getInitialState(getCacheHit(cacheKeyObject));
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-
-  function getCacheHit(key) {
-    return useCache && !opts.skipCache && client.cache
-      ? client.cache.get(key) || null
-      : null;
-  }
+  const cacheKey = client.getCacheKey(operation, initialOpts);
+  const intialCacheHit = initialOpts.skipCache
+    ? null
+    : client.cache.get(cacheKey);
+  const [state, dispatch] = React.useReducer(reducer, {
+    ...intialCacheHit,
+    cacheHit: !!intialCacheHit,
+    loading: !intialCacheHit
+  });
 
   // arguments to fetchData override the useClientRequest arguments
-  async function fetchData({ skipCache, ...overrideOpts } = {}) {
-    const revisedOptions = {
-      ...opts,
-      ...overrideOpts
-    };
-    const revisedcacheKeyObject = {
-      ...cacheKeyObject,
-      ...revisedOptions
+  async function fetchData(newOpts) {
+    const revisedOpts = {
+      ...initialOpts,
+      ...newOpts
     };
 
-    const cacheHit = skipCache ? null : getCacheHit(revisedcacheKeyObject);
+    const revisedOperation = {
+      ...operation,
+      variables: revisedOpts.variables,
+      operationName: revisedOpts.operationName
+    };
+
+    const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts);
+    const cacheHit = revisedOpts.skipCache
+      ? null
+      : client.cache.get(revisedCacheKey);
 
     if (cacheHit) {
       dispatch({
-        type: actionTypes.REQUEST_SUCCESS,
-        data: cacheHit
+        type: actionTypes.CACHE_HIT,
+        result: cacheHit
       });
 
       return cacheHit;
     }
 
-    try {
-      dispatch({ type: actionTypes.REQUEST_LOADING });
-      const data = await client.request(query, revisedOptions.variables);
+    dispatch({ type: actionTypes.LOADING });
+    const result = await client.request(revisedOperation, revisedOpts);
 
-      if (useCache && client.cache) {
-        client.cache.set(revisedcacheKeyObject, data);
-      }
-
-      dispatch({
-        type: actionTypes.REQUEST_SUCCESS,
-        data
-      });
-
-      return data;
-    } catch (error) {
-      dispatch({
-        type: actionTypes.REQUEST_FAILURE,
-        error
-      });
-
-      return error;
+    if (revisedOpts.useCache && client.cache) {
+      client.cache.set(revisedCacheKey, result);
     }
+
+    dispatch({
+      type: actionTypes.REQUEST_RESULT,
+      result
+    });
+
+    return result;
   }
 
   return [fetchData, state];

@@ -15,9 +15,13 @@ module.exports = function useQuery(query, opts = {}) {
     ...opts
   });
 
+  // TODO revise this logic
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
-    const p = queryReq();
-    client.ssrPromises.push(p);
+    // result may already be in the cache from previous SSR iterations
+    if (!state.data && !state.error) {
+      const p = queryReq();
+      client.ssrPromises.push(p);
+    }
     setCalledDuringSSR(true);
   }
 
