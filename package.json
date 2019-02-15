@@ -32,8 +32,8 @@
     "jest": "24.1.0",
     "prettier": "1.16.4",
     "pretty-quick": "1.10.0",
-    "react": "16.8.1",
-    "react-dom": "16.8.1",
+    "react": "16.8.2",
+    "react-dom": "16.8.2",
     "react-testing-library": "5.8.0"
   },
   "dependencies": {
