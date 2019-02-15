@@ -26,10 +26,10 @@ or
 First you'll need to create a client and wrap your app with the provider:
 
 ```js
-import { createClient, ClientContext } from 'graphql-hooks';
+import { GraphQLClient, ClientContext } from 'graphql-hooks';
 
-const client = createClient({
-  endpoint: '/graphql'
+const client = new GraphQLClient({
+  url: '/graphql'
 });
 
 function App() {
@@ -76,7 +76,7 @@ function MyComponent() {
 ## TOC
 
 - APIs
-  - [createClient](#createClient)
+  - [GraphQLClient](#GraphQLClient)
   - [ClientContext](#ClientContext)
   - [useClient](#useClient)
   - [useQuery](#useQuery)
@@ -90,7 +90,7 @@ function MyComponent() {
 
 ## API
 
-### `createClient`
+### `GraphQLClient`
 
 ### `ClientContext`
 
