@@ -1,10 +1,22 @@
 class GraphQLClient {
   constructor(config) {
+    // validate config
+    if (config.fetch || typeof config.fetch !== 'function') {
+      throw new Error('GraphQLClient: config.fetch must be a function');
+    }
+
+    if (!config.fetch && !fetch) {
+      throw new Error(
+        'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+      );
+    }
+
     this.cache = config.cache;
     this.headers = config.headers || {};
     this.ssrMode = config.ssrMode;
     this.ssrPromises = [];
     this.url = config.url;
+    this.fetch = config.fetch || fetch;
     this.fetchOptions = config.fetchOptions || {};
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true;
     this.onError = config.onError;
@@ -81,7 +93,7 @@ class GraphQLClient {
     let result;
 
     try {
-      const response = await fetch(this.url, {
+      const response = await this.fetch(this.url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

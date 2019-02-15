@@ -29,7 +29,8 @@ First you'll need to create a client and wrap your app with the provider:
 import { GraphQLClient, ClientContext } from 'graphql-hooks';
 
 const client = new GraphQLClient({
-  url: '/graphql'
+  url: '/graphql',
+  fetch // pass your preferred polyfill here
 });
 
 function App() {
