@@ -25,7 +25,7 @@ module.exports = function useQuery(query, opts = {}) {
   }
 
   React.useEffect(() => {
-    if (!state.data) {
+    if (!state.data && !state.error) {
       queryReq();
     }
   }, [query, JSON.stringify(opts.variables)]);
