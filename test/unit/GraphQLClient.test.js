@@ -219,7 +219,10 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig });
       fetch.mockResponseOnce(JSON.stringify({ data: 'data' }));
       await client.request({ query: TEST_QUERY });
-      expect(fetch.mock.calls[0][0]).toBe(validConfig.url);
+
+      const actual = fetch.mock.calls[0][0];
+      const expected = validConfig.url;
+      expect(actual).toBe(expected);
     });
 
     it('applies the configured headers', async () => {
@@ -227,7 +230,10 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig, headers });
       fetch.mockResponseOnce(JSON.stringify({ data: 'data' }));
       await client.request({ query: TEST_QUERY });
-      expect(fetch.mock.calls[0][1].headers['My-Header']).toBe('hello');
+
+      const actual = fetch.mock.calls[0][1].headers['My-Header'];
+      const expected = 'hello';
+      expect(actual).toBe(expected);
     });
 
     it('sends the provided operation query, variables and name', async () => {
@@ -239,7 +245,10 @@ describe('GraphQLClient', () => {
         operationName: 'test'
       };
       await client.request(operation);
-      expect(fetch.mock.calls[0][1].body).toBe(JSON.stringify(operation));
+
+      const actual = fetch.mock.calls[0][1].body;
+      const expected = JSON.stringify(operation);
+      expect(actual).toBe(expected);
     });
 
     it('handles & returns fetch errors', async () => {
