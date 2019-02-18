@@ -158,7 +158,7 @@ function MyComponent() {
 **Usage**:
 
 ```js
-const state = useQuery(query, options);
+const state = useQuery(query, [options]);
 ```
 
 **Example:**
