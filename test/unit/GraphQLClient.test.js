@@ -71,9 +71,8 @@ describe('GraphQLClient', () => {
     });
 
     it('assigns config.logErrors to an instance property', () => {
-      const logErrors = jest.fn();
-      const client = new GraphQLClient({ ...validConfig, logErrors });
-      expect(client.logErrors).toBe(logErrors);
+      const client = new GraphQLClient({ ...validConfig, logErrors: true });
+      expect(client.logErrors).toBe(true);
     });
 
     it('assigns config.onError to an instance property', () => {
