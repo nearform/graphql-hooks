@@ -1,6 +1,10 @@
 class GraphQLClient {
-  constructor(config) {
+  constructor(config = {}) {
     // validate config
+    if (!config.url) {
+      throw new Error('GraphQLClient: config.url is required');
+    }
+
     if (config.fetch && typeof config.fetch !== 'function') {
       throw new Error('GraphQLClient: config.fetch must be a function');
     }
@@ -89,7 +93,7 @@ class GraphQLClient {
     };
   }
 
-  async request(operation, options) {
+  async request(operation, options = {}) {
     let result;
 
     try {
