@@ -100,7 +100,7 @@ import { GraphQLClient } from 'graphql-hooks';
 const client = new GraphQLClient(config);
 ```
 
-**`config`**: Object with containing configuration properites
+**`config`**: Object containing configuration properties
 
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
@@ -111,23 +111,23 @@ const client = new GraphQLClient(config);
   - `cache.clear()`
   - `cache.keys()`
   - `getInitialState()`
-  - See [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache) as a refernce implementation
+  - See [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache) as a reference implementation
 - `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
 - `onError({ operation, result })`: Custom error handler
   - `operation`: Object with `query`, `variables` and `operationName`
-  - `result`: [Result Object](TODO)
+  - `result`: Object containing `error`, `data`, `fetchError`, `httpError` and `graphqlErrors`
 
 ### `client` methods
 
 - `client.setHeader(key, value)`: Updates `client.headers` adding the new header to the existing headers
-- `client.setHeaders(headers)`: Resets `client.headers`
+- `client.setHeaders(headers)`: Replaces `client.headers`
 - `client.logErrorResult({ operation, result })`: Default error logger; useful if you'd like to use it inside your custom `onError` handler
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
-- `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphLClient(config)`
+- `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
 
 ## `ClientContext`
 
@@ -296,7 +296,7 @@ function MyComponent({ id, name }) {
 }
 ```
 
-The `options` object that can be passed either to `useMutation(mutation, options)` or `mutationFn(otpions)` can be set with the following properties:
+The `options` object that can be passed either to `useMutation(mutation, options)` or `mutationFn(options)` can be set with the following properties:
 
 - `variables`: Object e.g. `{ limit: 10 }`
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
