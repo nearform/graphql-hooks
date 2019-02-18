@@ -9,9 +9,9 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny bundle_: only 3.7kB (1.4 gzipped)
-- 📄 SSR Support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
-- 🔌 Plugin Caching Options: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
+- ⚖️ _Tiny_ bundle: only 3.7kB (1.4 gzipped)
+- 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
+- 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
 - 🔥 No more render props hell
 - ⏳ Handle loading and error states with ease
 
@@ -87,8 +87,8 @@ function MyComponent() {
 - Guides
   - [SSR](#SSR)
   - [Authentication](#Authentication)
-  - [Refetching a query](#Refetching-a-query)
   - [Fragments](#Fragments)
+  - [Migrating from Apollo](#Migrating-from-Apollo)
 
 ## API
 
@@ -153,7 +153,7 @@ function MyComponent() {
 }
 ```
 
-### `useQuery(query, options)`
+### `const queryState = useQuery(query, [options])`
 
 ```js
 import { useQuery } from 'graphql-hooks';
@@ -173,9 +173,7 @@ This is a custom hook that takes care of fetching your query and storing the res
 #### `useQuery` return value
 
 ```js
-const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(
-  HOMEPAGE_QUERY
-);
+const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 ```
 
 - `loading`: Boolean - `true` if the query is in flight
@@ -187,12 +185,12 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(
 - `httpError`: Object - Set if an error response was returned from the server
 - `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
 
-### `useManualQuery(query, options)`
+### `const [queryFn, state] = useManualQuery(query, [options])`
 
 Use this when you don't want a query to automactially be fetched, or wish to call a query programmatically.
 
 ```js
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery } from 'graphql-hooks'
 
 function MyComponent(props) {
   const [fetchUser, { loading, error, data }] = useManualQuery(GET_USER_QUERY, {
@@ -233,14 +231,60 @@ function MyComponent(props) {
 }
 ```
 
-### `useMutation`
+### `const [mutationFn, state] = useMutation(mutation, [options])`
+
+Mutations unlike Queries are not cached.
+
+**Usage:**
+
+```js
+import { useMutation } from 'graphql-hooks';
+
+const UPDATE_USER_MUTATION = `mutation UpdateUser(id: String!, name: String!) {
+  updateUser(id: $id, name: $name) {
+    name
+  }
+}`;
+
+function MyComponent({ id, name }) {
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION);
+  const [newName, setNewName] = useState(name);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={newName}
+        onChange={e => setNewName(e.target.value)}
+      />
+      <button
+        onClick={() => updateUser({ variables: { id, name: newName } })}
+      />
+    </div>
+  );
+}
+```
+
+The `options` object that can be passed either to `useMutation(mutation, options)` or `mutationFn(otpions)` can be set with the following properties:
+
+- `variables`: Object e.g. `{ limit: 10 }`
+- `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
+- `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 
 ## Guides
 
 ### SSR
 
+See [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr) for an in depth guide.
+
 ### Authentication
 
-### Refetching a query
+Coming soon!
 
 ### Fragments
+
+Coming soon!
+
+### Migrating from Apollo
+
+Coming soon!
