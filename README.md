@@ -80,7 +80,6 @@ function MyComponent() {
 - APIs
   - [GraphQLClient](#GraphQLClient)
   - [ClientContext](#ClientContext)
-  - [useClient](#useClient)
   - [useQuery](#useQuery)
   - [useManualQuery](#useManualQuery)
   - [useMutation](#useMutation)
@@ -92,7 +91,9 @@ function MyComponent() {
 
 ## API
 
-### `GraphQLClient`
+## GraphQLClient
+
+**Usage:**
 
 ```js
 import { GraphQLClient } from 'graphql-hooks';
@@ -119,7 +120,7 @@ const client = new GraphQLClient(config);
   - `operation`: Object with `query`, `variables` and `operationName`
   - `result`: [Result Object](TODO)
 
-#### `client` methods
+### `client` methods
 
 - `client.setHeader(key, value)`: Updates `client.headers` adding the new header to the existing headers
 - `client.setHeaders(headers)`: Resets `client.headers`
@@ -128,18 +129,17 @@ const client = new GraphQLClient(config);
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphLClient(config)`
 
-### `ClientContext`
-
-```js
-import { ClientContext } from 'graphql-hooks';
-```
+## ClientContext
 
 `ClientContext` is the result of `React.createContext()` - meaning it can be used directly with React's new context API:
 
+**Usage:**
+
 ```js
+import { ClientContext } from 'graphql-hooks';
 <ClientContext.Provider value={client}>
   {/* children can now consume the client context */}
-</ClientContext.Provider>
+</ClientContext.Provider>;
 ```
 
 To access the `GraphQLClient` instance, call `React.useContext(ClientContext)`:
@@ -153,10 +153,13 @@ function MyComponent() {
 }
 ```
 
-### `const queryState = useQuery(query, [options])`
+## useQuery
+
+**Usage:**
 
 ```js
 import { useQuery } from 'graphql-hooks';
+const queryState = useQuery(query, [options]);
 ```
 
 This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
@@ -170,7 +173,7 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
   - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 
-#### `useQuery` return value
+### `useQuery` return value
 
 ```js
 const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
@@ -185,9 +188,11 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 - `httpError`: Object - Set if an error response was returned from the server
 - `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
 
-### `const [queryFn, state] = useManualQuery(query, [options])`
+## useManualQuery
 
 Use this when you don't want a query to automactially be fetched, or wish to call a query programmatically.
+
+**Usage:**
 
 ```js
 import { useManualQuery } from 'graphql-hooks'
@@ -231,11 +236,14 @@ function MyComponent(props) {
 }
 ```
 
-### `const [mutationFn, state] = useMutation(mutation, [options])`
+## useMutation
 
 Mutations unlike Queries are not cached.
 
 **Usage:**
+`const [mutationFn, state] = useMutation(mutation, [options])`
+
+Example:
 
 ```js
 import { useMutation } from 'graphql-hooks';
