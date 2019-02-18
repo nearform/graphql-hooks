@@ -210,6 +210,29 @@ function MyComponent(props) {
 }
 ```
 
+If you don't know certain options when declaring the `useManualQuery` you can also pass the same options to the query function itself when calling it:
+
+```js
+import { useManualQuery } from 'graphql-hooks';
+
+function MyComponent(props) {
+  const [fetchUser] = useManualQuery(GET_USER_QUERY);
+
+  const fetchUserThenSomething = async () => {
+    const user = await fetchUser({
+      variables: { id: props.userId }
+    });
+    return somethingElse();
+  };
+
+  return (
+    <div>
+      <button onClick={fetchUserThenSomething}>Get User!</button>
+    </div>
+  );
+}
+```
+
 ### `useMutation`
 
 ## Guides
