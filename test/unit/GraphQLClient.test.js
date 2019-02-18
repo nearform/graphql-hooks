@@ -12,7 +12,7 @@ const TEST_QUERY = `query Test($limit: Int) {
 }`;
 
 describe('GraphQLClient', () => {
-  describe('when insantiated', () => {
+  describe('when instantiated', () => {
     it('throws if no url provided', () => {
       expect(() => {
         new GraphQLClient();
