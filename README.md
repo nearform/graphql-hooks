@@ -155,6 +155,10 @@ function MyComponent() {
 
 ### `useQuery(query, options)`
 
+```js
+import { useQuery } from 'graphql-hooks';
+```
+
 This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
 
 - `query`: Your GraphQL query as a plain string
@@ -183,7 +187,28 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(
 - `httpError`: Object - Set if an error response was returned from the server
 - `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
 
-### `useManualQuery`
+### `useManualQuery(query, options)`
+
+Use this when you don't want a query to automactially be fetched, or wish to call a query programmatically.
+
+```js
+import { useManualQuery } from 'graphql-hooks';
+
+function MyComponent(props) {
+  const [fetchUser, { loading, error, data }] = useManualQuery(GET_USER_QUERY, {
+    variables: { id: props.userId }
+  })
+
+  return (
+    <div>
+      <button onClick={fetchUser}>Get User!</button>
+      {error && <div>Failed to fetch user<div>}
+      {loading && <div>Loading...</div>}
+      {data && <div>Hello ${data.user.name}</div>}
+    </div>
+  )
+}
+```
 
 ### `useMutation`
 
