@@ -77,7 +77,7 @@ function MyComponent() {
 
 # Table of Contents
 
-- APIs
+- API
   - [GraphQLClient](#GraphQLClient)
   - [ClientContext](#ClientContext)
   - [useQuery](#useQuery)
@@ -91,9 +91,9 @@ function MyComponent() {
 
 ## API
 
-## GraphQLClient
+## `GraphQLClient`
 
-**Usage:**
+**Usage**:
 
 ```js
 import { GraphQLClient } from 'graphql-hooks';
@@ -129,11 +129,11 @@ const client = new GraphQLClient(config);
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphLClient(config)`
 
-## ClientContext
+## `ClientContext`
 
 `ClientContext` is the result of `React.createContext()` - meaning it can be used directly with React's new context API:
 
-**Usage:**
+**Example**:
 
 ```js
 import { ClientContext } from 'graphql-hooks';
@@ -153,13 +153,27 @@ function MyComponent() {
 }
 ```
 
-## useQuery
+## `useQuery`
 
-**Usage:**
+**Usage**:
+
+```js
+const state = useQuery(query, options);
+```
+
+**Example:**
 
 ```js
 import { useQuery } from 'graphql-hooks';
-const queryState = useQuery(query, [options]);
+
+function MyComponent() {
+  const { loading, error, data } = useQuery(query);
+
+  if (loading) return 'Loading...';
+  if (error) return 'Something bad happened';
+
+  return <div>{data.thing}</div>;
+}
 ```
 
 This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
@@ -188,11 +202,17 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 - `httpError`: Object - Set if an error response was returned from the server
 - `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
 
-## useManualQuery
+## `useManualQuery`
 
 Use this when you don't want a query to automactially be fetched, or wish to call a query programmatically.
 
-**Usage:**
+**Usage**:
+
+```js
+const [queryFn, state] = useManualQuery(query, [options]);
+```
+
+**Example**:
 
 ```js
 import { useManualQuery } from 'graphql-hooks'
@@ -236,14 +256,17 @@ function MyComponent(props) {
 }
 ```
 
-## useMutation
+## `useMutation`
 
 Mutations unlike Queries are not cached.
 
-**Usage:**
-`const [mutationFn, state] = useMutation(mutation, [options])`
+**Usage**:
 
-Example:
+```js
+const [mutationFn, state] = useMutation(mutation, [options]);
+```
+
+**Example**:
 
 ```js
 import { useMutation } from 'graphql-hooks';
