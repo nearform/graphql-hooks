@@ -37,9 +37,7 @@
     "react-dom": "16.8.2",
     "react-testing-library": "5.8.0"
   },
-  "dependencies": {
-    "graphql-request": "^1.8.2"
-  },
+  "dependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
