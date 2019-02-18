@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 ![](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)
 
-🎣 Minimal hooks-first graphql client.
+🎣 Minimal hooks-first GraphQL client.
 
 ## Features
 
@@ -101,7 +101,7 @@ const client = new GraphQLClient(config);
 
 **`config`**: Object with containing configuration properites
 
-- `url` (**Required**): The url to your graphql server
+- `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `cache`: Object with the following methods:
   - `cache.get(key)`
@@ -124,7 +124,7 @@ const client = new GraphQLClient(config);
 - `client.setHeader(key, value)`: Updates `client.headers` adding the new header to the existing headers
 - `client.setHeaders(headers)`: Resets `client.headers`
 - `client.logErrorResult({ operation, result })`: Default error logger; useful if you'd like to use it inside your custom `onError` handler
-- `request(operation, options)`: Make a request to your graphql server; returning a Promise
+- `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphLClient(config)`
 
@@ -153,7 +153,35 @@ function MyComponent() {
 }
 ```
 
-### `useQuery`
+### `useQuery(query, options)`
+
+This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
+
+- `query`: Your GraphQL query as a plain string
+- `options`: Object with the following optional properties
+  - `variables`: Object e.g. `{ limit: 10 }`
+  - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
+  - `useCache`: Boolean - defaults to `true`; cache the query result
+  - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
+  - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
+  - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
+
+#### `useQuery` return value
+
+```js
+const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(
+  HOMEPAGE_QUERY
+);
+```
+
+- `loading`: Boolean - `true` if the query is in flight
+- `error`: Boolean - `true` if `fetchError` or `httpError` or `graphQLErrors` has been set
+- `data`: Object - the result of your GraphQL query
+- `refetch`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true`
+- `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
+- `fetchError`: Object - Set if an error occured during the `fetch` call
+- `httpError`: Object - Set if an error response was returned from the server
+- `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
 
 ### `useManualQuery`
 
