@@ -1,11 +1,11 @@
 import React from 'react';
 import { testHook } from 'react-testing-library';
-import { ClientContext, useQuery } from '../../src';
+import { ClientContext, useQuery, useClientRequest } from '../../src';
 
-let mockQueryReq, mockState;
-jest.mock('../../src/useClientRequest', () => () => [mockQueryReq, mockState]);
+jest.mock('../../src/useClientRequest');
 
-let mockClient;
+let mockQueryReq, mockState, mockClient;
+
 const Wrapper = props => (
   <ClientContext.Provider value={mockClient}>
     {props.children}
@@ -22,6 +22,8 @@ describe('useQuery', () => {
   beforeEach(() => {
     mockQueryReq = jest.fn();
     mockState = { loading: true, cacheHit: false };
+    useClientRequest.mockReturnValue([mockQueryReq, mockState]);
+
     mockClient = {
       ssrMode: false,
       ssrPromises: []
@@ -30,6 +32,23 @@ describe('useQuery', () => {
 
   afterEach(() => {
     jest.unmock('../../src/useClientRequest');
+  });
+
+  it('calls useClientRequest with query', () => {
+    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
+      useCache: true
+    });
+  });
+
+  it('calls useClientRequest with options', () => {
+    testHook(() => useQuery(TEST_QUERY, { useCache: false, extra: 'option' }), {
+      wrapper: Wrapper
+    });
+    expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
+      useCache: false,
+      extra: 'option'
+    });
   });
 
   it('returns initial state from useClientRequest & refetch', () => {
