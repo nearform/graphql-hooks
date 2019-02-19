@@ -18,6 +18,12 @@ const TEST_QUERY = `query Test($limit: Int) {
   }
 }`;
 
+const ANOTHER_TEST_QUERY = `query AnotherTest($limit: Int) {
+  another(limit: $limit) {
+    id
+  }
+}`;
+
 describe('useQuery', () => {
   beforeEach(() => {
     mockQueryReq = jest.fn();
@@ -119,5 +125,33 @@ describe('useQuery', () => {
     mockQueryReq.mockResolvedValueOnce('data');
     testHook(() => useQuery(TEST_QUERY, { ssr: false }), { wrapper: Wrapper });
     expect(mockClient.ssrPromises).toHaveLength(0);
+  });
+
+  it('does not send the same query twice', () => {
+    const { rerender } = testHook(() => useQuery(TEST_QUERY), {
+      wrapper: Wrapper
+    });
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(1);
+  });
+
+  it('sends the query again if the variables change', () => {
+    let options = { variables: { limit: 2 } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends another query if the query changes', () => {
+    let query = TEST_QUERY;
+    const { rerender } = testHook(() => useQuery(query), {
+      wrapper: Wrapper
+    });
+    query = ANOTHER_TEST_QUERY;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
   });
 });
