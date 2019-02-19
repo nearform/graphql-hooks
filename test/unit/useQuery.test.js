@@ -85,12 +85,6 @@ describe('useQuery', () => {
     expect(mockQueryReq).not.toHaveBeenCalled();
   });
 
-  it('does not send the query on mount if there is already data', () => {
-    mockState.error = true;
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
-    expect(mockQueryReq).not.toHaveBeenCalled();
-  });
-
   it('does not send the query on mount if there is an error', () => {
     mockState.error = true;
     testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
