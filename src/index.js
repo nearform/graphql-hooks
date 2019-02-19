@@ -8,7 +8,8 @@ module.exports = {
   GraphQLClient,
   useClientRequest,
   useQuery,
+  useManualQuery: (query, options) =>
+    useClientRequest(query, { useCache: true, ...options }),
   // alias
-  useMutation: useClientRequest,
-  useManualQuery: useClientRequest
+  useMutation: useClientRequest
 };
