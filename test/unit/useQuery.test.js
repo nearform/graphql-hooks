@@ -135,11 +135,55 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
   });
 
+  it('sends the query again if the variables change, even if there was previously data', () => {
+    let options = { variables: { limit: 2 } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the variables change, even if there was previously an error', () => {
+    let options = { variables: { limit: 2 } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
+    options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
   it('sends another query if the query changes', () => {
     let query = TEST_QUERY;
     const { rerender } = testHook(() => useQuery(query), {
       wrapper: Wrapper
     });
+    query = ANOTHER_TEST_QUERY;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the query changes, even if there was previously data', () => {
+    let query = TEST_QUERY;
+    const { rerender } = testHook(() => useQuery(query), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    query = ANOTHER_TEST_QUERY;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the query changes, even if there was previously an error', () => {
+    let query = TEST_QUERY;
+    const { rerender } = testHook(() => useQuery(query), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
     query = ANOTHER_TEST_QUERY;
     rerender();
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
