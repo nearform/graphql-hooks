@@ -75,18 +75,6 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(1);
   });
 
-  it('does not send the same query on mount if data is already present', () => {
-    mockState.data = { some: 'data' };
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
-    expect(mockQueryReq).not.toHaveBeenCalled();
-  });
-
-  it('does not send the query on mount if there is an error', () => {
-    mockState.error = true;
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
-    expect(mockQueryReq).not.toHaveBeenCalled();
-  });
-
   it('adds query to ssrPromises when in ssrMode if no data & no error', () => {
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
@@ -135,11 +123,55 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
   });
 
+  it('sends the query again if the variables change, even if there was previously data', () => {
+    let options = { variables: { limit: 2 } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the variables change, even if there was previously an error', () => {
+    let options = { variables: { limit: 2 } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
+    options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
   it('sends another query if the query changes', () => {
     let query = TEST_QUERY;
     const { rerender } = testHook(() => useQuery(query), {
       wrapper: Wrapper
     });
+    query = ANOTHER_TEST_QUERY;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the query changes, even if there was previously data', () => {
+    let query = TEST_QUERY;
+    const { rerender } = testHook(() => useQuery(query), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    query = ANOTHER_TEST_QUERY;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the query changes, even if there was previously an error', () => {
+    let query = TEST_QUERY;
+    const { rerender } = testHook(() => useQuery(query), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
     query = ANOTHER_TEST_QUERY;
     rerender();
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
