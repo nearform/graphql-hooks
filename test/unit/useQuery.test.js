@@ -75,18 +75,6 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(1);
   });
 
-  it('does not send the same query on mount if data is already present', () => {
-    mockState.data = { some: 'data' };
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
-    expect(mockQueryReq).not.toHaveBeenCalled();
-  });
-
-  it('does not send the query on mount if there is an error', () => {
-    mockState.error = true;
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
-    expect(mockQueryReq).not.toHaveBeenCalled();
-  });
-
   it('adds query to ssrPromises when in ssrMode if no data & no error', () => {
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
