@@ -1,7 +1,6 @@
 import React from 'react';
 import { act, testHook } from 'react-testing-library';
 import { useClientRequest, ClientContext } from '../../src';
-import { pathToFileURL } from 'url';
 
 let mockClient;
 
