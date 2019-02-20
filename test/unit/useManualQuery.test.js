@@ -9,10 +9,6 @@ const TEST_QUERY = `query Test($limit: Int) {
 }`;
 
 describe('useManualQuery', () => {
-  afterEach(() => {
-    jest.unmock('../../src/useClientRequest');
-  });
-
   it('calls useClientRequest with useCache set to true & options', () => {
     useManualQuery(TEST_QUERY, { option: 'option' });
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {

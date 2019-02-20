@@ -36,10 +36,6 @@ describe('useQuery', () => {
     };
   });
 
-  afterEach(() => {
-    jest.unmock('../../src/useClientRequest');
-  });
-
   it('calls useClientRequest with query', () => {
     testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
