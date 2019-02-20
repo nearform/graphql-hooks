@@ -1,7 +1,6 @@
 import React from 'react';
 import { act, testHook } from 'react-testing-library';
 import { useClientRequest, ClientContext } from '../../src';
-import { pathToFileURL } from 'url';
 
 let mockClient;
 
@@ -41,8 +40,8 @@ describe('useClientRequest', () => {
   describe('initial state', () => {
     it('includes the cached response if present', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' });
-      let _, state;
-      testHook(() => ([_, state] = useClientRequest(TEST_QUERY)), {
+      let state;
+      testHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
       expect(state).toEqual({
@@ -54,9 +53,9 @@ describe('useClientRequest', () => {
 
     it('skips the cache if skipCache is passed in', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' });
-      let _, state;
+      let state;
       testHook(
-        () => ([_, state] = useClientRequest(TEST_QUERY, { skipCache: true })),
+        () => ([, state] = useClientRequest(TEST_QUERY, { skipCache: true })),
         { wrapper: Wrapper }
       );
       expect(state).toEqual({ cacheHit: false, loading: true });
@@ -64,8 +63,8 @@ describe('useClientRequest', () => {
 
     it('skips the cache if a cache is not configured', () => {
       mockClient.cache = null;
-      let _, state;
-      testHook(() => ([_, state] = useClientRequest(TEST_QUERY)), {
+      let state;
+      testHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
       expect(state).toEqual({ cacheHit: false, loading: true });
