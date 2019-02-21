@@ -29,7 +29,7 @@ module.exports = function useQuery(query, opts = {}) {
   return {
     ...state,
     refetch: () => queryReq({ skipCache: true }),
-    fetchMore: ({ variables = {}, ...rest } = {}) =>
+    fetchMore: ({ variables, ...rest } = {}) =>
       // merge variables so they don't all have to be passed back in,
       // just the ones that are changing
       queryReq({ ...rest, variables: { ...allOpts.variables, ...variables } })
