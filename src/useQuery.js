@@ -7,11 +7,13 @@ const defaultOpts = {
   useCache: true
 };
 
-module.exports = function useQuery(query, opts = {}) {
-  const allOpts = { ...defaultOpts, ...opts };
+module.exports = function useQuery(query, opts = {}, updateResult) {
   const client = React.useContext(ClientContext);
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false);
-  const [queryReq, state] = useClientRequest(query, allOpts);
+  const [queryReq, state] = useClientRequest(query, {
+    ...defaultOpts,
+    ...opts
+  });
 
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
     // result may already be in the cache from previous SSR iterations
@@ -23,26 +25,11 @@ module.exports = function useQuery(query, opts = {}) {
   }
 
   React.useEffect(() => {
-    queryReq();
+    queryReq(null, updateResult);
   }, [query, JSON.stringify(opts.variables)]);
 
   return {
     ...state,
-    refetch: () => queryReq({ skipCache: true }),
-    fetchMore: (fetchMoreOpts, updateResult) => {
-      if (!updateResult) {
-        throw new Error(
-          'useQuery fetchMore: updateResult function is required'
-        );
-      }
-      queryReq(
-        {
-          ...allOpts,
-          ...fetchMoreOpts,
-          variables: { ...opts.variables, ...fetchMoreOpts.variables }
-        },
-        updateResult
-      );
-    }
+    refetch: () => queryReq({ skipCache: true })
   };
 };
