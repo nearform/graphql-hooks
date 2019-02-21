@@ -53,7 +53,7 @@ function useClientRequest(query, initialOpts = {}) {
   const [state, dispatch] = React.useReducer(reducer, {
     ...intialCacheHit,
     cacheHit: !!intialCacheHit,
-    loading: !intialCacheHit
+    loading: initialOpts.isMutation ? false : !intialCacheHit
   });
 
   // arguments to fetchData override the useClientRequest arguments

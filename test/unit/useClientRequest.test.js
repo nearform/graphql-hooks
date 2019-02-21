@@ -69,6 +69,21 @@ describe('useClientRequest', () => {
       });
       expect(state).toEqual({ cacheHit: false, loading: true });
     });
+
+    it('sets loading to false if isMutation is passed in', () => {
+      let fetchData, state;
+      testHook(
+        () =>
+          ([fetchData, state] = useClientRequest(TEST_QUERY, {
+            isMutation: true
+          })),
+        {
+          wrapper: Wrapper
+        }
+      );
+      expect(fetchData).toEqual(expect.any(Function));
+      expect(state).toEqual({ cacheHit: false, loading: false });
+    });
   });
 
   describe('fetchData', () => {

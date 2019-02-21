@@ -11,5 +11,6 @@ module.exports = {
   useManualQuery: (query, options) =>
     useClientRequest(query, { useCache: true, ...options }),
   // alias
-  useMutation: useClientRequest
+  useMutation: (query, options) =>
+    useClientRequest(query, { isMutation: true, ...options })
 };
