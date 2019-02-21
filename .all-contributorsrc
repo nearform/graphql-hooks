@@ -1,0 +1,31 @@
+{
+  "projectName": "graphql-hooks",
+  "projectOwner": "Brian Mullan",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "bmullan91",
+      "name": "Brian Mullan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1939483?v=4",
+      "profile": "https://twitter.com/bmullan91",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
