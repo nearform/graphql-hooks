@@ -187,6 +187,9 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
   - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
+  - `updateResult(previousResult, result)`: Function - Custom handler for merging previous & new query results; return value will replace `data` in `useQuery` return value
+    - `previousResult`: Previous GraphQL query or `updateResult` result
+    - `result`: New GraphQL query result
 
 ### `useQuery` return value
 
@@ -198,6 +201,8 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 - `error`: Boolean - `true` if `fetchError` or `httpError` or `graphQLErrors` has been set
 - `data`: Object - the result of your GraphQL query
 - `refetch`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true`
+- `fetchMore(options)`: Function - send the same query with updated options, useful for pagination.
+  - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
 - `fetchError`: Object - Set if an error occured during the `fetch` call
 - `httpError`: Object - Set if an error response was returned from the server
