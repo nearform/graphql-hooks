@@ -7,7 +7,7 @@ const defaultOpts = {
   useCache: true
 };
 
-module.exports = function useQuery(query, opts = {}, updateResult) {
+module.exports = function useQuery(query, opts = {}) {
   const allOpts = { ...defaultOpts, ...opts };
   const client = React.useContext(ClientContext);
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false);
@@ -23,21 +23,15 @@ module.exports = function useQuery(query, opts = {}, updateResult) {
   }
 
   React.useEffect(() => {
-    queryReq(null, updateResult);
+    queryReq();
   }, [query, JSON.stringify(opts.variables)]);
 
   return {
     ...state,
     refetch: () => queryReq({ skipCache: true }),
-    fetchMore: (fetchMoreOpts, updateResultOverride) => {
-      queryReq(
-        {
-          ...allOpts,
-          ...fetchMoreOpts,
-          variables: { ...opts.variables, ...fetchMoreOpts.variables }
-        },
-        updateResultOverride || updateResult
-      );
-    }
+    fetchMore: ({ variables = {}, ...rest } = {}) =>
+      // merge variables so they don't all have to be passed back in,
+      // just the ones that are changing
+      queryReq({ ...rest, variables: { ...allOpts.variables, ...variables } })
   };
 };
