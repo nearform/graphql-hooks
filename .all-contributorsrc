@@ -1,0 +1,23 @@
+{
+  "projectName": "graphql-hooks",
+  "projectOwner": "nearform",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "bmullan91",
+      "name": "Brian Mullan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1939483?v=4",
+      "profile": "https://twitter.com/bmullan91",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
