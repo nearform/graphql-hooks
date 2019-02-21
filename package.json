@@ -20,6 +20,11 @@
     "apollo"
   ],
   "author": "Brian Mullan <bmullan91@gmail.com>",
+  "contributors": [
+    "Jack Clark (https://github.com/jackdclark)",
+    "Joe Warren (https://github.com/joezo)",
+    "Simone Busoli (https://github.com/simoneb)"
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^16.8.1"
