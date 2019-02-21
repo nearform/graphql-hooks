@@ -325,4 +325,4 @@ Coming soon!
 
 <!-- prettier-ignore -->
 | <img src="https://avatars.githubusercontent.com/u/1939483?v=3" width="100px;" alt="Brian Mullan"/> <br /> [Brian Mullan](https://github.com/bmullan91) | <img src="https://avatars.githubusercontent.com/u/1485654?v=3" width="100px;" alt="Jack Clark"/> <br /> [Jack Clark](https://github.com/jackdclark) | <img src="https://avatars.githubusercontent.com/u/2870255?v=3" width="100px;" alt="Joe Warren"/> <br /> [Joe Warren](https://github.com/joezo) | <img src="https://avatars.githubusercontent.com/u/20181?v=3" width="100px;" alt="Simone Busoli"/> <br /> [Simone Busoli](https://github.com/simoneb) |
-|---|---|---|---|---|
+|---|---|---|---|
