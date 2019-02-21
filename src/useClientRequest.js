@@ -51,12 +51,12 @@ function useClientRequest(query, initialOpts = {}) {
   };
 
   const cacheKey = client.getCacheKey(operation, initialOpts);
-  const intialCacheHit =
+  const initialCacheHit =
     initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey);
   const [state, dispatch] = React.useReducer(reducer, {
-    ...intialCacheHit,
-    cacheHit: !!intialCacheHit,
-    loading: initialOpts.isMutation ? false : !intialCacheHit
+    ...initialCacheHit,
+    cacheHit: !!initialCacheHit,
+    loading: initialOpts.isMutation ? false : !initialCacheHit
   });
 
   // arguments to fetchData override the useClientRequest arguments
