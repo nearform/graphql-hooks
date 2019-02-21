@@ -43,6 +43,24 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "Joezo",
+      "name": "Joe Warren",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2870255?v=4",
+      "profile": "http://twitter.com/joezo",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
