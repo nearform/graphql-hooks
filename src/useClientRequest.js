@@ -60,7 +60,7 @@ function useClientRequest(query, initialOpts = {}) {
   });
 
   // arguments to fetchData override the useClientRequest arguments
-  async function fetchData(newOpts) {
+  async function fetchData(newOpts, updateResult) {
     const revisedOpts = {
       ...initialOpts,
       ...newOpts
@@ -88,7 +88,11 @@ function useClientRequest(query, initialOpts = {}) {
     }
 
     dispatch({ type: actionTypes.LOADING });
-    const result = await client.request(revisedOperation, revisedOpts);
+    let result = await client.request(revisedOperation, revisedOpts);
+
+    if (result.data && updateResult && typeof updateResult === 'function') {
+      result.data = updateResult(state.data, result.data);
+    }
 
     if (revisedOpts.useCache && client.cache) {
       client.cache.set(revisedCacheKey, result);
