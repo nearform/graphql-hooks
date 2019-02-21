@@ -35,7 +35,16 @@ npm run test:coverage
 
 Make sure to get a `:thumbsup:`, `+1` or `LGTM` from another collaborator before merging a PR. If you aren't sure if a release should happen, open an issue.
 
-Release process:
+## Updating Contributors list in README.md
+
+You can add yourself or another contributor by either:
+
+- Comment on an issue or pull request `@all-contributors please add <username> for <contributions>`
+- `npm run add-contrib`
+
+For more information on `@all-contributors` see it's [usage docs](https://allcontributors.org/docs/en/bot/usage)
+
+### Release process:
 
 - `npm test`
 - `npm version <major|minor|patch>`
