@@ -24,7 +24,7 @@ describe('useClientRequest', () => {
         get: jest.fn(),
         set: jest.fn()
       },
-      request: jest.fn().mockResolvedValue({ some: 'data' })
+      request: jest.fn().mockResolvedValue({ data: 'data' })
     };
   });
 
@@ -127,7 +127,7 @@ describe('useClientRequest', () => {
         { operationName: 'test', variables: { limit: 2 }, query: TEST_QUERY },
         { operationName: 'test', variables: { limit: 2 } }
       );
-      expect(state).toEqual({ cacheHit: false, loading: false, some: 'data' });
+      expect(state).toEqual({ cacheHit: false, loading: false, data: 'data' });
     });
 
     it('calls request with revised options', async () => {
@@ -181,7 +181,7 @@ describe('useClientRequest', () => {
       expect(state).toEqual({
         cacheHit: false,
         loading: false,
-        some: 'data'
+        data: 'data'
       });
     });
 
@@ -198,7 +198,7 @@ describe('useClientRequest', () => {
       expect(state).toEqual({
         cacheHit: false,
         loading: false,
-        some: 'data'
+        data: 'data'
       });
     });
 
@@ -212,7 +212,91 @@ describe('useClientRequest', () => {
       await fetchData();
 
       expect(mockClient.cache.set).toHaveBeenCalledWith('cacheKey', {
-        some: 'data'
+        data: 'data'
+      });
+    });
+
+    describe('options.updateRequest', () => {
+      it('is called with old & new data if the data has changed & the result is returned', async () => {
+        let fetchData, state;
+        const updateResultMock = jest.fn().mockReturnValue('merged data');
+        testHook(
+          () =>
+            ([fetchData, state] = useClientRequest(TEST_QUERY, {
+              variables: { limit: 10 },
+              updateResult: updateResultMock
+            })),
+          { wrapper: Wrapper }
+        );
+
+        // first fetch to populate state
+        await fetchData();
+
+        mockClient.request.mockResolvedValueOnce({ data: 'new data' });
+        await fetchData({ variables: { limit: 20 } });
+
+        expect(updateResultMock).toHaveBeenCalledWith('data', 'new data');
+        expect(state).toEqual({
+          cacheHit: false,
+          data: 'merged data',
+          loading: false
+        });
+      });
+
+      it('is not called if there is no old data', async () => {
+        let fetchData;
+        const updateResultMock = jest.fn();
+        testHook(
+          () =>
+            ([fetchData] = useClientRequest(TEST_QUERY, {
+              variables: { limit: 10 },
+              updateResult: updateResultMock
+            })),
+          { wrapper: Wrapper }
+        );
+
+        await fetchData();
+
+        expect(updateResultMock).not.toHaveBeenCalled();
+      });
+
+      it('is not called if there is no new data', async () => {
+        let fetchData;
+        const updateResultMock = jest.fn();
+        testHook(
+          () =>
+            ([fetchData] = useClientRequest(TEST_QUERY, {
+              variables: { limit: 10 },
+              updateResult: updateResultMock
+            })),
+          { wrapper: Wrapper }
+        );
+
+        await fetchData();
+
+        mockClient.request.mockReturnValueOnce({ errors: ['on no!'] });
+        await fetchData({ variables: { limit: 20 } });
+
+        expect(updateResultMock).not.toHaveBeenCalled();
+      });
+
+      it('throws if updateResult is not a function', async () => {
+        let fetchData;
+        testHook(
+          () =>
+            ([fetchData] = useClientRequest(TEST_QUERY, {
+              variables: { limit: 10 },
+              updateResult: 'do I look like a function to you?'
+            })),
+          { wrapper: Wrapper }
+        );
+
+        // first fetch to populate state
+        await fetchData();
+
+        expect(fetchData({ variables: { limit: 20 } })).rejects.toThrow(
+          'options.updateResult must be a function'
+        );
       });
     });
   });
