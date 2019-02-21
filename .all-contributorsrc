@@ -1,6 +1,6 @@
 {
   "projectName": "graphql-hooks",
-  "projectOwner": "nearfrorm",
+  "projectOwner": "nearform",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -60,6 +60,17 @@
         "maintenance",
         "review",
         "test"
+      ]
+    },
+    {
+      "login": "simoneb",
+      "name": "Simone Busoli",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20181?v=4",
+      "profile": "http://simoneb.github.io",
+      "contributions": [
+        "question",
+        "bug",
+        "doc"
       ]
     }
   ],
