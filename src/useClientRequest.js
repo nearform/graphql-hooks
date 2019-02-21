@@ -10,6 +10,9 @@ const actionTypes = {
 function reducer(state, action) {
   switch (action.type) {
     case actionTypes.LOADING:
+      if (state.loading) {
+        return state; // saves a render cycle as state is the same
+      }
       return {
         ...state,
         loading: true
@@ -48,12 +51,12 @@ function useClientRequest(query, initialOpts = {}) {
   };
 
   const cacheKey = client.getCacheKey(operation, initialOpts);
-  const intialCacheHit =
+  const initialCacheHit =
     initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey);
   const [state, dispatch] = React.useReducer(reducer, {
-    ...intialCacheHit,
-    cacheHit: !!intialCacheHit,
-    loading: !intialCacheHit
+    ...initialCacheHit,
+    cacheHit: !!initialCacheHit,
+    loading: initialOpts.isMutation ? false : !initialCacheHit
   });
 
   // arguments to fetchData override the useClientRequest arguments
