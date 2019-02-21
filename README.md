@@ -1,11 +1,10 @@
 # graphql-hooks
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
-
 [![CircleCI](https://circleci.com/gh/nearform/graphql-hooks/tree/master.svg?style=svg)](https://circleci.com/gh/nearform/graphql-hooks/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 ![](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)
 [![npm version](https://badge.fury.io/js/graphql-hooks.svg)](https://badge.fury.io/js/graphql-hooks)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 🎣 Minimal hooks-first GraphQL client.
 
