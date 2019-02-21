@@ -10,6 +10,9 @@ const actionTypes = {
 function reducer(state, action) {
   switch (action.type) {
     case actionTypes.LOADING:
+      if (state.loading) {
+        return state; // saves a render cycle as state is the same
+      }
       return {
         ...state,
         loading: true
