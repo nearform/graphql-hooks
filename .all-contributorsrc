@@ -1,0 +1,78 @@
+{
+  "projectName": "graphql-hooks",
+  "projectOwner": "nearform",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "bmullan91",
+      "name": "Brian Mullan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1939483?v=4",
+      "profile": "https://twitter.com/bmullan91",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review"
+      ]
+    },
+    {
+      "login": "jackdclark",
+      "name": "Jack Clark",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1485654?v=4",
+      "profile": "https://jackdc.com",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "Joezo",
+      "name": "Joe Warren",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2870255?v=4",
+      "profile": "http://twitter.com/joezo",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "content",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "simoneb",
+      "name": "Simone Busoli",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20181?v=4",
+      "profile": "http://simoneb.github.io",
+      "contributions": [
+        "question",
+        "bug",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
