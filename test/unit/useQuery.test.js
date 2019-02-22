@@ -59,8 +59,7 @@ describe('useQuery', () => {
     expect(state).toEqual({
       loading: true,
       cacheHit: false,
-      refetch: expect.any(Function),
-      fetchMore: expect.any(Function)
+      refetch: expect.any(Function)
     });
   });
 
@@ -68,42 +67,53 @@ describe('useQuery', () => {
     let refetch;
     testHook(() => ({ refetch } = useQuery(TEST_QUERY)), { wrapper: Wrapper });
     refetch();
-    expect(mockQueryReq).toHaveBeenCalledWith({ skipCache: true });
-  });
-
-  it('sends a query with original options when fetchMore is called', () => {
-    let fetchMore;
-    testHook(
-      () =>
-        ({ fetchMore } = useQuery(TEST_QUERY, {
-          variables: { skip: 0, first: 10 }
-        })),
-      {
-        wrapper: Wrapper
-      }
-    );
-    fetchMore();
     expect(mockQueryReq).toHaveBeenCalledWith({
-      variables: { skip: 0, first: 10 }
+      skipCache: true,
+      updateResult: expect.any(Function)
     });
   });
 
-  it('passes options & merges variables when fetchMore is called', () => {
-    let fetchMore;
+  it('merges options when refetch is called', () => {
+    let refetch;
     testHook(
       () =>
-        ({ fetchMore } = useQuery(TEST_QUERY, {
+        ({ refetch } = useQuery(TEST_QUERY, {
           variables: { skip: 0, first: 10 }
         })),
       {
         wrapper: Wrapper
       }
     );
-    fetchMore({ extra: 'option', variables: { skip: 10, extra: 'variable' } });
-    expect(mockQueryReq).toHaveBeenCalledWith({
+    const updateResult = () => {};
+    refetch({
       extra: 'option',
-      variables: { skip: 10, first: 10, extra: 'variable' }
+      variables: { skip: 10, first: 10, extra: 'variable' },
+      updateResult
     });
+    expect(mockQueryReq).toHaveBeenCalledWith({
+      skipCache: true,
+      extra: 'option',
+      variables: { skip: 10, first: 10, extra: 'variable' },
+      updateResult
+    });
+  });
+
+  it('gets updateResult to replace the result by default', () => {
+    let refetch;
+    testHook(
+      () =>
+        ({ refetch } = useQuery(TEST_QUERY, {
+          variables: { skip: 0, first: 10 }
+        })),
+      {
+        wrapper: Wrapper
+      }
+    );
+    mockQueryReq.mockImplementationOnce(({ updateResult }) => {
+      return updateResult('previousResult', 'result');
+    });
+    refetch();
+    expect(mockQueryReq).toHaveReturnedWith('result');
   });
 
   it('sends the query on mount if no data & no error', () => {
