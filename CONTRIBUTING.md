@@ -40,7 +40,7 @@ Make sure to get a `:thumbsup:`, `+1` or `LGTM` from another collaborator before
 You can add yourself or another contributor by either:
 
 - Comment on an issue or pull request `@all-contributors please add <username> for <contributions>`
-- `npm run add-contrib`
+- `npm run contributors:add`
 
 For more information on `@all-contributors` see it's [usage docs](https://allcontributors.org/docs/en/bot/usage)
 

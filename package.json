@@ -8,8 +8,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "prettier": "pretty-quick",
-    "add-contrib": "all-contributors add",
-    "generate-contribs": "all-contributors generate"
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "keywords": [
     "graphql",
