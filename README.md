@@ -86,6 +86,7 @@ function MyComponent() {
   - [useMutation](#useMutation)
 - Guides
   - [SSR](#SSR)
+  - [Pagination](#Pagination)
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
@@ -200,9 +201,8 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 - `loading`: Boolean - `true` if the query is in flight
 - `error`: Boolean - `true` if `fetchError` or `httpError` or `graphQLErrors` has been set
 - `data`: Object - the result of your GraphQL query
-- `refetch`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true`
-- `fetchMore(options)`: Function - send the same query with updated options, useful for pagination.
-  - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
+- `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true`
+  - options: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
 - `fetchError`: Object - Set if an error occured during the `fetch` call
 - `httpError`: Object - Set if an error response was returned from the server
@@ -313,6 +313,130 @@ The `options` object that can be passed either to `useMutation(mutation, options
 ### SSR
 
 See [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr) for an in depth guide.
+
+### Pagination
+
+[GraphQL Pagination](https://graphql.org/learn/pagination/) can be implemented in various ways and it's down to the consumer to decide how to deal with the resulting data from paginated queries. Take the following query as an example of offset pagination:
+
+```javascript
+export const allPostsQuery = `
+  query allPosts($first: Int!, $skip: Int!) {
+    allPosts(orderBy: createdAt_DESC, first: $first, skip: $skip) {
+      id
+      title
+      votes
+      url
+      createdAt
+    }
+    _allPostsMeta {
+      count
+    }
+  }
+`;
+```
+
+In this query, the `$first` variable is used to limit the number of posts that are returned and the `$skip` variable is used to determine the offset at which to start. We can use these variables to break up large payloads into smaller chunks, or "pages". We could then choose to display these chunks as distinct pages to the user, or use an infinite loading approach and append each new chunk to the existing list of posts.
+
+#### Separate pages
+
+Here is an example where we display the paginated queries on separate pages:
+
+```jsx
+import { React, useState } from 'react';
+import { useQuery } from 'graphql-hooks';
+
+export default function PostList() {
+  // set a default offset of 0 to load the first page
+  const [skipCount, setSkipCount] = useState(0);
+
+  const { loading, error, data } = useQuery(allPostsQuery, {
+    variables: { skip: skipCount, first: 10 }
+  });
+
+  if (error) return <div>There was an error!</div>;
+  if (loading && !data) return <div>Loading</div>;
+
+  const { allPosts, _allPostsMeta } = data;
+  const areMorePosts = allPosts.length < _allPostsMeta.count;
+
+  return (
+    <section>
+      <ul>
+        {allPosts.map(post => (
+          <li key={post.id}>
+            <a href={post.url}>{post.title}</a>
+          </li>
+        ))}
+      </ul>
+      <button
+        // reduce the offset by 10 to fetch the previous page
+        onClick={() => setSkipCount(skipCount - 10)}
+        disabled={skipCount === 0}
+      >
+        Previous page
+      </button>
+      <button
+        // increase the offset by 10 to fetch the next page
+        onClick={() => setSkipCount(skipCount + 10)}
+        disabled={!areMorePosts}
+      >
+        Next page
+      </button>
+    </section>
+  );
+}
+```
+
+#### Infinite loading
+
+Here is an example where we append each paginated query to the bottom of the current list:
+
+```jsx
+import { React, useState } from 'react';
+import { useQuery } from 'graphql-hooks';
+
+// use options.updateResult to append the new page of posts to our current list of posts
+const updateResult = (prevResult, result) => ({
+  ...result,
+  allPosts: [...prevResult.allPosts, ...result.allPosts]
+});
+
+export default function PostList() {
+  const [skipCount, setSkipCount] = useState(0);
+
+  const { loading, error, data } = useQuery(
+    allPostsQuery,
+    { variables: { skip: skipCount, first: 10 } },
+    updateResult
+  );
+
+  if (error) return <div>There was an error!</div>;
+  if (loading && !data) return <div>Loading</div>;
+
+  const { allPosts, _allPostsMeta } = data;
+  const areMorePosts = allPosts.length < _allPostsMeta.count;
+
+  return (
+    <section>
+      <ul>
+        {allPosts.map(post => (
+          <li key={post.id}>
+            <a href={post.url}>{post.title}</a>
+          </li>
+        ))}
+      </ul>
+      {areMorePosts && (
+        <button
+          // set the offset to the current number of posts to fetch the next page
+          onClick={() => setSkipCount(allPosts.length)}
+        >
+          Show more
+        </button>
+      )}
+    </section>
+  );
+}
+```
 
 ### Authentication
 
