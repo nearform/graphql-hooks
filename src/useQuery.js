@@ -31,6 +31,9 @@ module.exports = function useQuery(query, opts = {}) {
     refetch: (options = {}) =>
       queryReq({
         skipCache: true,
+        // don't call the updateData that has been passed into useQuery here
+        // reset to the default behaviour of returning the raw query result
+        // this can be overridden in refetch options
         updateData: (_, data) => data,
         ...options
       })

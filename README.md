@@ -201,8 +201,8 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
 - `loading`: Boolean - `true` if the query is in flight
 - `error`: Boolean - `true` if `fetchError` or `httpError` or `graphQLErrors` has been set
 - `data`: Object - the result of your GraphQL query
-- `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true`
-  - options: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
+- `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
+  - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
 - `fetchError`: Object - Set if an error occured during the `fetch` call
 - `httpError`: Object - Set if an error response was returned from the server
