@@ -396,9 +396,9 @@ import { React, useState } from 'react';
 import { useQuery } from 'graphql-hooks';
 
 // use options.updateData to append the new page of posts to our current list of posts
-const updateData = (prevResult, result) => ({
-  ...result,
-  allPosts: [...prevResult.allPosts, ...result.allPosts]
+const updateData = (prevData, data) => ({
+  ...data,
+  allPosts: [...prevData.allPosts, ...data.allPosts]
 });
 
 export default function PostList() {
