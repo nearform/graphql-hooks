@@ -31,7 +31,7 @@ module.exports = function useQuery(query, opts = {}) {
     refetch: (options = {}) =>
       queryReq({
         skipCache: true,
-        updateResult: (_, result) => result,
+        updateData: (_, data) => data,
         ...options
       })
   };

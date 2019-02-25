@@ -90,11 +90,11 @@ function useClientRequest(query, initialOpts = {}) {
     dispatch({ type: actionTypes.LOADING });
     let result = await client.request(revisedOperation, revisedOpts);
 
-    if (state.data && result.data && revisedOpts.updateResult) {
-      if (typeof revisedOpts.updateResult !== 'function') {
-        throw new Error('options.updateResult must be a function');
+    if (state.data && result.data && revisedOpts.updateData) {
+      if (typeof revisedOpts.updateData !== 'function') {
+        throw new Error('options.updateData must be a function');
       }
-      result.data = revisedOpts.updateResult(state.data, result.data);
+      result.data = revisedOpts.updateData(state.data, result.data);
     }
 
     if (revisedOpts.useCache && client.cache) {

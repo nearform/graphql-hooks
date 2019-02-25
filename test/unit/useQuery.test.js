@@ -69,7 +69,7 @@ describe('useQuery', () => {
     refetch();
     expect(mockQueryReq).toHaveBeenCalledWith({
       skipCache: true,
-      updateResult: expect.any(Function)
+      updateData: expect.any(Function)
     });
   });
 
@@ -84,21 +84,21 @@ describe('useQuery', () => {
         wrapper: Wrapper
       }
     );
-    const updateResult = () => {};
+    const updateData = () => {};
     refetch({
       extra: 'option',
       variables: { skip: 10, first: 10, extra: 'variable' },
-      updateResult
+      updateData
     });
     expect(mockQueryReq).toHaveBeenCalledWith({
       skipCache: true,
       extra: 'option',
       variables: { skip: 10, first: 10, extra: 'variable' },
-      updateResult
+      updateData
     });
   });
 
-  it('gets updateResult to replace the result by default', () => {
+  it('gets updateData to replace the result by default', () => {
     let refetch;
     testHook(
       () =>
@@ -109,11 +109,11 @@ describe('useQuery', () => {
         wrapper: Wrapper
       }
     );
-    mockQueryReq.mockImplementationOnce(({ updateResult }) => {
-      return updateResult('previousResult', 'result');
+    mockQueryReq.mockImplementationOnce(({ updateData }) => {
+      return updateData('previousData', 'data');
     });
     refetch();
-    expect(mockQueryReq).toHaveReturnedWith('result');
+    expect(mockQueryReq).toHaveReturnedWith('data');
   });
 
   it('sends the query on mount if no data & no error', () => {

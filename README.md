@@ -188,9 +188,9 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
   - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
-  - `updateResult(previousResult, result)`: Function - Custom handler for merging previous & new query results; return value will replace `data` in `useQuery` return value
-    - `previousResult`: Previous GraphQL query or `updateResult` result
-    - `result`: New GraphQL query result
+  - `updateData(previousData, data)`: Function - Custom handler for merging previous & new query results; return value will replace `data` in `useQuery` return value
+    - `previousData`: Previous GraphQL query or `updateData` result
+    - `data`: New GraphQL query result
 
 ### `useQuery` return value
 
@@ -395,8 +395,8 @@ Here is an example where we append each paginated query to the bottom of the cur
 import { React, useState } from 'react';
 import { useQuery } from 'graphql-hooks';
 
-// use options.updateResult to append the new page of posts to our current list of posts
-const updateResult = (prevResult, result) => ({
+// use options.updateData to append the new page of posts to our current list of posts
+const updateData = (prevResult, result) => ({
   ...result,
   allPosts: [...prevResult.allPosts, ...result.allPosts]
 });
@@ -407,7 +407,7 @@ export default function PostList() {
   const { loading, error, data } = useQuery(
     allPostsQuery,
     { variables: { skip: skipCount, first: 10 } },
-    updateResult
+    updateData
   );
 
   if (error) return <div>There was an error!</div>;
