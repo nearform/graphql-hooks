@@ -53,7 +53,7 @@ describe('useQuery', () => {
     });
   });
 
-  it('returns initial state from useClientRequest & refetch', () => {
+  it('returns initial state from useClientRequest, refetch & fetchMore', () => {
     let state;
     testHook(() => (state = useQuery(TEST_QUERY)), { wrapper: Wrapper });
     expect(state).toEqual({
@@ -67,7 +67,53 @@ describe('useQuery', () => {
     let refetch;
     testHook(() => ({ refetch } = useQuery(TEST_QUERY)), { wrapper: Wrapper });
     refetch();
-    expect(mockQueryReq).toHaveBeenCalledWith({ skipCache: true });
+    expect(mockQueryReq).toHaveBeenCalledWith({
+      skipCache: true,
+      updateData: expect.any(Function)
+    });
+  });
+
+  it('merges options when refetch is called', () => {
+    let refetch;
+    testHook(
+      () =>
+        ({ refetch } = useQuery(TEST_QUERY, {
+          variables: { skip: 0, first: 10 }
+        })),
+      {
+        wrapper: Wrapper
+      }
+    );
+    const updateData = () => {};
+    refetch({
+      extra: 'option',
+      variables: { skip: 10, first: 10, extra: 'variable' },
+      updateData
+    });
+    expect(mockQueryReq).toHaveBeenCalledWith({
+      skipCache: true,
+      extra: 'option',
+      variables: { skip: 10, first: 10, extra: 'variable' },
+      updateData
+    });
+  });
+
+  it('gets updateData to replace the result by default', () => {
+    let refetch;
+    testHook(
+      () =>
+        ({ refetch } = useQuery(TEST_QUERY, {
+          variables: { skip: 0, first: 10 }
+        })),
+      {
+        wrapper: Wrapper
+      }
+    );
+    mockQueryReq.mockImplementationOnce(({ updateData }) => {
+      return updateData('previousData', 'data');
+    });
+    refetch();
+    expect(mockQueryReq).toHaveReturnedWith('data');
   });
 
   it('sends the query on mount if no data & no error', () => {

@@ -88,7 +88,14 @@ function useClientRequest(query, initialOpts = {}) {
     }
 
     dispatch({ type: actionTypes.LOADING });
-    const result = await client.request(revisedOperation, revisedOpts);
+    let result = await client.request(revisedOperation, revisedOpts);
+
+    if (state.data && result.data && revisedOpts.updateData) {
+      if (typeof revisedOpts.updateData !== 'function') {
+        throw new Error('options.updateData must be a function');
+      }
+      result.data = revisedOpts.updateData(state.data, result.data);
+    }
 
     if (revisedOpts.useCache && client.cache) {
       client.cache.set(revisedCacheKey, result);
