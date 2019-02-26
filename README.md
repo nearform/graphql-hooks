@@ -11,7 +11,7 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny_ bundle: only 3.7kB (1.4 gzipped)
+- ⚖️ _Tiny_ bundle: only 4kB (1.5 gzipped)
 - 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
 - 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
 - 🔥 No more render props hell
