@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 import { useClientRequest, ClientContext } from '../../src';
 
 let mockClient;
@@ -27,8 +27,6 @@ describe('useClientRequest', () => {
       request: jest.fn().mockResolvedValue({ data: 'data' })
     };
   });
-
-  afterEach(cleanup);
 
   it('returns a fetch function & state', () => {
     let fetchData, state;
