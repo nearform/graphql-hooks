@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, testHook } from 'react-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 import { useClientRequest, ClientContext } from '../../src';
 
 let mockClient;
@@ -30,7 +30,7 @@ describe('useClientRequest', () => {
 
   it('returns a fetch function & state', () => {
     let fetchData, state;
-    testHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
+    renderHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
       wrapper: Wrapper
     });
     expect(fetchData).toEqual(expect.any(Function));
@@ -41,7 +41,7 @@ describe('useClientRequest', () => {
     it('includes the cached response if present', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' });
       let state;
-      testHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
+      renderHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
       expect(state).toEqual({
@@ -54,7 +54,7 @@ describe('useClientRequest', () => {
     it('skips the cache if skipCache is passed in', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' });
       let state;
-      testHook(
+      renderHook(
         () => ([, state] = useClientRequest(TEST_QUERY, { skipCache: true })),
         { wrapper: Wrapper }
       );
@@ -64,7 +64,7 @@ describe('useClientRequest', () => {
     it('skips the cache if a cache is not configured', () => {
       mockClient.cache = null;
       let state;
-      testHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
+      renderHook(() => ([, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
       expect(state).toEqual({ cacheHit: false, loading: true });
@@ -72,7 +72,7 @@ describe('useClientRequest', () => {
 
     it('sets loading to false if isMutation is passed in', () => {
       let fetchData, state;
-      testHook(
+      renderHook(
         () =>
           ([fetchData, state] = useClientRequest(TEST_QUERY, {
             isMutation: true
@@ -110,7 +110,7 @@ describe('useClientRequest', () => {
 
     it('calls request with options & updates the state with the result', async () => {
       let fetchData, state;
-      testHook(
+      renderHook(
         () =>
           ([fetchData, state] = useClientRequest(TEST_QUERY, {
             variables: { limit: 2 },
@@ -132,7 +132,7 @@ describe('useClientRequest', () => {
 
     it('calls request with revised options', async () => {
       let fetchData;
-      testHook(
+      renderHook(
         () =>
           ([fetchData] = useClientRequest(TEST_QUERY, {
             variables: { limit: 2 },
@@ -153,7 +153,7 @@ describe('useClientRequest', () => {
 
     it('skips the request & returns the cached data if it exists', async () => {
       let fetchData, state;
-      testHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
+      renderHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
 
@@ -170,7 +170,7 @@ describe('useClientRequest', () => {
 
     it('skips the cache if skipCache is passed in', async () => {
       let fetchData, state;
-      testHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
+      renderHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
 
@@ -187,7 +187,7 @@ describe('useClientRequest', () => {
 
     it('skips the cache if skipCache is there is no cache', async () => {
       let fetchData, state;
-      testHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
+      renderHook(() => ([fetchData, state] = useClientRequest(TEST_QUERY)), {
         wrapper: Wrapper
       });
 
@@ -204,7 +204,7 @@ describe('useClientRequest', () => {
 
     it('sets the result from the request in the cache', async () => {
       let fetchData;
-      testHook(
+      renderHook(
         () => ([fetchData] = useClientRequest(TEST_QUERY, { useCache: true })),
         { wrapper: Wrapper }
       );
@@ -220,7 +220,7 @@ describe('useClientRequest', () => {
       it('is called with old & new data if the data has changed & the result is returned', async () => {
         let fetchData, state;
         const updateDataMock = jest.fn().mockReturnValue('merged data');
-        testHook(
+        renderHook(
           () =>
             ([fetchData, state] = useClientRequest(TEST_QUERY, {
               variables: { limit: 10 },
@@ -246,7 +246,7 @@ describe('useClientRequest', () => {
       it('is not called if there is no old data', async () => {
         let fetchData;
         const updateDataMock = jest.fn();
-        testHook(
+        renderHook(
           () =>
             ([fetchData] = useClientRequest(TEST_QUERY, {
               variables: { limit: 10 },
@@ -263,7 +263,7 @@ describe('useClientRequest', () => {
       it('is not called if there is no new data', async () => {
         let fetchData;
         const updateDataMock = jest.fn();
-        testHook(
+        renderHook(
           () =>
             ([fetchData] = useClientRequest(TEST_QUERY, {
               variables: { limit: 10 },
@@ -282,7 +282,7 @@ describe('useClientRequest', () => {
 
       it('throws if updateData is not a function', async () => {
         let fetchData;
-        testHook(
+        renderHook(
           () =>
             ([fetchData] = useClientRequest(TEST_QUERY, {
               variables: { limit: 10 },
