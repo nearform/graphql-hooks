@@ -200,6 +200,68 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
   });
 
+  it('sends the query again if the operationName changes', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the operationName changes, even if there was previously data', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the operationName changes, even if there was previously an error', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.useCache changes', () => {
+    let options = { useCache: true };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.useCache = false;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.skipCache changes', () => {
+    let options = { skipCache: true };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.skipCache = false;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.fetchOptionsOverrides changes', () => {
+    let options = { fetchOptionsOverrides: { mode: 'cors' } };
+    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.fetchOptionsOverrides = { mode: 'no-cors' };
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
   it('sends another query if the query changes', () => {
     let query = TEST_QUERY;
     const { rerender } = renderHook(() => useQuery(query), {
