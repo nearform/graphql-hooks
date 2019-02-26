@@ -38,7 +38,7 @@
     "pretty-quick": "1.10.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
-    "react-testing-library": "5.9.0"
+    "react-hooks-testing-library": "0.3.4"
   },
   "dependencies": {},
   "husky": {
@@ -50,9 +50,6 @@
     "automock": false,
     "setupFiles": [
       "./test/setup.js"
-    ],
-    "setupFilesAfterEnv": [
-      "react-testing-library/cleanup-after-each"
     ]
   },
   "prettier": {

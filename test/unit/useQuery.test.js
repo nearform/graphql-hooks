@@ -1,5 +1,5 @@
 import React from 'react';
-import { testHook } from 'react-testing-library';
+import { renderHook, cleanup } from 'react-hooks-testing-library';
 import { ClientContext, useQuery, useClientRequest } from '../../src';
 
 jest.mock('../../src/useClientRequest');
@@ -36,17 +36,22 @@ describe('useQuery', () => {
     };
   });
 
+  afterEach(cleanup);
+
   it('calls useClientRequest with query', () => {
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: true
     });
   });
 
   it('calls useClientRequest with options', () => {
-    testHook(() => useQuery(TEST_QUERY, { useCache: false, extra: 'option' }), {
-      wrapper: Wrapper
-    });
+    renderHook(
+      () => useQuery(TEST_QUERY, { useCache: false, extra: 'option' }),
+      {
+        wrapper: Wrapper
+      }
+    );
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: false,
       extra: 'option'
@@ -55,7 +60,7 @@ describe('useQuery', () => {
 
   it('returns initial state from useClientRequest, refetch & fetchMore', () => {
     let state;
-    testHook(() => (state = useQuery(TEST_QUERY)), { wrapper: Wrapper });
+    renderHook(() => (state = useQuery(TEST_QUERY)), { wrapper: Wrapper });
     expect(state).toEqual({
       loading: true,
       cacheHit: false,
@@ -65,7 +70,9 @@ describe('useQuery', () => {
 
   it('bypasses cache when refetch is called', () => {
     let refetch;
-    testHook(() => ({ refetch } = useQuery(TEST_QUERY)), { wrapper: Wrapper });
+    renderHook(() => ({ refetch } = useQuery(TEST_QUERY)), {
+      wrapper: Wrapper
+    });
     refetch();
     expect(mockQueryReq).toHaveBeenCalledWith({
       skipCache: true,
@@ -75,7 +82,7 @@ describe('useQuery', () => {
 
   it('merges options when refetch is called', () => {
     let refetch;
-    testHook(
+    renderHook(
       () =>
         ({ refetch } = useQuery(TEST_QUERY, {
           variables: { skip: 0, first: 10 }
@@ -100,7 +107,7 @@ describe('useQuery', () => {
 
   it('gets updateData to replace the result by default', () => {
     let refetch;
-    testHook(
+    renderHook(
       () =>
         ({ refetch } = useQuery(TEST_QUERY, {
           variables: { skip: 0, first: 10 }
@@ -117,14 +124,14 @@ describe('useQuery', () => {
   });
 
   it('sends the query on mount if no data & no error', () => {
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(mockQueryReq).toHaveBeenCalledTimes(1);
   });
 
   it('adds query to ssrPromises when in ssrMode if no data & no error', () => {
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(mockClient.ssrPromises[0]).resolves.toBe('data');
   });
 
@@ -132,7 +139,7 @@ describe('useQuery', () => {
     mockState.data = { some: 'data ' };
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(mockClient.ssrPromises).toHaveLength(0);
   });
 
@@ -140,19 +147,21 @@ describe('useQuery', () => {
     mockState.error = true;
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
-    testHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
     expect(mockClient.ssrPromises).toHaveLength(0);
   });
 
   it('does not add query to ssrPromises when in ssrMode if ssr is overridden in options', () => {
     mockClient.ssrMode = true;
     mockQueryReq.mockResolvedValueOnce('data');
-    testHook(() => useQuery(TEST_QUERY, { ssr: false }), { wrapper: Wrapper });
+    renderHook(() => useQuery(TEST_QUERY, { ssr: false }), {
+      wrapper: Wrapper
+    });
     expect(mockClient.ssrPromises).toHaveLength(0);
   });
 
   it('does not send the same query twice', () => {
-    const { rerender } = testHook(() => useQuery(TEST_QUERY), {
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY), {
       wrapper: Wrapper
     });
     rerender();
@@ -161,7 +170,7 @@ describe('useQuery', () => {
 
   it('sends the query again if the variables change', () => {
     let options = { variables: { limit: 2 } };
-    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
       wrapper: Wrapper
     });
     options.variables.limit = 3;
@@ -171,7 +180,7 @@ describe('useQuery', () => {
 
   it('sends the query again if the variables change, even if there was previously data', () => {
     let options = { variables: { limit: 2 } };
-    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
       wrapper: Wrapper
     });
     mockState.data = { some: 'data' };
@@ -182,7 +191,7 @@ describe('useQuery', () => {
 
   it('sends the query again if the variables change, even if there was previously an error', () => {
     let options = { variables: { limit: 2 } };
-    const { rerender } = testHook(() => useQuery(TEST_QUERY, options), {
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
       wrapper: Wrapper
     });
     mockState.error = true;
@@ -193,7 +202,7 @@ describe('useQuery', () => {
 
   it('sends another query if the query changes', () => {
     let query = TEST_QUERY;
-    const { rerender } = testHook(() => useQuery(query), {
+    const { rerender } = renderHook(() => useQuery(query), {
       wrapper: Wrapper
     });
     query = ANOTHER_TEST_QUERY;
@@ -203,7 +212,7 @@ describe('useQuery', () => {
 
   it('sends the query again if the query changes, even if there was previously data', () => {
     let query = TEST_QUERY;
-    const { rerender } = testHook(() => useQuery(query), {
+    const { rerender } = renderHook(() => useQuery(query), {
       wrapper: Wrapper
     });
     mockState.data = { some: 'data' };
@@ -214,7 +223,7 @@ describe('useQuery', () => {
 
   it('sends the query again if the query changes, even if there was previously an error', () => {
     let query = TEST_QUERY;
-    const { rerender } = testHook(() => useQuery(query), {
+    const { rerender } = renderHook(() => useQuery(query), {
       wrapper: Wrapper
     });
     mockState.error = true;
