@@ -21,16 +21,16 @@ const TestComponent = ({ query = '{ hello }', options }) => {
 };
 
 describe('useQuery Integrations', () => {
+  // reused variables
+  let client, wrapper;
+
+  beforeEach(() => {
+    client = new GraphQLClient({ url: '/graphql' });
+    client.request = jest.fn().mockResolvedValue({ data: 'data v1' });
+    wrapper = getWrapper(client);
+  });
+
   it('should reset data if the query changes', async () => {
-    const client = new GraphQLClient({
-      url: '/graphql'
-    });
-
-    // stub the request
-    client.request = () => Promise.resolve({ data: 'data v1' });
-
-    const wrapper = getWrapper(client);
-
     let dataNode;
     const { rerender, getByTestId } = render(
       <TestComponent query={'{ hello }'} />,
@@ -48,7 +48,7 @@ describe('useQuery Integrations', () => {
 
     // second render
     // new query, the data should be null from previous query
-    client.request = () => Promise.resolve({ data: 'data v2' });
+    client.request.mockResolvedValueOnce({ data: 'data v2' });
     rerender(<TestComponent query={'{ goodbye }'} />, { wrapper });
 
     expect(getByTestId('loading')).toBeTruthy();
@@ -59,15 +59,6 @@ describe('useQuery Integrations', () => {
   });
 
   it('should reset state when options.variables change', async () => {
-    const client = new GraphQLClient({
-      url: '/graphql'
-    });
-
-    // stub the request
-    client.request = () => Promise.resolve({ data: 'data v1' });
-
-    const wrapper = getWrapper(client);
-
     let dataNode;
     let options = { variables: { a: 'a' } };
     const { rerender, getByTestId } = render(
@@ -86,7 +77,7 @@ describe('useQuery Integrations', () => {
 
     // second render
     // new variables, the data should be null from previous query
-    client.request = () => Promise.resolve({ data: 'data v2' });
+    client.request.mockResolvedValueOnce({ data: 'data v2' });
     options = { variables: { a: 'b' } };
 
     rerender(<TestComponent options={options} />, { wrapper });
