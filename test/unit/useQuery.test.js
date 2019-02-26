@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook } from 'react-hooks-testing-library';
+import { renderHook, cleanup } from 'react-hooks-testing-library';
 import { ClientContext, useQuery, useClientRequest } from '../../src';
 
 jest.mock('../../src/useClientRequest');
@@ -35,6 +35,8 @@ describe('useQuery', () => {
       ssrPromises: []
     };
   });
+
+  afterEach(cleanup);
 
   it('calls useClientRequest with query', () => {
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });

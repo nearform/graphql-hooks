@@ -50,9 +50,6 @@
     "automock": false,
     "setupFiles": [
       "./test/setup.js"
-    ],
-    "setupFilesAfterEnv": [
-      "react-testing-library/cleanup-after-each"
     ]
   },
   "prettier": {
