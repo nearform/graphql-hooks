@@ -322,12 +322,10 @@ See [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr) for an in
 ```javascript
 export const allPostsQuery = `
   query allPosts($first: Int!, $skip: Int!) {
-    allPosts(orderBy: createdAt_DESC, first: $first, skip: $skip) {
+    allPosts(first: $first, skip: $skip) {
       id
       title
-      votes
       url
-      createdAt
     }
     _allPostsMeta {
       count
