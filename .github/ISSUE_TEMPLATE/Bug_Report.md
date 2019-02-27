@@ -1,6 +1,7 @@
 ---
 name: 🐛 Bug Report
 about: Bugs or any unexpected issues.
+labels: bug
 ---
 
 ### Environment

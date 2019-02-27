@@ -1,6 +1,7 @@
 ---
 name: 💡 Feature Request
 about: I have a suggestion for a new feature!
+labels: feature
 ---
 
 ### Description
