@@ -1,7 +1,7 @@
-const React = require('react');
+import React from 'react';
 
 const ClientContext = React.createContext();
 
 ClientContext.displayName = 'ClientContext';
 
-module.exports = ClientContext;
+export default ClientContext;

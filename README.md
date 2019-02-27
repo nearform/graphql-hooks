@@ -11,7 +11,7 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny_ bundle: only 4kB (1.5 gzipped)
+- ⚖️ _Tiny_ bundle: only 5.1kB (1.9 gzipped)
 - 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
 - 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
 - 🔥 No more render props hell
@@ -24,6 +24,16 @@
 or
 
 `yarn add graphql-hooks`
+
+## Support
+
+- Node.js v8.5+
+- Browsers [`> 1%, not dead`](https://browserl.ist/?q=%3E+1%25%2C+not+dead)
+
+Consider polyfilling:
+
+- [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API)
 
 ## Quick Start
 

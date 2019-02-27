@@ -1,16 +1,20 @@
-const ClientContext = require('./ClientContext');
-const GraphQLClient = require('./GraphQLClient');
-const useClientRequest = require('./useClientRequest');
-const useQuery = require('./useQuery');
+import ClientContext from './ClientContext';
+import GraphQLClient from './GraphQLClient';
+import useClientRequest from './useClientRequest';
+import useQuery from './useQuery';
 
-module.exports = {
+const useManualQuery = (query, options) =>
+  useClientRequest(query, { useCache: true, ...options });
+
+const useMutation = (query, options) =>
+  useClientRequest(query, { isMutation: true, ...options });
+
+export {
   ClientContext,
   GraphQLClient,
   useClientRequest,
   useQuery,
-  useManualQuery: (query, options) =>
-    useClientRequest(query, { useCache: true, ...options }),
+  useManualQuery,
   // alias
-  useMutation: (query, options) =>
-    useClientRequest(query, { isMutation: true, ...options })
+  useMutation
 };

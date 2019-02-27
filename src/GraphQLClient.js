@@ -93,54 +93,54 @@ class GraphQLClient {
     };
   }
 
-  async request(operation, options = {}) {
-    let result;
-
-    try {
-      const response = await this.fetch(this.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...this.headers
-        },
-        body: JSON.stringify({
-          query: operation.query,
-          variables: operation.variables,
-          operationName: operation.operationName
-        }),
-        ...this.fetchOptions,
-        ...options.fetchOptionsOverrides
-      });
-
-      if (!response.ok) {
-        const body = await response.text();
-        const { status, statusText } = response;
-        result = this.generateResult({
-          httpError: {
-            status,
-            statusText,
-            body
-          }
+  request(operation, options = {}) {
+    return this.fetch(this.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...this.headers
+      },
+      body: JSON.stringify({
+        query: operation.query,
+        variables: operation.variables,
+        operationName: operation.operationName
+      }),
+      ...this.fetchOptions,
+      ...options.fetchOptionsOverrides
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(body => {
+            const { status, statusText } = response;
+            return this.generateResult({
+              httpError: {
+                status,
+                statusText,
+                body
+              }
+            });
+          });
+        } else {
+          return response.json().then(({ errors, data }) => {
+            return this.generateResult({
+              graphQLErrors: errors,
+              data
+            });
+          });
+        }
+      })
+      .catch(error => {
+        return this.generateResult({
+          fetchError: error
         });
-      } else {
-        const { errors, data } = await response.json();
-        result = this.generateResult({
-          graphQLErrors: errors,
-          data
-        });
-      }
-    } catch (error) {
-      result = this.generateResult({
-        fetchError: error
+      })
+      .then(result => {
+        if (result.error && this.logErrors) {
+          this.logErrorResult({ result, operation });
+        }
+        return result;
       });
-    }
-
-    if (result.error && this.logErrors) {
-      this.logErrorResult({ result, operation });
-    }
-
-    return result;
   }
 }
 
-module.exports = GraphQLClient;
+export default GraphQLClient;

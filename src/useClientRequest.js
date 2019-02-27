@@ -1,5 +1,5 @@
-const React = require('react');
-const ClientContext = require('./ClientContext');
+import React from 'react';
+import ClientContext from './ClientContext';
 
 const actionTypes = {
   RESET_STATE: 'RESET_STATE',
@@ -76,7 +76,7 @@ function useClientRequest(query, initialOpts = {}) {
   }, [JSON.stringify(cacheKey)]);
 
   // arguments to fetchData override the useClientRequest arguments
-  async function fetchData(newOpts) {
+  function fetchData(newOpts) {
     const revisedOpts = {
       ...initialOpts,
       ...newOpts
@@ -100,32 +100,32 @@ function useClientRequest(query, initialOpts = {}) {
         result: cacheHit
       });
 
-      return cacheHit;
+      return Promise.resolve(cacheHit);
     }
 
     dispatch({ type: actionTypes.LOADING });
-    let result = await client.request(revisedOperation, revisedOpts);
-
-    if (state.data && result.data && revisedOpts.updateData) {
-      if (typeof revisedOpts.updateData !== 'function') {
-        throw new Error('options.updateData must be a function');
+    return client.request(revisedOperation, revisedOpts).then(result => {
+      if (state.data && result.data && revisedOpts.updateData) {
+        if (typeof revisedOpts.updateData !== 'function') {
+          throw new Error('options.updateData must be a function');
+        }
+        result.data = revisedOpts.updateData(state.data, result.data);
       }
-      result.data = revisedOpts.updateData(state.data, result.data);
-    }
 
-    if (revisedOpts.useCache && client.cache) {
-      client.cache.set(revisedCacheKey, result);
-    }
+      if (revisedOpts.useCache && client.cache) {
+        client.cache.set(revisedCacheKey, result);
+      }
 
-    dispatch({
-      type: actionTypes.REQUEST_RESULT,
-      result
+      dispatch({
+        type: actionTypes.REQUEST_RESULT,
+        result
+      });
+
+      return result;
     });
-
-    return result;
   }
 
   return [fetchData, state];
 }
 
-module.exports = useClientRequest;
+export default useClientRequest;
