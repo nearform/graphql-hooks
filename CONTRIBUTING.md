@@ -37,10 +37,11 @@ Make sure to get a `:thumbsup:`, `+1` or `LGTM` from another collaborator before
 
 ## Updating Contributors list in README.md
 
-You can add yourself or another contributor by either:
+You can add yourself or another contributor by commenting on an issue or pull request:
 
-- Comment on an issue or pull request `@all-contributors please add <username> for <contributions>`
-- `npm run contributors:add`
+```
+@all-contributors please add <username> for <contributions>
+```
 
 For more information on `@all-contributors` see it's [usage docs](https://allcontributors.org/docs/en/bot/usage)
 
