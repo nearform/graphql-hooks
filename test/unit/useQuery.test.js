@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, cleanup } from 'react-hooks-testing-library';
+import { renderHook } from 'react-hooks-testing-library';
 import { ClientContext, useQuery, useClientRequest } from '../../src';
 
 jest.mock('../../src/useClientRequest');
@@ -35,8 +35,6 @@ describe('useQuery', () => {
       ssrPromises: []
     };
   });
-
-  afterEach(cleanup);
 
   it('calls useClientRequest with query', () => {
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper });
@@ -196,6 +194,68 @@ describe('useQuery', () => {
     });
     mockState.error = true;
     options.variables.limit = 3;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the operationName changes', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the operationName changes, even if there was previously data', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.data = { some: 'data' };
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the operationName changes, even if there was previously an error', () => {
+    let options = { operationName: 'Operation1' };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    mockState.error = true;
+    options.operationName = 'Operation2';
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.useCache changes', () => {
+    let options = { useCache: true };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.useCache = false;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.skipCache changes', () => {
+    let options = { skipCache: true };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.skipCache = false;
+    rerender();
+    expect(mockQueryReq).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends the query again if the options.fetchOptionsOverrides changes', () => {
+    let options = { fetchOptionsOverrides: { mode: 'cors' } };
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
+      wrapper: Wrapper
+    });
+    options.fetchOptionsOverrides = { mode: 'no-cors' };
     rerender();
     expect(mockQueryReq).toHaveBeenCalledTimes(2);
   });
