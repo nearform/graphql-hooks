@@ -73,6 +73,19 @@
         "bug",
         "doc"
       ]
+    },
+    {
+      "login": "jh3y",
+      "name": "jhey tompkins",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/842246?v=4",
+      "profile": "https://jheytompkins.com",
+      "contributions": [
+        "test",
+        "question",
+        "bug",
+        "code",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
