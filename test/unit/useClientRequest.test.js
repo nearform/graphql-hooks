@@ -37,6 +37,77 @@ describe('useClientRequest', () => {
     expect(state).toEqual({ cacheHit: false, loading: true });
   });
 
+  it('resets data when query or variables change', async () => {
+    let fetchData;
+    let state;
+    const { rerender } = renderHook(
+      () => ([fetchData, state] = useClientRequest(TEST_QUERY)),
+      {
+        wrapper: Wrapper
+      }
+    );
+
+    // initial state
+    expect(state).toEqual({ cacheHit: false, loading: true });
+
+    await fetchData();
+
+    // populated with data for original query
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    });
+
+    // operation has changed
+    mockClient.getCacheKey.mockReturnValueOnce('different key');
+
+    rerender();
+
+    // should be back to initial state
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: true
+    });
+  });
+
+  it('does not reset data when query or variables change if updateData is set', async () => {
+    let fetchData;
+    let state;
+    const { rerender } = renderHook(
+      () =>
+        ([fetchData, state] = useClientRequest(TEST_QUERY, {
+          updateData: () => {}
+        })),
+      {
+        wrapper: Wrapper
+      }
+    );
+
+    // initial state
+    expect(state).toEqual({ cacheHit: false, loading: true });
+
+    await fetchData();
+
+    // populated with data for original query
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    });
+
+    // operation has changed
+    mockClient.getCacheKey.mockReturnValueOnce('different key');
+
+    rerender();
+
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    });
+  });
+
   describe('initial state', () => {
     it('includes the cached response if present', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' });
@@ -216,7 +287,7 @@ describe('useClientRequest', () => {
       });
     });
 
-    describe('options.updateRequest', () => {
+    describe('options.updateData', () => {
       it('is called with old & new data if the data has changed & the result is returned', async () => {
         let fetchData, state;
         const updateDataMock = jest.fn().mockReturnValue('merged data');

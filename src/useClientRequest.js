@@ -72,6 +72,7 @@ function useClientRequest(query, initialOpts = {}) {
   // in subsequent renders the operation could have changed
   // if so the state would be invalid, this effect ensures we reset it back
   React.useEffect(() => {
+    if (initialOpts.updateData) return; // if using updateData we can assume that the consumer cares about the previous data
     dispatch({ type: actionTypes.RESET_STATE, initialState });
   }, [JSON.stringify(cacheKey)]);
 
