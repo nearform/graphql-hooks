@@ -21,8 +21,5 @@ jobs:
           paths:
             - node_modules
 
-      - run: npm run test:coverage
-
-      - run: |
-          npm install coveralls
-          cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      - run: ./node_modules/.bin/lerna run test:coverage --stream
+      - run: ./node_modules/.bin/lerna run coveralls --stream
