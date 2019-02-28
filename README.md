@@ -33,7 +33,7 @@ or
 Consider polyfilling:
 
 - [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-- [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API)
+- [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API). NOTE: A custom implementation can also be provided instead of polyfilling, [see `GraphQLClient`](#GraphQLClient)
 
 ## Quick Start
 
