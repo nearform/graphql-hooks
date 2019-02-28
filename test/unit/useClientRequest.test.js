@@ -274,7 +274,7 @@ describe('useClientRequest', () => {
 
         await fetchData();
 
-        mockClient.request.mockReturnValueOnce({ errors: ['on no!'] });
+        mockClient.request.mockResolvedValueOnce({ errors: ['on no!'] });
         await fetchData({ variables: { limit: 20 } });
 
         expect(updateDataMock).not.toHaveBeenCalled();

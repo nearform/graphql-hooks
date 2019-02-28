@@ -11,7 +11,7 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny_ bundle: only 4kB (1.5 gzipped)
+- ⚖️ _Tiny_ bundle: only 5.1kB (1.9 gzipped)
 - 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
 - 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
 - 🔥 No more render props hell
@@ -24,6 +24,16 @@
 or
 
 `yarn add graphql-hooks`
+
+## Support
+
+- Latest 8 & 10 Node releases
+- Browsers [`> 1%, not dead`](https://browserl.ist/?q=%3E+1%25%2C+not+dead)
+
+Consider polyfilling:
+
+- [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API). NOTE: A custom implementation can also be provided instead of polyfilling, [see `GraphQLClient`](#GraphQLClient)
 
 ## Quick Start
 
@@ -455,7 +465,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-
 | [<img src="https://avatars1.githubusercontent.com/u/1939483?v=4" width="100px;" alt="Brian Mullan"/><br /><sub><b>Brian Mullan</b></sub>](https://twitter.com/bmullan91)<br />[💬](#question-bmullan91 "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Abmullan91 "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Code") [🖋](#content-bmullan91 "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Documentation") [💡](#example-bmullan91 "Examples") [🤔](#ideas-bmullan91 "Ideas, Planning, & Feedback") [🚧](#maintenance-bmullan91 "Maintenance") [👀](#review-bmullan91 "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Tests") | [<img src="https://avatars0.githubusercontent.com/u/1485654?v=4" width="100px;" alt="Jack Clark"/><br /><sub><b>Jack Clark</b></sub>](https://jackdc.com)<br />[💬](#question-jackdclark "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajackdclark "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Code") [🖋](#content-jackdclark "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Documentation") [💡](#example-jackdclark "Examples") [🤔](#ideas-jackdclark "Ideas, Planning, & Feedback") [🚧](#maintenance-jackdclark "Maintenance") [👀](#review-jackdclark "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2870255?v=4" width="100px;" alt="Joe Warren"/><br /><sub><b>Joe Warren</b></sub>](http://twitter.com/joezo)<br />[💬](#question-Joezo "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AJoezo "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Code") [🖋](#content-Joezo "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Documentation") [💡](#example-Joezo "Examples") [🤔](#ideas-Joezo "Ideas, Planning, & Feedback") [🚧](#maintenance-Joezo "Maintenance") [👀](#review-Joezo "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Tests") | [<img src="https://avatars1.githubusercontent.com/u/20181?v=4" width="100px;" alt="Simone Busoli"/><br /><sub><b>Simone Busoli</b></sub>](http://simoneb.github.io)<br />[💬](#question-simoneb "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Asimoneb "Bug reports") [📖](https://github.com/nearform/graphql-hooks/commits?author=simoneb "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/842246?v=4" width="100px;" alt="jhey tompkins"/><br /><sub><b>jhey tompkins</b></sub>](https://jheytompkins.com)<br />[⚠️](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Tests") [💬](#question-jh3y "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajh3y "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Code") [🖋](#content-jh3y "Content") |
 | :---: | :---: | :---: | :---: | :---: |
 

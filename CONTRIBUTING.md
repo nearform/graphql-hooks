@@ -31,6 +31,9 @@ You can test the test coverage by running:
 npm run test:coverage
 ```
 
+**Important**
+We don't use async/await in this library due to transpilation costs. Instead we use Promises and inform the user that they should provide a suitable environment.
+
 ## For Collaborators
 
 Make sure to get a `:thumbsup:`, `+1` or `LGTM` from another collaborator before merging a PR. If you aren't sure if a release should happen, open an issue.

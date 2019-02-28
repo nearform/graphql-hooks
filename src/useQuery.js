@@ -1,13 +1,13 @@
-const React = require('react');
+import React from 'react';
 
-const useClientRequest = require('./useClientRequest');
-const ClientContext = require('./ClientContext');
+import useClientRequest from './useClientRequest';
+import ClientContext from './ClientContext';
 
 const defaultOpts = {
   useCache: true
 };
 
-module.exports = function useQuery(query, opts = {}) {
+function useQuery(query, opts = {}) {
   const allOpts = { ...defaultOpts, ...opts };
   const client = React.useContext(ClientContext);
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false);
@@ -38,4 +38,6 @@ module.exports = function useQuery(query, opts = {}) {
         ...options
       })
   };
-};
+}
+
+export default useQuery;
