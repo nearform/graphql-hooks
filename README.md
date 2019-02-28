@@ -27,7 +27,6 @@ or
 
 ## Support
 
-- Node.js v8.5+
 - Browsers [`> 1%, not dead`](https://browserl.ist/?q=%3E+1%25%2C+not+dead)
 
 Consider polyfilling:
