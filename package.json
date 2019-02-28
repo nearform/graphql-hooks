@@ -1,6 +1,11 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "test": "lerna run test",
+    "test:coverage": "lerna run test:coverage",
+    "postinstall": "lerna bootstrap --no-ci"
+  },
   "devDependencies": {
     "lerna": "^3.13.1"
   }
