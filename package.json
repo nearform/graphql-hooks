@@ -3,13 +3,15 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:coverage": "lerna run test:coverage",
-    "postinstall": "lerna bootstrap --no-ci"
+    "test:coverage": "jest --coverage",
+    "postinstall": "lerna bootstrap --no-ci",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "devDependencies": {
     "@babel/preset-env": "7.3.4",
     "@babel/preset-react": "7.0.0",
     "babel-jest": "24.1.0",
+    "coveralls": "3.0.3",
     "jest": "24.1.0",
     "lerna": "^3.13.1"
   }
