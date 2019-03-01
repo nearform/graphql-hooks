@@ -10,10 +10,12 @@ const projects = [
     automock: false
   },
   {
+    roots: ["./packages/graphql-hooks-memcache"],
     displayName: "graphql-hooks-memcache",
     testMatch: ["<rootDir>/packages/graphql-hooks-memcache/**/*.test.js"]
   },
   {
+    roots: ["./packages/graphql-hooks-ssr"],
     displayName: "graphql-hooks-ssr",
     testMatch: ["<rootDir>/packages/graphql-hooks-ssr/**/*.test.js"]
   }
