@@ -5,6 +5,7 @@
 ![](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)
 [![npm version](https://badge.fury.io/js/graphql-hooks.svg)](https://badge.fury.io/js/graphql-hooks)
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🎣 Minimal hooks-first GraphQL client.
 
@@ -40,10 +41,10 @@ Consider polyfilling:
 First you'll need to create a client and wrap your app with the provider:
 
 ```js
-import { GraphQLClient, ClientContext } from 'graphql-hooks';
+import { GraphQLClient, ClientContext } from "graphql-hooks";
 
 const client = new GraphQLClient({
-  url: '/graphql'
+  url: "/graphql"
 });
 
 function App() {
@@ -58,7 +59,7 @@ function App() {
 Now in your child components you can make use of `useQuery`
 
 ```js
-import { useQuery } from 'graphql-hooks';
+import { useQuery } from "graphql-hooks";
 
 const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
   users(limit: $limit) {
@@ -74,8 +75,8 @@ function MyComponent() {
     }
   });
 
-  if (loading) return 'Loading...';
-  if (error) return 'Something Bad Happened';
+  if (loading) return "Loading...";
+  if (error) return "Something Bad Happened";
 
   return (
     <ul>
@@ -109,7 +110,7 @@ function MyComponent() {
 **Usage**:
 
 ```js
-import { GraphQLClient } from 'graphql-hooks';
+import { GraphQLClient } from "graphql-hooks";
 const client = new GraphQLClient(config);
 ```
 
@@ -124,7 +125,7 @@ const client = new GraphQLClient(config);
   - `cache.clear()`
   - `cache.keys()`
   - `getInitialState()`
-  - See [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache) as a reference implementation
+  - See [graphql-hooks-memcache](packages/graphql-hooks-memcache) as a reference implementation
 - `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
@@ -149,7 +150,7 @@ const client = new GraphQLClient(config);
 **Example**:
 
 ```js
-import { ClientContext } from 'graphql-hooks';
+import { ClientContext } from "graphql-hooks";
 <ClientContext.Provider value={client}>
   {/* children can now consume the client context */}
 </ClientContext.Provider>;
@@ -158,8 +159,8 @@ import { ClientContext } from 'graphql-hooks';
 To access the `GraphQLClient` instance, call `React.useContext(ClientContext)`:
 
 ```js
-import React, { useContext } from 'react';
-import { ClientContext } from 'graphql-hooks';
+import React, { useContext } from "react";
+import { ClientContext } from "graphql-hooks";
 
 function MyComponent() {
   const client = useContext(ClientContext);
@@ -177,13 +178,13 @@ const state = useQuery(query, [options]);
 **Example:**
 
 ```js
-import { useQuery } from 'graphql-hooks';
+import { useQuery } from "graphql-hooks";
 
 function MyComponent() {
   const { loading, error, data } = useQuery(query);
 
-  if (loading) return 'Loading...';
-  if (error) return 'Something bad happened';
+  if (loading) return "Loading...";
+  if (error) return "Something bad happened";
 
   return <div>{data.thing}</div>;
 }
@@ -253,7 +254,7 @@ function MyComponent(props) {
 If you don't know certain options when declaring the `useManualQuery` you can also pass the same options to the query function itself when calling it:
 
 ```js
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery } from "graphql-hooks";
 
 function MyComponent(props) {
   const [fetchUser] = useManualQuery(GET_USER_QUERY);
@@ -286,7 +287,7 @@ const [mutationFn, state] = useMutation(mutation, [options]);
 **Example**:
 
 ```js
-import { useMutation } from 'graphql-hooks';
+import { useMutation } from "graphql-hooks";
 
 const UPDATE_USER_MUTATION = `mutation UpdateUser(id: String!, name: String!) {
   updateUser(id: $id, name: $name) {
@@ -323,7 +324,7 @@ The `options` object that can be passed either to `useMutation(mutation, options
 
 ### SSR
 
-See [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr) for an in depth guide.
+See [graphql-hooks-ssr](packages/graphql-hooks-ssr) for an in depth guide.
 
 ### Pagination
 
@@ -351,8 +352,8 @@ In this query, the `$first` variable is used to limit the number of posts that a
 Here is an example where we display the paginated queries on separate pages:
 
 ```jsx
-import { React, useState } from 'react';
-import { useQuery } from 'graphql-hooks';
+import { React, useState } from "react";
+import { useQuery } from "graphql-hooks";
 
 export default function PostList() {
   // set a default offset of 0 to load the first page
@@ -401,8 +402,8 @@ export default function PostList() {
 Here is an example where we append each paginated query to the bottom of the current list:
 
 ```jsx
-import { React, useState } from 'react';
-import { useQuery } from 'graphql-hooks';
+import { React, useState } from "react";
+import { useQuery } from "graphql-hooks";
 
 // use options.updateData to append the new page of posts to our current list of posts
 const updateData = (prevData, data) => ({
