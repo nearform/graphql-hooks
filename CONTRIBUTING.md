@@ -52,9 +52,9 @@ For more information on `@all-contributors` see it's [usage docs](https://allcon
 ### Release process:
 
 - `npm test`
-- `npm version <major|minor|patch>`
-- `git push && git push --tags`
-- `npm publish`
+- `npm run release`
+
+Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish)
 
 ---
 

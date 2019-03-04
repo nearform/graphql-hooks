@@ -7,7 +7,8 @@
     "postinstall": "lerna bootstrap --no-ci",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "eslint": "eslint packages/*/src packages/*/test",
-    "prettier": "prettier src/**/*.js test/**/*.js --write"
+    "prettier": "prettier src/**/*.js test/**/*.js --write",
+    "release": "lerna publish"
   },
   "devDependencies": {
     "@babel/preset-env": "7.3.4",
