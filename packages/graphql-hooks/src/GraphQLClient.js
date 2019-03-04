@@ -64,6 +64,8 @@ class GraphQLClient {
       result.graphQLErrors.forEach(err => console.log(err));
       console.groupEnd();
     }
+
+    console.groupEnd();
   }
   /* eslint-enable no-console */
   generateResult({ fetchError, httpError, graphQLErrors, data }) {
