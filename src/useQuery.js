@@ -21,10 +21,10 @@ function useQuery(query, opts = {}) {
     }
     setCalledDuringSSR(true);
   }
-
+  const stringifiedAllOpts = JSON.stringify(allOpts);
   React.useEffect(() => {
     queryReq();
-  }, [query, JSON.stringify(allOpts)]);
+  }, [query, stringifiedAllOpts]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state,

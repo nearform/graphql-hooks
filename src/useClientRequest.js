@@ -71,10 +71,11 @@ function useClientRequest(query, initialOpts = {}) {
   // NOTE: state from useReducer is only initialState on the first render
   // in subsequent renders the operation could have changed
   // if so the state would be invalid, this effect ensures we reset it back
+  const stringifiedCacheKey = JSON.stringify(cacheKey);
   React.useEffect(() => {
     if (initialOpts.updateData) return; // if using updateData we can assume that the consumer cares about the previous data
     dispatch({ type: actionTypes.RESET_STATE, initialState });
-  }, [JSON.stringify(cacheKey)]);
+  }, [stringifiedCacheKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // arguments to fetchData override the useClientRequest arguments
   function fetchData(newOpts) {
