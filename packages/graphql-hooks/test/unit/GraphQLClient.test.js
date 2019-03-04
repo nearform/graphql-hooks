@@ -1,3 +1,4 @@
+/* global spyOn */
 import fetchMock from 'jest-fetch-mock';
 import { GraphQLClient } from '../../src';
 
@@ -100,11 +101,10 @@ describe('GraphQLClient', () => {
   });
 
   describe('logErrorResult', () => {
-    let logSpy, errorSpy, groupCollapsedSpy, groupEndSpy;
+    let logSpy, groupCollapsedSpy, groupEndSpy;
 
     beforeEach(() => {
       logSpy = spyOn(global.console, 'log');
-      errorSpy = spyOn(global.console, 'error');
       groupCollapsedSpy = spyOn(global.console, 'groupCollapsed');
       groupEndSpy = spyOn(global.console, 'groupEnd');
     });
