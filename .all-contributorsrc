@@ -86,6 +86,15 @@
         "code",
         "content"
       ]
+    },
+    {
+      "login": "Haroenv",
+      "name": "Haroen Viaene",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6270048?v=4",
+      "profile": "https://haroen.me",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
