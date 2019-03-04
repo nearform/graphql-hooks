@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { renderHook } from 'react-hooks-testing-library';
 import { ClientContext, useQuery, useClientRequest } from '../../src';
 
@@ -6,11 +7,12 @@ jest.mock('../../src/useClientRequest');
 
 let mockQueryReq, mockState, mockClient;
 
-const Wrapper = props => (
-  <ClientContext.Provider value={mockClient}>
-    {props.children}
-  </ClientContext.Provider>
+const Wrapper = ({ children }) => (
+  <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
 );
+Wrapper.propTypes = {
+  children: PropTypes.node
+};
 
 const TEST_QUERY = `query Test($limit: Int) {
   tests(limit: $limit) {

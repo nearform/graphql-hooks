@@ -35,13 +35,13 @@ class GraphQLClient {
     this.headers = headers;
     return this;
   }
-
+  /* eslint-disable no-console */
   logErrorResult({ result, operation }) {
     if (this.onError) {
       return this.onError({ result, operation });
     }
 
-    console.error(`GraphQL Hooks Error`);
+    console.error('GraphQL Hooks Error');
     console.groupCollapsed('---> Full Error Details');
     console.groupCollapsed('Operation:');
     console.log(operation);
@@ -65,7 +65,7 @@ class GraphQLClient {
       console.groupEnd();
     }
   }
-
+  /* eslint-enable no-console */
   generateResult({ fetchError, httpError, graphQLErrors, data }) {
     const error = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||

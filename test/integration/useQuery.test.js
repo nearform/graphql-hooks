@@ -1,14 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { render, waitForElement } from 'react-testing-library';
 import { GraphQLClient, ClientContext, useQuery } from '../../src';
 
 let testComponentRenderCount = 0;
 
-const getWrapper = client => props => (
-  <ClientContext.Provider value={client}>
-    {props.children}
-  </ClientContext.Provider>
+/* eslint-disable react/display-name, react/prop-types */
+const getWrapper = client => ({ children }) => (
+  <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
 );
+/* eslint-enable react/display-name, react/prop-types */
 
 const TestComponent = ({ query = '{ hello }', options }) => {
   testComponentRenderCount++;
@@ -21,6 +22,10 @@ const TestComponent = ({ query = '{ hello }', options }) => {
       {data && <div data-testid="data">{data}</div>}
     </div>
   );
+};
+TestComponent.propTypes = {
+  options: PropTypes.object,
+  query: PropTypes.string
 };
 
 describe('useQuery Integrations', () => {

@@ -16,10 +16,11 @@ We would like to avoid issues that require a follow up questions to identify the
 
 ## For Developers
 
-All contributions should use the [prettier](https://prettier.io/) formatter, and pass the tests.
+All contributions should use the [prettier](https://prettier.io/) formatter, pass linting and pass tests.
 You can do this by running:
 
 ```
+npm run eslint
 npm run prettier
 npm test
 ```

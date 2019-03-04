@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { renderHook } from 'react-hooks-testing-library';
 import { useClientRequest, ClientContext } from '../../src';
 
@@ -9,6 +10,9 @@ const Wrapper = props => (
     {props.children}
   </ClientContext.Provider>
 );
+Wrapper.propTypes = {
+  children: PropTypes.node
+};
 
 const TEST_QUERY = `query Test($limit: Int) {
   tests(limit: $limit) {
