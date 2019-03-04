@@ -21,7 +21,17 @@ jobs:
           paths:
             - node_modules
 
+      - run:
+          name: 'JavaScript Linter'
+          command: npm run eslint -- --format junit -o reports/junit/js-lint-results.xml
+
       - run: npm run test:coverage
+
+      - store_test_results:
+          path: reports/junit
+
+      - store_artifacts:
+          path: reports/junit
 
       - run: |
           npm install coveralls
