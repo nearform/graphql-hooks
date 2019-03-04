@@ -4,8 +4,7 @@
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "prettier": "pretty-quick"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "keywords": [
     "graphql",
@@ -24,28 +23,15 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "1.3.1",
-    "prettier": "1.16.4",
-    "pretty-quick": "1.10.0",
     "react": "16.8.3",
     "react-dom": "16.8.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "singleQuote": true,
-    "semi": false
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nearform/graphql-hooks-ssr.git"
+    "url": "git://github.com/nearform/graphql-hooks.git"
   },
   "bugs": {
-    "url": "https://github.com/nearform/graphql-hooks-ssr"
+    "url": "https://github.com/nearform/graphql-hooks/issues"
   },
-  "homepage": "https://github.com/nearform/graphql-hooks-ssr#readme"
+  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-ssr#readme"
 }
