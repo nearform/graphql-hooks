@@ -84,7 +84,8 @@
         "question",
         "bug",
         "code",
-        "content"
+        "content",
+        "review"
       ]
     },
     {
