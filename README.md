@@ -13,8 +13,8 @@
 
 - 🥇 First-class hooks API
 - ⚖️ _Tiny_ bundle: only 5.1kB (1.9 gzipped)
-- 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
-- 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
+- 📄 Full SSR support: see [graphql-hooks-ssr](packages/graphql-hooks-ssr)
+- 🔌 Plugin Caching: see [graphql-hooks-memcache](packages/graphql-hooks-memcache)
 - 🔥 No more render props hell
 - ⏳ Handle loading and error states with ease
 
@@ -41,10 +41,10 @@ Consider polyfilling:
 First you'll need to create a client and wrap your app with the provider:
 
 ```js
-import { GraphQLClient, ClientContext } from "graphql-hooks";
+import { GraphQLClient, ClientContext } from 'graphql-hooks';
 
 const client = new GraphQLClient({
-  url: "/graphql"
+  url: '/graphql'
 });
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
 Now in your child components you can make use of `useQuery`
 
 ```js
-import { useQuery } from "graphql-hooks";
+import { useQuery } from 'graphql-hooks';
 
 const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
   users(limit: $limit) {
@@ -75,8 +75,8 @@ function MyComponent() {
     }
   });
 
-  if (loading) return "Loading...";
-  if (error) return "Something Bad Happened";
+  if (loading) return 'Loading...';
+  if (error) return 'Something Bad Happened';
 
   return (
     <ul>
@@ -110,7 +110,7 @@ function MyComponent() {
 **Usage**:
 
 ```js
-import { GraphQLClient } from "graphql-hooks";
+import { GraphQLClient } from 'graphql-hooks';
 const client = new GraphQLClient(config);
 ```
 
@@ -150,7 +150,7 @@ const client = new GraphQLClient(config);
 **Example**:
 
 ```js
-import { ClientContext } from "graphql-hooks";
+import { ClientContext } from 'graphql-hooks';
 <ClientContext.Provider value={client}>
   {/* children can now consume the client context */}
 </ClientContext.Provider>;
@@ -159,8 +159,8 @@ import { ClientContext } from "graphql-hooks";
 To access the `GraphQLClient` instance, call `React.useContext(ClientContext)`:
 
 ```js
-import React, { useContext } from "react";
-import { ClientContext } from "graphql-hooks";
+import React, { useContext } from 'react';
+import { ClientContext } from 'graphql-hooks';
 
 function MyComponent() {
   const client = useContext(ClientContext);
@@ -178,13 +178,13 @@ const state = useQuery(query, [options]);
 **Example:**
 
 ```js
-import { useQuery } from "graphql-hooks";
+import { useQuery } from 'graphql-hooks';
 
 function MyComponent() {
   const { loading, error, data } = useQuery(query);
 
-  if (loading) return "Loading...";
-  if (error) return "Something bad happened";
+  if (loading) return 'Loading...';
+  if (error) return 'Something bad happened';
 
   return <div>{data.thing}</div>;
 }
@@ -254,7 +254,7 @@ function MyComponent(props) {
 If you don't know certain options when declaring the `useManualQuery` you can also pass the same options to the query function itself when calling it:
 
 ```js
-import { useManualQuery } from "graphql-hooks";
+import { useManualQuery } from 'graphql-hooks';
 
 function MyComponent(props) {
   const [fetchUser] = useManualQuery(GET_USER_QUERY);
@@ -287,7 +287,7 @@ const [mutationFn, state] = useMutation(mutation, [options]);
 **Example**:
 
 ```js
-import { useMutation } from "graphql-hooks";
+import { useMutation } from 'graphql-hooks';
 
 const UPDATE_USER_MUTATION = `mutation UpdateUser(id: String!, name: String!) {
   updateUser(id: $id, name: $name) {
@@ -352,8 +352,8 @@ In this query, the `$first` variable is used to limit the number of posts that a
 Here is an example where we display the paginated queries on separate pages:
 
 ```jsx
-import { React, useState } from "react";
-import { useQuery } from "graphql-hooks";
+import { React, useState } from 'react';
+import { useQuery } from 'graphql-hooks';
 
 export default function PostList() {
   // set a default offset of 0 to load the first page
@@ -402,8 +402,8 @@ export default function PostList() {
 Here is an example where we append each paginated query to the bottom of the current list:
 
 ```jsx
-import { React, useState } from "react";
-import { useQuery } from "graphql-hooks";
+import { React, useState } from 'react';
+import { useQuery } from 'graphql-hooks';
 
 // use options.updateData to append the new page of posts to our current list of posts
 const updateData = (prevData, data) => ({
