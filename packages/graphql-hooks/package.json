@@ -6,9 +6,6 @@
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
   },
