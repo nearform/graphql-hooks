@@ -15,7 +15,7 @@ or
 The below example is for `fastify` but the same principles apply for `express` & `hapi`.
 
 ```js
-const { GraphQLClient } = require('graphql-hooks')
+const { GraphQLClient } = require('graphql-hooks');
 const memCache = require('graphql-hooks-memcache');
 const { getInitialState } = require('graphql-hooks-ssr');
 const { ServerLocation } = require('@reach/router');
@@ -77,4 +77,3 @@ Returns the serialisable cache after fetching all queries.
 - `options.App`: The react component to render
 - `options.client`: An instance of `GraphQLClient` from `graphql-hooks`
 - `options.render`: A custom render function; defaults to `ReactDOMServer.renderToStaticMarkup`
-

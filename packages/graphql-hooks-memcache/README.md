@@ -15,13 +15,13 @@ or
 This is intended to be used as the `cache` option when calling `createClient` from `graphql-hooks`.
 
 ```js
-import { GraphQLClient } from 'graphql-hooks'
-import memCache from 'graphql-hooks-memcache'
+import { GraphQLClient } from 'graphql-hooks';
+import memCache from 'graphql-hooks-memcache';
 
 const client = new GraphQLClient({
   endpoint: '/graphql',
   cache: memCache()
-})
+});
 ```
 
 ### Options

@@ -9,7 +9,7 @@ async function getInitialState(opts) {
   if (client.ssrPromises.length) {
     await Promise.all(client.ssrPromises);
     // clear promises
-    client.ssrPromises = []
+    client.ssrPromises = [];
     // recurse there may be dependant queries
     return getInitialState(opts);
   } else {

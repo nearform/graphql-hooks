@@ -6,8 +6,8 @@
     "test:coverage": "jest --coverage",
     "postinstall": "lerna bootstrap --no-ci",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "eslint": "eslint packages/*/{src,test}/**/*.js",
-    "prettier": "prettier packages/*/{src,test}/**/*.{js,md} --write",
+    "eslint": "eslint *.js packages/*/*.js packages/*/{src,test}/**/*.js",
+    "prettier": "prettier *.js *.md packages/*/*.{js,md} packages/*/{src,test}/**/*.{js,md} --write",
     "release": "lerna publish"
   },
   "devDependencies": {
@@ -29,6 +29,16 @@
   },
   "lint-staged": {
     "./packages/*/{src,test}/**/*.js": [
+      "eslint",
+      "prettier --write",
+      "git add"
+    ],
+    "./packages/*/*.js": [
+      "eslint",
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
       "eslint",
       "prettier --write",
       "git add"
