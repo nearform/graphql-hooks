@@ -1,10 +1,10 @@
 {
   "name": "graphql-hooks-memcache",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "In memory cache for graphql-hooks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "graphql",
