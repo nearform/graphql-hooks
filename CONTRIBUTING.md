@@ -60,7 +60,7 @@ For more information on `@all-contributors` see it's [usage docs](https://allcon
 ### Release process:
 
 - `npm test`
-- `npm run release`
+- `NPM_CONFIG_OTP=<your-otp> npm run release`
 
 Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish)
 
