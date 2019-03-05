@@ -5,6 +5,7 @@
 ![](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)
 [![npm version](https://badge.fury.io/js/graphql-hooks.svg)](https://badge.fury.io/js/graphql-hooks)
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🎣 Minimal hooks-first GraphQL client.
 
@@ -12,8 +13,8 @@
 
 - 🥇 First-class hooks API
 - ⚖️ _Tiny_ bundle: only 5.1kB (1.9 gzipped)
-- 📄 Full SSR support: see [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr)
-- 🔌 Plugin Caching: see [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache)
+- 📄 Full SSR support: see [graphql-hooks-ssr](packages/graphql-hooks-ssr)
+- 🔌 Plugin Caching: see [graphql-hooks-memcache](packages/graphql-hooks-memcache)
 - 🔥 No more render props hell
 - ⏳ Handle loading and error states with ease
 
@@ -124,7 +125,7 @@ const client = new GraphQLClient(config);
   - `cache.clear()`
   - `cache.keys()`
   - `getInitialState()`
-  - See [graphql-hooks-memcache](https://github.com/nearform/graphql-hooks-memcache) as a reference implementation
+  - See [graphql-hooks-memcache](packages/graphql-hooks-memcache) as a reference implementation
 - `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
@@ -323,7 +324,7 @@ The `options` object that can be passed either to `useMutation(mutation, options
 
 ### SSR
 
-See [graphql-hooks-ssr](https://github.com/nearform/graphql-hooks-ssr) for an in depth guide.
+See [graphql-hooks-ssr](packages/graphql-hooks-ssr) for an in depth guide.
 
 ### Pagination
 
@@ -467,6 +468,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore -->
 | [<img src="https://avatars1.githubusercontent.com/u/1939483?v=4" width="100px;" alt="Brian Mullan"/><br /><sub><b>Brian Mullan</b></sub>](https://twitter.com/bmullan91)<br />[💬](#question-bmullan91 "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Abmullan91 "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Code") [🖋](#content-bmullan91 "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Documentation") [💡](#example-bmullan91 "Examples") [🤔](#ideas-bmullan91 "Ideas, Planning, & Feedback") [🚧](#maintenance-bmullan91 "Maintenance") [👀](#review-bmullan91 "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Tests") | [<img src="https://avatars0.githubusercontent.com/u/1485654?v=4" width="100px;" alt="Jack Clark"/><br /><sub><b>Jack Clark</b></sub>](https://jackdc.com)<br />[💬](#question-jackdclark "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajackdclark "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Code") [🖋](#content-jackdclark "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Documentation") [💡](#example-jackdclark "Examples") [🤔](#ideas-jackdclark "Ideas, Planning, & Feedback") [🚧](#maintenance-jackdclark "Maintenance") [👀](#review-jackdclark "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2870255?v=4" width="100px;" alt="Joe Warren"/><br /><sub><b>Joe Warren</b></sub>](http://twitter.com/joezo)<br />[💬](#question-Joezo "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AJoezo "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Code") [🖋](#content-Joezo "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Documentation") [💡](#example-Joezo "Examples") [🤔](#ideas-Joezo "Ideas, Planning, & Feedback") [🚧](#maintenance-Joezo "Maintenance") [👀](#review-Joezo "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Tests") | [<img src="https://avatars1.githubusercontent.com/u/20181?v=4" width="100px;" alt="Simone Busoli"/><br /><sub><b>Simone Busoli</b></sub>](http://simoneb.github.io)<br />[💬](#question-simoneb "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Asimoneb "Bug reports") [📖](https://github.com/nearform/graphql-hooks/commits?author=simoneb "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/842246?v=4" width="100px;" alt="jhey tompkins"/><br /><sub><b>jhey tompkins</b></sub>](https://jheytompkins.com)<br />[⚠️](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Tests") [💬](#question-jh3y "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajh3y "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Code") [🖋](#content-jh3y "Content") | [<img src="https://avatars3.githubusercontent.com/u/6270048?v=4" width="100px;" alt="Haroen Viaene"/><br /><sub><b>Haroen Viaene</b></sub>](https://haroen.me)<br />[🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AHaroenv "Bug reports") |
 | :---: | :---: | :---: | :---: | :---: | :---: |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
