@@ -1,3 +1,4 @@
+// this is used by jest only
 module.exports = {
   presets: [
     [

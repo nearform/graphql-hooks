@@ -16,6 +16,14 @@ We would like to avoid issues that require a follow up questions to identify the
 
 ## For Developers
 
+### Packages
+
+We use [Lerna](https://lernajs.io) to manage this monorepo, you will find the different `graphql-hooks-*` modules in the `packages` directory.
+
+### Getting started
+
+Clone the repository and run `npm install`. This will install the root dependencies and all of the dependencies required by each package, using `lerna bootstrap`.
+
 All contributions should use the [prettier](https://prettier.io/) formatter, pass linting and pass tests.
 You can do this by running:
 
@@ -52,9 +60,9 @@ For more information on `@all-contributors` see it's [usage docs](https://allcon
 ### Release process:
 
 - `npm test`
-- `npm version <major|minor|patch>`
-- `git push && git push --tags`
-- `npm publish`
+- `npm run release`
+
+Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish)
 
 ---
 

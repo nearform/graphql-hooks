@@ -33,6 +33,4 @@ jobs:
       - store_artifacts:
           path: reports/junit
 
-      - run: |
-          npm install coveralls
-          cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      - run: npm run coveralls
