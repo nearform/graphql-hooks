@@ -1,30 +1,30 @@
-import React from 'react';
+import React from 'react'
 
-import useClientRequest from './useClientRequest';
-import ClientContext from './ClientContext';
+import useClientRequest from './useClientRequest'
+import ClientContext from './ClientContext'
 
 const defaultOpts = {
   useCache: true
-};
+}
 
 function useQuery(query, opts = {}) {
-  const allOpts = { ...defaultOpts, ...opts };
-  const client = React.useContext(ClientContext);
-  const [calledDuringSSR, setCalledDuringSSR] = React.useState(false);
-  const [queryReq, state] = useClientRequest(query, allOpts);
+  const allOpts = { ...defaultOpts, ...opts }
+  const client = React.useContext(ClientContext)
+  const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
+  const [queryReq, state] = useClientRequest(query, allOpts)
 
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
     // result may already be in the cache from previous SSR iterations
     if (!state.data && !state.error) {
-      const p = queryReq();
-      client.ssrPromises.push(p);
+      const p = queryReq()
+      client.ssrPromises.push(p)
     }
-    setCalledDuringSSR(true);
+    setCalledDuringSSR(true)
   }
-  const stringifiedAllOpts = JSON.stringify(allOpts);
+  const stringifiedAllOpts = JSON.stringify(allOpts)
   React.useEffect(() => {
-    queryReq();
-  }, [query, stringifiedAllOpts]); // eslint-disable-line react-hooks/exhaustive-deps
+    queryReq()
+  }, [query, stringifiedAllOpts]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state,
@@ -37,7 +37,7 @@ function useQuery(query, opts = {}) {
         updateData: (_, data) => data,
         ...options
       })
-  };
+  }
 }
 
-export default useQuery;
+export default useQuery

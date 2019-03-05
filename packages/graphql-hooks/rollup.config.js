@@ -1,12 +1,12 @@
-import nodeResolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
-import replace from 'rollup-plugin-replace';
-import { terser } from 'rollup-plugin-terser';
-import { sizeSnapshot } from 'rollup-plugin-size-snapshot';
+import nodeResolve from 'rollup-plugin-node-resolve'
+import babel from 'rollup-plugin-babel'
+import replace from 'rollup-plugin-replace'
+import { terser } from 'rollup-plugin-terser'
+import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 
-import pkg from './package.json';
+import pkg from './package.json'
 
-const external = [...Object.keys(pkg.peerDependencies || {})];
+const external = [...Object.keys(pkg.peerDependencies || {})]
 
 export default [
   // CommonJS
@@ -104,4 +104,4 @@ export default [
       sizeSnapshot()
     ]
   }
-];
+]

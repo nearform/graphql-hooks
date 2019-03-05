@@ -15,12 +15,12 @@ or
 The below example is for `fastify` but the same principles apply for `express` & `hapi`.
 
 ```js
-const { GraphQLClient } = require('graphql-hooks');
-const memCache = require('graphql-hooks-memcache');
-const { getInitialState } = require('graphql-hooks-ssr');
-const { ServerLocation } = require('@reach/router');
+const { GraphQLClient } = require('graphql-hooks')
+const memCache = require('graphql-hooks-memcache')
+const { getInitialState } = require('graphql-hooks-ssr')
+const { ServerLocation } = require('@reach/router')
 // NOTE: use can use any 'fetch' polyfill
-const fetch = require('isomorphic-unfetch');
+const fetch = require('isomorphic-unfetch')
 
 app.get('/', async (req, reply) => {
   // Step 1: Create the client inside the request handler
@@ -28,7 +28,7 @@ app.get('/', async (req, reply) => {
     url: 'https://domain.com/graphql',
     cache: memCache(),
     fetch
-  });
+  })
 
   // Step 2: Provide the `client`
   // Optional: If your app contains a router, you'll need to tell it which route the user is on
@@ -39,14 +39,14 @@ app.get('/', async (req, reply) => {
         {/* Your App component goes here */}
       </ServerLocation>
     </ClientContext.Provider>
-  );
+  )
 
   // Step 3: Use the getInitialState method from graphql-hooks-ssr
   // Pass in App + GraphQL client
-  const initialState = await getInitialState({ App, client });
+  const initialState = await getInitialState({ App, client })
 
   // Step 4: Render the your App - all queries will now be cached
-  const content = ReactDOMServer.renderToString(App);
+  const content = ReactDOMServer.renderToString(App)
 
   // Step 5: Serialise the initialState object + include it in the html payload
   const html = `
@@ -62,10 +62,10 @@ app.get('/', async (req, reply) => {
           </script>
         </body>
       </html>
-    `;
+    `
 
-  reply.type('text/html').send(html);
-});
+  reply.type('text/html').send(html)
+})
 ```
 
 ### API

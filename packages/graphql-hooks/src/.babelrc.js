@@ -1,4 +1,4 @@
-const { NODE_ENV } = process.env;
+const { NODE_ENV } = process.env
 
 module.exports = {
   presets: [
@@ -18,4 +18,4 @@ module.exports = {
     '@babel/proposal-object-rest-spread',
     NODE_ENV === 'test' && '@babel/transform-modules-commonjs'
   ].filter(Boolean)
-};
+}

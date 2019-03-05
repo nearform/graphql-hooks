@@ -1,17 +1,17 @@
-const LRU = require('tiny-lru');
-const fnv1a = require('@sindresorhus/fnv1a');
+const LRU = require('tiny-lru')
+const fnv1a = require('@sindresorhus/fnv1a')
 
 function generateKey(keyObj) {
-  return fnv1a(JSON.stringify(keyObj)).toString(36);
+  return fnv1a(JSON.stringify(keyObj)).toString(36)
 }
 
 module.exports = function memCache({ size = 100, ttl = 0, initialState } = {}) {
-  const lru = LRU(size, ttl);
+  const lru = LRU(size, ttl)
 
   if (initialState) {
     Object.keys(initialState).map(k => {
-      lru.set(k, initialState[k]);
-    });
+      lru.set(k, initialState[k])
+    })
   }
 
   return {
@@ -28,5 +28,5 @@ module.exports = function memCache({ size = 100, ttl = 0, initialState } = {}) {
         }),
         {}
       )
-  };
-};
+  }
+}
