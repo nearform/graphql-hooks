@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
-    "postpublish": "rm README.md && rm LICENSE"
+    "postpublish": "rm ./README.md && rm ./LICENSE"
   },
   "files": [
     "dist",
