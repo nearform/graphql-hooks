@@ -59,8 +59,10 @@ For more information on `@all-contributors` see it's [usage docs](https://allcon
 
 ### Release process:
 
+When merging a pull request to `master`, the squashed commit message should follow the [Conventional Commits](https://www.conventionalcommits.org) specification. This enables us to automatically generate CHANGELOGs & determine a semantic version bump.
+
 - `npm test`
-- `NPM_CONFIG_OTP=<your-otp> npm run release`
+- `NPM_CONFIG_OTP=<your-otp> GH_TOKEN=<your-github-token> npm run release`
 
 Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish)
 
