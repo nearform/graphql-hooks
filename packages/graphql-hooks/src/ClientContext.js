@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-const ClientContext = React.createContext();
+const ClientContext = React.createContext()
 
-ClientContext.displayName = 'ClientContext';
+ClientContext.displayName = 'ClientContext'
 
-export default ClientContext;
+export default ClientContext

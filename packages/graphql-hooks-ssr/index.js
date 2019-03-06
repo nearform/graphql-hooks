@@ -1,22 +1,22 @@
-const ReactDOMServer = require('react-dom/server');
+const ReactDOMServer = require('react-dom/server')
 
 async function getInitialState(opts) {
-  const { App, client, render = ReactDOMServer.renderToStaticMarkup } = opts;
+  const { App, client, render = ReactDOMServer.renderToStaticMarkup } = opts
   // ensure ssrMode is set:
-  client.ssrMode = true;
-  render(App);
+  client.ssrMode = true
+  render(App)
 
   if (client.ssrPromises.length) {
-    await Promise.all(client.ssrPromises);
+    await Promise.all(client.ssrPromises)
     // clear promises
-    client.ssrPromises = [];
+    client.ssrPromises = []
     // recurse there may be dependant queries
-    return getInitialState(opts);
+    return getInitialState(opts)
   } else {
-    return client.cache.getInitialState();
+    return client.cache.getInitialState()
   }
 }
 
 module.exports = {
   getInitialState
-};
+}

@@ -41,42 +41,42 @@ Consider polyfilling:
 First you'll need to create a client and wrap your app with the provider:
 
 ```js
-import { GraphQLClient, ClientContext } from 'graphql-hooks';
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
 
 const client = new GraphQLClient({
   url: '/graphql'
-});
+})
 
 function App() {
   return (
     <ClientContext.Provider value={client}>
       {/* children */}
     </ClientContext.Provider>
-  );
+  )
 }
 ```
 
 Now in your child components you can make use of `useQuery`
 
 ```js
-import { useQuery } from 'graphql-hooks';
+import { useQuery } from 'graphql-hooks'
 
 const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
   users(limit: $limit) {
     id
     name
   }
-}`;
+}`
 
 function MyComponent() {
   const { loading, error, data } = useQuery(HOMEPAGE_QUERY, {
     variables: {
       limit: 10
     }
-  });
+  })
 
-  if (loading) return 'Loading...';
-  if (error) return 'Something Bad Happened';
+  if (loading) return 'Loading...'
+  if (error) return 'Something Bad Happened'
 
   return (
     <ul>
@@ -84,7 +84,7 @@ function MyComponent() {
         <li key={id}>{name}</li>
       ))}
     </ul>
-  );
+  )
 }
 ```
 
@@ -110,8 +110,8 @@ function MyComponent() {
 **Usage**:
 
 ```js
-import { GraphQLClient } from 'graphql-hooks';
-const client = new GraphQLClient(config);
+import { GraphQLClient } from 'graphql-hooks'
+const client = new GraphQLClient(config)
 ```
 
 **`config`**: Object containing configuration properties
@@ -150,20 +150,20 @@ const client = new GraphQLClient(config);
 **Example**:
 
 ```js
-import { ClientContext } from 'graphql-hooks';
-<ClientContext.Provider value={client}>
+import { ClientContext } from 'graphql-hooks'
+;<ClientContext.Provider value={client}>
   {/* children can now consume the client context */}
-</ClientContext.Provider>;
+</ClientContext.Provider>
 ```
 
 To access the `GraphQLClient` instance, call `React.useContext(ClientContext)`:
 
 ```js
-import React, { useContext } from 'react';
-import { ClientContext } from 'graphql-hooks';
+import React, { useContext } from 'react'
+import { ClientContext } from 'graphql-hooks'
 
 function MyComponent() {
-  const client = useContext(ClientContext);
+  const client = useContext(ClientContext)
 }
 ```
 
@@ -172,21 +172,21 @@ function MyComponent() {
 **Usage**:
 
 ```js
-const state = useQuery(query, [options]);
+const state = useQuery(query, [options])
 ```
 
 **Example:**
 
 ```js
-import { useQuery } from 'graphql-hooks';
+import { useQuery } from 'graphql-hooks'
 
 function MyComponent() {
-  const { loading, error, data } = useQuery(query);
+  const { loading, error, data } = useQuery(query)
 
-  if (loading) return 'Loading...';
-  if (error) return 'Something bad happened';
+  if (loading) return 'Loading...'
+  if (error) return 'Something bad happened'
 
-  return <div>{data.thing}</div>;
+  return <div>{data.thing}</div>
 }
 ```
 
@@ -207,7 +207,7 @@ This is a custom hook that takes care of fetching your query and storing the res
 ### `useQuery` return value
 
 ```js
-const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY);
+const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY)
 ```
 
 - `loading`: Boolean - `true` if the query is in flight
@@ -227,7 +227,7 @@ Use this when you don't want a query to automactially be fetched, or wish to cal
 **Usage**:
 
 ```js
-const [queryFn, state] = useManualQuery(query, [options]);
+const [queryFn, state] = useManualQuery(query, [options])
 ```
 
 **Example**:
@@ -254,23 +254,23 @@ function MyComponent(props) {
 If you don't know certain options when declaring the `useManualQuery` you can also pass the same options to the query function itself when calling it:
 
 ```js
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery } from 'graphql-hooks'
 
 function MyComponent(props) {
-  const [fetchUser] = useManualQuery(GET_USER_QUERY);
+  const [fetchUser] = useManualQuery(GET_USER_QUERY)
 
   const fetchUserThenSomething = async () => {
     const user = await fetchUser({
       variables: { id: props.userId }
-    });
-    return somethingElse();
-  };
+    })
+    return somethingElse()
+  }
 
   return (
     <div>
       <button onClick={fetchUserThenSomething}>Get User!</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -281,23 +281,23 @@ Mutations unlike Queries are not cached.
 **Usage**:
 
 ```js
-const [mutationFn, state] = useMutation(mutation, [options]);
+const [mutationFn, state] = useMutation(mutation, [options])
 ```
 
 **Example**:
 
 ```js
-import { useMutation } from 'graphql-hooks';
+import { useMutation } from 'graphql-hooks'
 
 const UPDATE_USER_MUTATION = `mutation UpdateUser(id: String!, name: String!) {
   updateUser(id: $id, name: $name) {
     name
   }
-}`;
+}`
 
 function MyComponent({ id, name }) {
-  const [updateUser] = useMutation(UPDATE_USER_MUTATION);
-  const [newName, setNewName] = useState(name);
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION)
+  const [newName, setNewName] = useState(name)
 
   return (
     <div>
@@ -310,7 +310,7 @@ function MyComponent({ id, name }) {
         onClick={() => updateUser({ variables: { id, name: newName } })}
       />
     </div>
-  );
+  )
 }
 ```
 
@@ -342,7 +342,7 @@ export const allPostsQuery = `
       count
     }
   }
-`;
+`
 ```
 
 In this query, the `$first` variable is used to limit the number of posts that are returned and the `$skip` variable is used to determine the offset at which to start. We can use these variables to break up large payloads into smaller chunks, or "pages". We could then choose to display these chunks as distinct pages to the user, or use an infinite loading approach and append each new chunk to the existing list of posts.
@@ -352,22 +352,22 @@ In this query, the `$first` variable is used to limit the number of posts that a
 Here is an example where we display the paginated queries on separate pages:
 
 ```jsx
-import { React, useState } from 'react';
-import { useQuery } from 'graphql-hooks';
+import { React, useState } from 'react'
+import { useQuery } from 'graphql-hooks'
 
 export default function PostList() {
   // set a default offset of 0 to load the first page
-  const [skipCount, setSkipCount] = useState(0);
+  const [skipCount, setSkipCount] = useState(0)
 
   const { loading, error, data } = useQuery(allPostsQuery, {
     variables: { skip: skipCount, first: 10 }
-  });
+  })
 
-  if (error) return <div>There was an error!</div>;
-  if (loading && !data) return <div>Loading</div>;
+  if (error) return <div>There was an error!</div>
+  if (loading && !data) return <div>Loading</div>
 
-  const { allPosts, _allPostsMeta } = data;
-  const areMorePosts = allPosts.length < _allPostsMeta.count;
+  const { allPosts, _allPostsMeta } = data
+  const areMorePosts = allPosts.length < _allPostsMeta.count
 
   return (
     <section>
@@ -393,7 +393,7 @@ export default function PostList() {
         Next page
       </button>
     </section>
-  );
+  )
 }
 ```
 
@@ -402,29 +402,29 @@ export default function PostList() {
 Here is an example where we append each paginated query to the bottom of the current list:
 
 ```jsx
-import { React, useState } from 'react';
-import { useQuery } from 'graphql-hooks';
+import { React, useState } from 'react'
+import { useQuery } from 'graphql-hooks'
 
 // use options.updateData to append the new page of posts to our current list of posts
 const updateData = (prevData, data) => ({
   ...data,
   allPosts: [...prevData.allPosts, ...data.allPosts]
-});
+})
 
 export default function PostList() {
-  const [skipCount, setSkipCount] = useState(0);
+  const [skipCount, setSkipCount] = useState(0)
 
   const { loading, error, data } = useQuery(
     allPostsQuery,
     { variables: { skip: skipCount, first: 10 } },
     updateData
-  );
+  )
 
-  if (error) return <div>There was an error!</div>;
-  if (loading && !data) return <div>Loading</div>;
+  if (error) return <div>There was an error!</div>
+  if (loading && !data) return <div>Loading</div>
 
-  const { allPosts, _allPostsMeta } = data;
-  const areMorePosts = allPosts.length < _allPostsMeta.count;
+  const { allPosts, _allPostsMeta } = data
+  const areMorePosts = allPosts.length < _allPostsMeta.count
 
   return (
     <section>
@@ -444,7 +444,7 @@ export default function PostList() {
         </button>
       )}
     </section>
-  );
+  )
 }
 ```
 

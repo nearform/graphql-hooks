@@ -19,7 +19,7 @@ const projects = [
     displayName: 'graphql-hooks-ssr',
     testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js']
   }
-];
+]
 module.exports = {
   projects
-};
+}

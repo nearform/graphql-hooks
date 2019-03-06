@@ -1,13 +1,13 @@
-import ClientContext from './ClientContext';
-import GraphQLClient from './GraphQLClient';
-import useClientRequest from './useClientRequest';
-import useQuery from './useQuery';
+import ClientContext from './ClientContext'
+import GraphQLClient from './GraphQLClient'
+import useClientRequest from './useClientRequest'
+import useQuery from './useQuery'
 
 const useManualQuery = (query, options) =>
-  useClientRequest(query, { useCache: true, ...options });
+  useClientRequest(query, { useCache: true, ...options })
 
 const useMutation = (query, options) =>
-  useClientRequest(query, { isMutation: true, ...options });
+  useClientRequest(query, { isMutation: true, ...options })
 
 export {
   ClientContext,
@@ -17,4 +17,4 @@ export {
   useManualQuery,
   // alias
   useMutation
-};
+}

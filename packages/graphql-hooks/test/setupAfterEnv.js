@@ -1,1 +1,1 @@
-afterEach(require('react-testing-library').cleanup);
+afterEach(require('react-testing-library').cleanup)
