@@ -229,6 +229,26 @@ describe('useClientRequest', () => {
       expect(state).toEqual({ cacheHit: false, loading: true })
     })
 
+    it('returns undefined instantly if not mounted', async () => {
+      let fetchData, state
+      const { unmount } = renderHook(
+        () =>
+          ([fetchData, state] = useClientRequest(TEST_QUERY, {
+            variables: { limit: 2 },
+            operationName: 'test'
+          })),
+        {
+          wrapper: Wrapper
+        }
+      )
+
+      unmount()
+      const result = await fetchData()
+      expect(result).toBe(undefined)
+      expect(mockClient.request).not.toHaveBeenCalled()
+      expect(state).toEqual({ cacheHit: false, loading: true })
+    })
+
     it('calls request with revised options', async () => {
       let fetchData
       renderHook(
