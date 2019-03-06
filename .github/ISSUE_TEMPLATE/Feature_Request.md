@@ -1,7 +1,10 @@
 ---
-name: 💡 Feature Request
+name: "\U0001F4A1 Feature Request"
 about: I have a suggestion for a new feature!
+title: ''
 labels: feature
+assignees: ''
+
 ---
 
 ### Description
