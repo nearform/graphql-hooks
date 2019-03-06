@@ -10,8 +10,7 @@
       "message": "chore(release): :rocket:"
     },
     "version": {
-      "conventionalCommits": true,
-      "githubRelease": true
+      "conventionalCommits": true
     }
   }
 }
