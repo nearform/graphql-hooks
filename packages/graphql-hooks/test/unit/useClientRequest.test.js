@@ -206,7 +206,7 @@ describe('useClientRequest', () => {
     })
 
     it('calls request with options & doesnt update state if component unmounts whilst request is in flight', async () => {
-      let fetchData, state;
+      let fetchData, state
       const { unmount } = renderHook(
         () =>
           ([fetchData, state] = useClientRequest(TEST_QUERY, {
@@ -216,18 +216,18 @@ describe('useClientRequest', () => {
         {
           wrapper: Wrapper
         }
-      );
+      )
 
-      const fetchDataPromise = fetchData();
-      unmount();
-      await fetchDataPromise;
+      const fetchDataPromise = fetchData()
+      unmount()
+      await fetchDataPromise
 
       expect(mockClient.request).toHaveBeenCalledWith(
         { operationName: 'test', variables: { limit: 2 }, query: TEST_QUERY },
         { operationName: 'test', variables: { limit: 2 } }
-      );
-      expect(state).toEqual({ cacheHit: false, loading: true });
-    });
+      )
+      expect(state).toEqual({ cacheHit: false, loading: true })
+    })
 
     it('calls request with revised options', async () => {
       let fetchData
