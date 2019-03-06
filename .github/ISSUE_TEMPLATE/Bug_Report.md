@@ -1,16 +1,19 @@
 ---
-name: 🐛 Bug Report
+name: "\U0001F41B Bug Report"
 about: Bugs or any unexpected issues.
+title: ''
 labels: bug
+assignees: ''
+
 ---
 
 ### Package
 
-<!-- Which package is this for? -->
+<!-- Which package is this for? (Delete as appropriate) -->
 
-- [ ] `graphql-hooks`
-- [ ] `graphql-hooks-ssr`
-- [ ] `graphql-hooks-memcache`
+`graphql-hooks`
+`graphql-hooks-ssr`
+`graphql-hooks-memcache`
 
 ### Environment
 
