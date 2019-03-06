@@ -52,6 +52,7 @@ function reducer(state, action) {
 */
 function useClientRequest(query, initialOpts = {}) {
   const client = React.useContext(ClientContext)
+  const isMounted = React.useRef(true)
   const operation = {
     query,
     variables: initialOpts.variables,
@@ -73,12 +74,22 @@ function useClientRequest(query, initialOpts = {}) {
   // if so the state would be invalid, this effect ensures we reset it back
   const stringifiedCacheKey = JSON.stringify(cacheKey)
   React.useEffect(() => {
-    if (initialOpts.updateData) return // if using updateData we can assume that the consumer cares about the previous data
-    dispatch({ type: actionTypes.RESET_STATE, initialState })
+    if (!initialOpts.updateData) {
+      // if using updateData we can assume that the consumer cares about the previous data
+      dispatch({ type: actionTypes.RESET_STATE, initialState })
+    }
   }, [stringifiedCacheKey]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  React.useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   // arguments to fetchData override the useClientRequest arguments
   function fetchData(newOpts) {
+    if (!isMounted.current) return Promise.resolve()
     const revisedOpts = {
       ...initialOpts,
       ...newOpts
@@ -118,10 +129,12 @@ function useClientRequest(query, initialOpts = {}) {
         client.cache.set(revisedCacheKey, result)
       }
 
-      dispatch({
-        type: actionTypes.REQUEST_RESULT,
-        result
-      })
+      if (isMounted.current) {
+        dispatch({
+          type: actionTypes.REQUEST_RESULT,
+          result
+        })
+      }
 
       return result
     })
