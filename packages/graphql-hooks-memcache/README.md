@@ -29,12 +29,12 @@ const client = new GraphQLClient({
 `memCache(options)`: Option object properties
 
 - `size`: The number of items to store in the cache
-- `ttl`: Milliseconds an item will remain in cache. Default behaviour will only evict items when `size` limit has been reached
+- `ttl`: Milliseconds an item will remain in cache. The default behaviour will only evict items when the `size` limit has been reached
 - `initialState`: The value from `cache.getInitialState()` used for rehydrating the cache after SSR
 
 ### API
 
-- `cache.get(key)`: Find item in cache that matches `key`
+- `cache.get(key)`: Find the item in the cache that matches `key`
 - `cache.set(key, value)`: Set an item in the cache
 - `cache.delete(key)`: Delete an item from the cache
 - `cache.clear()`: Clear all items from the cache
