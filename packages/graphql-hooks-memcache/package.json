@@ -2,11 +2,19 @@
   "name": "graphql-hooks-memcache",
   "version": "1.0.8",
   "description": "In memory cache for graphql-hooks",
-  "main": "index.js",
+  "main": "lib/graphql-hooks-memcache.js",
+  "module": "es/graphql-hooks-memcache.js",
+  "unpkg": "dist/graphql-hooks-memcache.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "cp ../../LICENSE ."
+    "build": "../../node_modules/.bin/rollup -c",
+    "prepublishOnly": "npm run build && cp ../../LICENSE ."
   },
+  "files": [
+    "dist",
+    "es",
+    "lib"
+  ],
   "keywords": [
     "graphql",
     "hooks",
