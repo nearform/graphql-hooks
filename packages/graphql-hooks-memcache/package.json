@@ -13,7 +13,8 @@
   "files": [
     "dist",
     "es",
-    "lib"
+    "lib",
+    "src"
   ],
   "keywords": [
     "graphql",
