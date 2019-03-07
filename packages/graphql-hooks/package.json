@@ -6,13 +6,14 @@
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "../../node_modules/.bin/rollup -c",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
   },
   "files": [
     "dist",
     "es",
-    "lib"
+    "lib",
+    "src"
   ],
   "keywords": [
     "graphql",
@@ -34,12 +35,7 @@
     "react": "16.8.4",
     "react-dom": "16.8.4",
     "react-hooks-testing-library": "0.3.4",
-    "react-testing-library": "6.0.0",
-    "rollup": "1.5.0",
-    "rollup-plugin-babel": "4.3.2",
-    "rollup-plugin-node-resolve": "4.0.1",
-    "rollup-plugin-size-snapshot": "0.8.0",
-    "rollup-plugin-terser": "4.0.4"
+    "react-testing-library": "6.0.0"
   },
   "repository": {
     "type": "git",

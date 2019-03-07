@@ -1,3 +1,3 @@
 import generateRollupConfig from '../../config/rollup.config'
 
-export default generateRollupConfig('GraphQLHooks')
+export default generateRollupConfig('GraphQLHooksMemcache')
