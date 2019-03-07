@@ -18,11 +18,6 @@ module.exports = () => {
 
   app.register(graphqlPlugin)
 
-  app.get('/test', async function(req, reply) {
-    const query = '{ add(x: 2, y: 2) }'
-    return reply.graphql(query)
-  })
-
   app.get('/', appShellHandler)
   app.get('/users', appShellHandler)
 

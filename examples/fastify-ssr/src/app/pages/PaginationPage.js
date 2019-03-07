@@ -2,8 +2,6 @@ import React from 'react'
 
 import { useQuery } from 'graphql-hooks'
 
-// components
-
 const USERS_QUERY = `
   query UsersQuery($skip: Int, $limit: Int) {
     users(skip: $skip, limit: $limit) {

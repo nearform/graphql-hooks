@@ -30,7 +30,6 @@ const CREATE_USER_MUTATION = `
 `
 
 function HomePage() {
-  // TODO: Demo firing a query manually.
   const [name, setName] = React.useState('')
   const { loading, data, error, refetch: refetchUsers } = useQuery(
     HOMEPAGE_QUERY

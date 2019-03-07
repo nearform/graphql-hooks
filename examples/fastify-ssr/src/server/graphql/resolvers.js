@@ -4,6 +4,9 @@ const users = [
   },
   {
     name: 'Jack'
+  },
+  {
+    name: 'Joe'
   }
 ]
 
