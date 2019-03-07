@@ -1,6 +1,6 @@
 # GraphQL Hooks Fastify SSR Example
 
-This example uses Fastify to serve a graphql server and do server side rendering. It's very basic but showcases the different functionality that `graphql-hooks` offers. This example is intended more for local development of the `graphql-hooks` packages.
+This example uses [Fastify](https://github.com/fastify/fastify) to serve a graphql server and do server side rendering. It's very basic but showcases the different functionality that `graphql-hooks` offers. This example is intended more for local development of the `graphql-hooks` packages.
 
 ## How to use
 
