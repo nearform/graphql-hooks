@@ -16,7 +16,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [3.2.5](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.2.4...graphql-hooks@3.2.5) (2019-03-06)
 
-
 ### Bug Fixes
 
-* Handle unmounting whilst request is in flight ([#96](https://github.com/nearform/graphql-hooks/issues/96)) ([dbb8954](https://github.com/nearform/graphql-hooks/commit/dbb8954)), closes [#54](https://github.com/nearform/graphql-hooks/issues/54)
+- Handle unmounting whilst request is in flight ([#96](https://github.com/nearform/graphql-hooks/issues/96)) ([dbb8954](https://github.com/nearform/graphql-hooks/commit/dbb8954)), closes [#54](https://github.com/nearform/graphql-hooks/issues/54)

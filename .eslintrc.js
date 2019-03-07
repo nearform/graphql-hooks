@@ -34,6 +34,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'no-unused-vars': 'error',
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': ['error', 'unix']
   }
-};
+}
