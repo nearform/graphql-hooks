@@ -4,7 +4,20 @@ This example uses [Fastify](https://github.com/fastify/fastify) to serve a graph
 
 ## How to use
 
-Download the example:
+### Running as part of this repo
+
+In the root of this repository run:
+
+```bash
+npm install
+lerna run build
+cd examples/fastify-ssr
+npm run watch
+```
+
+To develop `packages/` with this example locally, you'll need to run `lerna run build` from the root to rebuild files after they've been changed.
+
+### Download the example in isolation:
 
 ```bash
 curl https://codeload.github.com/nearform/graphql-hooks/tar.gz/master | tar -xz --strip=2 graphql-hooks-master/examples/fastify-ssr
@@ -16,7 +29,4 @@ Install it and run:
 ```bash
 npm install
 npm run watch
-# or
-yarn
-yarn watch
 ```
