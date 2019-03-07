@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
-    "prepublishOnly": "cp ../../LICENSE .",
-    "postpublish": "rm ./LICENSE"
+    "prepublishOnly": "cp ../../LICENSE ."
   },
   "keywords": [
     "graphql",
