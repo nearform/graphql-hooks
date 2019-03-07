@@ -6,7 +6,7 @@
     "test:coverage": "jest --coverage",
     "postinstall": "lerna bootstrap --no-ci",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "eslint": "eslint **/*.js",
+    "eslint": "eslint '**/*.js'",
     "prettier": "prettier **/*.js **/*.md --write",
     "release": "lerna publish"
   },
