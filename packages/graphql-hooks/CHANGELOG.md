@@ -18,4 +18,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-- Handle unmounting whilst request is in flight ([#96](https://github.com/nearform/graphql-hooks/issues/96)) ([dbb8954](https://github.com/nearform/graphql-hooks/commit/dbb8954)), closes [#54](https://github.com/nearform/graphql-hooks/issues/54)
+* Handle unmounting whilst request is in flight ([#96](https://github.com/nearform/graphql-hooks/issues/96)) ([dbb8954](https://github.com/nearform/graphql-hooks/commit/dbb8954)), closes [#54](https://github.com/nearform/graphql-hooks/issues/54)
