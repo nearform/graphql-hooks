@@ -216,13 +216,13 @@ const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY)
 - `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
-- `fetchError`: Object - Set if an error occured during the `fetch` call
+- `fetchError`: Object - Set if an error occurred during the `fetch` call
 - `httpError`: Object - Set if an error response was returned from the server
-- `graphQLErrors`: Array - Populated if any errors occured whilst resolving the query
+- `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
 
 ## `useManualQuery`
 
-Use this when you don't want a query to automactially be fetched, or wish to call a query programmatically.
+Use this when you don't want a query to automatically be fetched, or wish to call a query programmatically.
 
 **Usage**:
 
