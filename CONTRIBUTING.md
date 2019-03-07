@@ -24,6 +24,8 @@ We use [Lerna](https://lernajs.io) to manage this monorepo, you will find the di
 
 Clone the repository and run `npm install`. This will install the root dependencies and all of the dependencies required by each package, using `lerna bootstrap`.
 
+If you want to test your changes against an example app then take a look at our [fastify-ssr example](examples/fastify-ssr).
+
 All contributions should use the [prettier](https://prettier.io/) formatter, pass linting and pass tests.
 You can do this by running:
 

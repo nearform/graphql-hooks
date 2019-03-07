@@ -151,9 +151,14 @@ const client = new GraphQLClient(config)
 
 ```js
 import { ClientContext } from 'graphql-hooks'
-<ClientContext.Provider value={client}>
-  {/* children can now consume the client context */}
-</ClientContext.Provider>
+
+function App() {
+  return (
+    <ClientContext.Provider value={client}>
+      {/* children can now consume the client context */}
+    </ClientContext.Provider>
+  )
+}
 ```
 
 To access the `GraphQLClient` instance, call `React.useContext(ClientContext)`:

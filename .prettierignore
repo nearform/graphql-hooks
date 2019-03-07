@@ -1,0 +1,6 @@
+node_modules
+dist
+es
+lib
+build
+CHANGELOG.md

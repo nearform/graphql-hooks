@@ -4,7 +4,6 @@ about: I have a suggestion for a new feature!
 title: ''
 labels: feature
 assignees: ''
-
 ---
 
 ### Description

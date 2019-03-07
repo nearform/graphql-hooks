@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "examples/*"],
   "version": "independent",
   "command": {
     "bootstrap": {
@@ -11,6 +11,9 @@
     },
     "version": {
       "conventionalCommits": true
+    },
+    "bootstrap": {
+      "hoist": ["react", "react-dom"]
     }
   }
 }
