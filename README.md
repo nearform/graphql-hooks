@@ -102,6 +102,7 @@ function MyComponent() {
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
+    - [ApolloClient -> GraphQLClient](#ApolloClient-->-GraphQLClient)
 
 ## API
 
@@ -463,7 +464,34 @@ Coming soon!
 
 ### Migrating from Apollo
 
-Coming soon!
+#### ApolloClient -> GraphQLClient
+
+```diff
+- import { ApolloClient } from 'apollo-client'
+- import { InMemoryCache } from 'apollo-cache-inmemory'
++ import { GraphQLClient } from 'graphql-hooks'
++ import memCache from 'graphql-hooks-memcache'
+
+- const client = new ApolloClient({
+-  uri: '/graphql',
+-  cache: new InMemoryCache()
+- })
++ const client = new GraphQLClient({
++   url: '/graphql',
++   cache: memCache()
++ })
+```
+
+Alot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`:
+
+- `uri` -> `url`
+- `fetchOptions`
+- `onError` - the function signature is slighly different
+- `headers`
+- `fetch`
+- `cache`
+
+
 
 ## Contributors
 
