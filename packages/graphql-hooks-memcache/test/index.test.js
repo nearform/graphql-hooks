@@ -5,7 +5,7 @@ describe('memcache', () => {
   beforeEach(() => {
     cache = memCache()
   })
-  it('sets and gets key wtih string key', () => {
+  it('sets and gets key with string key', () => {
     cache.set('foo', 'bar')
     expect(cache.get('foo')).toEqual('bar')
   })
