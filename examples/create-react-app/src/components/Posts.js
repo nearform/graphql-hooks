@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useQuery } from 'graphql-hooks'
 
 import CreatePost from './CreatePost'
@@ -40,4 +41,12 @@ function PostList({ loading, error, data }) {
       ))}
     </ul>
   )
+}
+
+PostList.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  data: PropTypes.shape({
+    allPosts: PropTypes.array
+  })
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useMutation } from 'graphql-hooks'
 
 import CreatePostForm from './CreatePostForm'
@@ -15,10 +16,14 @@ export default function CreatePost({ onSuccess }) {
 
   async function handleSubmit({ title, url }) {
     await createPost({ variables: { title, url } })
-    onSuccess()
+    onSuccess && onSuccess()
   }
 
   return (
     <CreatePostForm loading={loading} error={error} onSubmit={handleSubmit} />
   )
+}
+
+CreatePost.propTypes = {
+  onSuccess: PropTypes.func
 }

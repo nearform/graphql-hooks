@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 export default function CreatePostForm({ loading, error, onSubmit }) {
   const [title, setTitle] = useState('')
@@ -32,4 +33,10 @@ export default function CreatePostForm({ loading, error, onSubmit }) {
       {error && <p>Oh no! There was an error when adding this post.</p>}
     </form>
   )
+}
+
+CreatePostForm.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired
 }
