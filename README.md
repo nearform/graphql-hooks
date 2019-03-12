@@ -502,7 +502,7 @@ function App({ client }) {
 -    <ApolloProvider client={client}>
 +    <ClientContext.Provider value={client}>
        {/* children */}
-+    </ClientContext.Provider>      
++    </ClientContext.Provider>
 -    </ApolloProvider>
   )
 }
@@ -545,14 +545,14 @@ Alot of options can be carried over as-is, or have direct replacement:
   - `cache-only`: Not supported
   - `no-cache` ➡️ `useQuery(QUERY, { useCache: false })`
 
-**Not supported**
+**Not yet supported**
 
 - `errorPolicy`: Any error will set the `error` to be truthy. See [useQuery](#useQuery) for more details.
 - `pollInterval`
 - `notifyOnNetworkStatusChange`
 - `skip`
-- `onCompleted`
-- `onError`
+- `onCompleted`: Similar ability if using `useManualQery`
+- `onError`: Similar ability if using `useManualQery`
 - `partialRefetch`
 
 ### Query Component Render Props
@@ -572,13 +572,61 @@ Alot of options can be carried over as-is, or have direct replacement:
 - `props.refetch` ️➡️ `state.refetch`
 - `props.updateData(prevResult, options)` ️➡️ `state.updateData(prevResult, newResult)`
 
-*Not supported*
+_Not supported_
+
 - `props.networkStatus`
 - `props.startPolling`
 - `props.stopPolling`
 - `props.subscribeToMore`
 
+### Mutation Component -> useMutation
 
+```diff
+- import { Mutation } from 'react-apollo'
+- import gql from 'graphql-tag'
++ import { useMutation } from 'graphql-hooks'
+
+function MyComponent() {
++ const [mutateFn, { loading, error, data }] = useMutation('...')
+
+-  return (
+-    <Mutation mutation={gql`...`}>
+-     {(mutateFn, { loading, error }) => {
+        if (error) return 'Error :('
+
+        return <button disabled={loading} onClick={() => mutateFn()}>Submit</button>
+-      }}
+-    </Mutation>
+-  )
+}
+```
+
+### Mutation Props
+
+- `mutation` ➡️ `useMutation(mutation)` - no need to wrap it in `gql`
+- `variables` ➡️️ `useMutation(mutation, { variables })` or `mutateFn({ variables })`
+- `ignoreResults` ➡️️️️ `const [mutateFn] = useMutation(mutation)`
+- `onCompleted` ➡️ ️`mutateFn().then(onCompleted)`
+- `onError` ➡️ `mutateFn().then(({ error }) => {...})`
+
+**Not yet supported**
+
+- `update`: Coming soon [#52](https://github.com/nearform/graphql-hooks/issues/52)
+- `optimisticResponse`
+- `refetchQueries`
+- `awaitRefetchQueries`
+- `context`
+
+## Mutation Component Render Props
+
+- `data` ➡️ `const [mutateFn, { data }] = useMutation`
+- `loading` ➡️ `const [mutateFn, { loading }] = useMutation`
+- `error` ➡️ `const [mutateFn, { error }] = useMutation`
+- `client` ️➡️️ `const client = useContext(ClientContext)` see [ClientContext](#ClientContext)
+
+**Not yet supported**
+
+- `called`
 
 ## Contributors
 
