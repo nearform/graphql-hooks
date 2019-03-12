@@ -96,6 +96,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "aribouius",
+      "name": "Ari Bouius",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10748727?v=4",
+      "profile": "https://github.com/aribouius",
+      "contributions": [
+        "doc",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
