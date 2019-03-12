@@ -10,12 +10,12 @@ In the root of this repository run:
 
 ```bash
 npm install
-lerna run build
+lerna run bundle
 cd examples/fastify-ssr
 npm run watch
 ```
 
-To develop `packages/` with this example locally, you'll need to run `lerna run build` from the root to rebuild files after they've been changed.
+To develop `packages/` with this example locally, you'll need to run `lerna run bundle` from the root to rebuild package files after they've been changed.
 
 ### Download the example in isolation:
 
