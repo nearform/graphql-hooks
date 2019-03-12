@@ -37,6 +37,15 @@ describe('GraphQLClient', () => {
       global.fetch = oldFetch
     })
 
+    it('throws if config.ssrMode is true and no config.cache is provided', () => {
+      expect(() => {
+        new GraphQLClient({
+          ...validConfig,
+          ssrMode: true
+        })
+      }).toThrow('GraphQLClient: config.cache is required when in ssrMode')
+    })
+
     it('assigns config.cache to an instance property', () => {
       const cache = { get: 'get', set: 'set' }
       const client = new GraphQLClient({ ...validConfig, cache })
@@ -49,8 +58,12 @@ describe('GraphQLClient', () => {
       expect(client.headers).toBe(headers)
     })
 
-    it('assigns config.ssrMode to an instance property', () => {
-      const client = new GraphQLClient({ ...validConfig, ssrMode: true })
+    it('assigns config.ssrMode to an instance property if config.cache is provided', () => {
+      const client = new GraphQLClient({
+        ...validConfig,
+        ssrMode: true,
+        cache: { get: 'get', set: 'set' }
+      })
       expect(client.ssrMode).toBe(true)
     })
 

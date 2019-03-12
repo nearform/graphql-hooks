@@ -27,4 +27,23 @@ describe('getInitialState', () => {
     expect(result).toEqual({ foo: 'bar' })
     expect(resolvedPromises).toBe(2)
   })
+
+  it("throws if a cache hasn't been provided", async () => {
+    const MockApp = () => 'hello world'
+
+    const mockClient = {
+      ssrPromises: []
+    }
+
+    expect(
+      getInitialState({
+        App: MockApp,
+        client: mockClient
+      })
+    ).rejects.toEqual(
+      new Error(
+        'A cache implementation must be provided for SSR, please pass one to `GraphQLClient` via `options`.'
+      )
+    )
+  })
 })
