@@ -484,12 +484,99 @@ Coming soon!
 
 Alot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`:
 
-- `uri` -> `url`
+- `uri` ➡️ `url`
 - `fetchOptions`
 - `onError` - the function signature is slighly different
 - `headers`
 - `fetch`
 - `cache`
+
+#### ApolloProvider -> ClientContext.Provider
+
+```diff
+- import { ApolloProvider } from 'react-apollo'
++ import { ClientContext } from 'graphql-hooks'
+
+function App({ client }) {
+  return (
+-    <ApolloProvider client={client}>
++    <ClientContext.Provider value={client}>
+       {/* children */}
++    </ClientContext.Provider>      
+-    </ApolloProvider>
+  )
+}
+```
+
+#### Query Component -> useQuery()
+
+```diff
+- import { Query } from 'react-apollo'
+- import gql from 'graphql-tag'
++ import { useQuery } from 'graphql-hooks'
+
+function MyComponent() {
++ const { loading, error, data } = useQuery('...')
+
+-  return (
+-    <Query query={gql`...`}>
+-     {({ loading, error, data}) => {
+        if (loading) return 'Loading...'
+        if (error) return 'Error :('
+
+        return <div>{data}</div>
+-      }}
+-    </Query>
+-  )
+}
+```
+
+#### Query Component Props
+
+Alot of options can be carried over as-is, or have direct replacement:
+
+- `query`: No need to wrap the query in `gql`
+- `variables` ➡️ `useQuery(query, { variables })`
+- `ssr` ➡️ `useQuery(query, { ssr })`
+- FetchPolicies: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
+  - `fetchPolicy="cache-first"`: This the default behaviour of `graphql-hooks`
+  - `fetchPolicy="cache-and-network"`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
+  - `fetchPolicy="network-only"` ➡️ `useQuery(QUERY, { skipCache: true })`
+  - `fetchPolicy="cache-only"`: Not supported
+  - `fetchPolicy="no-cache"` ➡️ `useQuery(QUERY, { useCache: false })`
+
+**Not supported**
+
+- `errorPolicy`: Any error will set the `error` to be truthy. See [useQuery](#useQuery) for more details.
+- `pollInterval`
+- `notifyOnNetworkStatusChange`
+- `skip`
+- `onCompleted`
+- `onError`
+- `partialRefetch`
+
+#### Query Component Render Props
+
+```diff
+- <Query query={gql`...`}>
+-  {(props) => {}}
+- </Query>
++ const state = useQuery(query)
+```
+
+- `props.loading` ➡️ `state.loading`
+- `props.error`: The error prop from `useQuery` is Boolean the details of the error can be found in either:
+  - `state.fetchError`
+  - `state.httpError`
+  - `state.graphQLErrors`
+- `props.refetch` ️➡️ `state.refetch`
+- `props.updateData(prevResult, options)` ️➡️ `state.updateData(prevResult, newResult)`
+
+*Not supported*
+- `props.networkStatus`
+- `props.startPolling`
+- `props.stopPolling`
+- `props.subscribeToMore`
 
 
 
