@@ -102,7 +102,7 @@ function MyComponent() {
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
-    - [ApolloClient -> GraphQLClient](#ApolloClient-->-GraphQLClient)
+    - [ApolloClient ➡️ GraphQLClient](#ApolloClient-➡️-GraphQLClient)
 
 ## API
 
@@ -491,7 +491,7 @@ Alot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`
 - `fetch`
 - `cache`
 
-### ApolloProvider -> ClientContext.Provider
+### ApolloProvider ➡️ ClientContext.Provider
 
 ```diff
 - import { ApolloProvider } from 'react-apollo'
@@ -535,7 +535,7 @@ function MyComponent() {
 
 Alot of options can be carried over as-is, or have direct replacement:
 
-- `query`: No need to wrap the query in `gql`
+- `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
 - FetchPolicies: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
