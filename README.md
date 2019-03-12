@@ -102,7 +102,8 @@ function MyComponent() {
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
-    - [ApolloClient ➡️ GraphQLClient](#ApolloClient-➡️-GraphQLClient)
+    - [ApolloClient ➡️ GraphQLClient](#ApolloClient--GraphQLClient)
+    - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
 
 ## API
 
@@ -464,7 +465,7 @@ Coming soon!
 
 ## Migrating from Apollo
 
-### ApolloClient -> GraphQLClient
+### ApolloClient ➡️ GraphQLClient
 
 ```diff
 - import { ApolloClient } from 'apollo-client'
@@ -508,7 +509,7 @@ function App({ client }) {
 }
 ```
 
-### Query Component -> useQuery()
+### Query Component ➡️ useQuery()
 
 ```diff
 - import { Query } from 'react-apollo'
@@ -579,7 +580,7 @@ _Not supported_
 - `props.stopPolling`
 - `props.subscribeToMore`
 
-### Mutation Component -> useMutation
+### Mutation Component ➡️ useMutation
 
 ```diff
 - import { Mutation } from 'react-apollo'
