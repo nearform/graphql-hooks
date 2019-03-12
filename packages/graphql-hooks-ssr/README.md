@@ -26,7 +26,7 @@ app.get('/', async (req, reply) => {
   // Step 1: Create the client inside the request handler
   const client = new GraphQLClient({
     url: 'https://domain.com/graphql',
-    cache: memCache(),
+    cache: memCache() // NOTE: a cache is required for SSR,
     fetch
   })
 

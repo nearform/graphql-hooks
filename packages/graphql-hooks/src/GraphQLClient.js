@@ -15,6 +15,10 @@ class GraphQLClient {
       )
     }
 
+    if (config.ssrMode && !config.cache) {
+      throw new Error('GraphQLClient: config.cache is required when in ssrMode')
+    }
+
     this.cache = config.cache
     this.headers = config.headers || {}
     this.ssrMode = config.ssrMode

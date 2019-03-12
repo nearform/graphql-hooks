@@ -118,7 +118,7 @@ const client = new GraphQLClient(config)
 
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
-- `cache`: Object with the following methods:
+- `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
   - `cache.delete(key)`
