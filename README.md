@@ -467,6 +467,8 @@ Coming soon!
 
 ## Migrating from Apollo
 
+For a real life example, compare the next.js [with-apollo](https://github.com/zeit/next.js/tree/canary/examples/with-apollo) vs [with-graphql-hooks](https://github.com/zeit/next.js/tree/canary/examples/with-graphql-hooks). We have feature parity and the `main-*.js` bundle is a whopping **93% smaller** (7.9KB vs 116KB).
+
 ### ApolloClient ➡️ GraphQLClient
 
 ```diff
@@ -541,7 +543,7 @@ Alot of options can be carried over as-is, or have direct replacement:
 - `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
-- FetchPolicies: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
+- **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
   - `cache-first`: This the default behaviour of `graphql-hooks`
   - `cache-and-network`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
   - `network-only` ➡️ `useQuery(QUERY, { skipCache: true })`
@@ -575,7 +577,7 @@ Alot of options can be carried over as-is, or have direct replacement:
 - `props.refetch` ️➡️ `state.refetch`
 - `props.updateData(prevResult, options)` ️➡️ `state.updateData(prevResult, newResult)`
 
-_Not supported_
+**Not yet supported**
 
 - `props.networkStatus`
 - `props.startPolling`
