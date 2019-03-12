@@ -1,3 +1,9 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ea51044b-e4eb-4b1d-8661-858260d82d7d/deploy-status)](https://app.netlify.com/sites/graphql-hooks-cra/deploys)
+
+See this example live at https://graphql-hooks-cra.netlify.com/
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
