@@ -2,9 +2,6 @@
   "packages": ["packages/*", "examples/*"],
   "version": "independent",
   "command": {
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]
-    },
     "publish": {
       "conventionalCommits": true,
       "message": "chore(release): :rocket:"
@@ -13,7 +10,8 @@
       "conventionalCommits": true
     },
     "bootstrap": {
-      "hoist": ["react", "react-dom"]
+      "hoist": ["react", "react-dom"],
+      "npmClientArgs": ["--no-package-lock"]
     }
   }
 }
