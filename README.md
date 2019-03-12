@@ -102,8 +102,10 @@ function MyComponent() {
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
-    - [ApolloClient ➡️ GraphQLClient](#ApolloClient--GraphQLClient)
+    - [ApolloClient ➡️ GraphQLClient](#apolloclient-️-graphqlclient)
     - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
+    - [Query Component ➡️ useQuery](#query-component-️-usequery)
+    - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
 
 ## API
 
@@ -509,7 +511,7 @@ function App({ client }) {
 }
 ```
 
-### Query Component ➡️ useQuery()
+### Query Component ➡️ useQuery
 
 ```diff
 - import { Query } from 'react-apollo'
