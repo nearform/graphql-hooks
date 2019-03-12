@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.0...graphql-hooks@3.3.1) (2019-03-12)
+
+
+### Bug Fixes
+
+* throw an error if client.cache isn't provided in ssrMode ([#124](https://github.com/nearform/graphql-hooks/issues/124)) ([ece277d](https://github.com/nearform/graphql-hooks/commit/ece277d))
+
+
+
+
+
 # [3.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.2.5...graphql-hooks@3.3.0) (2019-03-07)
 
 
