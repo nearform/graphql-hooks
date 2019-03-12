@@ -326,13 +326,13 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 
-## Guides
+# Guides
 
-### SSR
+## SSR
 
 See [graphql-hooks-ssr](packages/graphql-hooks-ssr) for an in depth guide.
 
-### Pagination
+## Pagination
 
 [GraphQL Pagination](https://graphql.org/learn/pagination/) can be implemented in various ways and it's down to the consumer to decide how to deal with the resulting data from paginated queries. Take the following query as an example of offset pagination:
 
@@ -353,7 +353,7 @@ export const allPostsQuery = `
 
 In this query, the `$first` variable is used to limit the number of posts that are returned and the `$skip` variable is used to determine the offset at which to start. We can use these variables to break up large payloads into smaller chunks, or "pages". We could then choose to display these chunks as distinct pages to the user, or use an infinite loading approach and append each new chunk to the existing list of posts.
 
-#### Separate pages
+### Separate pages
 
 Here is an example where we display the paginated queries on separate pages:
 
@@ -403,7 +403,7 @@ export default function PostList() {
 }
 ```
 
-#### Infinite loading
+### Infinite loading
 
 Here is an example where we append each paginated query to the bottom of the current list:
 
@@ -454,17 +454,17 @@ export default function PostList() {
 }
 ```
 
-### Authentication
+## Authentication
 
 Coming soon!
 
-### Fragments
+## Fragments
 
 Coming soon!
 
-### Migrating from Apollo
+## Migrating from Apollo
 
-#### ApolloClient -> GraphQLClient
+### ApolloClient -> GraphQLClient
 
 ```diff
 - import { ApolloClient } from 'apollo-client'
@@ -491,7 +491,7 @@ Alot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`
 - `fetch`
 - `cache`
 
-#### ApolloProvider -> ClientContext.Provider
+### ApolloProvider -> ClientContext.Provider
 
 ```diff
 - import { ApolloProvider } from 'react-apollo'
@@ -508,7 +508,7 @@ function App({ client }) {
 }
 ```
 
-#### Query Component -> useQuery()
+### Query Component -> useQuery()
 
 ```diff
 - import { Query } from 'react-apollo'
@@ -531,7 +531,7 @@ function MyComponent() {
 }
 ```
 
-#### Query Component Props
+### Query Component Props
 
 Alot of options can be carried over as-is, or have direct replacement:
 
@@ -539,11 +539,11 @@ Alot of options can be carried over as-is, or have direct replacement:
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
 - FetchPolicies: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
-  - `fetchPolicy="cache-first"`: This the default behaviour of `graphql-hooks`
-  - `fetchPolicy="cache-and-network"`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
-  - `fetchPolicy="network-only"` ➡️ `useQuery(QUERY, { skipCache: true })`
-  - `fetchPolicy="cache-only"`: Not supported
-  - `fetchPolicy="no-cache"` ➡️ `useQuery(QUERY, { useCache: false })`
+  - `cache-first`: This the default behaviour of `graphql-hooks`
+  - `cache-and-network`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
+  - `network-only` ➡️ `useQuery(QUERY, { skipCache: true })`
+  - `cache-only`: Not supported
+  - `no-cache` ➡️ `useQuery(QUERY, { useCache: false })`
 
 **Not supported**
 
@@ -555,7 +555,7 @@ Alot of options can be carried over as-is, or have direct replacement:
 - `onError`
 - `partialRefetch`
 
-#### Query Component Render Props
+### Query Component Render Props
 
 ```diff
 - <Query query={gql`...`}>
