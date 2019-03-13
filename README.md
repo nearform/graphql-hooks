@@ -102,6 +102,10 @@ function MyComponent() {
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
+    - [ApolloClient ➡️ GraphQLClient](#apolloclient-️-graphqlclient)
+    - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
+    - [Query Component ➡️ useQuery](#query-component-️-usequery)
+    - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
 
 ## API
 
@@ -325,13 +329,13 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 
-## Guides
+# Guides
 
-### SSR
+## SSR
 
 See [graphql-hooks-ssr](packages/graphql-hooks-ssr) for an in depth guide.
 
-### Pagination
+## Pagination
 
 [GraphQL Pagination](https://graphql.org/learn/pagination/) can be implemented in various ways and it's down to the consumer to decide how to deal with the resulting data from paginated queries. Take the following query as an example of offset pagination:
 
@@ -352,7 +356,7 @@ export const allPostsQuery = `
 
 In this query, the `$first` variable is used to limit the number of posts that are returned and the `$skip` variable is used to determine the offset at which to start. We can use these variables to break up large payloads into smaller chunks, or "pages". We could then choose to display these chunks as distinct pages to the user, or use an infinite loading approach and append each new chunk to the existing list of posts.
 
-#### Separate pages
+### Separate pages
 
 Here is an example where we display the paginated queries on separate pages:
 
@@ -402,7 +406,7 @@ export default function PostList() {
 }
 ```
 
-#### Infinite loading
+### Infinite loading
 
 Here is an example where we append each paginated query to the bottom of the current list:
 
@@ -453,17 +457,191 @@ export default function PostList() {
 }
 ```
 
-### Authentication
+## Authentication
 
 Coming soon!
 
-### Fragments
+## Fragments
 
 Coming soon!
 
-### Migrating from Apollo
+## Migrating from Apollo
 
-Coming soon!
+For a real life example, compare the next.js [with-apollo](https://github.com/zeit/next.js/tree/canary/examples/with-apollo) vs [with-graphql-hooks](https://github.com/zeit/next.js/tree/canary/examples/with-graphql-hooks). We have feature parity and the `main-*.js` bundle is a whopping **93% smaller** (7.9KB vs 116KB).
+
+### ApolloClient ➡️ GraphQLClient
+
+```diff
+- import { ApolloClient } from 'apollo-client'
+- import { InMemoryCache } from 'apollo-cache-inmemory'
++ import { GraphQLClient } from 'graphql-hooks'
++ import memCache from 'graphql-hooks-memcache'
+
+- const client = new ApolloClient({
+-  uri: '/graphql',
+-  cache: new InMemoryCache()
+- })
++ const client = new GraphQLClient({
++   url: '/graphql',
++   cache: memCache()
++ })
+```
+
+A lot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`:
+
+- `uri` ➡️ `url`
+- `fetchOptions`
+- `onError` - the function signature is slightly different
+- `headers`
+- `fetch`
+- `cache`
+
+### ApolloProvider ➡️ ClientContext.Provider
+
+```diff
+- import { ApolloProvider } from 'react-apollo'
++ import { ClientContext } from 'graphql-hooks'
+
+function App({ client }) {
+  return (
+-    <ApolloProvider client={client}>
++    <ClientContext.Provider value={client}>
+       {/* children */}
++    </ClientContext.Provider>
+-    </ApolloProvider>
+  )
+}
+```
+
+### Query Component ➡️ useQuery
+
+```diff
+- import { Query } from 'react-apollo'
+- import gql from 'graphql-tag'
++ import { useQuery } from 'graphql-hooks'
+
+function MyComponent() {
++ const { loading, error, data } = useQuery('...')
+
+-  return (
+-    <Query query={gql`...`}>
+-     {({ loading, error, data}) => {
+        if (loading) return 'Loading...'
+        if (error) return 'Error :('
+
+        return <div>{data}</div>
+-      }}
+-    </Query>
+-  )
+}
+```
+
+### Query Component Props
+
+A lot of options can be carried over as-is, or have direct replacements:
+
+- `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
+- `variables` ➡️ `useQuery(query, { variables })`
+- `ssr` ➡️ `useQuery(query, { ssr })`
+- **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for more info
+  - `cache-first`: This the default behaviour of `graphql-hooks`
+  - `cache-and-network`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
+  - `network-only` ➡️ `useQuery(QUERY, { skipCache: true })`
+  - `cache-only`: Not supported
+  - `no-cache` ➡️ `useQuery(QUERY, { useCache: false })`
+
+**Not yet supported**
+
+- `errorPolicy`: Any error will set the `error` to be truthy. See [useQuery](#useQuery) for more details.
+- `pollInterval`
+- `notifyOnNetworkStatusChange`
+- `skip`
+- `onCompleted`: Similar ability if using `useManualQuery`
+- `onError`: Similar ability if using `useManualQuery`
+- `partialRefetch`
+
+### Query Component Render Props
+
+```diff
+- <Query query={gql`...`}>
+-  {(props) => {}}
+- </Query>
++ const state = useQuery(`...`)
+```
+
+- `props.loading` ➡️ `const { loading } = useQuery('...')`
+- `props.error` ➡️ `const { error } = useQuery('...')`: The error value from `useQuery` is Boolean the details of the error can be found in either:
+  - `state.fetchError`
+  - `state.httpError`
+  - `state.graphQLErrors`
+- `props.refetch` ️➡️ `const { refetch } = useQuery('...')`
+- `props.updateData(prevResult, options)` ️➡️ `state.updateData(prevResult, newResult)`
+
+**Not yet supported**
+
+- `props.networkStatus`
+- `props.startPolling`
+- `props.stopPolling`
+- `props.subscribeToMore`
+
+### Mutation Component ➡️ useMutation
+
+```diff
+- import { Mutation } from 'react-apollo'
+- import gql from 'graphql-tag'
++ import { useMutation } from 'graphql-hooks'
+
+function MyComponent() {
++ const [mutateFn, { loading, error, data }] = useMutation('...')
+
+-  return (
+-    <Mutation mutation={gql`...`}>
+-     {(mutateFn, { loading, error }) => {
+        if (error) return 'Error :('
+
+        return <button disabled={loading} onClick={() => mutateFn()}>Submit</button>
+-      }}
+-    </Mutation>
+-  )
+}
+```
+
+### Mutation Props
+
+- `mutation` ➡️ `useMutation(mutation)` - no need to wrap it in `gql`
+- `variables` ➡️️ `useMutation(mutation, { variables })` or `mutateFn({ variables })`
+- `ignoreResults` ➡️️️️ `const [mutateFn] = useMutation(mutation)`
+- `onCompleted` ➡️ ️`mutateFn().then(onCompleted)`
+- `onError` ➡️ `mutateFn().then(({ error }) => {...})`
+
+**Not yet supported**
+
+- `update`: Coming soon [#52](https://github.com/nearform/graphql-hooks/issues/52)
+- `optimisticResponse`
+- `refetchQueries`
+- `awaitRefetchQueries`
+- `context`
+
+## Mutation Component Render Props
+
+```diff
+- <Mutation mutation={gql`...`}>
+-  {(mutateFn, props) => {}}
+- </Mutation>
++ const [mutateFn, state] = useMutation(`...`)
+```
+
+- `props.data` ➡️ `const [mutateFn, { data }] = useMutation()`
+- `props.loading` ➡️ `const [mutateFn, { loading }] = useMutation()`
+- `props.error` ➡️ `const [mutateFn, { error }] = useMutation()`: The the details of the error can be found in either:
+  - `state.fetchError`
+  - `state.httpError`
+  - `state.graphQLErrors`
+- `client` ️➡️️ `const client = useContext(ClientContext)` see [ClientContext](#ClientContext)
+
+**Not yet supported**
+
+- `called`
 
 ## Contributors
 
@@ -473,6 +651,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore -->
 | [<img src="https://avatars1.githubusercontent.com/u/1939483?v=4" width="100px;" alt="Brian Mullan"/><br /><sub><b>Brian Mullan</b></sub>](https://twitter.com/bmullan91)<br />[💬](#question-bmullan91 "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Abmullan91 "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Code") [🖋](#content-bmullan91 "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Documentation") [💡](#example-bmullan91 "Examples") [🤔](#ideas-bmullan91 "Ideas, Planning, & Feedback") [🚧](#maintenance-bmullan91 "Maintenance") [👀](#review-bmullan91 "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Tests") | [<img src="https://avatars0.githubusercontent.com/u/1485654?v=4" width="100px;" alt="Jack Clark"/><br /><sub><b>Jack Clark</b></sub>](https://jackdc.com)<br />[💬](#question-jackdclark "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajackdclark "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Code") [🖋](#content-jackdclark "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Documentation") [💡](#example-jackdclark "Examples") [🤔](#ideas-jackdclark "Ideas, Planning, & Feedback") [🚧](#maintenance-jackdclark "Maintenance") [👀](#review-jackdclark "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2870255?v=4" width="100px;" alt="Joe Warren"/><br /><sub><b>Joe Warren</b></sub>](http://twitter.com/joezo)<br />[💬](#question-Joezo "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AJoezo "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Code") [🖋](#content-Joezo "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Documentation") [💡](#example-Joezo "Examples") [🤔](#ideas-Joezo "Ideas, Planning, & Feedback") [🚧](#maintenance-Joezo "Maintenance") [👀](#review-Joezo "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Tests") | [<img src="https://avatars1.githubusercontent.com/u/20181?v=4" width="100px;" alt="Simone Busoli"/><br /><sub><b>Simone Busoli</b></sub>](http://simoneb.github.io)<br />[💬](#question-simoneb "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Asimoneb "Bug reports") [📖](https://github.com/nearform/graphql-hooks/commits?author=simoneb "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/842246?v=4" width="100px;" alt="jhey tompkins"/><br /><sub><b>jhey tompkins</b></sub>](https://jheytompkins.com)<br />[⚠️](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Tests") [💬](#question-jh3y "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajh3y "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Code") [🖋](#content-jh3y "Content") [👀](#review-jh3y "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/6270048?v=4" width="100px;" alt="Haroen Viaene"/><br /><sub><b>Haroen Viaene</b></sub>](https://haroen.me)<br />[🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AHaroenv "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/10748727?v=4" width="100px;" alt="Ari Bouius"/><br /><sub><b>Ari Bouius</b></sub>](https://github.com/aribouius)<br />[📖](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Documentation") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Aaribouius "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Code") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Tests") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
