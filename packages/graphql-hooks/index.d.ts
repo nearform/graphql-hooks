@@ -1,7 +1,3 @@
-// Type definitions for graphql-hooks
-// Project: graphql-hooks
-// Definitions by: Jack Clark <@jackdclark>
-
 // Exports
 
 export class GraphQLClient {
