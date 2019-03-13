@@ -5,6 +5,7 @@
   "main": "lib/graphql-hooks-memcache.js",
   "module": "es/graphql-hooks-memcache.js",
   "unpkg": "dist/graphql-hooks-memcache.min.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "../../node_modules/.bin/rollup -c",
@@ -14,7 +15,8 @@
     "dist",
     "es",
     "lib",
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "keywords": [
     "graphql",
