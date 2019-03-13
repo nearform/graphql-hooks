@@ -4,6 +4,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "test:acceptance": "echo $ACCEPTANCE_URL",
     "postinstall": "lerna bootstrap --no-ci",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "eslint": "eslint '**/*.js'",

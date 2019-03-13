@@ -34,3 +34,21 @@ jobs:
           path: reports/junit
 
       - run: npm run coveralls
+  acceptance-tests:
+    working_directory: ~/graphql-hooks
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+
+      - run: npm install
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+      - run: npm run test:acceptance
