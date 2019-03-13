@@ -538,7 +538,7 @@ function MyComponent() {
 
 ### Query Component Props
 
-A lot of options can be carried over as-is, or have direct replacement:
+A lot of options can be carried over as-is, or have direct replacements:
 
 - `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
 - `variables` ➡️ `useQuery(query, { variables })`
