@@ -58,7 +58,7 @@ app.get('/', async (req, reply) => {
             window.__INITIAL_STATE__=${JSON.stringify(initialState).replace(
               /</g,
               '\\u003c'
-            )};  
+            )};
           </script>
         </body>
       </html>

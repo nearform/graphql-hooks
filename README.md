@@ -487,11 +487,11 @@ For a real life example, compare the next.js [with-apollo](https://github.com/ze
 + })
 ```
 
-Alot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`:
+A lot of the options you'd pass to `ApolloClient` are the same as `GraphQLClient`:
 
 - `uri` ➡️ `url`
 - `fetchOptions`
-- `onError` - the function signature is slighly different
+- `onError` - the function signature is slightly different
 - `headers`
 - `fetch`
 - `cache`
@@ -538,12 +538,12 @@ function MyComponent() {
 
 ### Query Component Props
 
-Alot of options can be carried over as-is, or have direct replacement:
+A lot of options can be carried over as-is, or have direct replacement:
 
 - `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
-- **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for a more info
+- **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for more info
   - `cache-first`: This the default behaviour of `graphql-hooks`
   - `cache-and-network`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
   - `network-only` ➡️ `useQuery(QUERY, { skipCache: true })`
@@ -570,7 +570,7 @@ Alot of options can be carried over as-is, or have direct replacement:
 ```
 
 - `props.loading` ➡️ `state.loading`
-- `props.error`: The error prop from `useQuery` is Boolean the details of the error can be found in either:
+- `props.error`: The error value from `useQuery` is Boolean the details of the error can be found in either:
   - `state.fetchError`
   - `state.httpError`
   - `state.graphQLErrors`
@@ -624,9 +624,14 @@ function MyComponent() {
 
 ## Mutation Component Render Props
 
-- `data` ➡️ `const [mutateFn, { data }] = useMutation`
-- `loading` ➡️ `const [mutateFn, { loading }] = useMutation`
-- `error` ➡️ `const [mutateFn, { error }] = useMutation`
+- `data` ➡️ `const [mutateFn, { data }] = useMutation()`
+- `loading` ➡️ `const [mutateFn, { loading }] = useMutation()`
+- `error` ➡️ `const [mutateFn, { error }] = useMutation()`: The the details of the error can be found in either:
+
+  - `fetchError`
+  - `httpError`
+  - `graphQLErrors`
+
 - `client` ️➡️️ `const client = useContext(ClientContext)` see [ClientContext](#ClientContext)
 
 **Not yet supported**
@@ -641,6 +646,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore -->
 | [<img src="https://avatars1.githubusercontent.com/u/1939483?v=4" width="100px;" alt="Brian Mullan"/><br /><sub><b>Brian Mullan</b></sub>](https://twitter.com/bmullan91)<br />[💬](#question-bmullan91 "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Abmullan91 "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Code") [🖋](#content-bmullan91 "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Documentation") [💡](#example-bmullan91 "Examples") [🤔](#ideas-bmullan91 "Ideas, Planning, & Feedback") [🚧](#maintenance-bmullan91 "Maintenance") [👀](#review-bmullan91 "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=bmullan91 "Tests") | [<img src="https://avatars0.githubusercontent.com/u/1485654?v=4" width="100px;" alt="Jack Clark"/><br /><sub><b>Jack Clark</b></sub>](https://jackdc.com)<br />[💬](#question-jackdclark "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajackdclark "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Code") [🖋](#content-jackdclark "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Documentation") [💡](#example-jackdclark "Examples") [🤔](#ideas-jackdclark "Ideas, Planning, & Feedback") [🚧](#maintenance-jackdclark "Maintenance") [👀](#review-jackdclark "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=jackdclark "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2870255?v=4" width="100px;" alt="Joe Warren"/><br /><sub><b>Joe Warren</b></sub>](http://twitter.com/joezo)<br />[💬](#question-Joezo "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AJoezo "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Code") [🖋](#content-Joezo "Content") [📖](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Documentation") [💡](#example-Joezo "Examples") [🤔](#ideas-Joezo "Ideas, Planning, & Feedback") [🚧](#maintenance-Joezo "Maintenance") [👀](#review-Joezo "Reviewed Pull Requests") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=Joezo "Tests") | [<img src="https://avatars1.githubusercontent.com/u/20181?v=4" width="100px;" alt="Simone Busoli"/><br /><sub><b>Simone Busoli</b></sub>](http://simoneb.github.io)<br />[💬](#question-simoneb "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Asimoneb "Bug reports") [📖](https://github.com/nearform/graphql-hooks/commits?author=simoneb "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/842246?v=4" width="100px;" alt="jhey tompkins"/><br /><sub><b>jhey tompkins</b></sub>](https://jheytompkins.com)<br />[⚠️](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Tests") [💬](#question-jh3y "Answering Questions") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Ajh3y "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=jh3y "Code") [🖋](#content-jh3y "Content") [👀](#review-jh3y "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/6270048?v=4" width="100px;" alt="Haroen Viaene"/><br /><sub><b>Haroen Viaene</b></sub>](https://haroen.me)<br />[🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3AHaroenv "Bug reports") | [<img src="https://avatars2.githubusercontent.com/u/10748727?v=4" width="100px;" alt="Ari Bouius"/><br /><sub><b>Ari Bouius</b></sub>](https://github.com/aribouius)<br />[📖](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Documentation") [🐛](https://github.com/nearform/graphql-hooks/issues?q=author%3Aaribouius "Bug reports") [💻](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Code") [⚠️](https://github.com/nearform/graphql-hooks/commits?author=aribouius "Tests") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
