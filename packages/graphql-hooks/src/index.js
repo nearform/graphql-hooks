@@ -4,7 +4,7 @@ import useClientRequest from './useClientRequest'
 import useQuery from './useQuery'
 
 const useManualQuery = (query, options) =>
-  useClientRequest(query, { useCache: true, ...options })
+  useClientRequest(query, { useCache: true, isManual: true, ...options })
 
 const useMutation = (query, options) =>
   useClientRequest(query, { isMutation: true, ...options })
