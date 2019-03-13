@@ -556,8 +556,8 @@ A lot of options can be carried over as-is, or have direct replacements:
 - `pollInterval`
 - `notifyOnNetworkStatusChange`
 - `skip`
-- `onCompleted`: Similar ability if using `useManualQery`
-- `onError`: Similar ability if using `useManualQery`
+- `onCompleted`: Similar ability if using `useManualQuery`
+- `onError`: Similar ability if using `useManualQuery`
 - `partialRefetch`
 
 ### Query Component Render Props
