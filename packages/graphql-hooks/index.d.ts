@@ -18,8 +18,8 @@ export class GraphQLClient {
 
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(object): GraphQLClient
-  logErrorResult({ result: object, operation: object }): void
-  request(operation: object, options: object): Promise<any>
+  logErrorResult({ result: object, operation: Operation }): void
+  request(operation: Operation, options: object): Promise<any>
 }
 
 export function useClientRequest(
@@ -90,7 +90,7 @@ interface Result {
 
 interface UseClientRequestOptions {
   useCache?: boolean
-  useMutation?: boolean
+  isMutation?: boolean
   variables?: object
   operationName?: string
   skipCache?: boolean
