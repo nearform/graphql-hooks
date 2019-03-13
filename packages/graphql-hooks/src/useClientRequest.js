@@ -60,12 +60,13 @@ function useClientRequest(query, initialOpts = {}) {
   }
 
   const cacheKey = client.getCacheKey(operation, initialOpts)
+  const isDeferred = initialOpts.isMutation || initialOpts.isManual
   const initialCacheHit =
     initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey)
   const initialState = {
     ...initialCacheHit,
     cacheHit: !!initialCacheHit,
-    loading: initialOpts.isMutation ? false : !initialCacheHit
+    loading: isDeferred ? false : !initialCacheHit
   }
   const [state, dispatch] = React.useReducer(reducer, initialState)
 

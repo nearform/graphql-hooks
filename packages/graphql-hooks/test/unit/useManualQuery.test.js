@@ -13,7 +13,8 @@ describe('useManualQuery', () => {
     useManualQuery(TEST_QUERY, { option: 'option' })
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: true,
-      option: 'option'
+      option: 'option',
+      isManual: true
     })
   })
 })

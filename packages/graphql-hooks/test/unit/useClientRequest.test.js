@@ -159,6 +159,21 @@ describe('useClientRequest', () => {
       expect(fetchData).toEqual(expect.any(Function))
       expect(state).toEqual({ cacheHit: false, loading: false })
     })
+
+    it('sets loading to false if isManual is passed in', () => {
+      let fetchData, state
+      renderHook(
+        () =>
+          ([fetchData, state] = useClientRequest(TEST_QUERY, {
+            isManual: true
+          })),
+        {
+          wrapper: Wrapper
+        }
+      )
+      expect(fetchData).toEqual(expect.any(Function))
+      expect(state).toEqual({ cacheHit: false, loading: false })
+    })
   })
 
   describe('fetchData', () => {
