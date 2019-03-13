@@ -91,6 +91,7 @@ interface Result {
 interface UseClientRequestOptions {
   useCache?: boolean
   isMutation?: boolean
+  isManual?: boolean
   variables?: object
   operationName?: string
   skipCache?: boolean
