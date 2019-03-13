@@ -30,7 +30,7 @@ export function useQuery(
 
 export function useManualQuery(
   query: string,
-  options?: ClientRequesOptions
+  options?: UseClientRequestOptions
 ): [FetchData, UseClientRequestResult]
 
 export function useMutation(
