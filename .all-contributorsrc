@@ -104,7 +104,9 @@
       "profile": "https://github.com/aribouius",
       "contributions": [
         "doc",
-        "bug"
+        "bug",
+        "code",
+        "test"
       ]
     }
   ],
