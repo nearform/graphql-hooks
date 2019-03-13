@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.1...graphql-hooks@3.3.2) (2019-03-13)
+
+
+### Bug Fixes
+
+* default loading state for useManualQuery ([#132](https://github.com/nearform/graphql-hooks/issues/132)) ([c18fc15](https://github.com/nearform/graphql-hooks/commit/c18fc15))
+
+
+
+
+
 ## [3.3.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.0...graphql-hooks@3.3.1) (2019-03-12)
 
 
