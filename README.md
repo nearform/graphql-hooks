@@ -566,15 +566,15 @@ A lot of options can be carried over as-is, or have direct replacement:
 - <Query query={gql`...`}>
 -  {(props) => {}}
 - </Query>
-+ const state = useQuery(query)
++ const state = useQuery(`...`)
 ```
 
-- `props.loading` ➡️ `state.loading`
-- `props.error`: The error value from `useQuery` is Boolean the details of the error can be found in either:
+- `props.loading` ➡️ `const { loading } = useQuery('...')`
+- `props.error` ➡️ `const { error } = useQuery('...')`: The error value from `useQuery` is Boolean the details of the error can be found in either:
   - `state.fetchError`
   - `state.httpError`
   - `state.graphQLErrors`
-- `props.refetch` ️➡️ `state.refetch`
+- `props.refetch` ️➡️ `const { refetch } = useQuery('...')`
 - `props.updateData(prevResult, options)` ️➡️ `state.updateData(prevResult, newResult)`
 
 **Not yet supported**
@@ -624,14 +624,19 @@ function MyComponent() {
 
 ## Mutation Component Render Props
 
-- `data` ➡️ `const [mutateFn, { data }] = useMutation()`
-- `loading` ➡️ `const [mutateFn, { loading }] = useMutation()`
-- `error` ➡️ `const [mutateFn, { error }] = useMutation()`: The the details of the error can be found in either:
+```diff
+- <Mutation mutation={gql`...`}>
+-  {(mutateFn, props) => {}}
+- </Mutation>
++ const [mutateFn, state] = useMutation(`...`)
+```
 
-  - `fetchError`
-  - `httpError`
-  - `graphQLErrors`
-
+- `props.data` ➡️ `const [mutateFn, { data }] = useMutation()`
+- `props.loading` ➡️ `const [mutateFn, { loading }] = useMutation()`
+- `props.error` ➡️ `const [mutateFn, { error }] = useMutation()`: The the details of the error can be found in either:
+  - `state.fetchError`
+  - `state.httpError`
+  - `state.graphQLErrors`
 - `client` ️➡️️ `const client = useContext(ClientContext)` see [ClientContext](#ClientContext)
 
 **Not yet supported**
