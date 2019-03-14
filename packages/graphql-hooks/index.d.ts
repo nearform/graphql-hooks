@@ -14,7 +14,7 @@ export class GraphQLClient {
 
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
-  logErrorResult({ result: object, operation: Operation }): void
+  logErrorResult({ result: Result, operation: Operation }): void
   request(operation: Operation, options: object): Promise<any>
 }
 
