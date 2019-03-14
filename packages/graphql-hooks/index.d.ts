@@ -13,14 +13,14 @@ export class GraphQLClient {
   private fetch(): Promise<any>
 
   setHeader(key: string, value: string): GraphQLClient
-  setHeaders(object): GraphQLClient
+  setHeaders(headers: Headers): GraphQLClient
   logErrorResult({ result: object, operation: Operation }): void
   request(operation: Operation, options: object): Promise<any>
 }
 
 export function useClientRequest(
   query: string,
-  initialOptions?: UseClientRequestOptions
+  options?: UseClientRequestOptions
 ): [FetchData, UseClientRequestResult]
 
 export function useQuery(
@@ -110,7 +110,7 @@ interface UseClientRequestResult {
 }
 
 interface UseQueryResult extends UseClientRequestResult {
-  refetch(options?: UseQueryOptions): Promise<any>
+  refetch(options?: UseQueryOptions): Promise<UseClientRequestResult>
 }
 
 type FetchData = (
