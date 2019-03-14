@@ -14,7 +14,9 @@ module.exports = {
   ],
   globals: {
     Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    SharedArrayBuffer: 'readonly',
+    fixture: true,
+    test: true
   },
   parserOptions: {
     ecmaFeatures: {
