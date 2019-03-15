@@ -34,3 +34,28 @@ jobs:
           path: reports/junit
 
       - run: npm run coveralls
+  acceptance-tests:
+    working_directory: ~/graphql-hooks
+    environment:
+      BROWSERSTACK_PARALLEL_RUNS: '5'
+      BROWSERSTACK_USE_AUTOMATE: '1'
+      BROWSERSTACK_PROJECT_NAME: 'graphql-hooks'
+    docker:
+      - image: circleci/node:10.15
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+
+      - run: npm install
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+      - run: npm run test:acceptance:ci
+
+      - store_test_results:
+          path: /tmp/acceptance-test-results
