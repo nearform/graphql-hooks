@@ -5,6 +5,7 @@
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "../../node_modules/.bin/rollup -c",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
@@ -13,7 +14,8 @@
     "dist",
     "es",
     "lib",
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "keywords": [
     "graphql",
