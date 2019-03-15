@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/nearform/graphql-hooks/tree/master.svg?style=svg)](https://circleci.com/gh/nearform/graphql-hooks/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
-![](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)
+[![bundlephobia](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat)](https://bundlephobia.com/result?p=graphql-hooks)
 [![npm version](https://badge.fury.io/js/graphql-hooks.svg)](https://badge.fury.io/js/graphql-hooks)
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
@@ -12,7 +12,7 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny_ bundle: only 5.1kB (1.9 gzipped)
+- ⚖️ _Tiny_ bundle: only 5.3kB (1.9 gzipped)
 - 📄 Full SSR support: see [graphql-hooks-ssr](packages/graphql-hooks-ssr)
 - 🔌 Plugin Caching: see [graphql-hooks-memcache](packages/graphql-hooks-memcache)
 - 🔥 No more render props hell
