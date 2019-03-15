@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 // Exports
 
 export class GraphQLClient {
@@ -12,6 +14,10 @@ export class GraphQLClient {
   private onError(): any
   private fetch(): Promise<any>
 
+  getCacheKey(
+    operation: Operation,
+    options: UseClientRequestOptions
+  ): CacheKeyObject
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
   logErrorResult({ result: Result, operation: Operation }): void
@@ -38,7 +44,7 @@ export function useMutation(
   options?: UseClientRequestOptions
 ): [FetchData, UseClientRequestResult]
 
-export const ClientContext: any
+export const ClientContext: React.Context<GraphQLClient>
 
 // internal types
 
@@ -56,9 +62,9 @@ interface ClientOptions {
 type Headers = { [k: string]: string }
 
 interface Cache {
-  get(keyObject: object): object
-  set(keyObject: object, data: object): void
-  delete(keyObject: object): void
+  get(keyObject: CacheKeyObject): object
+  set(keyObject: CacheKeyObject, data: object): void
+  delete(keyObject: CacheKeyObject): void
   clear(): void
   keys(): void
   getInitialState(): object
@@ -116,3 +122,8 @@ interface UseQueryResult extends UseClientRequestResult {
 type FetchData = (
   options?: UseClientRequestOptions
 ) => Promise<UseClientRequestResult>
+
+interface CacheKeyObject {
+  operation: Operation
+  fetchOptions: object
+}
