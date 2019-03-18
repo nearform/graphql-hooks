@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.0.7...graphql-hooks-ssr@1.1.0) (2019-03-18)
+
+
+### Features
+
+* add a TypeScript declaration file for graphql-hooks-ssr ([#142](https://github.com/nearform/graphql-hooks/issues/142)) ([bddb379](https://github.com/nearform/graphql-hooks/commit/bddb379))
+
+
+
+
+
 ## [1.0.7](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.0.6...graphql-hooks-ssr@1.0.7) (2019-03-13)
 
 **Note:** Version bump only for package graphql-hooks-ssr

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.3...graphql-hooks@3.4.0) (2019-03-18)
+
+
+### Features
+
+* add a TypeScript declaration file for graphql-hooks ([#135](https://github.com/nearform/graphql-hooks/issues/135)) ([49787fc](https://github.com/nearform/graphql-hooks/commit/49787fc))
+
+
+
+
+
 ## [3.3.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.2...graphql-hooks@3.3.3) (2019-03-13)
 
 **Note:** Version bump only for package graphql-hooks
