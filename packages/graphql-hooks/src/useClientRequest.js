@@ -53,6 +53,7 @@ function reducer(state, action) {
 function useClientRequest(query, initialOpts = {}) {
   const client = React.useContext(ClientContext)
   const isMounted = React.useRef(true)
+  const activeCacheKey = React.useRef(null)
   const operation = {
     query,
     variables: initialOpts.variables,
@@ -103,6 +104,13 @@ function useClientRequest(query, initialOpts = {}) {
     }
 
     const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
+    const stringifiedCacheKey = JSON.stringify(revisedCacheKey)
+
+    // NOTE: Up until this point all calls will be called in correct order
+    // but after network request there's possibility of race conditions so
+    // activeCacheKey will enshure state to be updatet only with last value
+    activeCacheKey.current = stringifiedCacheKey
+
     const cacheHit =
       revisedOpts.skipCache || !client.cache
         ? null
@@ -130,7 +138,7 @@ function useClientRequest(query, initialOpts = {}) {
         client.cache.set(revisedCacheKey, result)
       }
 
-      if (isMounted.current) {
+      if (isMounted.current && stringifiedCacheKey === activeCacheKey.current) {
         dispatch({
           type: actionTypes.REQUEST_RESULT,
           result
