@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.4.0...graphql-hooks@3.4.1) (2019-03-22)
+
+
+### Bug Fixes
+
+* race condition bug ([#153](https://github.com/nearform/graphql-hooks/issues/153)) ([fdff313](https://github.com/nearform/graphql-hooks/commit/fdff313))
+
+
+
+
+
 # [3.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.3.3...graphql-hooks@3.4.0) (2019-03-18)
 
 
