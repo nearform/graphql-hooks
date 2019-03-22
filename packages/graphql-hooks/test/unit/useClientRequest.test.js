@@ -112,6 +112,88 @@ describe('useClientRequest', () => {
     })
   })
 
+  describe('race conditions', () => {
+    it('dispatches only second result if second response is faster than first', async () => {
+      const res1 = new Promise(resolve =>
+        setTimeout(() => resolve({ data: { result: 1 } }), 200)
+      )
+      const res2 = new Promise(resolve =>
+        setTimeout(() => resolve({ data: { result: 2 } }), 100)
+      )
+      mockClient.request = jest
+        .fn()
+        .mockReturnValueOnce(res1)
+        .mockReturnValueOnce(res2)
+      mockClient.getCacheKey = (operation, options) => ({ operation, options })
+
+      let fetchData, state
+
+      function Component({ variables }) {
+        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
+          variables
+        })
+      }
+
+      // Mount hook for the first time
+      let { rerender } = renderHook(Component, {
+        wrapper: Wrapper,
+        initialProps: { variables: { test: 1 } }
+      })
+
+      // Fetch first set of data
+      const firstFetchPromise = fetchData()
+      expect(state.loading).toBe(true)
+      // Sinchronously change query
+      rerender({ variables: { test: 2 } })
+      const secondFetchPromise = fetchData()
+      expect(state.loading).toBe(true)
+      // Wait for both requests and confirm that after second data is still from
+      // second call
+      await secondFetchPromise
+      expect(state.data.result).toBe(2)
+      await firstFetchPromise
+      expect(state.data.result).toBe(2)
+    })
+
+    it("doesn't dispatch first response if second is already loading", async () => {
+      const res1 = new Promise(resolve =>
+        setTimeout(() => resolve({ data: { result: 1 } }), 100)
+      )
+      const res2 = new Promise(resolve =>
+        setTimeout(() => resolve({ data: { result: 2 } }), 200)
+      )
+      mockClient.request = jest
+        .fn()
+        .mockReturnValueOnce(res1)
+        .mockReturnValueOnce(res2)
+      mockClient.getCacheKey = (operation, options) => ({ operation, options })
+
+      let fetchData, state
+
+      function Component({ variables }) {
+        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
+          variables
+        })
+      }
+
+      // Mount hook for the first time
+      let { rerender, waitForNextUpdate } = renderHook(Component, {
+        wrapper: Wrapper,
+        initialProps: { variables: { test: 1 } }
+      })
+
+      // Fetch first set of data
+      fetchData()
+      expect(state.loading).toBe(true)
+      // Sinchronously change query
+      rerender({ variables: { test: 2 } })
+      fetchData()
+      expect(state.loading).toBe(true)
+      await waitForNextUpdate()
+      expect(state.data.result).toBe(2)
+    })
+  })
+
   describe('initial state', () => {
     it('includes the cached response if present', () => {
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' })

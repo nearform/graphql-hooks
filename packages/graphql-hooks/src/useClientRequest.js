@@ -53,6 +53,7 @@ function reducer(state, action) {
 function useClientRequest(query, initialOpts = {}) {
   const client = React.useContext(ClientContext)
   const isMounted = React.useRef(true)
+  const activeCacheKey = React.useRef(null)
   const operation = {
     query,
     variables: initialOpts.variables,
@@ -103,6 +104,12 @@ function useClientRequest(query, initialOpts = {}) {
     }
 
     const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
+
+    // NOTE: There is a possibility of a race condition whereby
+    // the second query could finish before the first one, dispatching an old result
+    // see https://github.com/nearform/graphql-hooks/issues/150
+    activeCacheKey.current = revisedCacheKey
+
     const cacheHit =
       revisedOpts.skipCache || !client.cache
         ? null
@@ -130,7 +137,7 @@ function useClientRequest(query, initialOpts = {}) {
         client.cache.set(revisedCacheKey, result)
       }
 
-      if (isMounted.current) {
+      if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
         dispatch({
           type: actionTypes.REQUEST_RESULT,
           result
