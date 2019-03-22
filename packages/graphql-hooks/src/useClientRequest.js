@@ -138,7 +138,7 @@ function useClientRequest(query, initialOpts = {}) {
         client.cache.set(revisedCacheKey, result)
       }
 
-      if (isMounted.current && stringifiedCacheKey === activeCacheKey.current) {
+      if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
         dispatch({
           type: actionTypes.REQUEST_RESULT,
           result
