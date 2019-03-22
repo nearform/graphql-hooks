@@ -104,11 +104,10 @@ function useClientRequest(query, initialOpts = {}) {
     }
 
     const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
-    const stringifiedCacheKey = JSON.stringify(revisedCacheKey)
 
-    // NOTE: Up until this point all calls will be called in correct order
-    // but after network request there's possibility of race conditions so
-    // activeCacheKey will enshure state to be updatet only with last value
+    // NOTE: There is a possibility of a race condition whereby
+    // the second query could finish before the first one, dispatching an old result
+    // see https://github.com/nearform/graphql-hooks/issues/150
     activeCacheKey.current = revisedCacheKey
 
     const cacheHit =
