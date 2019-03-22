@@ -109,7 +109,7 @@ function useClientRequest(query, initialOpts = {}) {
     // NOTE: Up until this point all calls will be called in correct order
     // but after network request there's possibility of race conditions so
     // activeCacheKey will enshure state to be updatet only with last value
-    activeCacheKey.current = stringifiedCacheKey
+    activeCacheKey.current = revisedCacheKey
 
     const cacheHit =
       revisedOpts.skipCache || !client.cache
