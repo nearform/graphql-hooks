@@ -39,4 +39,4 @@ const client = new GraphQLClient({
 - `cache.delete(key)`: Delete an item from the cache
 - `cache.clear()`: Clear all items from the cache
 - `cache.keys()`: Returns an array of keys, useful when you need to iterate over the cache items
-- `cache.getInitialState()`: A serialisable version of the cache - used during SSR
+- `cache.getInitialState()`: A serializable version of the cache - used during SSR
