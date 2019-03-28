@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "jest-fetch-mock": "2.1.1",
-    "react": "16.8.5",
-    "react-dom": "16.8.5",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-hooks-testing-library": "0.3.8",
     "react-testing-library": "6.0.3"
   },
