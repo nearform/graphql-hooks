@@ -20,7 +20,7 @@ export class GraphQLClient {
   ): CacheKeyObject
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
-  logErrorResult({ result: Result, operation: Operation }): void
+  logErrorResult({ result, operation }: { result: Result, operation: Operation }): void
   request(operation: Operation, options: object): Promise<Result>
 }
 
@@ -56,7 +56,7 @@ interface ClientOptions {
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   logErrors?: boolean
-  onError?({ operation: Operation, result: Result }): void
+  onError?({ result, operation }: { operation: Operation, result: Result }): void
 }
 
 type Headers = { [k: string]: string }
