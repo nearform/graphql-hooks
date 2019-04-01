@@ -29,8 +29,8 @@
     "graphql-hooks-memcache": "^1.2.0",
     "graphql-hooks-ssr": "^1.1.0",
     "isomorphic-unfetch": "^3.0.0",
-    "react": "16.8.5",
-    "react-dom": "16.8.5",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "react-tree-walker": "^4.3.0"
   },
   "devDependencies": {
