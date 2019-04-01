@@ -120,6 +120,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "wescoder",
+      "name": "Wésley Queiroz",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/22945955?v=4",
+      "profile": "https://github.com/wescoder",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
