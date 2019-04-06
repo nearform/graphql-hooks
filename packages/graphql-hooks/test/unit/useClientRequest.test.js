@@ -112,6 +112,29 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('warns the user if the supplied query is not a string', () => {
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    renderHook(
+      () =>
+        useClientRequest(
+          {},
+          {
+            updateData: () => {}
+          }
+        ),
+      {
+        wrapper: Wrapper
+      }
+    )
+    /* eslint-disable-next-line no-console */
+    expect(console.warn.mock.calls[0][0]).toMatch(
+      /^Your query must be a string/
+    )
+    /* eslint-disable-next-line no-console */
+    console.warn.mockRestore()
+  })
+
   describe('race conditions', () => {
     it('dispatches only second result if second response is faster than first', async () => {
       const res1 = new Promise(resolve =>
