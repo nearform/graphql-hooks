@@ -112,6 +112,15 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('throws if the supplied query is not a string', () => {
+    const rendered = renderHook(() => useClientRequest({}), {
+      wrapper: Wrapper
+    })
+    expect(rendered.result.error.message).toMatch(
+      /^Your query must be a string/
+    )
+  })
+
   describe('race conditions', () => {
     it('dispatches only second result if second response is faster than first', async () => {
       const res1 = new Promise(resolve =>

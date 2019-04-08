@@ -51,6 +51,12 @@ function reducer(state, action) {
   opts.skipCache: Boolean
 */
 function useClientRequest(query, initialOpts = {}) {
+  if (typeof query !== 'string') {
+    throw new Error(
+      'Your query must be a string. If you are using the `gql` template literal from graphql-tag, remove it from your query.'
+    )
+  }
+
   const client = React.useContext(ClientContext)
   const isMounted = React.useRef(true)
   const activeCacheKey = React.useRef(null)
