@@ -112,27 +112,13 @@ describe('useClientRequest', () => {
     })
   })
 
-  it('warns the user if the supplied query is not a string', () => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {})
-
-    renderHook(
-      () =>
-        useClientRequest(
-          {},
-          {
-            updateData: () => {}
-          }
-        ),
-      {
-        wrapper: Wrapper
-      }
-    )
-    /* eslint-disable-next-line no-console */
-    expect(console.warn.mock.calls[0][0]).toMatch(
+  it('throws if the supplied query is not a string', () => {
+    const rendered = renderHook(() => useClientRequest({}), {
+      wrapper: Wrapper
+    })
+    expect(rendered.result.error.message).toMatch(
       /^Your query must be a string/
     )
-    /* eslint-disable-next-line no-console */
-    console.warn.mockRestore()
   })
 
   describe('race conditions', () => {

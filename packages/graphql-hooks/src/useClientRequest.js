@@ -52,8 +52,7 @@ function reducer(state, action) {
 */
 function useClientRequest(query, initialOpts = {}) {
   if (typeof query !== 'string') {
-    /* eslint-disable-next-line no-console */
-    console.warn(
+    throw new Error(
       'Your query must be a string. If you are using the `gql` template literal from graphql-tag, remove it from your query.'
     )
   }
