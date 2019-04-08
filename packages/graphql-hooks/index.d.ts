@@ -62,7 +62,7 @@ interface ClientOptions {
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   logErrors?: boolean
-  onError?({ operation: Operation, result: Result }): void
+  onError?({ result, operation }: { operation: Operation, result: Result }): void
 }
 
 type Headers = { [k: string]: string }
