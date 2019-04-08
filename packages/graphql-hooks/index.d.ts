@@ -62,7 +62,13 @@ interface ClientOptions {
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   logErrors?: boolean
-  onError?({ result, operation }: { operation: Operation, result: Result }): void
+  onError?({
+    result,
+    operation
+  }: {
+    operation: Operation
+    result: Result
+  }): void
 }
 
 type Headers = { [k: string]: string }
@@ -111,11 +117,11 @@ interface UseQueryOptions extends UseClientRequestOptions {
   ssr?: boolean
 }
 
-interface UseClientRequestResult<Response> {
+interface UseClientRequestResult<ResponseData> {
   loading: boolean
   cacheHit: boolean
   error: boolean
-  data: Response
+  data: ResponseData
   fetchError?: Error
   httpError?: HttpError
   graphQLErrors?: object[]
