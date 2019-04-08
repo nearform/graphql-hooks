@@ -541,7 +541,7 @@ function MyComponent() {
 
 A lot of options can be carried over as-is, or have direct replacements:
 
-- `query` ➡️ `useQuery(query)`: No need to wrap the query in `gql`
+- `query` ➡️ `useQuery(query)`: Remove any usage of `gql` and pass your queries as strings.
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
 - **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for more info
