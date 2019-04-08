@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks-ssr",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "types": "index.d.ts",
@@ -24,7 +24,7 @@
     "react-dom": "^16.8.1"
   },
   "devDependencies": {
-    "@types/react": "16.8.12",
+    "@types/react": "16.8.13",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
