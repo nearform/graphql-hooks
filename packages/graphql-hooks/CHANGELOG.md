@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.4.1...graphql-hooks@3.4.2) (2019-04-08)
+
+
+### Bug Fixes
+
+* Fix type declarations for logErrorResult & onError ([#175](https://github.com/nearform/graphql-hooks/issues/175)) ([8a37061](https://github.com/nearform/graphql-hooks/commit/8a37061))
+* query must be a string error ([#199](https://github.com/nearform/graphql-hooks/issues/199)) ([d58b1af](https://github.com/nearform/graphql-hooks/commit/d58b1af))
+
+
+
+
+
 ## [3.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.4.0...graphql-hooks@3.4.1) (2019-03-22)
 
 
