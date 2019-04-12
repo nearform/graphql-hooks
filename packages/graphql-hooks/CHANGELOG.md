@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.4.2...graphql-hooks@3.5.0) (2019-04-12)
+
+
+### Features
+
+* add optional type annotations ([#202](https://github.com/nearform/graphql-hooks/issues/202)) ([6e50e04](https://github.com/nearform/graphql-hooks/commit/6e50e04))
+
+
+
+
+
 ## [3.4.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.4.1...graphql-hooks@3.4.2) (2019-04-08)
 
 

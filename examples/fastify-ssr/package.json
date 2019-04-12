@@ -1,6 +1,6 @@
 {
   "name": "fastify-ssr",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "description": "",
   "main": "index.js",
@@ -25,7 +25,7 @@
     "fastify": "^1.14.1",
     "fastify-gql": "^0.8.0",
     "fastify-static": "^1.1.0",
-    "graphql-hooks": "^3.4.2",
+    "graphql-hooks": "^3.5.0",
     "graphql-hooks-memcache": "^1.2.0",
     "graphql-hooks-ssr": "^1.1.1",
     "isomorphic-unfetch": "^3.0.0",
