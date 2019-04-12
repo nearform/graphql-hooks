@@ -20,29 +20,35 @@ export class GraphQLClient {
   ): CacheKeyObject
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
-  logErrorResult({ result, operation }: { result: Result, operation: Operation }): void
+  logErrorResult({
+    result,
+    operation
+  }: {
+    result: Result
+    operation: Operation
+  }): void
   request(operation: Operation, options: object): Promise<Result>
 }
 
-export function useClientRequest(
+export function useClientRequest<ResponseData = any>(
   query: string,
   options?: UseClientRequestOptions
-): [FetchData, UseClientRequestResult]
+): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
-export function useQuery(
+export function useQuery<ResponseData = any>(
   query: string,
   options?: UseQueryOptions
-): UseQueryResult
+): UseQueryResult<ResponseData>
 
-export function useManualQuery(
+export function useManualQuery<ResponseData = any>(
   query: string,
   options?: UseClientRequestOptions
-): [FetchData, UseClientRequestResult]
+): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
-export function useMutation(
+export function useMutation<ResponseData = any>(
   query: string,
   options?: UseClientRequestOptions
-): [FetchData, UseClientRequestResult]
+): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
 export const ClientContext: React.Context<GraphQLClient>
 
@@ -56,7 +62,13 @@ interface ClientOptions {
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   logErrors?: boolean
-  onError?({ result, operation }: { operation: Operation, result: Result }): void
+  onError?({
+    result,
+    operation
+  }: {
+    operation: Operation
+    result: Result
+  }): void
 }
 
 type Headers = { [k: string]: string }
@@ -105,23 +117,26 @@ interface UseQueryOptions extends UseClientRequestOptions {
   ssr?: boolean
 }
 
-interface UseClientRequestResult {
+interface UseClientRequestResult<ResponseData> {
   loading: boolean
   cacheHit: boolean
   error: boolean
-  data: any
+  data: ResponseData
   fetchError?: Error
   httpError?: HttpError
-  graphQLError?: object[]
+  graphQLErrors?: object[]
 }
 
-interface UseQueryResult extends UseClientRequestResult {
-  refetch(options?: UseQueryOptions): Promise<UseClientRequestResult>
+interface UseQueryResult<ResponseData>
+  extends UseClientRequestResult<ResponseData> {
+  refetch(
+    options?: UseQueryOptions
+  ): Promise<UseClientRequestResult<ResponseData>>
 }
 
-type FetchData = (
+type FetchData<ResponseData> = (
   options?: UseClientRequestOptions
-) => Promise<UseClientRequestResult>
+) => Promise<UseClientRequestResult<ResponseData>>
 
 interface CacheKeyObject {
   operation: Operation
