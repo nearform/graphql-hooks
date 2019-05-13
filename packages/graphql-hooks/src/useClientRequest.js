@@ -60,13 +60,14 @@ function useClientRequest(query, initialOpts = {}) {
   const client = React.useContext(ClientContext)
   const isMounted = React.useRef(true)
   const activeCacheKey = React.useRef(null)
-  const operation = {
+  const operation = React.useRef(null)
+  operation.current = {
     query,
     variables: initialOpts.variables,
     operationName: initialOpts.operationName
   }
 
-  const cacheKey = client.getCacheKey(operation, initialOpts)
+  const cacheKey = client.getCacheKey(operation.current, initialOpts)
   const isDeferred = initialOpts.isMutation || initialOpts.isManual
   const initialCacheHit =
     initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey)
@@ -95,64 +96,76 @@ function useClientRequest(query, initialOpts = {}) {
     }
   }, [])
 
+  const latestInitialOpts = React.useRef(null)
+  latestInitialOpts.current = initialOpts
+
+  const latestStateData = React.useRef(null)
+  latestStateData.current = state.data
+
   // arguments to fetchData override the useClientRequest arguments
-  function fetchData(newOpts) {
-    if (!isMounted.current) return Promise.resolve()
-    const revisedOpts = {
-      ...initialOpts,
-      ...newOpts
-    }
-
-    const revisedOperation = {
-      ...operation,
-      variables: revisedOpts.variables,
-      operationName: revisedOpts.operationName
-    }
-
-    const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
-
-    // NOTE: There is a possibility of a race condition whereby
-    // the second query could finish before the first one, dispatching an old result
-    // see https://github.com/nearform/graphql-hooks/issues/150
-    activeCacheKey.current = revisedCacheKey
-
-    const cacheHit =
-      revisedOpts.skipCache || !client.cache
-        ? null
-        : client.cache.get(revisedCacheKey)
-
-    if (cacheHit) {
-      dispatch({
-        type: actionTypes.CACHE_HIT,
-        result: cacheHit
-      })
-
-      return Promise.resolve(cacheHit)
-    }
-
-    dispatch({ type: actionTypes.LOADING })
-    return client.request(revisedOperation, revisedOpts).then(result => {
-      if (state.data && result.data && revisedOpts.updateData) {
-        if (typeof revisedOpts.updateData !== 'function') {
-          throw new Error('options.updateData must be a function')
-        }
-        result.data = revisedOpts.updateData(state.data, result.data)
+  const fetchData = React.useCallback(
+    newOpts => {
+      if (!isMounted.current) return Promise.resolve()
+      const revisedOpts = {
+        ...latestInitialOpts.current,
+        ...newOpts
       }
 
-      if (revisedOpts.useCache && client.cache) {
-        client.cache.set(revisedCacheKey, result)
+      const revisedOperation = {
+        ...operation.current,
+        variables: revisedOpts.variables,
+        operationName: revisedOpts.operationName
       }
 
-      if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
+      const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
+
+      // NOTE: There is a possibility of a race condition whereby
+      // the second query could finish before the first one, dispatching an old result
+      // see https://github.com/nearform/graphql-hooks/issues/150
+      activeCacheKey.current = revisedCacheKey
+
+      const cacheHit =
+        revisedOpts.skipCache || !client.cache
+          ? null
+          : client.cache.get(revisedCacheKey)
+
+      if (cacheHit) {
         dispatch({
-          type: actionTypes.REQUEST_RESULT,
-          result
+          type: actionTypes.CACHE_HIT,
+          result: cacheHit
         })
+
+        return Promise.resolve(cacheHit)
       }
 
-      return result
-    })
-  }
+      dispatch({ type: actionTypes.LOADING })
+      return client.request(revisedOperation, revisedOpts).then(result => {
+        if (latestStateData.current && result.data && revisedOpts.updateData) {
+          if (typeof revisedOpts.updateData !== 'function') {
+            throw new Error('options.updateData must be a function')
+          }
+          result.data = revisedOpts.updateData(
+            latestStateData.current,
+            result.data
+          )
+        }
+
+        if (revisedOpts.useCache && client.cache) {
+          client.cache.set(revisedCacheKey, result)
+        }
+
+        if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
+          dispatch({
+            type: actionTypes.REQUEST_RESULT,
+            result
+          })
+        }
+
+        return result
+      })
+    },
+    [client]
+  )
 
   return [fetchData, state]
 }
