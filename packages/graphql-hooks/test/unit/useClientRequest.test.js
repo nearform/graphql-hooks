@@ -441,6 +441,22 @@ describe('useClientRequest', () => {
       })
     })
 
+    it('returns the same function on every render', () => {
+      const fetchDataArr = []
+      const { rerender } = renderHook(
+        () => {
+          const [fetchData] = useClientRequest(TEST_QUERY, { useCache: true })
+          fetchDataArr.push(fetchData)
+        },
+        { wrapper: Wrapper }
+      )
+
+      rerender()
+
+      expect(typeof fetchDataArr[0]).toBe('function')
+      expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+    })
+
     describe('options.updateData', () => {
       it('is called with old & new data if the data has changed & the result is returned', async () => {
         let fetchData, state
