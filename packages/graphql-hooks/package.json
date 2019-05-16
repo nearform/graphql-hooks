@@ -37,7 +37,7 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-hooks-testing-library": "0.4.1",
-    "react-testing-library": "6.1.2"
+    "react-testing-library": "7.0.0"
   },
   "repository": {
     "type": "git",
