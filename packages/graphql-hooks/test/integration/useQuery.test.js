@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
+import { render, waitForElement } from '@testing-library/react'
 import { GraphQLClient, ClientContext, useQuery } from '../../src'
 
 let testComponentRenderCount = 0
