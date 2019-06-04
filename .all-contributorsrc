@@ -141,6 +141,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "edvinasbartkus",
+      "name": "Edvinas Bartkus",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/202988?v=4",
+      "profile": "http://edvinasbartkus.lt",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
