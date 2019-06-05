@@ -9,7 +9,7 @@ jobs:
   build:
     working_directory: ~/graphql-hooks
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:10.16
     steps:
       - checkout
 
@@ -43,7 +43,7 @@ jobs:
       BROWSERSTACK_USE_AUTOMATE: '1'
       BROWSERSTACK_PROJECT_NAME: 'graphql-hooks'
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:10.16
     steps:
       - checkout
 
