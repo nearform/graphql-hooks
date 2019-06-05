@@ -3,6 +3,8 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
+orbs:
+  queue: eddiewebb/queue@1.1.2
 jobs:
   build:
     working_directory: ~/graphql-hooks
@@ -55,6 +57,8 @@ jobs:
           paths:
             - node_modules
 
+      - queue/until_front_of_line:
+          consider-branch: false
       - run: npm run test:acceptance:ci
 
       - store_test_results:
