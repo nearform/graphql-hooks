@@ -12,6 +12,9 @@
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
     "release": "lerna publish"
   },
+  "dependencies": {
+    "extract-files": "^5.0.1"
+  },
   "devDependencies": {
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
