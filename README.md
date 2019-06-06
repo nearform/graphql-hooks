@@ -34,6 +34,7 @@ or
 
 Consider polyfilling:
 
+- [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData)
 - [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 - [`fetch`](https://developer.mozilla.org/docs/Web/API/Fetch_API). NOTE: A custom implementation can also be provided instead of polyfilling, [see `GraphQLClient`](#GraphQLClient)
 
@@ -100,6 +101,7 @@ function MyComponent() {
 - Guides
   - [SSR](#SSR)
   - [Pagination](#Pagination)
+  - [File uploads](#File-uploads)
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
@@ -455,6 +457,51 @@ export default function PostList() {
         </button>
       )}
     </section>
+  )
+}
+```
+
+## File uploads
+
+`graphql-hooks` complies with the [GraphQL multipart request spec](https://github.com/jaydenseric/graphql-multipart-request-spec), allowing files to be used as query or mutation arguments. The same spec is also supported by popular GraphQL servers, including [Apollo Server](https://www.apollographql.com/docs/apollo-server) (see list of supported servers [here](https://github.com/jaydenseric/graphql-multipart-request-spec#server)).
+
+If there are files to upload, the request's body will be a [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData) instance conforming to the GraphQL multipart request spec.
+
+```jsx
+import React, { useRef } from 'react'
+import { useMutation } from 'graphql-hooks'
+
+const uploadPostPictureMutation = /* GraphQL */ `
+  mutation UploadPostPicture($picture: Upload!) {
+    uploadPostPicture(picture: $picture) {
+      id
+      pictureUrl
+    }
+  }
+`
+
+export default function PostForm() {
+  // File input is always uncontrolled in React.
+  // See: https://reactjs.org/docs/uncontrolled-components.html#the-file-input-tag.
+  const fileInputRef = useRef(null)
+
+  const [uploadPostPicture] = useMutation(uploadPostPictureMutation)
+
+  const handleSubmit = event => {
+    event.preventDefault()
+
+    uploadPostPicture({
+      variables: {
+        picture: fileInputRef.current.files[0]
+      }
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input accept="image/*" ref={fileInputRef} type="file" />
+      <button>Upload</button>
+    </form>
   )
 }
 ```
