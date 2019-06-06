@@ -14,10 +14,6 @@ export class GraphQLClient {
   private onError(): any
   private fetch(): Promise<any>
 
-  getCacheKey(
-    operation: Operation,
-    options: UseClientRequestOptions
-  ): CacheKeyObject
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
   removeHeader(key: string): GraphQLClient
@@ -28,6 +24,11 @@ export class GraphQLClient {
     result: Result
     operation: Operation
   }): void
+  getCacheKey(
+    operation: Operation,
+    options: UseClientRequestOptions
+  ): CacheKeyObject
+  getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
   request(operation: Operation, options: object): Promise<Result>
 }
 
