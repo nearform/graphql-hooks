@@ -63,3 +63,8 @@ jobs:
 
       - store_test_results:
           path: /tmp/acceptance-test-results
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - acceptance-tests
