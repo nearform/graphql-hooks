@@ -27,7 +27,7 @@
     "jest": "24.8.0",
     "lerna": "3.14.1",
     "lint-staged": "8.2.0",
-    "prettier": "1.17.1",
+    "prettier": "1.18.2",
     "rollup": "1.14.4",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "10.0.0",
