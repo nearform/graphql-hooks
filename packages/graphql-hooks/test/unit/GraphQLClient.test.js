@@ -106,10 +106,20 @@ describe('GraphQLClient', () => {
 
   describe('setHeaders', () => {
     it('replaces all headers', () => {
-      const headers = { 'My-Header': 'hello ' }
+      const headers = { 'My-Header': 'hello' }
       const client = new GraphQLClient({ ...validConfig })
       client.setHeaders(headers)
       expect(client.headers).toBe(headers)
+    })
+  })
+
+  describe('removeHeader', () => {
+    it('removes the key', () => {
+      const headers = { 'My-Header': 'hello' }
+      const client = new GraphQLClient({ ...validConfig, headers })
+      expect(client.headers['My-Header']).toBe('hello')
+      client.removeHeader('My-Header')
+      expect(client.headers).not.toHaveProperty('My-Header')
     })
   })
 

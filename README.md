@@ -143,6 +143,7 @@ const client = new GraphQLClient(config)
 
 - `client.setHeader(key, value)`: Updates `client.headers` adding the new header to the existing headers
 - `client.setHeaders(headers)`: Replaces `client.headers`
+- `client.removeHeader(key)`: Updates `client.headers` removing the header if it exists
 - `client.logErrorResult({ operation, result })`: Default error logger; useful if you'd like to use it inside your custom `onError` handler
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`

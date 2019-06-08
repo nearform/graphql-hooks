@@ -20,6 +20,7 @@ export class GraphQLClient {
   ): CacheKeyObject
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
+  removeHeader(key: string): GraphQLClient
   logErrorResult({
     result,
     operation
