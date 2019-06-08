@@ -441,6 +441,38 @@ describe('useClientRequest', () => {
       })
     })
 
+    it('returns the same function on every render if NO initial options are passed', () => {
+      const fetchDataArr = []
+      const { rerender } = renderHook(
+        () => {
+          const [fetchData] = useClientRequest(TEST_QUERY)
+          fetchDataArr.push(fetchData)
+        },
+        { wrapper: Wrapper }
+      )
+
+      rerender()
+
+      expect(typeof fetchDataArr[0]).toBe('function')
+      expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+    })
+
+    it('returns different function on every render if initial options are passed', () => {
+      const fetchDataArr = []
+      const { rerender } = renderHook(
+        () => {
+          const [fetchData] = useClientRequest(TEST_QUERY, { variables: {} })
+          fetchDataArr.push(fetchData)
+        },
+        { wrapper: Wrapper }
+      )
+
+      rerender()
+
+      expect(typeof fetchDataArr[0]).toBe('function')
+      expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
+    })
+
     describe('options.updateData', () => {
       it('is called with old & new data if the data has changed & the result is returned', async () => {
         let fetchData, state
