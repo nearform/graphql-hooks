@@ -33,7 +33,8 @@
     "react": "^16.8.1"
   },
   "dependencies": {
-    "extract-files": "^5.0.1"
+    "extract-files": "^5.0.1",
+    "dequal": "^1.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",

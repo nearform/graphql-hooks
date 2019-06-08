@@ -524,5 +524,46 @@ describe('useClientRequest', () => {
         )
       })
     })
+
+    describe('memoisation', () => {
+      it('returns the same function on every render if query and options remain the same', () => {
+        const fetchDataArr = []
+        const { rerender } = renderHook(
+          () => {
+            const [fetchData] = useClientRequest(TEST_QUERY, {
+              variables: { test: 1 }
+            })
+            fetchDataArr.push(fetchData)
+          },
+          { wrapper: Wrapper }
+        )
+
+        rerender()
+
+        expect(typeof fetchDataArr[0]).toBe('function')
+        expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+      })
+
+      it('returns a new function if query or options change', () => {
+        const fetchDataArr = []
+
+        const { rerender } = renderHook(
+          ({ variables }) => {
+            const [fetchData] = useClientRequest(TEST_QUERY, { variables })
+            fetchDataArr.push(fetchData)
+          },
+          {
+            initialProps: { variables: { test: 1 } },
+            wrapper: Wrapper
+          }
+        )
+
+        rerender({ variables: { test: 2 } })
+
+        expect(typeof fetchDataArr[0]).toBe('function')
+        expect(typeof fetchDataArr[1]).toBe('function')
+        expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
+      })
+    })
   })
 })
