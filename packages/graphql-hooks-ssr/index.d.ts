@@ -1,11 +1,11 @@
-import { ElementType } from 'react'
+import { ReactElement } from 'react'
 
 export function getInitialState(options: Options): object
 
 interface Options {
-  App: ElementType
+  App: ReactElement
   client: Client
-  render?(element: ElementType): string
+  render?(element: ReactElement): string
 }
 
 interface Client {

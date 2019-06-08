@@ -39,6 +39,11 @@ class GraphQLClient {
     this.headers = headers
     return this
   }
+
+  removeHeader(key) {
+    delete this.headers[key]
+    return this
+  }
   /* eslint-disable no-console */
   logErrorResult({ result, operation }) {
     if (this.onError) {
