@@ -25,7 +25,7 @@
     "eslint-plugin-react-hooks": "1.6.0",
     "husky": "2.4.0",
     "jest": "24.8.0",
-    "lerna": "^3.15.0",
+    "lerna": "3.15.0",
     "lint-staged": "8.2.0",
     "prettier": "1.18.2",
     "rollup": "1.15.0",
