@@ -42,7 +42,7 @@
     "nodemon": "1.19.1",
     "pino-pretty": "3.1.0",
     "webpack": "4.33.0",
-    "webpack-cli": "3.3.3",
+    "webpack-cli": "3.3.4",
     "webpack-manifest-plugin": "2.0.4",
     "webpack-merge": "4.2.1"
   },
