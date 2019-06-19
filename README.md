@@ -107,6 +107,8 @@ function MyComponent() {
     - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
     - [Query Component ➡️ useQuery](#query-component-️-usequery)
     - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
+  - [Other]
+    - [Request interceptors](#request-interceptors)
 
 ## API
 
@@ -131,7 +133,7 @@ const client = new GraphQLClient(config)
   - `cache.keys()`
   - `getInitialState()`
   - See [graphql-hooks-memcache](packages/graphql-hooks-memcache) as a reference implementation
-- `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API
+- `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API. Check [Request interceptors](#request-interceptors) for more details how to manage `fetch`.
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
@@ -644,6 +646,30 @@ function MyComponent() {
 **Not yet supported**
 
 - `called`
+
+## Other
+
+### Request interceptors
+
+It is possible to provide a custom library to handle network requests. Having that there is more control on how to handle the requests. The following example shows how to supply axios HTTP client with interceptors. It can be handy in the situations where JWT token has expired, needs to be refreshed and request retried.
+
+```js
+import axios from 'axios'
+import { buildAxiosFetch } from '@lifeomic/axios-fetch'
+import { GraphQLClient } from 'graphql-hooks'
+
+const gqlAxios = axios.create()
+gqlAxios.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  // Handle expired JWT and refresh token
+})
+
+const client = new GraphQLClient({
+  url: '/graphql',
+  fetch: buildAxiosFetch(gqlAxios)
+})
+```
 
 ## Contributors
 
