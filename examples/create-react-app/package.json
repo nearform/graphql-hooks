@@ -5,11 +5,11 @@
   "dependencies": {
     "graphql-hooks": "^3.5.1",
     "graphql-hooks-memcache": "^1.2.0",
-    "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-app-polyfill": "1.0.1",
-    "react-dom": "16.8.6",
-    "react-scripts": "3.0.1"
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-app-polyfill": "^1.0.1",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
