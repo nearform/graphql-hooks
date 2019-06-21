@@ -294,4 +294,49 @@ describe('useQuery', () => {
     rerender()
     expect(mockQueryReq).toHaveBeenCalledTimes(2)
   })
+
+  describe('useQuery.refetch memoisation', () => {
+    it('returns the same function on every render if options remain the same', () => {
+      useClientRequest
+        .mockReturnValueOnce([mockQueryReq, mockState])
+        .mockReturnValueOnce([mockQueryReq, mockState])
+
+      const refetchFns = []
+      const { rerender } = renderHook(
+        () => {
+          const { refetch } = useQuery(TEST_QUERY, {})
+          refetchFns.push(refetch)
+        },
+        { wrapper: Wrapper }
+      )
+
+      rerender()
+      expect(typeof refetchFns[0]).toBe('function')
+      expect(refetchFns[0]).toBe(refetchFns[1])
+    })
+
+    it('returns a new function if the query changes', () => {
+      useClientRequest
+        .mockReturnValueOnce([jest.fn(), mockState])
+        .mockReturnValueOnce([jest.fn(), mockState])
+
+      const refetchFns = []
+      const { rerender } = renderHook(
+        ({ variables }) => {
+          const { refetch } = useQuery(TEST_QUERY, { variables })
+          refetchFns.push(refetch)
+        },
+        {
+          initialProps: { variables: { test: 1 } },
+          wrapper: Wrapper
+        }
+      )
+
+      rerender({ variables: { test: 2 } })
+
+      expect(typeof refetchFns[0]).toBe('function')
+      expect(typeof refetchFns[1]).toBe('function')
+      expect(refetchFns[0]).not.toBe(refetchFns[1])
+    })
+  })
 })
