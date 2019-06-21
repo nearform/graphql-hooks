@@ -35,6 +35,10 @@ function reducer(state, action) {
     case actionTypes.REQUEST_RESULT:
       return {
         ...action.result,
+        data:
+          state.data && action.result.data && action.updateData
+            ? action.updateData(state.data, action.result.data)
+            : action.result.data,
         cacheHit: false,
         loading: false
       }
@@ -128,10 +132,9 @@ function useClientRequest(query, initialOpts = {}) {
       // see https://github.com/nearform/graphql-hooks/issues/150
       activeCacheKey.current = revisedCacheKey
 
-      const cacheHit =
-        revisedOpts.skipCache || !client.cache
-          ? null
-          : client.cache.get(revisedCacheKey)
+      const cacheHit = revisedOpts.skipCache
+        ? null
+        : client.getCache(revisedCacheKey)
 
       if (cacheHit) {
         dispatch({
@@ -144,20 +147,21 @@ function useClientRequest(query, initialOpts = {}) {
 
       dispatch({ type: actionTypes.LOADING })
       return client.request(revisedOperation, revisedOpts).then(result => {
-        if (state.data && result.data && revisedOpts.updateData) {
-          if (typeof revisedOpts.updateData !== 'function') {
-            throw new Error('options.updateData must be a function')
-          }
-          result.data = revisedOpts.updateData(state.data, result.data)
+        if (
+          revisedOpts.updateData &&
+          typeof revisedOpts.updateData !== 'function'
+        ) {
+          throw new Error('options.updateData must be a function')
         }
 
-        if (revisedOpts.useCache && client.cache) {
-          client.cache.set(revisedCacheKey, result)
+        if (revisedOpts.useCache) {
+          client.saveCache(revisedCacheKey, result)
         }
 
         if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
           dispatch({
             type: actionTypes.REQUEST_RESULT,
+            updateData: revisedOpts.updateData,
             result
           })
         }

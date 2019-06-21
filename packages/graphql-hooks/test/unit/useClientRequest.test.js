@@ -24,6 +24,8 @@ describe('useClientRequest', () => {
   beforeEach(() => {
     mockClient = {
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: jest.fn(),
+      saveCache: jest.fn(),
       cache: {
         get: jest.fn(),
         set: jest.fn()
@@ -382,7 +384,7 @@ describe('useClientRequest', () => {
         wrapper: Wrapper
       })
 
-      mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' })
+      mockClient.getCache.mockReturnValueOnce({ some: 'cached data' })
       await fetchData()
 
       expect(mockClient.request).not.toHaveBeenCalled()
@@ -436,7 +438,7 @@ describe('useClientRequest', () => {
 
       await fetchData()
 
-      expect(mockClient.cache.set).toHaveBeenCalledWith('cacheKey', {
+      expect(mockClient.saveCache).toHaveBeenCalledWith('cacheKey', {
         data: 'data'
       })
     })
@@ -515,9 +517,6 @@ describe('useClientRequest', () => {
             })),
           { wrapper: Wrapper }
         )
-
-        // first fetch to populate state
-        await fetchData()
 
         expect(fetchData({ variables: { limit: 20 } })).rejects.toThrow(
           'options.updateData must be a function'
