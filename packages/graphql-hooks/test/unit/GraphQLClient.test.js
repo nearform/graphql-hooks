@@ -1,16 +1,19 @@
 /* global spyOn */
 import fetchMock from 'jest-fetch-mock'
+import { ReactNativeFile } from 'extract-files'
 import { GraphQLClient } from '../../src'
 
 const validConfig = {
   url: 'https://my.graphql.api'
 }
 
-const TEST_QUERY = `query Test($limit: Int) {
-  tests(limit: $limit) {
-    id
+const TEST_QUERY = /* GraphQL */ `
+  query Test($limit: Int) {
+    test(limit: $limit) {
+      id
+    }
   }
-}`
+`
 
 describe('GraphQLClient', () => {
   describe('when instantiated', () => {
@@ -233,6 +236,101 @@ describe('GraphQLClient', () => {
     })
   })
 
+  describe('getFetchOptions', () => {
+    it('sets method to POST by default', () => {
+      const client = new GraphQLClient({ ...validConfig })
+      const fetchOptions = client.getFetchOptions('operation')
+      expect(fetchOptions.method).toBe('POST')
+    })
+
+    it('applies the configured headers', () => {
+      const headers = { 'My-Header': 'hello' }
+      const client = new GraphQLClient({ ...validConfig, headers })
+      const fetchOptions = client.getFetchOptions('operation')
+
+      const actual = fetchOptions.headers['My-Header']
+      const expected = 'hello'
+      expect(actual).toBe(expected)
+    })
+
+    it('allows to override configured options', () => {
+      const headers = { 'My-Header': 'hello' }
+      const client = new GraphQLClient({ ...validConfig, headers })
+      const fetchOptions = client.getFetchOptions('operation', {
+        headers: { 'My-Header': 'overridden' }
+      })
+
+      const actual = fetchOptions.headers['My-Header']
+      const expected = 'overridden'
+      expect(actual).toBe(expected)
+    })
+
+    describe('without files', () => {
+      let fetchOptions, operation
+
+      beforeEach(() => {
+        const client = new GraphQLClient({ ...validConfig })
+        operation = {
+          query: TEST_QUERY,
+          variables: { limit: 1 },
+          operationName: 'test'
+        }
+        fetchOptions = client.getFetchOptions(operation)
+      })
+
+      it('sets body to the JSON encoded provided operation', () => {
+        const actual = fetchOptions.body
+        const expected = JSON.stringify(operation)
+        expect(actual).toBe(expected)
+      })
+
+      it('sets Content-Type header to application/json', () => {
+        const actual = fetchOptions.headers['Content-Type']
+        const expected = 'application/json'
+        expect(actual).toBe(expected)
+      })
+    })
+
+    describe('with files', () => {
+      let fetchOptions
+
+      beforeEach(() => {
+        const client = new GraphQLClient({ ...validConfig })
+        const file = new ReactNativeFile({
+          uri: '',
+          name: 'a.jpg',
+          type: 'image/jpeg'
+        })
+        const operation = {
+          query: '',
+          variables: { a: file }
+        }
+        fetchOptions = client.getFetchOptions(operation)
+      })
+
+      // See the GraphQL multipart request spec:
+      // https://github.com/jaydenseric/graphql-multipart-request-spec
+
+      it('sets body as FormData', () => {
+        expect(fetchOptions.body).toBeInstanceOf(FormData)
+      })
+
+      it('sets body conforming to the graphql multipart request spec', () => {
+        const actual = [...fetchOptions.body]
+        const expected = [
+          ['operations', '{"query":"","variables":{"a":null}}'],
+          ['map', '{"1":["variables.a"]}'],
+          ['1', '[object Object]']
+        ]
+        expect(actual).toEqual(expected)
+      })
+
+      it('does not set Content-Type header', () => {
+        expect(fetchOptions.headers).not.toHaveProperty('Content-Type')
+      })
+    })
+  })
+
   describe('request', () => {
     afterEach(() => {
       fetch.resetMocks()
@@ -245,32 +343,6 @@ describe('GraphQLClient', () => {
 
       const actual = fetch.mock.calls[0][0]
       const expected = validConfig.url
-      expect(actual).toBe(expected)
-    })
-
-    it('applies the configured headers', async () => {
-      const headers = { 'My-Header': 'hello' }
-      const client = new GraphQLClient({ ...validConfig, headers })
-      fetch.mockResponseOnce(JSON.stringify({ data: 'data' }))
-      await client.request({ query: TEST_QUERY })
-
-      const actual = fetch.mock.calls[0][1].headers['My-Header']
-      const expected = 'hello'
-      expect(actual).toBe(expected)
-    })
-
-    it('sends the provided operation query, variables and name', async () => {
-      const client = new GraphQLClient({ ...validConfig })
-      fetch.mockResponseOnce(JSON.stringify({ data: 'data' }))
-      const operation = {
-        query: TEST_QUERY,
-        variables: { limit: 1 },
-        operationName: 'test'
-      }
-      await client.request(operation)
-
-      const actual = fetch.mock.calls[0][1].body
-      const expected = JSON.stringify(operation)
       expect(actual).toBe(expected)
     })
 

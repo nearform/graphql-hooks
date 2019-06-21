@@ -32,8 +32,12 @@
   "peerDependencies": {
     "react": "^16.8.1"
   },
+  "dependencies": {
+    "extract-files": "^5.0.1"
+  },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
+    "formdata-node": "^1.6.0",
     "jest-fetch-mock": "^2.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

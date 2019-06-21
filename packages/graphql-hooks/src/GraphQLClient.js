@@ -1,3 +1,5 @@
+import { extractFiles } from 'extract-files'
+
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
@@ -104,21 +106,55 @@ class GraphQLClient {
     }
   }
 
-  request(operation, options = {}) {
-    return this.fetch(this.url, {
+  // Kudos to Jayden Seric (@jaydenseric) for this piece of code.
+  // See original source: https://github.com/jaydenseric/graphql-react/blob/82d576b5fe6664c4a01cd928d79f33ddc3f7bbfd/src/universal/graphqlFetchOptions.mjs.
+  getFetchOptions(operation, fetchOptionsOverrides = {}) {
+    const fetchOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         ...this.headers
       },
-      body: JSON.stringify({
-        query: operation.query,
-        variables: operation.variables,
-        operationName: operation.operationName
-      }),
       ...this.fetchOptions,
-      ...options.fetchOptionsOverrides
-    })
+      ...fetchOptionsOverrides
+    }
+
+    const { clone, files } = extractFiles(operation)
+    const operationJSON = JSON.stringify(clone)
+
+    if (files.size) {
+      // See the GraphQL multipart request spec:
+      // https://github.com/jaydenseric/graphql-multipart-request-spec
+
+      const form = new FormData()
+
+      form.append('operations', operationJSON)
+
+      const map = {}
+      let i = 0
+      files.forEach(paths => {
+        map[++i] = paths
+      })
+      form.append('map', JSON.stringify(map))
+
+      i = 0
+      files.forEach((paths, file) => {
+        form.append(`${++i}`, file, file.name)
+      })
+
+      fetchOptions.body = form
+    } else {
+      fetchOptions.headers['Content-Type'] = 'application/json'
+      fetchOptions.body = operationJSON
+    }
+
+    return fetchOptions
+  }
+
+  request(operation, options = {}) {
+    return this.fetch(
+      this.url,
+      this.getFetchOptions(operation, options.fetchOptionsOverrides)
+    )
       .then(response => {
         if (!response.ok) {
           return response.text().then(body => {
