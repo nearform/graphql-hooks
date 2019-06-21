@@ -15,7 +15,7 @@ function useQuery(query, opts = {}) {
 
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
     // result may already be in the cache from previous SSR iterations
-    if (!state.data && !state.error) {
+    if (!state.loading && !state.data && !state.error) {
       const p = queryReq()
       client.ssrPromises.push(p)
     }

@@ -128,9 +128,10 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(1)
   })
 
-  it('adds query to ssrPromises when in ssrMode if no data & no error', () => {
+  it('adds query to ssrPromises when in ssrMode if not loading && no data & no error', () => {
     mockClient.ssrMode = true
     mockQueryReq.mockResolvedValueOnce('data')
+    mockState.loading = false
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper })
     expect(mockClient.ssrPromises[0]).resolves.toBe('data')
   })
