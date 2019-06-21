@@ -2,6 +2,7 @@
   "extends": [
     "config:base"
   ],
+  "rangeStrategy": "replace",
   "ignorePaths": [],
   "includePaths": [
     "package.json",

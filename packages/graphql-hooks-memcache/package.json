@@ -30,7 +30,7 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@sindresorhus/fnv1a": "^1.0.0",
+    "@sindresorhus/fnv1a": "^1.2.0",
     "tiny-lru": "^6.0.1"
   },
   "repository": {
