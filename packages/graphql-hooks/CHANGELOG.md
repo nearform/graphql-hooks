@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.5.1...graphql-hooks@3.6.0) (2019-06-21)
+
+
+### Features
+
+* Add support for GraphQL multipart requests ([#266](https://github.com/nearform/graphql-hooks/issues/266)) ([09ef420](https://github.com/nearform/graphql-hooks/commit/09ef420))
+
+
+
+
+
 ## [3.5.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.5.0...graphql-hooks@3.5.1) (2019-06-08)
 
 **Note:** Version bump only for package graphql-hooks
