@@ -431,15 +431,20 @@ describe('useClientRequest', () => {
 
     it('sets the result from the request in the cache', async () => {
       let fetchData
-      renderHook(
+      const { rerender } = renderHook(
         () => ([fetchData] = useClientRequest(TEST_QUERY, { useCache: true })),
         { wrapper: Wrapper }
       )
 
       await fetchData()
+      rerender()
 
       expect(mockClient.saveCache).toHaveBeenCalledWith('cacheKey', {
-        data: 'data'
+        cacheHit: false,
+        cacheKey: 'cacheKey',
+        data: 'data',
+        loading: false,
+        useCache: true
       })
     })
 

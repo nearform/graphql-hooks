@@ -154,23 +154,33 @@ function useClientRequest(query, initialOpts = {}) {
           throw new Error('options.updateData must be a function')
         }
 
+        const actionResult = { ...result }
         if (revisedOpts.useCache) {
-          client.saveCache(revisedCacheKey, result)
+          actionResult.useCache = true
+          actionResult.cacheKey = revisedCacheKey
         }
 
         if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
           dispatch({
             type: actionTypes.REQUEST_RESULT,
             updateData: revisedOpts.updateData,
-            result
+            result: actionResult
           })
         }
 
         return result
       })
     },
-    [client, initialOpts, operation, state.data]
+    [client, initialOpts, operation]
   )
+
+  // We perform caching after reducer update
+  // To include the outcome of updateData
+  React.useEffect(() => {
+    if (state.useCache) {
+      client.saveCache(state.cacheKey, state)
+    }
+  }, [client, state])
 
   return [fetchData, state]
 }
