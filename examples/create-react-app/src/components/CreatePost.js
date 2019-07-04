@@ -1,7 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { useMutation } from 'graphql-hooks'
-
+import PropTypes from 'prop-types'
+import React from 'react'
 import CreatePostForm from './CreatePostForm'
 
 const createPostMutation = `
@@ -11,6 +10,7 @@ const createPostMutation = `
     }
   }
 `
+
 export default function CreatePost({ onSuccess }) {
   const [createPost, { loading, error }] = useMutation(createPostMutation)
 
