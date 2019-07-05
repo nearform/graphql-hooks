@@ -1,7 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { useQuery } from 'graphql-hooks'
-
+import PropTypes from 'prop-types'
+import React from 'react'
 import CreatePost from './CreatePost'
 
 export const allPostsQuery = `

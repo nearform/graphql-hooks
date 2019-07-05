@@ -15,6 +15,7 @@ async function getManifest() {
   }
 
   try {
+    /* eslint-disable-next-line require-atomic-updates */
     cachedManifest = JSON.parse(await readFileAsync(manifestPath))
     return cachedManifest
   } catch (error) {
