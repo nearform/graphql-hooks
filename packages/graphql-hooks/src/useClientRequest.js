@@ -1,4 +1,5 @@
 import React from 'react'
+import deepEqual from 'dequal'
 import ClientContext from './ClientContext'
 
 const actionTypes = {
@@ -34,12 +35,26 @@ function reducer(state, action) {
     case actionTypes.REQUEST_RESULT:
       return {
         ...action.result,
+        data:
+          state.data && action.result.data && action.updateData
+            ? action.updateData(state.data, action.result.data)
+            : action.result.data,
         cacheHit: false,
         loading: false
       }
     default:
       return state
   }
+}
+
+function useDeepCompareCallback(callback, deps) {
+  const ref = React.useRef()
+
+  if (!deepEqual(deps, ref.current)) {
+    ref.current = deps
+  }
+
+  return React.useCallback(callback, ref.current)
 }
 
 /*
@@ -96,63 +111,76 @@ function useClientRequest(query, initialOpts = {}) {
   }, [])
 
   // arguments to fetchData override the useClientRequest arguments
-  function fetchData(newOpts) {
-    if (!isMounted.current) return Promise.resolve()
-    const revisedOpts = {
-      ...initialOpts,
-      ...newOpts
-    }
+  const fetchData = useDeepCompareCallback(
+    newOpts => {
+      if (!isMounted.current) return Promise.resolve()
+      const revisedOpts = {
+        ...initialOpts,
+        ...newOpts
+      }
 
-    const revisedOperation = {
-      ...operation,
-      variables: revisedOpts.variables,
-      operationName: revisedOpts.operationName
-    }
+      const revisedOperation = {
+        ...operation,
+        variables: revisedOpts.variables,
+        operationName: revisedOpts.operationName
+      }
 
-    const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
+      const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
 
-    // NOTE: There is a possibility of a race condition whereby
-    // the second query could finish before the first one, dispatching an old result
-    // see https://github.com/nearform/graphql-hooks/issues/150
-    activeCacheKey.current = revisedCacheKey
+      // NOTE: There is a possibility of a race condition whereby
+      // the second query could finish before the first one, dispatching an old result
+      // see https://github.com/nearform/graphql-hooks/issues/150
+      activeCacheKey.current = revisedCacheKey
 
-    const cacheHit =
-      revisedOpts.skipCache || !client.cache
+      const cacheHit = revisedOpts.skipCache
         ? null
-        : client.cache.get(revisedCacheKey)
+        : client.getCache(revisedCacheKey)
 
-    if (cacheHit) {
-      dispatch({
-        type: actionTypes.CACHE_HIT,
-        result: cacheHit
-      })
+      if (cacheHit) {
+        dispatch({
+          type: actionTypes.CACHE_HIT,
+          result: cacheHit
+        })
 
-      return Promise.resolve(cacheHit)
-    }
+        return Promise.resolve(cacheHit)
+      }
 
-    dispatch({ type: actionTypes.LOADING })
-    return client.request(revisedOperation, revisedOpts).then(result => {
-      if (state.data && result.data && revisedOpts.updateData) {
-        if (typeof revisedOpts.updateData !== 'function') {
+      dispatch({ type: actionTypes.LOADING })
+      return client.request(revisedOperation, revisedOpts).then(result => {
+        if (
+          revisedOpts.updateData &&
+          typeof revisedOpts.updateData !== 'function'
+        ) {
           throw new Error('options.updateData must be a function')
         }
-        result.data = revisedOpts.updateData(state.data, result.data)
-      }
 
-      if (revisedOpts.useCache && client.cache) {
-        client.cache.set(revisedCacheKey, result)
-      }
+        const actionResult = { ...result }
+        if (revisedOpts.useCache) {
+          actionResult.useCache = true
+          actionResult.cacheKey = revisedCacheKey
+        }
 
-      if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
-        dispatch({
-          type: actionTypes.REQUEST_RESULT,
-          result
-        })
-      }
+        if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
+          dispatch({
+            type: actionTypes.REQUEST_RESULT,
+            updateData: revisedOpts.updateData,
+            result: actionResult
+          })
+        }
 
-      return result
-    })
-  }
+        return result
+      })
+    },
+    [client, initialOpts, operation]
+  )
+
+  // We perform caching after reducer update
+  // To include the outcome of updateData
+  React.useEffect(() => {
+    if (state.useCache) {
+      client.saveCache(state.cacheKey, state)
+    }
+  }, [client, state])
 
   return [fetchData, state]
 }

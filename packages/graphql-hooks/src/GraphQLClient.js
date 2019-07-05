@@ -106,6 +106,20 @@ class GraphQLClient {
     }
   }
 
+  getCache(cacheKey) {
+    const cacheHit = this.cache ? this.cache.get(cacheKey) : null
+
+    if (cacheHit) {
+      return cacheHit
+    }
+  }
+
+  saveCache(cacheKey, value) {
+    if (this.cache) {
+      this.cache.set(cacheKey, value)
+    }
+  }
+
   // Kudos to Jayden Seric (@jaydenseric) for this piece of code.
   // See original source: https://github.com/jaydenseric/graphql-react/blob/82d576b5fe6664c4a01cd928d79f33ddc3f7bbfd/src/universal/graphqlFetchOptions.mjs.
   getFetchOptions(operation, fetchOptionsOverrides = {}) {

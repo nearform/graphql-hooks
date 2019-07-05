@@ -15,7 +15,7 @@ function useQuery(query, opts = {}) {
 
   if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
     // result may already be in the cache from previous SSR iterations
-    if (!state.data && !state.error) {
+    if (!state.loading && !state.data && !state.error) {
       const p = queryReq()
       client.ssrPromises.push(p)
     }
@@ -28,15 +28,18 @@ function useQuery(query, opts = {}) {
 
   return {
     ...state,
-    refetch: (options = {}) =>
-      queryReq({
-        skipCache: true,
-        // don't call the updateData that has been passed into useQuery here
-        // reset to the default behaviour of returning the raw query result
-        // this can be overridden in refetch options
-        updateData: (_, data) => data,
-        ...options
-      })
+    refetch: React.useCallback(
+      (options = {}) =>
+        queryReq({
+          skipCache: true,
+          // don't call the updateData that has been passed into useQuery here
+          // reset to the default behaviour of returning the raw query result
+          // this can be overridden in refetch options
+          updateData: (_, data) => data,
+          ...options
+        }),
+      [queryReq]
+    )
   }
 }
 

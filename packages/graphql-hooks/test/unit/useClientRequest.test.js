@@ -24,6 +24,8 @@ describe('useClientRequest', () => {
   beforeEach(() => {
     mockClient = {
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: jest.fn(),
+      saveCache: jest.fn(),
       cache: {
         get: jest.fn(),
         set: jest.fn()
@@ -382,7 +384,7 @@ describe('useClientRequest', () => {
         wrapper: Wrapper
       })
 
-      mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' })
+      mockClient.getCache.mockReturnValueOnce({ some: 'cached data' })
       await fetchData()
 
       expect(mockClient.request).not.toHaveBeenCalled()
@@ -429,15 +431,20 @@ describe('useClientRequest', () => {
 
     it('sets the result from the request in the cache', async () => {
       let fetchData
-      renderHook(
+      const { rerender } = renderHook(
         () => ([fetchData] = useClientRequest(TEST_QUERY, { useCache: true })),
         { wrapper: Wrapper }
       )
 
       await fetchData()
+      rerender()
 
-      expect(mockClient.cache.set).toHaveBeenCalledWith('cacheKey', {
-        data: 'data'
+      expect(mockClient.saveCache).toHaveBeenCalledWith('cacheKey', {
+        cacheHit: false,
+        cacheKey: 'cacheKey',
+        data: 'data',
+        loading: false,
+        useCache: true
       })
     })
 
@@ -516,12 +523,50 @@ describe('useClientRequest', () => {
           { wrapper: Wrapper }
         )
 
-        // first fetch to populate state
-        await fetchData()
-
         expect(fetchData({ variables: { limit: 20 } })).rejects.toThrow(
           'options.updateData must be a function'
         )
+      })
+    })
+
+    describe('memoisation', () => {
+      it('returns the same function on every render if query and options remain the same', () => {
+        const fetchDataArr = []
+        const { rerender } = renderHook(
+          () => {
+            const [fetchData] = useClientRequest(TEST_QUERY, {
+              variables: { test: 1 }
+            })
+            fetchDataArr.push(fetchData)
+          },
+          { wrapper: Wrapper }
+        )
+
+        rerender()
+
+        expect(typeof fetchDataArr[0]).toBe('function')
+        expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+      })
+
+      it('returns a new function if query or options change', () => {
+        const fetchDataArr = []
+
+        const { rerender } = renderHook(
+          ({ variables }) => {
+            const [fetchData] = useClientRequest(TEST_QUERY, { variables })
+            fetchDataArr.push(fetchData)
+          },
+          {
+            initialProps: { variables: { test: 1 } },
+            wrapper: Wrapper
+          }
+        )
+
+        rerender({ variables: { test: 2 } })
+
+        expect(typeof fetchDataArr[0]).toBe('function')
+        expect(typeof fetchDataArr[1]).toBe('function')
+        expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
       })
     })
   })

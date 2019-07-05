@@ -128,9 +128,10 @@ describe('useQuery', () => {
     expect(mockQueryReq).toHaveBeenCalledTimes(1)
   })
 
-  it('adds query to ssrPromises when in ssrMode if no data & no error', () => {
+  it('adds query to ssrPromises when in ssrMode if not loading && no data & no error', () => {
     mockClient.ssrMode = true
     mockQueryReq.mockResolvedValueOnce('data')
+    mockState.loading = false
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper })
     expect(mockClient.ssrPromises[0]).resolves.toBe('data')
   })
@@ -292,5 +293,50 @@ describe('useQuery', () => {
     query = ANOTHER_TEST_QUERY
     rerender()
     expect(mockQueryReq).toHaveBeenCalledTimes(2)
+  })
+
+  describe('useQuery.refetch memoisation', () => {
+    it('returns the same function on every render if options remain the same', () => {
+      useClientRequest
+        .mockReturnValueOnce([mockQueryReq, mockState])
+        .mockReturnValueOnce([mockQueryReq, mockState])
+
+      const refetchFns = []
+      const { rerender } = renderHook(
+        () => {
+          const { refetch } = useQuery(TEST_QUERY, {})
+          refetchFns.push(refetch)
+        },
+        { wrapper: Wrapper }
+      )
+
+      rerender()
+      expect(typeof refetchFns[0]).toBe('function')
+      expect(refetchFns[0]).toBe(refetchFns[1])
+    })
+
+    it('returns a new function if the query changes', () => {
+      useClientRequest
+        .mockReturnValueOnce([jest.fn(), mockState])
+        .mockReturnValueOnce([jest.fn(), mockState])
+
+      const refetchFns = []
+      const { rerender } = renderHook(
+        ({ variables }) => {
+          const { refetch } = useQuery(TEST_QUERY, { variables })
+          refetchFns.push(refetch)
+        },
+        {
+          initialProps: { variables: { test: 1 } },
+          wrapper: Wrapper
+        }
+      )
+
+      rerender({ variables: { test: 2 } })
+
+      expect(typeof refetchFns[0]).toBe('function')
+      expect(typeof refetchFns[1]).toBe('function')
+      expect(refetchFns[0]).not.toBe(refetchFns[1])
+    })
   })
 })
