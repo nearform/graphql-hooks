@@ -77,6 +77,45 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('does reset data if previous call resulted in error', async () => {
+    let fetchData
+    let state
+
+    renderHook(
+      () =>
+        ([fetchData, state] = useClientRequest(TEST_QUERY, {
+          updateData: () => {}
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+
+    mockClient.request.mockResolvedValueOnce({
+      error: true,
+      errors: ['oh no!']
+    })
+
+    await fetchData()
+    expect(state).toEqual({
+      cacheHit: false,
+      error: true,
+      errors: ['oh no!'],
+      loading: false
+    })
+
+    let promiseResolve
+    const promise = new Promise(resolve => {
+      promiseResolve = resolve
+    })
+
+    mockClient.request.mockResolvedValueOnce(promise)
+    fetchData()
+
+    expect(state).toEqual({ cacheHit: false, loading: true })
+    promiseResolve()
+  })
+
   it('does not reset data when query or variables change if updateData is set', async () => {
     let fetchData
     let state
