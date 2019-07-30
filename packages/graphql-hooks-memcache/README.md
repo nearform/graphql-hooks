@@ -19,7 +19,7 @@ import { GraphQLClient } from 'graphql-hooks'
 import memCache from 'graphql-hooks-memcache'
 
 const client = new GraphQLClient({
-  endpoint: '/graphql',
+  url: '/graphql',
   cache: memCache()
 })
 ```
