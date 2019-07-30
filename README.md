@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 [![bundlephobia](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat&label=size)](https://bundlephobia.com/result?p=graphql-hooks)
 [![npm](https://img.shields.io/npm/v/graphql-hooks.svg?color=brightgreen)](https://www.npmjs.com/package/graphql-hooks)
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🎣 Minimal hooks-first GraphQL client.
@@ -741,6 +741,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://edvinasbartkus.lt"><img src="https://avatars0.githubusercontent.com/u/202988?v=4" width="100px;" alt="Edvinas Bartkus"/><br /><sub><b>Edvinas Bartkus</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=edvinasbartkus" title="Code">💻</a> <a href="#question-edvinasbartkus" title="Answering Questions">💬</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Aedvinasbartkus" title="Bug reports">🐛</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=edvinasbartkus" title="Documentation">📖</a> <a href="#example-edvinasbartkus" title="Examples">💡</a> <a href="#ideas-edvinasbartkus" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-edvinasbartkus" title="Maintenance">🚧</a> <a href="#review-edvinasbartkus" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=edvinasbartkus" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/olistic"><img src="https://avatars1.githubusercontent.com/u/5600126?v=4" width="100px;" alt="Matías Olivera"/><br /><sub><b>Matías Olivera</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Aolistic" title="Bug reports">🐛</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=olistic" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=olistic" title="Tests">⚠️</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=olistic" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/tcudok-jg"><img src="https://avatars3.githubusercontent.com/u/50208575?v=4" width="100px;" alt="tcudok-jg"/><br /><sub><b>tcudok-jg</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=tcudok-jg" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/heymartinadams"><img src="https://avatars2.githubusercontent.com/u/11673745?v=4" width="100px;" alt="Martin Adams"/><br /><sub><b>Martin Adams</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=heymartinadams" title="Documentation">📖</a></td>
   </tr>
 </table>
 
