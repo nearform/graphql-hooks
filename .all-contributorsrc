@@ -179,6 +179,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "heymartinadams",
+      "name": "Martin Adams",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11673745?v=4",
+      "profile": "https://github.com/heymartinadams",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
