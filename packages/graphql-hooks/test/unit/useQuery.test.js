@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { renderHook } from 'react-hooks-testing-library'
+import { renderHook } from '@testing-library/react-hooks'
 import { ClientContext, useQuery, useClientRequest } from '../../src'
 
 jest.mock('../../src/useClientRequest')
