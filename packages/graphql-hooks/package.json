@@ -38,11 +38,11 @@
   },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
+    "@testing-library/react-hooks": "^1.1.0",
     "formdata-node": "^1.6.0",
     "jest-fetch-mock": "^2.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hooks-testing-library": "^0.6.0",
     "react-test-renderer": "^16.8.6"
   },
   "repository": {
