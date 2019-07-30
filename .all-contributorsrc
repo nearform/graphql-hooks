@@ -148,7 +148,15 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/202988?v=4",
       "profile": "http://edvinasbartkus.lt",
       "contributions": [
-        "code"
+        "code",
+        "question",
+        "bug",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
       ]
     },
     {
