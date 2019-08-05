@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
@@ -33,8 +33,8 @@
     "react": "^16.8.1"
   },
   "dependencies": {
-    "extract-files": "^5.0.1",
-    "dequal": "^1.0.0"
+    "dequal": "^1.0.0",
+    "extract-files": "^5.0.1"
   },
   "devDependencies": {
     "@testing-library/react": "^8.0.1",
