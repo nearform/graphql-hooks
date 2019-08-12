@@ -58,21 +58,23 @@ class GraphQLClient {
     console.log(operation)
     console.groupEnd()
 
-    if (result.fetchError) {
+    const error = result.error
+
+    if (error.fetchError) {
       console.groupCollapsed('FETCH ERROR:')
-      console.log(result.fetchError)
+      console.log(error.fetchError)
       console.groupEnd()
     }
 
-    if (result.httpError) {
+    if (error.httpError) {
       console.groupCollapsed('HTTP ERROR:')
-      console.log(result.httpError)
+      console.log(error.httpError)
       console.groupEnd()
     }
 
-    if (result.graphQLErrors && result.graphQLErrors.length > 0) {
+    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
       console.groupCollapsed('GRAPHQL ERROR:')
-      result.graphQLErrors.forEach(err => console.log(err))
+      error.graphQLErrors.forEach(err => console.log(err))
       console.groupEnd()
     }
 
@@ -80,19 +82,14 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
   generateResult({ fetchError, httpError, graphQLErrors, data }) {
-    const error = !!(
+    const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
       fetchError ||
       httpError
     )
-
-    return {
-      error,
-      fetchError,
-      httpError,
-      graphQLErrors,
-      data
-    }
+    return !errorFound
+      ? { data }
+      : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
   getCacheKey(operation, options = {}) {

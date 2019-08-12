@@ -96,12 +96,15 @@ interface HttpError {
   body: string
 }
 
-interface Result {
-  data?: object
-  error?: boolean
+interface APIError {
   fetchError?: Error
   httpError?: HttpError
   graphQLErrors?: object[]
+}
+
+interface Result {
+  data?: object
+  error?: APIError
 }
 
 interface UseClientRequestOptions {
@@ -122,11 +125,8 @@ interface UseQueryOptions extends UseClientRequestOptions {
 interface UseClientRequestResult<ResponseData> {
   loading: boolean
   cacheHit: boolean
-  error: boolean
   data: ResponseData
-  fetchError?: Error
-  httpError?: HttpError
-  graphQLErrors?: object[]
+  error?: APIError
 }
 
 interface UseQueryResult<ResponseData>
