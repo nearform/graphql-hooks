@@ -11,8 +11,8 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      # - restore_cache:
+      #     key: dependency-cache-{{ checksum "package.json" }}
 
       - run: npm install
 
@@ -45,8 +45,8 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      # - restore_cache:
+      #     key: dependency-cache-{{ checksum "package.json" }}
 
       - run: npm install
 
