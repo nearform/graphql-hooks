@@ -141,7 +141,7 @@ const client = new GraphQLClient(config)
 - `logErrors`: Boolean - defaults to `true`
 - `onError({ operation, result })`: Custom error handler
   - `operation`: Object with `query`, `variables` and `operationName`
-  - `result`: Object containing `error`, `data`, `fetchError`, `httpError` and `graphqlErrors`
+  - `result`: Object containing `data` and `error` object that contains `fetchError`, `httpError` and `graphqlErrors`
 
 ### `client` methods
 
@@ -222,18 +222,18 @@ This is a custom hook that takes care of fetching your query and storing the res
 ### `useQuery` return value
 
 ```js
-const { loading, error, data, refetch, cacheHit, ...errors } = useQuery(QUERY)
+const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 ```
 
 - `loading`: Boolean - `true` if the query is in flight
-- `error`: Boolean - `true` if `fetchError` or `httpError` or `graphQLErrors` has been set
 - `data`: Object - the result of your GraphQL query
 - `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
-- `fetchError`: Object - Set if an error occurred during the `fetch` call
-- `httpError`: Object - Set if an error response was returned from the server
-- `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
+- `error`: Object - Set if at least one of the following errors has occured and contains:
+  * `fetchError`: Object - Set if an error occurred during the `fetch` call
+  * `httpError`: Object - Set if an error response was returned from the server
+  * `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
 
 ## `useManualQuery`
 
