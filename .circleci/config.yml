@@ -11,13 +11,17 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: 'Generate Key'
+          command: 'bash .circleci/generate_key.sh'
+      
       - restore_cache:
-          key: dependency-cache-{{ ./generate_key.sh }}
+          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ ./generate_key.sh }}
+          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
           paths:
             - node_modules
 
@@ -46,12 +50,12 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: dependency-cache-{{ ./generate_key.sh }}
+          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ ./generate_key.sh }}
+          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
           paths:
             - node_modules
 
