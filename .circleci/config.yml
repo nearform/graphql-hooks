@@ -11,26 +11,18 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Generating Checksum Key
-          command: .circleci/generate_key.sh
-          shell: /bin/bash
-          working_directory: ~/graphql-hooks
-          no_output_timeout: 5s
-      
-      - run:
-          name: Reading Checksum Key
-          command: echo $GRAPHQL_HOOKS_CHECKSUM
-
       - restore_cache:
-          key: dependency-cache-{{ echo $GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ echo $GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key
           paths:
-            - node_modules
+            - ~/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
 
       - run:
           name: 'JavaScript Linter'
@@ -57,14 +49,17 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: dependency-cache-{{ .circleci/generate_key.sh }}
+          key: graphql-hooks-key
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ .circleci/generate_key.sh }}
+          key: graphql-hooks-key
           paths:
-            - node_modules
+            - ~/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
 
       - run: npm run test:acceptance:ci
 
