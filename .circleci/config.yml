@@ -11,13 +11,13 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     key: dependency-cache-{{ checksum "package.json" }}
+      - restore_cache:
+          key: dependency-cache-{{ ./generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ ./generate_key.sh }}
           paths:
             - node_modules
 
@@ -45,13 +45,13 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     key: dependency-cache-{{ checksum "package.json" }}
+      - restore_cache:
+          key: dependency-cache-{{ ./generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ ./generate_key.sh }}
           paths:
             - node_modules
 
