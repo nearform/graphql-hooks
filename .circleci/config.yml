@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: 'Generate Key'
-          command: 'bash .circleci/generate_key.sh'
+          command: 'md5 package.json'
       
       - restore_cache:
           key: dependency-cache-{{ bash .circleci/generate_key.sh }}
