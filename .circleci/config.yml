@@ -12,16 +12,19 @@ jobs:
       - checkout
 
       - run:
-          name: 'Generate Key'
-          command: 'md5sum package.json'
+          name: Generating Checksum Key
+          command: .circleci/generate_key.sh
+          shell: /bin/bash
+          working_directory: ~/graphql-hooks
+          no_output_timeout: 5s
       
       - restore_cache:
-          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
+          key: dependency-cache-{{ .circleci/generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
+          key: dependency-cache-{{ .circleci/generate_key.sh }}
           paths:
             - node_modules
 
@@ -50,12 +53,12 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
+          key: dependency-cache-{{ .circleci/generate_key.sh }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ bash .circleci/generate_key.sh }}
+          key: dependency-cache-{{ .circleci/generate_key.sh }}
           paths:
             - node_modules
 
