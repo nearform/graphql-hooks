@@ -11,13 +11,17 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: 'Generate Key'
+          command: ~/graphql-hooks/.circleci/generate_key.sh > .all_packages_checksum
+
       - restore_cache:
-          key: graphql-hooks-key
+          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key
+          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
@@ -48,13 +52,17 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: 'Generate Key'
+          command: ~/graphql-hooks/.circleci/generate_key.sh > .all_packages_checksum
+
       - restore_cache:
-          key: graphql-hooks-key
+          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key
+          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
