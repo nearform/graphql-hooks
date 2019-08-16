@@ -16,12 +16,12 @@ jobs:
           command: ~/graphql-hooks/.circleci/generate_key.sh
 
       - restore_cache:
-          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
+          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
+          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
@@ -57,12 +57,12 @@ jobs:
           command: ~/graphql-hooks/.circleci/generate_key.sh
 
       - restore_cache:
-          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
+          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
+          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
