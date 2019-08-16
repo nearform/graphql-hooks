@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: 'Generate Key'
-          command: ~/graphql-hooks/.circleci/generate_key.sh > .all_packages_checksum
+          command: ~/graphql-hooks/.circleci/generate_key.sh
 
       - restore_cache:
           key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
@@ -54,7 +54,7 @@ jobs:
 
       - run:
           name: 'Generate Key'
-          command: ~/graphql-hooks/.circleci/generate_key.sh > .all_packages_checksum
+          command: ~/graphql-hooks/.circleci/generate_key.sh
 
       - restore_cache:
           key: graphql-hooks-key-{{ checksum ".all_packages_checksum" }}
