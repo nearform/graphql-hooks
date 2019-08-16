@@ -11,21 +11,13 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: 'Generate Key'
-          command: echo "export GRAPHQL_HOOKS_CHECKSUM=$(~/graphql-hooks/.circleci/generate_key.sh)" >> $BASH_ENV
-
-      - run:
-          name: "What is the GRAPHQL_HOOKS_CHECKSUM?"
-          command: echo ${GRAPHQL_HOOKS_CHECKSUM}
-
       - restore_cache:
-          key: graphql-hooks-key-"${GRAPHQL_HOOKS_CHECKSUM}"
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
@@ -56,17 +48,13 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: 'Generate Key'
-          command: echo "export GRAPHQL_HOOKS_CHECKSUM=$(~/graphql-hooks/.circleci/generate_key.sh)" >> $BASH_ENV
-
       - restore_cache:
-          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
 
       - run: npm install
 
       - save_cache:
-          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
           paths:
             - ~/graphql-hooks/node_modules
             - ~/graphql-hooks/packages/graphql-hooks/node_modules
