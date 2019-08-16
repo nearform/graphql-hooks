@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: 'Generate Key'
-          command: ~/graphql-hooks/.circleci/generate_key.sh
+          command: 'export GRAPHQL_HOOKS_CHECKSUM=$(~/graphql-hooks/.circleci/generate_key.sh)' >> $BASH_ENV
 
       - restore_cache:
           key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
@@ -54,7 +54,7 @@ jobs:
 
       - run:
           name: 'Generate Key'
-          command: ~/graphql-hooks/.circleci/generate_key.sh
+          command: 'export GRAPHQL_HOOKS_CHECKSUM=$(~/graphql-hooks/.circleci/generate_key.sh)' >> $BASH_ENV
 
       - restore_cache:
           key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
