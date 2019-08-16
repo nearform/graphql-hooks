@@ -17,6 +17,8 @@ jobs:
 
       - restore_cache:
           key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          environment:
+            GRAPHQL_HOOKS_CHECKSUM: mychecksum
 
       - run: npm install
 
@@ -58,6 +60,8 @@ jobs:
 
       - restore_cache:
           key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          environment:
+            GRAPHQL_HOOKS_CHECKSUM: mychecksum
 
       - run: npm install
 
