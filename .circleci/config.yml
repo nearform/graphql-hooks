@@ -20,7 +20,7 @@ jobs:
           command: echo ${GRAPHQL_HOOKS_CHECKSUM}
 
       - restore_cache:
-          key: graphql-hooks-key-{{ .Environment.GRAPHQL_HOOKS_CHECKSUM }}
+          key: graphql-hooks-key-"${GRAPHQL_HOOKS_CHECKSUM}"
 
       - run: npm install
 
