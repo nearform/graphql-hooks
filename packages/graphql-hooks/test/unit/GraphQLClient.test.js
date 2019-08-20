@@ -151,7 +151,9 @@ describe('GraphQLClient', () => {
 
     it('logs a fetchError', () => {
       const client = new GraphQLClient({ ...validConfig })
-      client.logErrorResult({ result: { fetchError: 'on no fetch!' } })
+      client.logErrorResult({
+        result: { error: { fetchError: 'on no fetch!' } }
+      })
       expect(groupCollapsedSpy).toHaveBeenCalledWith('FETCH ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no fetch!')
       expect(groupEndSpy).toHaveBeenCalled()
@@ -159,7 +161,7 @@ describe('GraphQLClient', () => {
 
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
-      client.logErrorResult({ result: { httpError: 'on no http!' } })
+      client.logErrorResult({ result: { error: { httpError: 'on no http!' } } })
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no http!')
       expect(groupEndSpy).toHaveBeenCalled()
@@ -168,7 +170,7 @@ describe('GraphQLClient', () => {
     it('logs all graphQLErrors', () => {
       const client = new GraphQLClient({ ...validConfig })
       const graphQLErrors = ['on no GraphQL!', 'oops GraphQL!']
-      client.logErrorResult({ result: { graphQLErrors } })
+      client.logErrorResult({ result: { error: { graphQLErrors } } })
       expect(groupCollapsedSpy).toHaveBeenCalledWith('GRAPHQL ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
@@ -182,7 +184,7 @@ describe('GraphQLClient', () => {
       const result = client.generateResult({
         graphQLErrors: ['error 1', 'error 2']
       })
-      expect(result.error).toBe(true)
+      expect(result.error.graphQLErrors).toEqual(['error 1', 'error 2'])
     })
 
     it('shows as errored if there is a fetch error', () => {
@@ -190,7 +192,7 @@ describe('GraphQLClient', () => {
       const result = client.generateResult({
         fetchError: 'fetch error'
       })
-      expect(result.error).toBe(true)
+      expect(result.error.fetchError).toBe('fetch error')
     })
 
     it('shows as errored if there is an http error', () => {
@@ -198,7 +200,18 @@ describe('GraphQLClient', () => {
       const result = client.generateResult({
         httpError: 'http error'
       })
-      expect(result.error).toBe(true)
+      expect(result.error.httpError).toBe('http error')
+    })
+
+    it('returns the data without an error', () => {
+      const client = new GraphQLClient({ ...validConfig })
+      const data = {
+        data: 'data!'
+      }
+      const result = client.generateResult(data)
+      expect(result).toEqual({
+        data: data.data
+      })
     })
 
     it('returns the errors & data', () => {
@@ -211,10 +224,11 @@ describe('GraphQLClient', () => {
       }
       const result = client.generateResult(data)
       expect(result).toEqual({
-        error: true,
-        graphQLErrors: data.graphQLErrors,
-        fetchError: data.fetchError,
-        httpError: data.httpError,
+        error: {
+          graphQLErrors: data.graphQLErrors,
+          fetchError: data.fetchError,
+          httpError: data.httpError
+        },
         data: data.data
       })
     })
@@ -349,10 +363,10 @@ describe('GraphQLClient', () => {
     it('handles & returns fetch errors', async () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult = jest.fn()
-      const error = new Error('Oops fetch!')
-      fetch.mockRejectOnce(error)
+      const fetchingError = new Error('Oops fetch!')
+      fetch.mockRejectOnce(fetchingError)
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.fetchError).toBe(error)
+      expect(res.error.fetchError).toBe(fetchingError)
     })
 
     it('handles & returns http errors', async () => {
@@ -362,7 +376,7 @@ describe('GraphQLClient', () => {
         status: 403
       })
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.httpError).toEqual({
+      expect(res.error.httpError).toEqual({
         status: 403,
         statusText: 'Forbidden',
         body: 'Denied!'
@@ -374,6 +388,7 @@ describe('GraphQLClient', () => {
       fetch.mockResponseOnce(JSON.stringify({ data: 'data!' }))
       const res = await client.request({ query: TEST_QUERY })
       expect(res.data).toBe('data!')
+      expect(res.error).toBeUndefined()
     })
 
     it('returns graphql errors', async () => {
@@ -383,7 +398,7 @@ describe('GraphQLClient', () => {
         JSON.stringify({ data: 'data!', errors: ['oops!'] })
       )
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.graphQLErrors).toEqual(['oops!'])
+      expect(res.error.graphQLErrors).toEqual(['oops!'])
     })
 
     it('will use a configured fetch implementation', async () => {
