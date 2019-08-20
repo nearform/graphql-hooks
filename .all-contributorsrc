@@ -188,6 +188,18 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "galmail",
+      "name": "Gal Dubitski",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/191608?v=4",
+      "profile": "http://gal.js.org",
+      "contributions": [
+        "code",
+        "bug",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
