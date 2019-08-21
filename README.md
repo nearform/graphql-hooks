@@ -638,7 +638,59 @@ const client = new GraphQLClient({
 
 ## Authentication
 
-Coming soon!
+## Authentication
+
+You can have access the to the graphql-hooks client context by using the React's new context API.  `ClientContext` is actually the result of `React.createContext()`.
+
+**Login example**
+
+```jsx
+import React, { useState, useContext } from 'react';
+import { useMutation, ClientContext } from 'graphql-hooks'
+
+const LOGIN_MUTATION = `mutation LoginUser (name: String!, password: String!){
+  loginUser(name: $name, password: $password){
+      token
+  }
+}`;
+
+const AUTH_TOKEN = 'auth_token';
+
+const Login = () => {
+  const [loginUserMutation] = useMutation(LOGIN_MUTATION);
+  const client = useContext(ClientContext)
+  const [userName, setUserName ] = useState();
+  const [password, setPassword] = useState();
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    const { data, error} = await loginUserMutation({ variables: { userName, password } })
+    if (error) {
+      // your code to handle login error
+    }
+    else {
+      const { token } = data.loginUser
+      client.setHeader(AUTH_TOKEN, token);
+      // your code to handle token in browser and login redirection
+    }
+  }
+  return(
+      <form onSubmit={handleLogin}>
+          User Name: <input type={'text'} value={userName} onChange={(e)=> setUserName(e.target.value)}/>
+          PassWord: <input type={'password'} value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <input type={'submit'} value={'Login'}/>
+      </form>
+  )
+}
+
+export default Login
+```
+In the above example we use `useContext()` hook to get access to the graphql-hooks clientContext. 
+Then we request the token from the server by performing the `loginUser` mutation.
+In the case the login is success we set the token to the client's header (`client.setHeader(AUTH_TOKEN, token)`), otherwise we need to handle the error.
+For more information about graphql-hooks clientContext refer to  [GraphQLClient](#GraphQLClient) section.
+
+
 
 ## Fragments
 
