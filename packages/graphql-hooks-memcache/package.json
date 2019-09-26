@@ -40,8 +40,5 @@
   "bugs": {
     "url": "https://github.com/nearform/graphql-hooks/issues"
   },
-  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
-  "devDependencies": {
-    "rollup": "^1.21.4"
-  }
+  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme"
 }
