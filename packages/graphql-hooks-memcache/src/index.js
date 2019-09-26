@@ -1,4 +1,4 @@
-import LRU from 'tiny-lru'
+import LRU from 'tiny-lru/lib/tiny-lru.es5'
 import fnv1a from '@sindresorhus/fnv1a'
 
 function generateKey(keyObj) {
