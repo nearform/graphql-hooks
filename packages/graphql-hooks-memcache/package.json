@@ -31,7 +31,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.2.0",
-    "tiny-lru": "^6.0.1"
+    "quick-lru": "^4.0.1"
   },
   "repository": {
     "type": "git",
@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/nearform/graphql-hooks/issues"
   },
-  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme"
+  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
+  "devDependencies": {
+    "rollup": "^1.21.4"
+  }
 }

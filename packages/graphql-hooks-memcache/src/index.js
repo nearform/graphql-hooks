@@ -1,12 +1,12 @@
-import LRU from 'tiny-lru'
 import fnv1a from '@sindresorhus/fnv1a'
+import QuickLRU from 'quick-lru'
 
 function generateKey(keyObj) {
   return fnv1a(JSON.stringify(keyObj)).toString(36)
 }
 
-export default function memCache({ size = 100, ttl = 0, initialState } = {}) {
-  const lru = LRU(size, ttl)
+export default function memCache({ size = 100, initialState } = {}) {
+  const lru = new QuickLRU({ maxSize: size })
 
   if (initialState) {
     Object.keys(initialState).map(k => {
