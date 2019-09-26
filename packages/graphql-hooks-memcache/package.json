@@ -31,6 +31,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.2.0",
+    "lru-cache": "^5.1.1",
     "quick-lru": "^4.0.1"
   },
   "repository": {

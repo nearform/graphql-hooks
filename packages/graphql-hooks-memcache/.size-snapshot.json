@@ -1,46 +1,46 @@
 {
   "lib/graphql-hooks-memcache.js": {
-    "bundled": 989,
-    "minified": 666,
-    "gzipped": 396
+    "bundled": 972,
+    "minified": 643,
+    "gzipped": 383
   },
   "es/graphql-hooks-memcache.js": {
-    "bundled": 816,
-    "minified": 535,
-    "gzipped": 339,
+    "bundled": 799,
+    "minified": 512,
+    "gzipped": 326,
     "treeshaked": {
       "rollup": {
-        "code": 68,
+        "code": 46,
         "import_statements": 46
       },
       "webpack": {
-        "code": 1085
+        "code": 1063
       }
     }
   },
   "es/graphql-hooks-memcache.mjs": {
-    "bundled": 1706,
-    "minified": 1706,
-    "gzipped": 725,
+    "bundled": 8201,
+    "minified": 8178,
+    "gzipped": 2665,
     "treeshaked": {
       "rollup": {
-        "code": 22,
+        "code": 4175,
         "import_statements": 0
       },
       "webpack": {
-        "code": 1121
+        "code": 5489
       }
     }
   },
   "dist/graphql-hooks-memcache.js": {
-    "bundled": 3427,
-    "minified": 1911,
-    "gzipped": 835
+    "bundled": 17537,
+    "minified": 8416,
+    "gzipped": 2759
   },
   "dist/graphql-hooks-memcache.min.js": {
-    "bundled": 1905,
-    "minified": 1897,
-    "gzipped": 824
+    "bundled": 8400,
+    "minified": 8394,
+    "gzipped": 2760
   },
   "lib\\graphql-hooks-memcache.js": {
     "bundled": 936,
