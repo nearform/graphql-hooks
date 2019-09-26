@@ -17,8 +17,8 @@ export default function memCache({ size = 100, ttl = 0, initialState } = {}) {
   return {
     get: keyObj => lru.get(generateKey(keyObj)),
     set: (keyObj, data) => lru.set(generateKey(keyObj), data),
-    delete: keyObj => lru.delete(generateKey(keyObj)),
-    clear: () => lru.clear(),
+    delete: keyObj => lru.del(generateKey(keyObj)),
+    clear: () => lru.reset(),
     keys: () => lru.keys(),
     getInitialState: () =>
       lru.keys().reduce(
