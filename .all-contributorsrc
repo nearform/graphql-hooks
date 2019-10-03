@@ -219,6 +219,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "hboylan",
+      "name": "Hugh Boylan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2158740?v=4",
+      "profile": "https://hughboylan.com",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
