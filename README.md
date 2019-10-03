@@ -746,6 +746,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://gal.js.org"><img src="https://avatars3.githubusercontent.com/u/191608?v=4" width="100px;" alt="Gal Dubitski"/><br /><sub><b>Gal Dubitski</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Agalmail" title="Bug reports">🐛</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Documentation">📖</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://twitter.com/osdevisnot"><img src="https://avatars1.githubusercontent.com/u/802242?v=4" width="100px;" alt="Abhishek Shende"/><br /><sub><b>Abhishek Shende</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=osdevisnot" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Aosdevisnot" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://fabien.cool"><img src="https://avatars1.githubusercontent.com/u/1702255?v=4" width="100px;" alt="fabienheureux"/><br /><sub><b>fabienheureux</b></sub></a><br /><a href="#review-fabienheureux" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
