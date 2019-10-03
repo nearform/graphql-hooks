@@ -31,7 +31,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.2.0",
-    "tiny-lru": "^6.0.1"
+    "tiny-lru": "^7.0.0"
   },
   "repository": {
     "type": "git",
