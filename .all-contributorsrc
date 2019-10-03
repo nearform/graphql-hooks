@@ -210,6 +210,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "fabienheureux",
+      "name": "fabienheureux",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1702255?v=4",
+      "profile": "http://fabien.cool",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
