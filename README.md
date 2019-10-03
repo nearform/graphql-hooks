@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 [![bundlephobia](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat&label=size)](https://bundlephobia.com/result?p=graphql-hooks)
 [![npm](https://img.shields.io/npm/v/graphql-hooks.svg?color=brightgreen)](https://www.npmjs.com/package/graphql-hooks)
-[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🎣 Minimal hooks-first GraphQL client.
@@ -745,6 +745,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="http://gal.js.org"><img src="https://avatars3.githubusercontent.com/u/191608?v=4" width="100px;" alt="Gal Dubitski"/><br /><sub><b>Gal Dubitski</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Agalmail" title="Bug reports">🐛</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Documentation">📖</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=galmail" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://twitter.com/osdevisnot"><img src="https://avatars1.githubusercontent.com/u/802242?v=4" width="100px;" alt="Abhishek Shende"/><br /><sub><b>Abhishek Shende</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=osdevisnot" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Aosdevisnot" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
