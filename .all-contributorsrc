@@ -200,6 +200,16 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "osdevisnot",
+      "name": "Abhishek Shende",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/802242?v=4",
+      "profile": "https://twitter.com/osdevisnot",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
