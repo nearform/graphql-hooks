@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.0.0...graphql-hooks@4.0.1) (2019-10-04)
+
+
+### Bug Fixes
+
+* Add support for generic Variables TS type fixes [#348](https://github.com/nearform/graphql-hooks/issues/348) ([#353](https://github.com/nearform/graphql-hooks/issues/353)) ([4c91939](https://github.com/nearform/graphql-hooks/commit/4c91939))
+
+
+
+
+
 # [4.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@3.6.1...graphql-hooks@4.0.0) (2019-08-20)
 
 **Note:** Version bump only for package graphql-hooks
