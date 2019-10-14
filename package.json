@@ -10,7 +10,8 @@
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "eslint": "eslint '**/*.js'",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
-    "release": "lerna publish"
+    "release": "lerna publish",
+    "clean": "lerna clean"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
