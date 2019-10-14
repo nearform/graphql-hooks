@@ -9,8 +9,8 @@
     "@types/react-dom": "16.9.2",
     "graphql-hooks": "^4.0.1",
     "graphql-hooks-memcache": "^1.2.3",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
+    "react": "16.10.2",
+    "react-dom": "16.10.2",
     "react-scripts": "2.1.8",
     "typescript": "3.6.4"
   },
