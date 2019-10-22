@@ -5,6 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 0",
     "prepublishOnly": "cp ../../LICENSE ."
   },

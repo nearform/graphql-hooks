@@ -7,6 +7,7 @@
   "unpkg": "dist/graphql-hooks.min.js",
   "types": "index.d.ts",
   "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
   },
