@@ -11,18 +11,18 @@ jobs:
     steps:
       - checkout
 
-      # - restore_cache:
-      #     key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
+      - restore_cache:
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
 
       - run: npm install
 
-      # - save_cache:
-      #     key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
-      #     paths:
-      #       - ~/graphql-hooks/node_modules
-      #       - ~/graphql-hooks/packages/graphql-hooks/node_modules
-      #       - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
-      #       - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
+      - save_cache:
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
+          paths:
+            - ~/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
 
       - run:
           name: 'JavaScript Linter'
