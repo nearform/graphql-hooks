@@ -7,6 +7,7 @@
   "unpkg": "dist/graphql-hooks-memcache.min.js",
   "types": "index.d.ts",
   "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "prepublishOnly": "npm run build && cp ../../LICENSE ."
