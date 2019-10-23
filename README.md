@@ -754,7 +754,3 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
-[![BrowserStack](https://p14.zdusercontent.com/attachment/1015988/mg687dwxHqXtriITEf8kxZV3W?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..tPLabhhdTeWxyc3TTt-RCg.bmk4nO95zIaYIcNaaDEVtxph9ap6d9X__07O0wPpvgsx5RBYvue1gMxCGhnYcgtQA51YjC5BFCxev9bBGZ0f6wHGr83j_nBID68oZCdgurHQhuZjsBZTotXtVdGDJoGg8KHMvl2qK9_FFlxohxGkPatEyccPXfLxZGGrGhvGnZVs6sFcy5bSevRHwe84yH3y0-PhbwE9HPAqzYsJyjBsSnez3gllgrIqX_7UucPPyAxtESSOaevl3zs6n5EfJ6teaJ3_KhWTmux9Nlk5csiWwvcRcCXp7p14Xln9tBYR64k.-1SqygSW1Ke0iJ-t3ED3SQ)](http://browserstack.com/)
-
-We use BrowserStack to support as many browsers and devices as possible
