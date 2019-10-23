@@ -41,7 +41,7 @@ jobs:
     working_directory: ~/graphql-hooks
     environment:
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:10.15-browsers
     steps:
       - checkout
 
