@@ -5,7 +5,6 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:acceptance": "testcafe chrome test/acceptance/",
-    "test:acceptance:ci": "testcafe browserstack:chrome,browserstack:firefox,browserstack:ie,browserstack:safari test/acceptance/ -r xunit:/tmp/acceptance-test-results/res.xml",
     "postinstall": "lerna bootstrap --no-ci && lerna run build",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "eslint": "eslint '**/*.js'",
@@ -37,7 +36,6 @@
     "rollup-plugin-size-snapshot": "^0.10.0",
     "rollup-plugin-terser": "^5.0.0",
     "testcafe": "^1.2.1",
-    "testcafe-browser-provider-browserstack": "^1.8.0",
     "testcafe-reporter-xunit": "^2.1.0"
   },
   "lint-staged": {
