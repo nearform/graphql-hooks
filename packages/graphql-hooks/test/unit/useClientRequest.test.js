@@ -527,6 +527,43 @@ describe('useClientRequest', () => {
           'options.updateData must be a function'
         )
       })
+
+      describe('caching', () => {
+        it('shoud update the state when the second cacheHit is different from the first', async () => {
+          let fetchData, state
+          const updateDataMock = jest.fn().mockReturnValue('merged data')
+          renderHook(
+            () =>
+              ([fetchData, state] = useClientRequest(TEST_QUERY, {
+                useCache: true,
+                updateData: updateDataMock
+              })),
+            {
+              wrapper: Wrapper
+            }
+          )
+
+          mockClient.getCache.mockReturnValueOnce({ data: 'cached data' })
+          await fetchData()
+
+          expect(mockClient.request).not.toHaveBeenCalled()
+          expect(state).toEqual({
+            cacheHit: true,
+            loading: false,
+            data: 'cached data'
+          })
+
+          mockClient.getCacheKey.mockReturnValueOnce('UpdatedCacheKey')
+          mockClient.getCache.mockReturnValueOnce({ data: 'merged data' })
+
+          await fetchData({ variables: { limit: 20 } })
+          expect(state).toEqual({
+            cacheHit: true,
+            loading: false,
+            data: 'merged data'
+          })
+        })
+      })
     })
 
     describe('memoisation', () => {

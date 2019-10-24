@@ -115,16 +115,23 @@ describe('useQuery Integrations', () => {
   })
 
   it('should not rerender after a SSR', () => {
+    const query = 'query { hiya }'
     client = new GraphQLClient({
       url: '/graphql',
       cache: {
-        get: () => ({ error: false, data: 'hello' })
+        get: () => ({
+          error: false,
+          data: 'hello',
+          cacheKey: client.getCacheKey({
+            query
+          })
+        })
       }
     })
 
     wrapper = getWrapper(client)
 
-    const { getByTestId } = render(<TestComponent />, {
+    const { getByTestId } = render(<TestComponent query={query} />, {
       wrapper
     })
 
