@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.2.3...graphql-hooks-memcache@1.2.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* publishing issues ([#389](https://github.com/nearform/graphql-hooks/issues/389)) ([7e1c4a2](https://github.com/nearform/graphql-hooks/commit/7e1c4a2ba8a6c08d09139733b2b897b81374fbac))
+* Server-side rendering ([#382](https://github.com/nearform/graphql-hooks/issues/382)) ([7256bde](https://github.com/nearform/graphql-hooks/commit/7256bde4e52fc78479c887c7671eb7fb82cbd0d0)), closes [#371](https://github.com/nearform/graphql-hooks/issues/371)
+
+
+
+
+
 ## [1.2.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.2.2...graphql-hooks-memcache@1.2.3) (2019-10-04)
 
 **Note:** Version bump only for package graphql-hooks-memcache

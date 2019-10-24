@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks-ssr",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "types": "index.d.ts",
