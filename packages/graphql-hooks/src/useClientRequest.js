@@ -22,7 +22,7 @@ function reducer(state, action) {
         loading: true
       }
     case actionTypes.CACHE_HIT:
-      if (state.cacheHit) {
+      if (state.cacheHit && !action.resetState) {
         // we can be sure this is the same cacheKey hit
         // because we dispatch RESET_STATE if it changes
         return state
@@ -139,7 +139,8 @@ function useClientRequest(query, initialOpts = {}) {
       if (cacheHit) {
         dispatch({
           type: actionTypes.CACHE_HIT,
-          result: cacheHit
+          result: cacheHit,
+          resetState: stringifiedCacheKey !== JSON.stringify(state.cacheKey)
         })
 
         return Promise.resolve(cacheHit)
