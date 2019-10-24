@@ -13,7 +13,7 @@
 ## Features
 
 - 🥇 First-class hooks API
-- ⚖️ _Tiny_ bundle: only 5.3kB (1.9 gzipped)
+- ⚖️ _Tiny_ bundle: only 7.6kB (2.8 gzipped)
 - 📄 Full SSR support: see [graphql-hooks-ssr](packages/graphql-hooks-ssr)
 - 🔌 Plugin Caching: see [graphql-hooks-memcache](packages/graphql-hooks-memcache)
 - 🔥 No more render props hell

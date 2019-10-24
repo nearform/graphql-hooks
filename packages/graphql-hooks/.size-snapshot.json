@@ -1,13 +1,13 @@
 {
   "lib/graphql-hooks.js": {
-    "bundled": 15350,
-    "minified": 7386,
-    "gzipped": 2505
+    "bundled": 15687,
+    "minified": 7523,
+    "gzipped": 2550
   },
   "es/graphql-hooks.js": {
-    "bundled": 14973,
-    "minified": 7068,
-    "gzipped": 2420,
+    "bundled": 15310,
+    "minified": 7205,
+    "gzipped": 2465,
     "treeshaked": {
       "rollup": {
         "code": 104,
@@ -19,28 +19,28 @@
     }
   },
   "es/graphql-hooks.mjs": {
-    "bundled": 6226,
-    "minified": 6223,
-    "gzipped": 2436,
+    "bundled": 6365,
+    "minified": 6362,
+    "gzipped": 2475,
     "treeshaked": {
       "rollup": {
         "code": 67,
         "import_statements": 21
       },
       "webpack": {
-        "code": 1151
+        "code": 1071
       }
     }
   },
   "dist/graphql-hooks.js": {
-    "bundled": 17632,
-    "minified": 7791,
-    "gzipped": 2880
+    "bundled": 17971,
+    "minified": 7928,
+    "gzipped": 2920
   },
   "dist/graphql-hooks.min.js": {
-    "bundled": 7717,
-    "minified": 7703,
-    "gzipped": 2845
+    "bundled": 7854,
+    "minified": 7840,
+    "gzipped": 2888
   },
   "lib\\graphql-hooks.js": {
     "bundled": 12621,

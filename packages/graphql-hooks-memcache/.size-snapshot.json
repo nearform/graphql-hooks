@@ -33,7 +33,7 @@
     }
   },
   "dist/graphql-hooks-memcache.js": {
-    "bundled": 3964,
+    "bundled": 3966,
     "minified": 2087,
     "gzipped": 926
   },
