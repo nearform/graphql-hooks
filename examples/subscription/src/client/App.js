@@ -64,7 +64,7 @@ function Votes(props) {
 }
 
 function Vote(props) {
-  const [flashing, setFlashing] = useState(false)
+  const [flashing] = useState(false)
   const [vote, setVote] = useState(props.vote)
 
   const handleSubscription = ({ data: { voteAdded }, errors }) => {
