@@ -30,6 +30,7 @@ class GraphQLClient {
     this.fetchOptions = config.fetchOptions || {}
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
+    this.subscriptionClient = config.subscriptionClient
   }
 
   setHeader(key, value) {
@@ -198,6 +199,10 @@ class GraphQLClient {
         }
         return result
       })
+  }
+
+  createSubscription(operation) {
+    return this.subscriptionClient.request(operation)
   }
 }
 
