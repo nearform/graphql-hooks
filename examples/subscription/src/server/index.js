@@ -125,4 +125,4 @@ setInterval(() => {
   } else {
     resolvers.Mutation.voteNo({}, { voteId }, { pubsub: mockPubsub })
   }
-}, 100)
+}, 1000)

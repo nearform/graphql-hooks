@@ -1,0 +1,48 @@
+{
+  "name": "graphql-hooks-subscription-client",
+  "version": "1.0.0",
+  "description": "Graphql Hooks Subscription Client",
+  "main": "lib/graphql-hooks-subscription-client.js",
+  "module": "es/graphql-hooks-subscription-client.js",
+  "unpkg": "dist/graphql-hooks-subscription-client.min.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
+  },
+  "files": [
+    "dist",
+    "es",
+    "lib",
+    "src",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "graphql",
+    "hooks",
+    "graphql-hooks",
+    "gql",
+    "gql-hooks",
+    "react-graphql-hooks",
+    "subscription",
+    "react",
+    "apollo"
+  ],
+  "author": "Peter Balazs <frikille@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "symbol-observable": "^1.2.0"
+  },
+  "devDependencies": {
+    "rollup": "^1.25.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nearform/graphql-hooks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nearform/graphql-hooks/issues"
+  },
+  "homepage": "https://github.com/nearform/graphql-hooks#readme"
+}

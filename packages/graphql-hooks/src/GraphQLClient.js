@@ -202,7 +202,7 @@ class GraphQLClient {
   }
 
   createSubscription(operation) {
-    return this.subscriptionClient.request(operation)
+    return this.subscriptionClient.createSubscription(operation)
   }
 }
 

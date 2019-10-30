@@ -20,7 +20,7 @@
     "mqemitter": "^3.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "subscriptions-transport-ws": "^0.9.16",
+    "graphql-hooks-subscription-client": "1.0.0",
     "graphql": "^14.0.0"
   },
   "devDependencies": {
