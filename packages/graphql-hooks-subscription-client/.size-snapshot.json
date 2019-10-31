@@ -1,13 +1,13 @@
 {
   "lib/graphql-hooks-subscription-client.js": {
-    "bundled": 6388,
-    "minified": 3313,
-    "gzipped": 1290
+    "bundled": 6468,
+    "minified": 3364,
+    "gzipped": 1313
   },
   "es/graphql-hooks-subscription-client.js": {
-    "bundled": 6235,
-    "minified": 3197,
-    "gzipped": 1235,
+    "bundled": 6315,
+    "minified": 3248,
+    "gzipped": 1259,
     "treeshaked": {
       "rollup": {
         "code": 26,
@@ -19,9 +19,9 @@
     }
   },
   "es/graphql-hooks-subscription-client.mjs": {
-    "bundled": 3208,
-    "minified": 3209,
-    "gzipped": 1234,
+    "bundled": 3259,
+    "minified": 3260,
+    "gzipped": 1257,
     "treeshaked": {
       "rollup": {
         "code": 277,
@@ -33,13 +33,13 @@
     }
   },
   "dist/graphql-hooks-subscription-client.js": {
-    "bundled": 7149,
-    "minified": 3437,
-    "gzipped": 1333
+    "bundled": 7229,
+    "minified": 3488,
+    "gzipped": 1354
   },
   "dist/graphql-hooks-subscription-client.min.js": {
-    "bundled": 3417,
-    "minified": 3376,
-    "gzipped": 1293
+    "bundled": 3468,
+    "minified": 3427,
+    "gzipped": 1316
   }
 }

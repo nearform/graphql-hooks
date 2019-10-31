@@ -18,6 +18,13 @@ const projects = [
     roots: ['./packages/graphql-hooks-ssr'],
     displayName: 'graphql-hooks-ssr',
     testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js']
+  },
+  {
+    roots: ['./packages/graphql-hooks-subscription-client'],
+    displayName: 'graphql-hooks-subscription-client',
+    testMatch: [
+      '<rootDir>/packages/graphql-hooks-subscription-client/**/*.test.js'
+    ]
   }
 ]
 module.exports = {

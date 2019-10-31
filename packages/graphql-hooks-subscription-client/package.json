@@ -35,6 +35,8 @@
     "symbol-observable": "^1.2.0"
   },
   "devDependencies": {
+    "jest-websocket-mock": "1.5.1",
+    "mock-socket": "~8.0",
     "rollup": "^1.25.2"
   },
   "repository": {

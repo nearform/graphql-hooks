@@ -22,22 +22,24 @@ class SubscriptionClient {
       protocols = [],
       connectionCallback,
       reconnect,
-      maxReconnectAttempts = 10
+      maxReconnectAttempts = 10,
+      wsImpl
     } = config
 
     this.protocols = [GRAPHQL_WS, ...protocols]
     this.connectionCallback = connectionCallback
     this.tryReconnect = reconnect
     this.maxReconnectAttempts = maxReconnectAttempts
+    this.wsImpl = wsImpl || WebSocket
 
     this.connect()
   }
 
   connect() {
-    this.socket = new WebSocket(this.uri, this.protocols)
+    this.socket = new this.wsImpl(this.uri, this.protocols)
 
     this.socket.onopen = () => {
-      if (this.socket.readyState === WebSocket.OPEN) {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
         this.sendMessage(null, GQL_CONNECTION_INIT)
       }
     }
@@ -48,7 +50,6 @@ class SubscriptionClient {
       }
     }
 
-    // TODO add impl
     this.socket.onerror = () => {}
 
     this.socket.onmessage = ({ data }) => {
@@ -91,7 +92,10 @@ class SubscriptionClient {
   }
 
   reconnect() {
-    if (this.reconnectAttempts > this.maxReconnectAttempts) {
+    if (
+      this.reconnecting ||
+      this.reconnectAttempts > this.maxReconnectAttempts
+    ) {
       return
     }
 
@@ -111,7 +115,7 @@ class SubscriptionClient {
   }
 
   unsubscribeAll() {
-    for (const operationId of this.operations.keys) {
+    for (const operationId of this.operations.keys()) {
       this.unsubscribe(operationId)
     }
   }
