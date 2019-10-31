@@ -138,9 +138,10 @@ class SubscriptionClient {
     try {
       data = JSON.parse(message)
       operationId = data.id
-    } catch (error) {
-      // TODO handle error
-      console.log(error)
+    } catch (e) {
+      throw new Error(
+        `Invalid message received: "${message}" Message must be JSON parsable.`
+      )
     }
 
     if (operationId) {

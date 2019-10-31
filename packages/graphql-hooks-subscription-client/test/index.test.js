@@ -23,6 +23,24 @@ describe('SubscriptionClient', () => {
     server.send({ id: undefined, type: 'connection_ack' })
   })
 
+  it('throws an error on invalid message', () => {
+    expect(() => {
+      server.close()
+      server = new WS('ws://localhost:8888')
+      new SubscriptionClient('ws://localhost:8888', {})
+      server.send('invalid message')
+    }).toThrowError(
+      'Invalid message received: "invalid message" Message must be JSON parsable.'
+    )
+  })
+
+  it('throws an error on invalid message type', () => {
+    expect(() => {
+      new SubscriptionClient('ws://localhost:8888', {})
+      server.send({ type: 'invalid_type' })
+    }).toThrowError('Invalid message type: "invalid_type"')
+  })
+
   it('reconnects to the server', done => {
     let connectionCount = 0
     const client = new SubscriptionClient('ws://localhost:8888', {
