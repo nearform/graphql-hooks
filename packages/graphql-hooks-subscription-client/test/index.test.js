@@ -13,41 +13,41 @@ describe('SubscriptionClient', () => {
     WS.clean()
   })
 
-  // it('creates a new websocket connection when instantiated and invokes the connectionCallback', done => {
-  //   const client = new SubscriptionClient('ws://localhost:8888', {
-  //     connectionCallback: () => {
-  //       client.close()
-  //       done()
-  //     }
-  //   })
-  //   server.send({ id: undefined, type: 'connection_ack' })
-  // })
+  it('creates a new websocket connection when instantiated and invokes the connectionCallback', done => {
+    const client = new SubscriptionClient('ws://localhost:8888', {
+      connectionCallback: () => {
+        client.close()
+        done()
+      }
+    })
+    server.send({ id: undefined, type: 'connection_ack' })
+  })
 
-  // it('reconnects to the server', done => {
-  //   let connectionCount = 0
-  //   const client = new SubscriptionClient('ws://localhost:8888', {
-  //     reconnect: true,
-  //     connectionCallback: () => {
-  //       connectionCount++
+  it('reconnects to the server', done => {
+    let connectionCount = 0
+    const client = new SubscriptionClient('ws://localhost:8888', {
+      reconnect: true,
+      connectionCallback: () => {
+        connectionCount++
 
-  //       if (connectionCount == 2) {
-  //         client.close()
-  //         done()
-  //       }
-  //     }
-  //   })
-  //   server.send({ id: undefined, type: 'connection_ack' })
-  //   server.close()
-  //   WS.clean()
-  //   server = new WS('ws://localhost:8888', { jsonProtocol: true })
-  //   server.send({ id: undefined, type: 'connection_ack' })
+        if (connectionCount == 2) {
+          client.close()
+          done()
+        }
+      }
+    })
+    server.send({ id: undefined, type: 'connection_ack' })
+    server.close()
+    WS.clean()
+    server = new WS('ws://localhost:8888', { jsonProtocol: true })
+    server.send({ id: undefined, type: 'connection_ack' })
 
-  //   setTimeout(() => {
-  //     process.nextTick(() => {
-  //       server.send({ id: undefined, type: 'connection_ack' })
-  //     })
-  //   }, 1000)
-  // })
+    setTimeout(() => {
+      process.nextTick(() => {
+        server.send({ id: undefined, type: 'connection_ack' })
+      })
+    }, 1000)
+  })
 
   describe('creates a new subscription', () => {
     let client
