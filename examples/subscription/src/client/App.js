@@ -1,8 +1,6 @@
 /* eslint react/prop-types: 0 */
 import React, { useState } from 'react'
-// import gql from 'graphql-tag';
-// import { Query, useSubscription } from 'react-apollo';
-import { useQuery, useSubscription } from 'graphql-hooks'
+import { useQuery, useSubscription, useMutation } from 'graphql-hooks'
 
 const GET_VOTES = `
   query {
@@ -18,6 +16,28 @@ const GET_VOTES = `
 const VOTE_ADDED = `
   subscription VoteAdded($voteId: ID!) {
     voteAdded(voteId: $voteId) {
+      id
+      title
+      ayes
+      noes
+    }
+  }
+`
+
+const VOTE_AYE = `
+  mutation VoteAye($voteId: ID!) {
+    voteAye(voteId: $voteId) {
+      id
+      title
+      ayes
+      noes
+    }
+  }
+`
+
+const VOTE_NO = `
+  mutation VoteNo($voteId: ID!) {
+    voteNo(voteId: $voteId) {
       id
       title
       ayes
@@ -55,7 +75,6 @@ function Votes(props) {
 }
 
 function Vote(props) {
-  const [flashing] = useState(false)
   const [vote, setVote] = useState(props.vote)
 
   const handleSubscription = ({ data: { voteAdded }, errors }) => {
@@ -74,6 +93,9 @@ function Vote(props) {
     handleSubscription
   )
 
+  const [voteAye] = useMutation(VOTE_AYE)
+  const [voteNo] = useMutation(VOTE_NO)
+
   return (
     <li
       style={{
@@ -90,11 +112,17 @@ function Vote(props) {
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
           <h2>Ayes</h2>
-          <h3 className={flashing ? 'text' : ''}>{vote.ayes}</h3>
+          <h3>{vote.ayes}</h3>
+          <button onClick={() => voteAye({ variables: { voteId: vote.id } })}>
+            Vote YES
+          </button>
         </div>
         <div>
           <h2>Noes</h2>
-          <h3 className={flashing ? 'text' : ''}>{vote.noes}</h3>
+          <h3>{vote.noes}</h3>
+          <button onClick={() => voteNo({ variables: { voteId: vote.id } })}>
+            Vote NO
+          </button>
         </div>
       </div>
     </li>

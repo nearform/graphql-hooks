@@ -6,6 +6,8 @@ const path = require('path')
 const fs = require('fs')
 const fastifyStatic = require('fastify-static')
 
+const NUMBER_OF_VOTES = 5
+
 const app = fastify()
 const indexHtml = fs.readFileSync(path.join(__dirname, './index.html'), {
   encoding: 'utf8'
@@ -18,7 +20,7 @@ app.register(fastifyStatic, {
 
 const votes = []
 
-for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= NUMBER_OF_VOTES; i++) {
   votes.push({ id: i, title: `Vote #${i}`, ayes: 0, noes: 0 })
 }
 
@@ -109,20 +111,3 @@ app.get('/', async function(req, reply) {
 })
 
 app.listen(8000)
-
-const mockPubsub = {
-  publish(event) {
-    return new Promise((resolve, reject) => {
-      emitter.emit(event, resolve, reject)
-    })
-  }
-}
-
-setInterval(() => {
-  const voteId = Math.floor(Math.random() * votes.length) + 1
-  if (Math.random() > 0.5) {
-    resolvers.Mutation.voteAye({}, { voteId }, { pubsub: mockPubsub })
-  } else {
-    resolvers.Mutation.voteNo({}, { voteId }, { pubsub: mockPubsub })
-  }
-}, 1000)

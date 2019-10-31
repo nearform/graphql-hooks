@@ -11,9 +11,8 @@ const GQL_COMPLETE = 'complete' // Server -> Client
 const GQL_STOP = 'stop' // Client -> Server
 
 class SubscriptionClient {
-  constructor(uri, config) {
+  constructor(uri, config = {}) {
     this.uri = uri
-    this.config = config
     this.socket = null
     this.operationId = 0
     this.ready = false
@@ -68,6 +67,7 @@ class SubscriptionClient {
 
       this.socket.close()
       this.socket = null
+      this.reconnecting = false
 
       if (tryReconnect) {
         for (const operationId of this.operations.keys()) {
