@@ -6,10 +6,12 @@ import SubscriptionClient from 'graphql-hooks-subscription-client'
 
 import App from './App'
 
+const host = window.location.host
+
 const client = new GraphQLClient({
-  url: 'http://localhost:8000/graphql',
+  url: `http://${host}/graphql`,
   cache: memCache(),
-  subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
+  subscriptionClient: new SubscriptionClient(`ws://${host}/graphql`, {
     reconnect: true
   })
 })

@@ -1,12 +1,18 @@
 const fastify = require('fastify')
 const GQL = require('fastify-gql')
-const mq = require('mqemitter')
-const emitter = mq()
 const path = require('path')
 const fs = require('fs')
 const fastifyStatic = require('fastify-static')
+const lowdb = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+const mq = require('mqemitter-redis')
+const emitter = mq({
+  port: 6379,
+  host: '127.0.0.1'
+})
 
 const NUMBER_OF_VOTES = 5
+const APP_PORT = parseInt(process.env.APP_PORT || '8000', 10)
 
 const app = fastify()
 const indexHtml = fs.readFileSync(path.join(__dirname, './index.html'), {
@@ -19,10 +25,15 @@ app.register(fastifyStatic, {
 })
 
 const votes = []
-
 for (let i = 1; i <= NUMBER_OF_VOTES; i++) {
   votes.push({ id: i, title: `Vote #${i}`, ayes: 0, noes: 0 })
 }
+const defaults = { votes }
+
+const adapter = new FileSync('votes.json', {
+  defaultValue: defaults
+})
+const db = lowdb(adapter)
 
 app.register(require('fastify-cors'), {
   origin: '*'
@@ -54,35 +65,44 @@ const schema = `
 
 const resolvers = {
   Query: {
-    votes: async () => votes
+    votes: async () => db.get('votes').value()
   },
   Mutation: {
     voteAye: async (_, { voteId }, { pubsub }) => {
-      if (voteId <= votes.length) {
-        votes[voteId - 1].ayes++
+      const vote = db.get(`votes[${voteId - 1}]`)
+
+      if (vote) {
+        const v = vote.value()
+
+        v.ayes++
+        vote.assign(v).write()
         await pubsub.publish({
           topic: `${VOTE_ADDED}_${voteId}`,
           payload: {
-            voteAdded: votes[voteId - 1]
+            voteAdded: v
           }
         })
-        return votes[voteId - 1]
+
+        return v
       }
 
       throw new Error('Invalid vote id')
     },
     voteNo: async (_, { voteId }, { pubsub }) => {
-      if (voteId <= votes.length) {
-        votes[voteId - 1].noes++
+      const vote = db.get(`votes[${voteId - 1}]`)
+      if (vote) {
+        const v = vote.value()
 
-        let payload = votes[voteId - 1]
+        v.noes++
+        vote.assign(v).write()
+
         await pubsub.publish({
           topic: `VOTE_ADDED_${voteId}`,
           payload: {
-            voteAdded: payload
+            voteAdded: v
           }
         })
-        return votes[voteId - 1]
+        return v
       }
 
       throw new Error('Invalid vote id')
@@ -110,4 +130,4 @@ app.get('/', async function(req, reply) {
   reply.header('Content-Type', 'text/html').send(indexHtml)
 })
 
-app.listen(8000)
+app.listen(APP_PORT)
