@@ -21,7 +21,7 @@ class SubscriptionClient {
       protocols = [],
       connectionCallback,
       reconnect,
-      maxReconnectAttempts = 10,
+      maxReconnectAttempts = Infinity,
       wsImpl
     } = config
 
