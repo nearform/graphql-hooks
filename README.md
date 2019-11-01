@@ -98,6 +98,7 @@ function MyComponent() {
   - [useQuery](#useQuery)
   - [useManualQuery](#useManualQuery)
   - [useMutation](#useMutation)
+  - [useSubscription](#useSubscription)
 - Guides
   - [SSR](#SSR)
   - [Pagination](#Pagination)
@@ -336,6 +337,78 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `variables`: Object e.g. `{ limit: 10 }`
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
+
+## `useSubscription`
+
+To use subscription you need to use [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
+
+**Usage**
+```js
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+
+const client = new GraphQLClient({
+  subscriptionClient: new SubscriptionClient(websocketUri, config)
+  // other GraphQLClient config options
+})
+
+// in the component
+useSubscription(subscriptionRequest, onDataCallback)
+```
+
+**Example**:
+
+See [full example](examples/subscription) for an in depth guide.
+
+```js
+const VOTE_ADDED = `
+  subscription VoteAdded($voteId: ID!) {
+    voteAdded(voteId: $voteId) {
+      id
+      title
+      ayes
+      noes
+    }
+  }
+`
+
+function Vote(props) {
+  const [vote, setVote] = useState(props.vote)
+
+  const handleSubscription = ({ data: { voteAdded }, errors }) => {
+    if (errors && errors.length > 0) {
+      console.log(errors[0])
+    }
+    if (voteAdded) {
+      setVote(voteAdded)
+    }
+  }
+
+  useSubscription(
+    {
+      query: VOTE_ADDED,
+      variables: { voteId: vote.id }
+    },
+    handleSubscription
+  )
+
+  return (
+    <li>
+      <h1>{vote.title}</h1>
+      <p>Total votes: {vote.ayes + vote.noes}</p>
+      <div>
+        <div>
+          <h2>Ayes</h2>
+          <h3>{vote.ayes}</h3>
+        </div>
+        <div>
+          <h2>Noes</h2>
+          <h3>{vote.noes}</h3>
+        </div>
+      </div>
+    </li>
+  )
+}
+```
 
 # Guides
 
