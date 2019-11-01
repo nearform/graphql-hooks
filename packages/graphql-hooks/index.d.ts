@@ -54,6 +54,16 @@ export function useMutation<ResponseData = any, Variables = object>(
   options?: UseClientRequestOptions<Variables>
 ): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
 
+export interface SubscriptionRequest {
+  query: string,
+  variables: object
+}
+
+export function useSubscription(
+  subscriptionRequest: SubscriptionRequest,
+  onDataCallback: (response: Result) => void
+): void
+
 export const ClientContext: React.Context<GraphQLClient>
 
 // internal types
