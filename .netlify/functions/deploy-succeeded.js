@@ -6,9 +6,7 @@ exports.handler = function(event, context, callback) {
   const options = {
     hostname: 'circleci.com',
     port: 443,
-    path: `/api/v1.1/project/github/nearform/graphql-hooks/tree/${
-      e.payload.branch
-    }`,
+    path: `/api/v1.1/project/github/nearform/graphql-hooks/tree/${e.payload.branch}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

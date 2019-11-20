@@ -706,11 +706,14 @@ import { buildAxiosFetch } from '@lifeomic/axios-fetch'
 import { GraphQLClient } from 'graphql-hooks'
 
 const gqlAxios = axios.create()
-gqlAxios.interceptors.response.use(function (response) {
-  return response
-}, function (error) {
-  // Handle expired JWT and refresh token
-})
+gqlAxios.interceptors.response.use(
+  function(response) {
+    return response
+  },
+  function(error) {
+    // Handle expired JWT and refresh token
+  }
+)
 
 const client = new GraphQLClient({
   url: '/graphql',
