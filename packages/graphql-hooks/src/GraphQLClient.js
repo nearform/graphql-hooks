@@ -158,15 +158,31 @@ class GraphQLClient {
       fetchOptions.body = form
     } else {
       fetchOptions.headers['Content-Type'] = 'application/json'
-      fetchOptions.body = operationJSON
+      if (fetchOptions.method == 'POST') {
+        fetchOptions.body = operationJSON
+      }
     }
 
     return fetchOptions
   }
 
   request(operation, options = {}) {
+    var url = this.url
+    if (
+      typeof options.fetchOptionsOverrides !== 'undefined' &&
+      options.fetchOptionsOverrides.method == 'GET'
+    ) {
+      var params = {
+        query: operation.query,
+        variables: JSON.stringify(operation.variables)
+      }
+      const paramsQueryString = Object.entries(params)
+        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+        .join('&')
+      url = url + '?' + paramsQueryString
+    }
     return this.fetch(
-      this.url,
+      url,
       this.getFetchOptions(operation, options.fetchOptionsOverrides)
     )
       .then(response => {
