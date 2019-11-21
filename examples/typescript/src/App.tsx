@@ -4,7 +4,8 @@ import {
   ClientContext,
   useQuery,
   useMutation,
-  useManualQuery
+  useManualQuery,
+  APIError
 } from 'graphql-hooks'
 
 interface Post {
@@ -101,7 +102,7 @@ function PostList({
   data
 }: {
   loading: boolean
-  error: boolean
+  error?: APIError
   data: any
 }) {
   if (loading) return <p>Loading...</p>

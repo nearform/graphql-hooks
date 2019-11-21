@@ -1,10 +1,10 @@
 {
   "name": "create-react-app",
-  "version": "0.1.9",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
-    "graphql-hooks": "^3.6.0",
-    "graphql-hooks-memcache": "^1.2.1",
+    "graphql-hooks": "^4.0.2",
+    "graphql-hooks-memcache": "^1.2.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.1",

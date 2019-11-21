@@ -44,7 +44,11 @@ function PostList({ loading, error, data }) {
 
 PostList.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.shape({
+    fetchError: PropTypes.any,
+    httpError: PropTypes.any,
+    graphQLErrors: PropTypes.array
+  }),
   data: PropTypes.shape({
     allPosts: PropTypes.array
   })

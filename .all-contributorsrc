@@ -148,7 +148,15 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/202988?v=4",
       "profile": "http://edvinasbartkus.lt",
       "contributions": [
-        "code"
+        "code",
+        "question",
+        "bug",
+        "doc",
+        "example",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
       ]
     },
     {
@@ -170,6 +178,55 @@
       "profile": "https://github.com/tcudok-jg",
       "contributions": [
         "code"
+      ]
+    },
+    {
+      "login": "heymartinadams",
+      "name": "Martin Adams",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11673745?v=4",
+      "profile": "https://github.com/heymartinadams",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "galmail",
+      "name": "Gal Dubitski",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/191608?v=4",
+      "profile": "http://gal.js.org",
+      "contributions": [
+        "code",
+        "bug",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "osdevisnot",
+      "name": "Abhishek Shende",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/802242?v=4",
+      "profile": "https://twitter.com/osdevisnot",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "fabienheureux",
+      "name": "fabienheureux",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1702255?v=4",
+      "profile": "http://fabien.cool",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "hboylan",
+      "name": "Hugh Boylan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2158740?v=4",
+      "profile": "https://hughboylan.com",
+      "contributions": [
+        "review"
       ]
     }
   ],

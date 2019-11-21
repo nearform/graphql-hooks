@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
+import memCache from 'graphql-hooks-memcache'
+import { getInitialState } from 'graphql-hooks-ssr'
 import { GraphQLClient, ClientContext, useQuery } from '../../src'
 
 let testComponentRenderCount = 0
@@ -113,21 +115,174 @@ describe('useQuery Integrations', () => {
   })
 
   it('should not rerender after a SSR', () => {
+    const query = 'query { hiya }'
     client = new GraphQLClient({
       url: '/graphql',
       cache: {
-        get: () => ({ error: false, data: 'hello' })
+        get: () => ({
+          error: false,
+          data: 'hello',
+          cacheKey: client.getCacheKey({
+            query
+          })
+        })
       }
     })
 
     wrapper = getWrapper(client)
 
-    const { getByTestId } = render(<TestComponent />, {
+    const { getByTestId } = render(<TestComponent query={query} />, {
       wrapper
     })
 
     expect(() => getByTestId('loading')).toThrow()
     expect(getByTestId('data').textContent).toBe('hello')
     expect(testComponentRenderCount).toBe(1)
+  })
+})
+
+describe('Server side rendering', () => {
+  it('should cache SSR queries', async () => {
+    const mockData = {
+      data: {
+        users: [
+          {
+            name: 'Brian'
+          }
+        ]
+      }
+    }
+    const mockQuery = 'query { stuff }'
+    const fakeResp = {
+      ok: true,
+      json: () => Promise.resolve(mockData)
+    }
+
+    const client = new GraphQLClient({
+      url: '/graphql',
+      logErrors: true,
+      cache: memCache(),
+      fetch: () => Promise.resolve(fakeResp)
+    })
+
+    // mock cache to get the expected result
+    const mockCache = memCache()
+    mockCache.set(
+      client.getCacheKey({
+        query: mockQuery
+      }),
+      mockData
+    )
+
+    const Component = () => {
+      // we just need to call the hook
+      useQuery(mockQuery)
+      return <div>hello</div>
+    }
+
+    const App = (
+      <ClientContext.Provider value={client}>
+        <Component />
+      </ClientContext.Provider>
+    )
+
+    const actual = await getInitialState({
+      App,
+      client
+    })
+    const expected = mockCache.getInitialState()
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should cache dependant SSR queries', async () => {
+    const mockData = {
+      data: {
+        users: [
+          {
+            name: 'Brian'
+          }
+        ]
+      }
+    }
+    const mockQuery = id => `query GetStuff${id}{ stuff() }`
+    const fakeResp = {
+      ok: true,
+      json: () => Promise.resolve(mockData)
+    }
+
+    const client = new GraphQLClient({
+      url: '/graphql',
+      logErrors: true,
+      cache: memCache(),
+      fetch: () => Promise.resolve(fakeResp)
+    })
+
+    const Component1 = () => {
+      const { loading } = useQuery(mockQuery(1))
+
+      if (loading) {
+        return <div>loading...</div>
+      }
+
+      return <Component2 />
+    }
+
+    const Component2 = () => {
+      const { loading } = useQuery(mockQuery(2))
+
+      if (loading) {
+        return <div>loading...</div>
+      }
+
+      return <Component3 />
+    }
+
+    const Component3 = () => {
+      const { loading } = useQuery(mockQuery(3))
+
+      if (loading) {
+        return <div>loading...</div>
+      }
+
+      return <div>hello</div>
+    }
+
+    const App = (
+      <ClientContext.Provider value={client}>
+        <Component1 />
+      </ClientContext.Provider>
+    )
+
+    const actual = await getInitialState({
+      App,
+      client
+    })
+
+    // mock cache to get the expected result
+    const mockCache = memCache()
+    mockCache.set(
+      client.getCacheKey({
+        query: mockQuery(1)
+      }),
+      mockData
+    )
+
+    mockCache.set(
+      client.getCacheKey({
+        query: mockQuery(2)
+      }),
+      mockData
+    )
+
+    mockCache.set(
+      client.getCacheKey({
+        query: mockQuery(3)
+      }),
+      mockData
+    )
+
+    const expected = mockCache.getInitialState()
+    expect(actual).toEqual(expected)
   })
 })

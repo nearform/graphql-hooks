@@ -1,12 +1,13 @@
 {
   "name": "graphql-hooks-memcache",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "description": "In memory cache for graphql-hooks",
   "main": "lib/graphql-hooks-memcache.js",
   "module": "es/graphql-hooks-memcache.js",
   "unpkg": "dist/graphql-hooks-memcache.min.js",
   "types": "index.d.ts",
   "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "prepublishOnly": "npm run build && cp ../../LICENSE ."
@@ -31,7 +32,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@sindresorhus/fnv1a": "^1.2.0",
-    "tiny-lru": "^6.0.1"
+    "tiny-lru": "^7.0.0"
   },
   "repository": {
     "type": "git",
@@ -40,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/nearform/graphql-hooks/issues"
   },
-  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme"
+  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
+  "devDependencies": {
+    "rollup": "^1.25.2"
+  }
 }

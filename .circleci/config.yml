@@ -12,14 +12,17 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
           paths:
-            - node_modules
+            - ~/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
 
       - run:
           name: 'JavaScript Linter'
@@ -37,25 +40,25 @@ jobs:
   acceptance-tests:
     working_directory: ~/graphql-hooks
     environment:
-      BROWSERSTACK_PARALLEL_RUNS: '5'
-      BROWSERSTACK_USE_AUTOMATE: '1'
-      BROWSERSTACK_PROJECT_NAME: 'graphql-hooks'
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/node:10.15-browsers
     steps:
       - checkout
 
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
 
       - run: npm install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: graphql-hooks-key-{{ checksum "~/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-memcache/package.json" }}-{{ checksum "~/graphql-hooks/packages/graphql-hooks-ssr/package.json" }}
           paths:
-            - node_modules
+            - ~/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-memcache/node_modules
+            - ~/graphql-hooks/packages/graphql-hooks-ssr/node_modules
 
-      - run: npm run test:acceptance:ci
+      - run: npm run test:acceptance
 
       - store_test_results:
           path: /tmp/acceptance-test-results

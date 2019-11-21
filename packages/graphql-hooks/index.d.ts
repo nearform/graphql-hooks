@@ -24,32 +24,32 @@ export class GraphQLClient {
     result: Result
     operation: Operation
   }): void
-  getCacheKey(
+  getCacheKey<Variables = object>(
     operation: Operation,
-    options: UseClientRequestOptions
+    options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
   getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
   request(operation: Operation, options?: object): Promise<Result>
 }
 
-export function useClientRequest<ResponseData = any>(
+export function useClientRequest<ResponseData = any, Variables = object>(
   query: string,
-  options?: UseClientRequestOptions
+  options?: UseClientRequestOptions<Variables>
 ): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
-export function useQuery<ResponseData = any>(
+export function useQuery<ResponseData = any, Variables = object>(
   query: string,
-  options?: UseQueryOptions
-): UseQueryResult<ResponseData>
+  options?: UseQueryOptions<Variables>
+): UseQueryResult<ResponseData, Variables>
 
-export function useManualQuery<ResponseData = any>(
+export function useManualQuery<ResponseData = any, Variables = object>(
   query: string,
-  options?: UseClientRequestOptions
+  options?: UseClientRequestOptions<Variables>
 ): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
-export function useMutation<ResponseData = any>(
+export function useMutation<ResponseData = any, Variables = object>(
   query: string,
-  options?: UseClientRequestOptions
+  options?: UseClientRequestOptions<Variables>
 ): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
 
 export const ClientContext: React.Context<GraphQLClient>
@@ -96,48 +96,49 @@ interface HttpError {
   body: string
 }
 
-interface Result {
-  data?: object
-  error?: boolean
+interface APIError {
   fetchError?: Error
   httpError?: HttpError
   graphQLErrors?: object[]
 }
 
-interface UseClientRequestOptions {
+interface Result {
+  data?: object
+  error?: APIError
+}
+
+interface UseClientRequestOptions<Variables = object> {
   useCache?: boolean
   isMutation?: boolean
   isManual?: boolean
-  variables?: object
+  variables?: Variables
   operationName?: string
   skipCache?: boolean
   fetchOptionsOverrides?: object
   updateData?(previousData: any, data: any): any
 }
 
-interface UseQueryOptions extends UseClientRequestOptions {
+interface UseQueryOptions<Variables>
+  extends UseClientRequestOptions<Variables> {
   ssr?: boolean
 }
 
 interface UseClientRequestResult<ResponseData> {
   loading: boolean
   cacheHit: boolean
-  error: boolean
   data: ResponseData
-  fetchError?: Error
-  httpError?: HttpError
-  graphQLErrors?: object[]
+  error?: APIError
 }
 
-interface UseQueryResult<ResponseData>
+interface UseQueryResult<ResponseData, Variables>
   extends UseClientRequestResult<ResponseData> {
   refetch(
-    options?: UseQueryOptions
+    options?: UseQueryOptions<Variables>
   ): Promise<UseClientRequestResult<ResponseData>>
 }
 
-type FetchData<ResponseData> = (
-  options?: UseClientRequestOptions
+type FetchData<ResponseData, Variables = object> = (
+  options?: UseClientRequestOptions<Variables>
 ) => Promise<UseClientRequestResult<ResponseData>>
 
 interface CacheKeyObject {
