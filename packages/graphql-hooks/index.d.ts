@@ -29,7 +29,8 @@ export class GraphQLClient {
     options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
   getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
-  request(operation: Operation, options?: object): Promise<Result>
+  request<ResponseData>(operation: Operation, options?: object):
+    Promise<Result<ResponseData>>
 }
 
 export function useClientRequest<ResponseData = any, Variables = object>(
@@ -102,8 +103,8 @@ interface APIError {
   graphQLErrors?: object[]
 }
 
-interface Result {
-  data?: object
+interface Result<ResponseData = any> {
+  data?: ResponseData
   error?: APIError
 }
 
