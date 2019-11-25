@@ -228,6 +228,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "bmamouri",
+      "name": "Baqer Mamouri",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6419173?v=4",
+      "profile": "https://github.com/bmamouri",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
