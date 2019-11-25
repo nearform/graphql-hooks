@@ -29,7 +29,7 @@ export class GraphQLClient {
     options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
   getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
-  request<ResponseData>(operation: Operation, options: object):
+  request<ResponseData>(operation: Operation, options?: object):
     Promise<Result<ResponseData>>
 }
 
