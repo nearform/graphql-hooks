@@ -37,7 +37,12 @@ function HomePage() {
   const [createUser] = useMutation(CREATE_USER_MUTATION)
 
   const [getFirstUser, { data: firstUserData }] = useManualQuery(
-    GET_FIRST_USER_QUERY
+    GET_FIRST_USER_QUERY,
+    {
+      fetchOptionsOverrides: {
+        method: 'GET'
+      }
+    }
   )
 
   async function createNewUser() {
@@ -73,7 +78,9 @@ function HomePage() {
         />
         <button onClick={createNewUser}>Create User</button>
       </div>
-      <button onClick={getFirstUser}>Manually trigger Query</button>
+      <button onClick={getFirstUser}>
+        Manually trigger Query via GET method
+      </button>
       <div>First User: {firstUserData && firstUserData.firstUser.name}</div>
     </div>
   )
