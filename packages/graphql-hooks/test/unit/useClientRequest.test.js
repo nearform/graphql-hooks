@@ -606,5 +606,64 @@ describe('useClientRequest', () => {
         expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
       })
     })
+
+    describe('client.useGETForQueries support', () => {
+      it('should not pass method=GET if client.useGETForQueries is false', async () => {
+        mockClient.useGETForQueries = false
+        const options = {}
+        let fetchData
+        renderHook(
+          () => ([fetchData] = useClientRequest(TEST_QUERY, options)),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        await fetchData()
+
+        expect(mockClient.request).toHaveBeenCalledWith(
+          { query: TEST_QUERY },
+          options
+        )
+      })
+
+      it('should not pass method=GET when options.isMutation=true', async () => {
+        mockClient.useGETForQueries = true
+        const options = { isMutation: true }
+        let fetchData
+        renderHook(
+          () => ([fetchData] = useClientRequest(TEST_QUERY, options)),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        await fetchData()
+
+        expect(mockClient.request).toHaveBeenCalledWith(
+          { query: TEST_QUERY },
+          options
+        )
+      })
+
+      it('should pass method=GET when client.useGETForQueries=true', async () => {
+        mockClient.useGETForQueries = true
+        const options = { isMutation: false }
+        let fetchData
+        renderHook(
+          () => ([fetchData] = useClientRequest(TEST_QUERY, options)),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        await fetchData()
+
+        expect(mockClient.request).toHaveBeenCalledWith(
+          { query: TEST_QUERY },
+          { ...options, fetchOptionsOverrides: { method: 'GET' } }
+        )
+      })
+    })
   })
 })
