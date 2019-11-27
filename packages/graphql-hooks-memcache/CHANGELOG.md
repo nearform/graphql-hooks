@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.2.4...graphql-hooks-memcache@1.3.0) (2019-11-27)
+
+
+### Features
+
+* HTTP GET Support ([#410](https://github.com/nearform/graphql-hooks/issues/410)) ([0703076](https://github.com/nearform/graphql-hooks/commit/0703076f3408dc522c7f16fca52f09d37e0a79b6))
+
+
+
+
+
 ## [1.2.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.2.3...graphql-hooks-memcache@1.2.4) (2019-10-24)
 
 

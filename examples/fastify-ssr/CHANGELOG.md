@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@2.0.2...fastify-ssr@2.1.0) (2019-11-27)
+
+
+### Features
+
+* HTTP GET Support ([#410](https://github.com/nearform/graphql-hooks/issues/410)) ([0703076](https://github.com/nearform/graphql-hooks/commit/0703076f3408dc522c7f16fca52f09d37e0a79b6))
+
+
+
+
+
 ## [2.0.2](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@2.0.1...fastify-ssr@2.0.2) (2019-10-24)
 
 **Note:** Version bump only for package fastify-ssr

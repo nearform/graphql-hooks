@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.0.2...graphql-hooks@4.1.0) (2019-11-27)
+
+
+### Bug Fixes
+
+* request options param is optional ([#329](https://github.com/nearform/graphql-hooks/issues/329)) ([5de13b1](https://github.com/nearform/graphql-hooks/commit/5de13b18e26d7615da134c41f84864213a00f94d))
+* Use generics in GraphQLClient.request method to allow developers to specify the type of response data ([#397](https://github.com/nearform/graphql-hooks/issues/397)) ([2df05b4](https://github.com/nearform/graphql-hooks/commit/2df05b4d479c4a0798b96bb548d0288deb00b93d))
+
+
+### Features
+
+* HTTP GET Support ([#410](https://github.com/nearform/graphql-hooks/issues/410)) ([0703076](https://github.com/nearform/graphql-hooks/commit/0703076f3408dc522c7f16fca52f09d37e0a79b6))
+
+
+
+
+
 ## [4.0.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.0.1...graphql-hooks@4.0.2) (2019-10-24)
 
 
