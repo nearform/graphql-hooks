@@ -102,6 +102,7 @@ function MyComponent() {
   - [SSR](#SSR)
   - [Pagination](#Pagination)
   - [File uploads](#File-uploads)
+  - [HTTP Get Support](#HTTP-Get-support)
   - [Authentication](#Authentication)
   - [Fragments](#Fragments)
   - [Migrating from Apollo](#Migrating-from-Apollo)
@@ -127,6 +128,7 @@ const client = new GraphQLClient(config)
 
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
+- `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -231,9 +233,9 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
 - `error`: Object - Set if at least one of the following errors has occured and contains:
-  * `fetchError`: Object - Set if an error occurred during the `fetch` call
-  * `httpError`: Object - Set if an error response was returned from the server
-  * `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
+  - `fetchError`: Object - Set if an error occurred during the `fetch` call
+  - `httpError`: Object - Set if an error response was returned from the server
+  - `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
 
 ## `useManualQuery`
 
@@ -508,6 +510,34 @@ export default function PostForm() {
 }
 ```
 
+## HTTP Get support
+
+Using `GET` for queries can be useful, especially when implementing any sort of HTTP caching strategy. There are two ways you can do this:
+
+**Per Query**
+
+```js
+const { loading, error, data } = useQuery(MY_QUERY, {
+  fetchOptionsOverrides: { method: 'GET' }
+})
+
+// same goes for useManualQuery
+const [fetchSomething] = useManualQuery(MY_QUERY, {
+  fetchOptionsOverrides: { method: 'GET' }
+})
+```
+
+**For All Queries**
+
+When you create your client, set the `useGETForQueries` option as `true`:
+
+```js
+const client = new GraphQLClient({
+  url: '/graphql',
+  useGETForQueries: true
+}) 
+```
+
 ## Authentication
 
 Coming soon!
@@ -706,11 +736,14 @@ import { buildAxiosFetch } from '@lifeomic/axios-fetch'
 import { GraphQLClient } from 'graphql-hooks'
 
 const gqlAxios = axios.create()
-gqlAxios.interceptors.response.use(function (response) {
-  return response
-}, function (error) {
-  // Handle expired JWT and refresh token
-})
+gqlAxios.interceptors.response.use(
+  function(response) {
+    return response
+  },
+  function(error) {
+    // Handle expired JWT and refresh token
+  }
+)
 
 const client = new GraphQLClient({
   url: '/graphql',

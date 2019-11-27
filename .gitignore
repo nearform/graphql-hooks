@@ -9,3 +9,4 @@ es
 packages/graphql-hooks/README.md
 packages/*/LICENSE
 build
+.size-snapshot.json

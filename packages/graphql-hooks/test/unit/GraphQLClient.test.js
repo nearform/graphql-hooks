@@ -97,6 +97,14 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig, onError })
       expect(client.onError).toBe(onError)
     })
+
+    it('assigns config.useGETForQueries to an instance property', () => {
+      const client = new GraphQLClient({
+        ...validConfig,
+        useGETForQueries: true
+      })
+      expect(client.useGETForQueries).toBe(true)
+    })
   })
 
   describe('setHeader', () => {
@@ -406,6 +414,129 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
       await client.request({ query: TEST_QUERY })
       expect(fetchMock).toHaveBeenCalled()
+    })
+
+    it('should append fetchOptionsOverrides to the fetch options', async () => {
+      const fetchOptionsOverrides = {
+        mode: 'cors',
+        referrer: 'example.com'
+      }
+      fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+      const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
+      await client.request({ query: TEST_QUERY }, { fetchOptionsOverrides })
+
+      const actual = fetchMock.mock.calls[0][1]
+      const expected = fetchOptionsOverrides
+
+      expect(actual).toMatchObject(expected)
+    })
+
+    describe('GET Support', () => {
+      it('should support client.fetchOptions.method=GET', async () => {
+        fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+        const client = new GraphQLClient({
+          ...validConfig,
+          fetch: fetchMock,
+          fetchOptions: {
+            method: 'GET'
+          }
+        })
+        await client.request({ query: TEST_QUERY })
+
+        const expectedUrl = `${validConfig.url}?query=${encodeURIComponent(
+          TEST_QUERY
+        )}`
+        const expectedOptions = {
+          method: 'GET',
+          headers: {}
+        }
+
+        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, expectedOptions)
+      })
+
+      it('should support options.fetchOptionsOverrides.method=GET', async () => {
+        const fetchOptionsOverrides = {
+          method: 'GET'
+        }
+        fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+        const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
+        await client.request({ query: TEST_QUERY }, { fetchOptionsOverrides })
+
+        const expectedUrl = `${validConfig.url}?query=${encodeURIComponent(
+          TEST_QUERY
+        )}`
+        const expectedOptions = {
+          method: 'GET',
+          headers: {}
+        }
+
+        console.log(fetchMock.mock.calls[0])
+
+        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, expectedOptions)
+      })
+
+      it('should support filter out falsy values before creating the querystring', async () => {
+        const fetchOptionsOverrides = {
+          method: 'GET'
+        }
+        fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+        const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
+        await client.request(
+          { query: TEST_QUERY, operationName: undefined, variables: undefined },
+          { fetchOptionsOverrides }
+        )
+
+        const expectedUrl = `${validConfig.url}?query=${encodeURIComponent(
+          TEST_QUERY
+        )}`
+        const expectedOptions = {
+          method: 'GET',
+          headers: {}
+        }
+
+        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, expectedOptions)
+      })
+
+      it('should JSON.stringify the variables', async () => {
+        const fetchOptionsOverrides = {
+          method: 'GET'
+        }
+        const variables = {
+          hello: 'world'
+        }
+        fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+        const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
+        await client.request(
+          { query: TEST_QUERY, operationName: undefined, variables },
+          { fetchOptionsOverrides }
+        )
+
+        const expectedUrl = `${validConfig.url}?query=${encodeURIComponent(
+          TEST_QUERY
+        )}&variables=${encodeURIComponent(JSON.stringify(variables))}`
+        const expectedOptions = {
+          method: 'GET',
+          headers: {}
+        }
+
+        expect(fetchMock).toHaveBeenCalledWith(expectedUrl, expectedOptions)
+      })
+
+      it('should append fetchOptionsOverrides to the fetch options', async () => {
+        const fetchOptionsOverrides = {
+          method: 'GET',
+          mode: 'cors',
+          referrer: 'example.com'
+        }
+        fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
+        const client = new GraphQLClient({ ...validConfig, fetch: fetchMock })
+        await client.request({ query: TEST_QUERY }, { fetchOptionsOverrides })
+
+        const actual = fetchMock.mock.calls[0][1]
+        const expected = fetchOptionsOverrides
+
+        expect(actual).toMatchObject(expected)
+      })
     })
   })
 })

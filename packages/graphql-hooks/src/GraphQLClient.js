@@ -30,6 +30,7 @@ class GraphQLClient {
     this.fetchOptions = config.fetchOptions || {}
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
+    this.useGETForQueries = config.useGETForQueries === true
   }
 
   setHeader(key, value) {
@@ -129,6 +130,10 @@ class GraphQLClient {
       ...fetchOptionsOverrides
     }
 
+    if (fetchOptions.method === 'GET') {
+      return fetchOptions
+    }
+
     const { clone, files } = extractFiles(operation)
     const operationJSON = JSON.stringify(clone)
 
@@ -162,8 +167,28 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
+    let url = this.url
+    const fetchOptions = this.getFetchOptions(
+      operation,
+      options.fetchOptionsOverrides
+    )
+
+    if (fetchOptions.method === 'GET') {
+      const paramsQueryString = Object.entries(operation)
+        .filter(([, v]) => !!v)
+        .map(([k, v]) => {
+          if (k === 'variables') {
+            v = JSON.stringify(v)
+          }
+
+          return `${k}=${encodeURIComponent(v)}`
+        })
+        .join('&')
+      url = url + '?' + paramsQueryString
+    }
+
     return this.fetch(
-      this.url,
+      url,
       this.getFetchOptions(operation, options.fetchOptionsOverrides)
     )
       .then(response => {

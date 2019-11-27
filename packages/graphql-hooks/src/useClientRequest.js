@@ -81,6 +81,13 @@ function useClientRequest(query, initialOpts = {}) {
     operationName: initialOpts.operationName
   }
 
+  if (client.useGETForQueries && !initialOpts.isMutation) {
+    initialOpts.fetchOptionsOverrides = {
+      ...initialOpts.fetchOptionsOverrides,
+      method: 'GET'
+    }
+  }
+
   const cacheKey = client.getCacheKey(operation, initialOpts)
   const isDeferred = initialOpts.isMutation || initialOpts.isManual
   const initialCacheHit =

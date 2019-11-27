@@ -10,6 +10,7 @@ export class GraphQLClient {
   ssrMode: boolean
   fetchOptions: object
   logErrors: boolean
+  useGETForQueries: boolean
 
   private onError(): any
   private fetch(): Promise<any>
