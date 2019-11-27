@@ -285,4 +285,46 @@ describe('Server side rendering', () => {
     const expected = mockCache.getInitialState()
     expect(actual).toEqual(expected)
   })
+
+  it('should skip queries when skipCache=true', async () => {
+    const mockQuery = 'query { stuff }'
+    const fetchMock = jest.fn().mockResolvedValue({
+      data: {
+        users: [
+          {
+            name: 'Brian'
+          }
+        ]
+      }
+    })
+
+    const client = new GraphQLClient({
+      url: '/graphql',
+      logErrors: true,
+      cache: memCache(),
+      fetch: fetchMock
+    })
+
+    const Component = () => {
+      // we just need to call the hook
+      useQuery(mockQuery, { skipCache: true })
+      return <div>hello</div>
+    }
+
+    const App = (
+      <ClientContext.Provider value={client}>
+        <Component />
+      </ClientContext.Provider>
+    )
+
+    const actual = await getInitialState({
+      App,
+      client
+    })
+
+    const expected = {}
+
+    expect(actual).toEqual(expected)
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
 })
