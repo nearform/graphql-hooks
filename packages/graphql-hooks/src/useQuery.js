@@ -13,7 +13,12 @@ function useQuery(query, opts = {}) {
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
   const [queryReq, state] = useClientRequest(query, allOpts)
 
-  if (client.ssrMode && opts.ssr !== false && !calledDuringSSR) {
+  if (
+    client.ssrMode &&
+    opts.ssr !== false &&
+    !calledDuringSSR &&
+    !opts.skipCache
+  ) {
     // result may already be in the cache from previous SSR iterations
     if (!state.data && !state.error) {
       const p = queryReq()
