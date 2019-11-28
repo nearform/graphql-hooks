@@ -135,9 +135,10 @@ describe('GraphQLClient', () => {
   })
 
   describe('logErrorResult', () => {
-    let logSpy, groupCollapsedSpy, groupEndSpy
+    let errorLogSpy, logSpy, groupCollapsedSpy, groupEndSpy
 
     beforeEach(() => {
+      errorLogSpy = spyOn(global.console, 'error')
       logSpy = spyOn(global.console, 'log')
       groupCollapsedSpy = spyOn(global.console, 'groupCollapsed')
       groupEndSpy = spyOn(global.console, 'groupEnd')
@@ -159,9 +160,11 @@ describe('GraphQLClient', () => {
 
     it('logs a fetchError', () => {
       const client = new GraphQLClient({ ...validConfig })
+
       client.logErrorResult({
         result: { error: { fetchError: 'on no fetch!' } }
       })
+      expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledWith('FETCH ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no fetch!')
       expect(groupEndSpy).toHaveBeenCalled()
@@ -170,6 +173,7 @@ describe('GraphQLClient', () => {
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult({ result: { error: { httpError: 'on no http!' } } })
+      expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no http!')
       expect(groupEndSpy).toHaveBeenCalled()
@@ -179,6 +183,7 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig })
       const graphQLErrors = ['on no GraphQL!', 'oops GraphQL!']
       client.logErrorResult({ result: { error: { graphQLErrors } } })
+      expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledWith('GRAPHQL ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
@@ -469,8 +474,6 @@ describe('GraphQLClient', () => {
           method: 'GET',
           headers: {}
         }
-
-        console.log(fetchMock.mock.calls[0])
 
         expect(fetchMock).toHaveBeenCalledWith(expectedUrl, expectedOptions)
       })

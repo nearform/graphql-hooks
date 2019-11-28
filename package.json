@@ -10,7 +10,7 @@
     "eslint": "eslint '**/*.js'",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
     "release": "lerna publish",
-    "clean": "lerna run clean && lerna clean"
+    "clean": "lerna run clean && lerna clean && rm -rf ./node_modules"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
