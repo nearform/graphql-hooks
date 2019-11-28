@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.1.0...graphql-hooks@4.1.1) (2019-11-28)
+
+
+### Bug Fixes
+
+* SSR infinite loop when skipCache=true ([#411](https://github.com/nearform/graphql-hooks/issues/411)) ([f3d0a2d](https://github.com/nearform/graphql-hooks/commit/f3d0a2d0447fe67dd3ec99dd6b962b1a2906fc10)), closes [#396](https://github.com/nearform/graphql-hooks/issues/396) [#396](https://github.com/nearform/graphql-hooks/issues/396)
+
+
+
+
+
 # [4.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.0.2...graphql-hooks@4.1.0) (2019-11-27)
 
 

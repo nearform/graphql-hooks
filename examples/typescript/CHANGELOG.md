@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/nearform/graphql-hooks/compare/typescript-example@1.0.3...typescript-example@1.0.4) (2019-11-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/node to v11.15.3 ([#409](https://github.com/nearform/graphql-hooks/issues/409)) ([0f57774](https://github.com/nearform/graphql-hooks/commit/0f57774f706a06c7d737ff02c06cc24aec8e2079))
+
+
+
+
+
 ## [1.0.3](https://github.com/nearform/graphql-hooks/compare/typescript-example@1.0.2...typescript-example@1.0.3) (2019-11-27)
 
 
