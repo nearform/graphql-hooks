@@ -227,27 +227,6 @@ describe('useClientRequest', () => {
   })
 
   describe('fetchData', () => {
-    // fetchData tests will be currently be causing warnings in the console, explanation:
-    //
-    // fetchData updates the state & therefore needs to be wrapped inside an `act`
-    // https://reactjs.org/docs/test-utils.html#act.
-    //
-    //      Warning: An update to TestHook inside a test was not wrapped in act(...).
-    //      When testing, code that causes React state updates should be wrapped into act(...):
-    //      act(() => {
-    //        /* fire events that update state */
-    //      });
-    //      / * assert on the output */
-    //      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act
-    //          in TestHook
-    //          in Wrapper
-    //
-    // fetchData is an async function, which `act` does not currently support
-    // see https://github.com/facebook/react/issues/14769
-    //
-    // support is currently being implemented
-    // see https://github.com/facebook/react/pull/14853
-
     it('calls request with options & updates the state with the result', async () => {
       let fetchData, state
       renderHook(
