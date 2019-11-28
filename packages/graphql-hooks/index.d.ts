@@ -120,7 +120,7 @@ interface UseClientRequestOptions<Variables = object> {
   updateData?(previousData: any, data: any): any
 }
 
-interface UseQueryOptions<Variables>
+interface UseQueryOptions<Variables = object>
   extends UseClientRequestOptions<Variables> {
   ssr?: boolean
 }
@@ -132,7 +132,7 @@ interface UseClientRequestResult<ResponseData> {
   error?: APIError
 }
 
-interface UseQueryResult<ResponseData, Variables>
+interface UseQueryResult<ResponseData, Variables = object>
   extends UseClientRequestResult<ResponseData> {
   refetch(
     options?: UseQueryOptions<Variables>
