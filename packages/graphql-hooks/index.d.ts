@@ -37,7 +37,7 @@ export class GraphQLClient {
 export function useClientRequest<ResponseData = any, Variables = object>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
+): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
 
 export function useQuery<ResponseData = any, Variables = object>(
   query: string,
@@ -47,12 +47,12 @@ export function useQuery<ResponseData = any, Variables = object>(
 export function useManualQuery<ResponseData = any, Variables = object>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
+): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
 
 export function useMutation<ResponseData = any, Variables = object>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData>, UseClientRequestResult<ResponseData>]
+): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
 
 export const ClientContext: React.Context<GraphQLClient>
 
