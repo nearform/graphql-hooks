@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 [![bundlephobia](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat&label=size)](https://bundlephobia.com/result?p=graphql-hooks)
 [![npm](https://img.shields.io/npm/v/graphql-hooks.svg?color=brightgreen)](https://www.npmjs.com/package/graphql-hooks)
-[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 🎣 Minimal hooks-first GraphQL client.
@@ -783,6 +783,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://hughboylan.com"><img src="https://avatars2.githubusercontent.com/u/2158740?v=4" width="100px;" alt="Hugh Boylan"/><br /><sub><b>Hugh Boylan</b></sub></a><br /><a href="#review-hboylan" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/bmamouri"><img src="https://avatars2.githubusercontent.com/u/6419173?v=4" width="100px;" alt="Baqer Mamouri"/><br /><sub><b>Baqer Mamouri</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=bmamouri" title="Code">💻</a></td>
     <td align="center"><a href="http://www.netnotion.com"><img src="https://avatars0.githubusercontent.com/u/17315?v=4" width="100px;" alt="Guillermo Gonzalez "/><br /><sub><b>Guillermo Gonzalez </b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=helloguille" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/brookback"><img src="https://avatars0.githubusercontent.com/u/30257156?v=4" width="100px;" alt="Johan Brook"/><br /><sub><b>Johan Brook</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=brookback" title="Code">💻</a></td>
   </tr>
 </table>
 
