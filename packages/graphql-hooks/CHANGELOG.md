@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.1.1...graphql-hooks@4.1.2) (2019-11-28)
+
+
+### Bug Fixes
+
+* FetchData and UseQueryOptions typings ([#413](https://github.com/nearform/graphql-hooks/issues/413)) ([d7798cf](https://github.com/nearform/graphql-hooks/commit/d7798cfb7245cc562a30b01f706c34241f069384))
+* Update tests ([#412](https://github.com/nearform/graphql-hooks/issues/412)) ([67d4981](https://github.com/nearform/graphql-hooks/commit/67d4981ebc3bbf6364747599b58088074e733e48))
+
+
+
+
+
 ## [4.1.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.1.0...graphql-hooks@4.1.1) (2019-11-28)
 
 

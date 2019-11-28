@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.1.4...graphql-hooks-ssr@1.1.5) (2019-11-28)
+
+
+### Bug Fixes
+
+* Update tests ([#412](https://github.com/nearform/graphql-hooks/issues/412)) ([67d4981](https://github.com/nearform/graphql-hooks/commit/67d4981ebc3bbf6364747599b58088074e733e48))
+
+
+
+
+
 ## [1.1.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.1.3...graphql-hooks-ssr@1.1.4) (2019-10-24)
 
 
