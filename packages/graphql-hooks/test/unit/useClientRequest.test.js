@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 import { useClientRequest, ClientContext } from '../../src'
 
 let mockClient
@@ -56,7 +56,7 @@ describe('useClientRequest', () => {
     // initial state
     expect(state).toEqual({ cacheHit: false, loading: true })
 
-    await fetchData()
+    await act(fetchData)
 
     // populated with data for original query
     expect(state).toEqual({
@@ -93,7 +93,7 @@ describe('useClientRequest', () => {
     // initial state
     expect(state).toEqual({ cacheHit: false, loading: true })
 
-    await fetchData()
+    await act(fetchData)
 
     // populated with data for original query
     expect(state).toEqual({
@@ -152,55 +152,12 @@ describe('useClientRequest', () => {
       })
 
       // Fetch first set of data
-      const firstFetchPromise = fetchData()
-      expect(state.loading).toBe(true)
-      // Sinchronously change query
-      rerender({ variables: { test: 2 } })
-      const secondFetchPromise = fetchData()
-      expect(state.loading).toBe(true)
-      // Wait for both requests and confirm that after second data is still from
-      // second call
-      await secondFetchPromise
-      expect(state.data.result).toBe(2)
-      await firstFetchPromise
-      expect(state.data.result).toBe(2)
-    })
+      const doFetch = async () => await act(fetchData)
 
-    it("doesn't dispatch first response if second is already loading", async () => {
-      const res1 = new Promise(resolve =>
-        setTimeout(() => resolve({ data: { result: 1 } }), 100)
-      )
-      const res2 = new Promise(resolve =>
-        setTimeout(() => resolve({ data: { result: 2 } }), 200)
-      )
-      mockClient.request = jest
-        .fn()
-        .mockReturnValueOnce(res1)
-        .mockReturnValueOnce(res2)
-      mockClient.getCacheKey = (operation, options) => ({ operation, options })
+      const doRerender = () =>
+        Promise.resolve(rerender({ variables: { test: 2 } }))
 
-      let fetchData, state
-
-      function Component({ variables }) {
-        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
-          variables
-        })
-      }
-
-      // Mount hook for the first time
-      let { rerender, waitForNextUpdate } = renderHook(Component, {
-        wrapper: Wrapper,
-        initialProps: { variables: { test: 1 } }
-      })
-
-      // Fetch first set of data
-      fetchData()
-      expect(state.loading).toBe(true)
-      // Sinchronously change query
-      rerender({ variables: { test: 2 } })
-      fetchData()
-      expect(state.loading).toBe(true)
-      await waitForNextUpdate()
+      await Promise.all([doFetch(), doRerender(), doFetch()])
       expect(state.data.result).toBe(2)
     })
   })
@@ -304,7 +261,7 @@ describe('useClientRequest', () => {
         }
       )
 
-      await fetchData()
+      await act(fetchData)
 
       expect(mockClient.request).toHaveBeenCalledWith(
         { operationName: 'test', variables: { limit: 2 }, query: TEST_QUERY },
@@ -326,9 +283,9 @@ describe('useClientRequest', () => {
         }
       )
 
-      const fetchDataPromise = fetchData()
-      unmount()
-      await fetchDataPromise
+      const doUnmount = () => Promise.resolve(unmount())
+
+      await Promise.all([act(fetchData), doUnmount()])
 
       expect(mockClient.request).toHaveBeenCalledWith(
         { operationName: 'test', variables: { limit: 2 }, query: TEST_QUERY },
@@ -351,7 +308,7 @@ describe('useClientRequest', () => {
       )
 
       unmount()
-      const result = await fetchData()
+      const result = await act(fetchData)
       expect(result).toBe(undefined)
       expect(mockClient.request).not.toHaveBeenCalled()
       expect(state).toEqual({ cacheHit: false, loading: true })
@@ -370,7 +327,7 @@ describe('useClientRequest', () => {
         }
       )
 
-      await fetchData({ variables: { limit: 3 } })
+      await act(() => fetchData({ variables: { limit: 3 } }))
 
       expect(mockClient.request).toHaveBeenCalledWith(
         { operationName: 'test', variables: { limit: 3 }, query: TEST_QUERY },
@@ -385,7 +342,7 @@ describe('useClientRequest', () => {
       })
 
       mockClient.getCache.mockReturnValueOnce({ some: 'cached data' })
-      await fetchData()
+      await act(fetchData)
 
       expect(mockClient.request).not.toHaveBeenCalled()
       expect(state).toEqual({
@@ -402,7 +359,7 @@ describe('useClientRequest', () => {
       })
 
       mockClient.cache.get.mockReturnValueOnce({ some: 'cached data' })
-      await fetchData({ skipCache: true })
+      await act(() => fetchData({ skipCache: true }))
 
       expect(mockClient.request).toHaveBeenCalled()
       expect(state).toEqual({
@@ -419,7 +376,7 @@ describe('useClientRequest', () => {
       })
 
       mockClient.cache = null
-      await fetchData()
+      await act(fetchData)
 
       expect(mockClient.request).toHaveBeenCalled()
       expect(state).toEqual({
@@ -436,7 +393,7 @@ describe('useClientRequest', () => {
         { wrapper: Wrapper }
       )
 
-      await fetchData()
+      await act(fetchData)
       rerender()
 
       expect(mockClient.saveCache).toHaveBeenCalledWith('cacheKey', {
@@ -462,10 +419,10 @@ describe('useClientRequest', () => {
         )
 
         // first fetch to populate state
-        await fetchData()
+        await act(fetchData)
 
         mockClient.request.mockResolvedValueOnce({ data: 'new data' })
-        await fetchData({ variables: { limit: 20 } })
+        await act(() => fetchData({ variables: { limit: 20 } }))
 
         expect(updateDataMock).toHaveBeenCalledWith('data', 'new data')
         expect(state).toEqual({
@@ -487,7 +444,7 @@ describe('useClientRequest', () => {
           { wrapper: Wrapper }
         )
 
-        await fetchData()
+        await act(fetchData)
 
         expect(updateDataMock).not.toHaveBeenCalled()
       })
@@ -504,10 +461,10 @@ describe('useClientRequest', () => {
           { wrapper: Wrapper }
         )
 
-        await fetchData()
+        await act(fetchData)
 
         mockClient.request.mockResolvedValueOnce({ errors: ['on no!'] })
-        await fetchData({ variables: { limit: 20 } })
+        await act(() => fetchData({ variables: { limit: 20 } }))
 
         expect(updateDataMock).not.toHaveBeenCalled()
       })
@@ -523,9 +480,10 @@ describe('useClientRequest', () => {
           { wrapper: Wrapper }
         )
 
-        expect(fetchData({ variables: { limit: 20 } })).rejects.toThrow(
-          'options.updateData must be a function'
-        )
+        const fn = async () =>
+          await act(() => fetchData({ variables: { limit: 20 } }))
+
+        expect(fn()).rejects.toThrow('options.updateData must be a function')
       })
 
       describe('caching', () => {
@@ -544,7 +502,7 @@ describe('useClientRequest', () => {
           )
 
           mockClient.getCache.mockReturnValueOnce({ data: 'cached data' })
-          await fetchData()
+          await act(fetchData)
 
           expect(mockClient.request).not.toHaveBeenCalled()
           expect(state).toEqual({
@@ -556,7 +514,7 @@ describe('useClientRequest', () => {
           mockClient.getCacheKey.mockReturnValueOnce('UpdatedCacheKey')
           mockClient.getCache.mockReturnValueOnce({ data: 'merged data' })
 
-          await fetchData({ variables: { limit: 20 } })
+          await act(() => fetchData({ variables: { limit: 20 } }))
           expect(state).toEqual({
             cacheHit: true,
             loading: false,
@@ -619,7 +577,7 @@ describe('useClientRequest', () => {
           }
         )
 
-        await fetchData()
+        await act(fetchData)
 
         expect(mockClient.request).toHaveBeenCalledWith(
           { query: TEST_QUERY },
@@ -638,7 +596,7 @@ describe('useClientRequest', () => {
           }
         )
 
-        await fetchData()
+        await act(fetchData)
 
         expect(mockClient.request).toHaveBeenCalledWith(
           { query: TEST_QUERY },
@@ -657,7 +615,7 @@ describe('useClientRequest', () => {
           }
         )
 
-        await fetchData()
+        await act(fetchData)
 
         expect(mockClient.request).toHaveBeenCalledWith(
           { query: TEST_QUERY },
