@@ -48,15 +48,6 @@ const VOTE_NO = `
 
 const App = () => {
   const { loading, data } = useQuery(GET_VOTES)
-  // const [hideVotes, setHideVotes] = useState(false)
-
-  // setTimeout(() => {
-  //   setHideVotes(true)
-  // }, 10000)
-
-  // if (hideVotes) {
-  //   return <div>That is all</div>
-  // }
 
   if (!data) {
     return null
@@ -92,11 +83,6 @@ function Vote(props) {
     }
     if (voteAdded) {
       setVote(voteAdded)
-      // setFlashing(true)
-
-      // setTimeout(() => {
-      //   setFlashing(false)
-      // }, 1000)
     }
   }
   useSubscription(
