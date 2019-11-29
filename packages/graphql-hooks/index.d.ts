@@ -60,8 +60,8 @@ export interface SubscriptionRequest {
 }
 
 export function useSubscription(
-  subscriptionRequest: SubscriptionRequest,
-  onDataCallback: (response: Result) => void
+  operation: Operation,
+  callback: (response: Result) => void
 ): void
 
 export const ClientContext: React.Context<GraphQLClient>
