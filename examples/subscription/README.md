@@ -1,10 +1,13 @@
 # GraphQL Subscriptions Example
 
-## Install
+## Quick start
 
-Run the following command from the project root
+1. Run `npm install` from the root (`../../`)
+1. Start a redis server on port `6379`: `docker run --name some-redis -p 6379:6379 redis`
+1. Run `npm start`
+1. Visit [http://localhost:8000](http://localhost:8000)
+1. Each Vote is isolated, voting yes/no will auto update the total votes using via graphql subscriptions. You can also open the same url in a new tab, add more votes and the changes will be reflected across each app instance.
 
-`npm install`
 
 ## Running the application
 
