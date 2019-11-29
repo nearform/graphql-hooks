@@ -32,7 +32,7 @@ class MockSubscriptionClient {
     return observerOrNext
   }
 
-  createSubscription() {
+  request() {
     const unsubscribe = this.unsubscribe || jest.fn()
     const getObserver = this.getObserver.bind(this)
     const executeOperation = this.executeOperation.bind(this)
@@ -90,7 +90,7 @@ describe('useSubscription', () => {
     })
     mockClient = {
       createSubscription: jest.fn(request => {
-        return subscriptionClient.createSubscription(request)
+        return subscriptionClient.request(request)
       }),
       subscriptionClient
     }
