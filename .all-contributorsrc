@@ -255,6 +255,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "frikille",
+      "name": "Peter Balazs",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/569278?v=4",
+      "profile": "https://github.com/frikille",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7
