@@ -98,6 +98,7 @@ function MyComponent() {
   - [useQuery](#useQuery)
   - [useManualQuery](#useManualQuery)
   - [useMutation](#useMutation)
+  - [useSubscription](#useSubscription)
 - Guides
   - [SSR](#SSR)
   - [Pagination](#Pagination)
@@ -129,6 +130,7 @@ const client = new GraphQLClient(config)
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
+- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -337,6 +339,77 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 
+## `useSubscription`
+
+To use subscription you need to use [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
+
+**API**
+
+`useSubscription(operation, callback)`
+
+- `operation`: Object - The GraphQL operation the following properties:
+  - `query`: String (required) - the GraphQL query
+  - `variables`: Object (optional) - Any variables the query might need
+  - `operationName`: String (optional) - If your query has mulitple operations, you can choose which operation you want to call.
+- `callback`: Function - This will be invoked when the subscription recieves an event from your GraphQL server - it will recieve an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
+
+**Usage**
+
+First follow the [quick start guide](#Quick-Start) to create the client and povider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
+
+```js
+import { GraphQLClient } from 'graphql-hooks'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+
+const client = new GraphQLClient({
+  url: 'http://localhost:8000/graphql'
+  subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
+    /* additional config options */
+  })
+})
+```
+
+Next, within our React app, we can now make use of the `useSubscription` hook.
+
+```js
+import React, { useState } from 'react'
+import { useSubscription } from 'graphql-hooks'
+
+const TOTAL_COUNT_SUBSCRIPTION = `
+  subscription TotalCount {
+    totalCount {
+      count
+    }
+  }
+`
+
+function TotalCountComponent() {
+  const [count, setCount] = useState(0)
+  const [error, setError] = useState(null)
+
+  useSubscription({ query: TOTAL_COUNT_SUBSCRIPTION }, ({ data, errors }) => {
+    if (errors && errors.length > 0) {
+      // handle your errors
+      setError(errors[0])
+      return
+    }
+
+    // all good, handle the gql result
+    setCount(data.totalCount.count)
+  })
+
+  if (error) {
+    return <span>An error occured {error.message}</span>
+  }
+
+  return <div>Current count: {count}</div>
+}
+```
+
+**Working Example**:
+
+See our [subscription example](examples/subscription) which has both the client and server code to integrate subscriptions into your application.
+
 # Guides
 
 ## SSR
@@ -535,7 +608,7 @@ When you create your client, set the `useGETForQueries` option as `true`:
 const client = new GraphQLClient({
   url: '/graphql',
   useGETForQueries: true
-}) 
+})
 ```
 
 ## Authentication

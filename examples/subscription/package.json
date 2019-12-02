@@ -1,0 +1,59 @@
+{
+  "name": "subscription",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch:client": "webpack --watch",
+    "start:server": "node src/server/index.js",
+    "start": "npm run build && npm run start:server && npm run watch:client",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "fastify": "^2.10.0",
+    "fastify-cors": "^2.1.3",
+    "fastify-gql": "^2.0.0",
+    "fastify-static": "^2.5.0",
+    "graphql-hooks": "^4.1.2",
+    "graphql-hooks-memcache": "^1.3.0",
+    "lowdb": "^1.0.0",
+    "mqemitter-redis": "^3.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "subscriptions-transport-ws": "^0.9.16",
+    "graphql": "^14.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-manifest-plugin": "^2.0.4",
+    "webpack-merge": "^4.2.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": "> 0.25%, not dead",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread",
+      "dynamic-import-node"
+    ]
+  }
+}
