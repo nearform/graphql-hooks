@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.3](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@2.1.2...fastify-ssr@2.1.3) (2019-12-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fastify-gql to v2 ([#393](https://github.com/nearform/graphql-hooks/issues/393)) ([2768029](https://github.com/nearform/graphql-hooks/commit/276802986ce75393613ced4f889584587fc44231))
+
+
+
+
+
 ## [2.1.2](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@2.1.1...fastify-ssr@2.1.2) (2019-11-28)
 
 
