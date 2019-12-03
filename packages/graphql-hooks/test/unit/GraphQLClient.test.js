@@ -148,14 +148,23 @@ describe('GraphQLClient', () => {
       jest.restoreAllMocks()
     })
 
-    it('calls onError if present', () => {
-      const onError = jest.fn()
-      const client = new GraphQLClient({ ...validConfig, onError })
+    it('skip logging errors', () => {
+      const client = new GraphQLClient({ ...validConfig })
+      client.logErrors = false
+
       client.logErrorResult({ result: 'result', operation: 'operation' })
-      expect(onError).toHaveBeenCalledWith({
-        result: 'result',
-        operation: 'operation'
-      })
+      expect(errorLogSpy).not.toHaveBeenCalled()
+      expect(groupEndSpy).not.toHaveBeenCalled()
+      expect(logSpy).not.toHaveBeenCalled()
+      expect(groupEndSpy).not.toHaveBeenCalled()
+    })
+
+    it('logs without error', () => {
+      const client = new GraphQLClient({ ...validConfig })
+
+      client.logErrorResult({ result: 'result', operation: 'operation' })
+      expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupEndSpy).toHaveBeenCalled()
     })
 
     it('logs a fetchError', () => {
@@ -188,6 +197,22 @@ describe('GraphQLClient', () => {
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
       expect(groupEndSpy).toHaveBeenCalled()
+    })
+  })
+
+  describe('notifyErrorResult', () => {
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    it('calls onError if present', () => {
+      const onError = jest.fn()
+      const client = new GraphQLClient({ ...validConfig, onError })
+      client.notifyErrorResult({ result: 'result', operation: 'operation' })
+      expect(onError).toHaveBeenCalledWith({
+        result: 'result',
+        operation: 'operation'
+      })
     })
   })
 
