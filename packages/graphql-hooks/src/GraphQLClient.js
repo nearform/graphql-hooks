@@ -50,38 +50,47 @@ class GraphQLClient {
   }
   /* eslint-disable no-console */
   logErrorResult({ result, operation }) {
-    if (this.onError) {
-      return this.onError({ result, operation })
-    }
+    if (this.logErrors) {
+      console.error('GraphQL Hooks Error')
+      console.groupCollapsed('---> Full Error Details')
+      console.groupCollapsed('Operation:')
+      console.log(operation)
+      console.groupEnd()
 
-    console.error('GraphQL Hooks Error')
-    console.groupCollapsed('---> Full Error Details')
-    console.groupCollapsed('Operation:')
-    console.log(operation)
-    console.groupEnd()
+      const error = result.error
 
-    const error = result.error
+      if (!error) {
+        return
+      }
 
-    if (error.fetchError) {
-      console.groupCollapsed('FETCH ERROR:')
-      console.log(error.fetchError)
+      if (error.fetchError) {
+        console.groupCollapsed('FETCH ERROR:')
+        console.log(error.fetchError)
+        console.groupEnd()
+      }
+
+      if (error.httpError) {
+        console.groupCollapsed('HTTP ERROR:')
+        console.log(error.httpError)
+        console.groupEnd()
+      }
+
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        console.groupCollapsed('GRAPHQL ERROR:')
+        error.graphQLErrors.forEach(err => console.log(err))
+        console.groupEnd()
+      }
+
       console.groupEnd()
     }
-
-    if (error.httpError) {
-      console.groupCollapsed('HTTP ERROR:')
-      console.log(error.httpError)
-      console.groupEnd()
-    }
-
-    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-      console.groupCollapsed('GRAPHQL ERROR:')
-      error.graphQLErrors.forEach(err => console.log(err))
-      console.groupEnd()
-    }
-
-    console.groupEnd()
   }
+
+  notifyErrorResult({ result, operation }) {
+    if (this.onError) {
+      this.onError({ result, operation })
+    }
+  }
+
   /* eslint-enable no-console */
   generateResult({ fetchError, httpError, graphQLErrors, data }) {
     const errorFound = !!(
@@ -219,8 +228,9 @@ class GraphQLClient {
         })
       })
       .then(result => {
-        if (result.error && this.logErrors) {
+        if (result.error) {
           this.logErrorResult({ result, operation })
+          this.notifyErrorResult({ result, operation })
         }
         return result
       })
