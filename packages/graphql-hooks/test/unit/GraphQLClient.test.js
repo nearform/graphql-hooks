@@ -148,17 +148,6 @@ describe('GraphQLClient', () => {
       jest.restoreAllMocks()
     })
 
-    it('skip logging errors', () => {
-      const client = new GraphQLClient({ ...validConfig })
-      client.logErrors = false
-
-      client.logErrorResult({ result: 'result', operation: 'operation' })
-      expect(errorLogSpy).not.toHaveBeenCalled()
-      expect(groupEndSpy).not.toHaveBeenCalled()
-      expect(logSpy).not.toHaveBeenCalled()
-      expect(groupEndSpy).not.toHaveBeenCalled()
-    })
-
     it('logs without error', () => {
       const client = new GraphQLClient({ ...validConfig })
 
@@ -197,22 +186,6 @@ describe('GraphQLClient', () => {
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
       expect(groupEndSpy).toHaveBeenCalled()
-    })
-  })
-
-  describe('notifyErrorResult', () => {
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
-
-    it('calls onError if present', () => {
-      const onError = jest.fn()
-      const client = new GraphQLClient({ ...validConfig, onError })
-      client.notifyErrorResult({ result: 'result', operation: 'operation' })
-      expect(onError).toHaveBeenCalledWith({
-        result: 'result',
-        operation: 'operation'
-      })
     })
   })
 
@@ -418,6 +391,66 @@ describe('GraphQLClient', () => {
         status: 403,
         statusText: 'Forbidden',
         body: 'Denied!'
+      })
+    })
+
+    describe('if logErrors is present', () => {
+      it('calls logErrorResults if logErrors is true', async () => {
+        const client = new GraphQLClient({ ...validConfig, logErrors: true })
+        client.logErrorResult = jest.fn()
+
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(client.logErrorResult).toHaveBeenCalled()
+      })
+
+      it('skips calling logErrorResults if logErrors is false', async () => {
+        const client = new GraphQLClient({ ...validConfig, logErrors: false })
+        client.logErrorResult = jest.fn()
+
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(client.logErrorResult).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('if onError is present', () => {
+      it('calls onError', async () => {
+        const onError = jest.fn()
+
+        const client = new GraphQLClient({ ...validConfig, onError })
+        client.logErrorResult = jest.fn()
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(onError).toHaveBeenCalledWith({
+          operation: {
+            query: TEST_QUERY
+          },
+          result: {
+            data: undefined,
+            error: {
+              fetchError: undefined,
+              graphQLErrors: undefined,
+              httpError: {
+                body: 'Denied!',
+                status: 403,
+                statusText: 'Forbidden'
+              }
+            }
+          }
+        })
       })
     })
 
