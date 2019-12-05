@@ -58,26 +58,24 @@ class GraphQLClient {
 
     const error = result.error
 
-    if (!error) {
-      return
-    }
+    if (error) {
+      if (error.fetchError) {
+        console.groupCollapsed('FETCH ERROR:')
+        console.log(error.fetchError)
+        console.groupEnd()
+      }
 
-    if (error.fetchError) {
-      console.groupCollapsed('FETCH ERROR:')
-      console.log(error.fetchError)
-      console.groupEnd()
-    }
+      if (error.httpError) {
+        console.groupCollapsed('HTTP ERROR:')
+        console.log(error.httpError)
+        console.groupEnd()
+      }
 
-    if (error.httpError) {
-      console.groupCollapsed('HTTP ERROR:')
-      console.log(error.httpError)
-      console.groupEnd()
-    }
-
-    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-      console.groupCollapsed('GRAPHQL ERROR:')
-      error.graphQLErrors.forEach(err => console.log(err))
-      console.groupEnd()
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        console.groupCollapsed('GRAPHQL ERROR:')
+        error.graphQLErrors.forEach(err => console.log(err))
+        console.groupEnd()
+      }
     }
 
     console.groupEnd()
