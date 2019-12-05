@@ -152,8 +152,9 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig })
 
       client.logErrorResult({ result: 'result', operation: 'operation' })
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(2)
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(2)
     })
 
     it('logs a fetchError', () => {
@@ -163,18 +164,20 @@ describe('GraphQLClient', () => {
         result: { error: { fetchError: 'on no fetch!' } }
       })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('FETCH ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no fetch!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
 
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult({ result: { error: { httpError: 'on no http!' } } })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no http!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
 
     it('logs all graphQLErrors', () => {
@@ -182,10 +185,11 @@ describe('GraphQLClient', () => {
       const graphQLErrors = ['on no GraphQL!', 'oops GraphQL!']
       client.logErrorResult({ result: { error: { graphQLErrors } } })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('GRAPHQL ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
   })
 
