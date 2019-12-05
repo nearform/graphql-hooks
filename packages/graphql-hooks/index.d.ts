@@ -9,6 +9,7 @@ export class GraphQLClient {
   headers: Headers
   ssrMode: boolean
   fetchOptions: object
+  FormData?: any
   logErrors: boolean
   useGETForQueries: boolean
 
@@ -75,6 +76,7 @@ interface ClientOptions {
   ssrMode?: boolean
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
+  FormData?: any
   logErrors?: boolean
   onError?({
     result,

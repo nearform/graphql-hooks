@@ -140,6 +140,7 @@ const client = new GraphQLClient(config)
   - `getInitialState()`
   - See [graphql-hooks-memcache](packages/graphql-hooks-memcache) as a reference implementation
 - `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API. Check [Request interceptors](#request-interceptors) for more details how to manage `fetch`.
+- `FormData`: FormData implementation - defaults to the global `FormData` API.
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
@@ -581,6 +582,31 @@ export default function PostForm() {
     </form>
   )
 }
+```
+
+NodeJS example:
+
+```js
+const client = new GraphQLClient({
+  url: 'https://domain.com/graphql',
+  cache: memCache(),
+  fetch: require('node-fetch'),
+  FormData: require('formdata-node')
+})
+
+const uploadPostPictureMutation = /* GraphQL */ `
+  mutation UploadPostPicture($picture: Upload!) {
+    uploadPostPicture(picture: $picture) {
+      id
+      pictureUrl
+    }
+  }
+`
+
+const { data, error } = await client.request({
+  query: uploadPostPictureMutation,
+  variables: { picture: createReadStream('some-file.txt') }
+})
 ```
 
 ## HTTP Get support

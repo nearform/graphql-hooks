@@ -2,11 +2,6 @@ import { extractFiles } from 'extract-files'
 
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
-const FormData =
-  typeof window !== 'undefined' && typeof window.FormData !== 'undefined'
-    ? window.FormData
-    : require('formdata-node')
-
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
@@ -35,6 +30,7 @@ class GraphQLClient {
     this.url = config.url
     this.fetch = config.fetch || fetch.bind()
     this.fetchOptions = config.fetchOptions || {}
+    this.FormData = config.FormData || FormData
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
@@ -153,7 +149,13 @@ class GraphQLClient {
       // See the GraphQL multipart request spec:
       // https://github.com/jaydenseric/graphql-multipart-request-spec
 
-      const form = new FormData()
+      if (!this.FormData) {
+        throw new Error(
+          'GraphQLClient: FormData must be polyfilled or passed in new GraphQLClient({ FormData })'
+        )
+      }
+
+      const form = new this.FormData()
 
       form.append('operations', operationJSON)
 

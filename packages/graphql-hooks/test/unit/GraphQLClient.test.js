@@ -1,8 +1,9 @@
 /* global spyOn */
 import fetchMock from 'jest-fetch-mock'
 import { ReactNativeFile } from 'extract-files'
-import { GraphQLClient } from '../../src'
 import { Readable } from 'stream'
+import FormData from 'formdata-node'
+import { GraphQLClient } from '../../src'
 
 const validConfig = {
   url: 'https://my.graphql.api'
@@ -324,7 +325,7 @@ describe('GraphQLClient', () => {
       let stream
 
       beforeEach(() => {
-        const client = new GraphQLClient({ ...validConfig })
+        const client = new GraphQLClient({ ...validConfig, FormData })
         const file = new ReactNativeFile({
           uri: '',
           name: 'a.jpg',
