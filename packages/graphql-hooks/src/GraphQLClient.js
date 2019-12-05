@@ -1,5 +1,12 @@
 import { extractFiles } from 'extract-files'
 
+import isExtractableFileEnhanced from './isExtractableFileEnhanced'
+
+const FormData =
+  typeof window !== 'undefined' && typeof window.FormData !== 'undefined'
+    ? window.FormData
+    : require('formdata-node')
+
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
@@ -135,7 +142,11 @@ class GraphQLClient {
       return fetchOptions
     }
 
-    const { clone, files } = extractFiles(operation)
+    const { clone, files } = extractFiles(
+      operation,
+      '',
+      isExtractableFileEnhanced
+    )
     const operationJSON = JSON.stringify(clone)
 
     if (files.size) {

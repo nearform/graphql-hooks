@@ -2,6 +2,7 @@
 import fetchMock from 'jest-fetch-mock'
 import { ReactNativeFile } from 'extract-files'
 import { GraphQLClient } from '../../src'
+import { Readable } from 'stream'
 
 const validConfig = {
   url: 'https://my.graphql.api'
@@ -318,8 +319,9 @@ describe('GraphQLClient', () => {
       })
     })
 
-    describe('with files', () => {
+    describe('with files and streams', () => {
       let fetchOptions
+      let stream
 
       beforeEach(() => {
         const client = new GraphQLClient({ ...validConfig })
@@ -328,9 +330,11 @@ describe('GraphQLClient', () => {
           name: 'a.jpg',
           type: 'image/jpeg'
         })
+        stream = new Readable()
+
         const operation = {
           query: '',
-          variables: { a: file }
+          variables: { a: file, b: stream }
         }
         fetchOptions = client.getFetchOptions(operation)
       })
@@ -345,9 +349,10 @@ describe('GraphQLClient', () => {
       it('sets body conforming to the graphql multipart request spec', () => {
         const actual = [...fetchOptions.body]
         const expected = [
-          ['operations', '{"query":"","variables":{"a":null}}'],
-          ['map', '{"1":["variables.a"]}'],
-          ['1', '[object Object]']
+          ['operations', '{"query":"","variables":{"a":null,"b":null}}'],
+          ['map', '{"1":["variables.a"],"2":["variables.b"]}'],
+          ['1', '[object Object]'],
+          ['2', stream]
         ]
         expect(actual).toEqual(expected)
       })
