@@ -361,6 +361,17 @@ describe('GraphQLClient', () => {
       it('does not set Content-Type header', () => {
         expect(fetchOptions.headers).not.toHaveProperty('Content-Type')
       })
+
+      it('throws if no FormData polyfill provided', () => {
+        delete global.FormData
+
+        const client = new GraphQLClient(validConfig)
+        const operation = { query: '', variables: { a: stream } }
+
+        expect(() => client.getFetchOptions(operation)).toThrow(
+          'GraphQLClient: FormData must be polyfilled or passed in new GraphQLClient({ FormData })'
+        )
+      })
     })
   })
 
