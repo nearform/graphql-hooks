@@ -140,7 +140,7 @@ const client = new GraphQLClient(config)
   - `getInitialState()`
   - See [graphql-hooks-memcache](packages/graphql-hooks-memcache) as a reference implementation
 - `fetch(url, options)`: Fetch implementation - defaults to the global `fetch` API. Check [Request interceptors](#request-interceptors) for more details how to manage `fetch`.
-- `FormData`: FormData implementation - defaults to the global `FormData` API.
+- `FormData`: FormData implementation - defaults to the global `FormData` API. Polyfill this in a node.js environment. See [file-uploads-nodejs](#file-uploads-nodejs) for more info.
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
@@ -584,7 +584,7 @@ export default function PostForm() {
 }
 ```
 
-NodeJS example:
+### File uploads Node.js
 
 ```js
 const client = new GraphQLClient({
