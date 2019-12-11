@@ -267,7 +267,18 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "panz3r",
+      "name": "Mattia Panzeri",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1754457?v=4",
+      "profile": "http://panz3r.dev",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
