@@ -1,6 +1,5 @@
 /* global spyOn */
 import fetchMock from 'jest-fetch-mock'
-import { ReactNativeFile } from 'extract-files'
 import { Readable } from 'stream'
 import FormData from 'formdata-node'
 import { GraphQLClient } from '../../src'
@@ -320,41 +319,62 @@ describe('GraphQLClient', () => {
       })
     })
 
-    describe('with files and streams', () => {
-      let fetchOptions
-      let stream
+    // See the GraphQL multipart request spec:
+    // https://github.com/jaydenseric/graphql-multipart-request-spec
+    describe('with files in browser', () => {
+      const client = new GraphQLClient(validConfig)
 
-      beforeEach(() => {
-        const client = new GraphQLClient({ ...validConfig, FormData })
-        const file = new ReactNativeFile({
-          uri: '',
-          name: 'a.jpg',
-          type: 'image/jpeg'
-        })
-        stream = new Readable()
-
-        const operation = {
-          query: '',
-          variables: { a: file, b: stream }
-        }
-        fetchOptions = client.getFetchOptions(operation)
+      const file = new File([''], 'test-image.png', {
+        lastModified: new Date().valueOf(),
+        name: 'test-image.png',
+        size: 44320,
+        type: 'image/png'
       })
 
-      // See the GraphQL multipart request spec:
-      // https://github.com/jaydenseric/graphql-multipart-request-spec
+      const operation = { query: '', variables: { a: file } }
+      const fetchOptions = client.getFetchOptions(operation)
 
-      it('sets body as FormData', () => {
-        expect(fetchOptions.body).toBeInstanceOf(FormData)
+      it('sets body conforming to the graphql multipart request spec', () => {
+        const actual = [...fetchOptions.body]
+        const expected = [
+          ['operations', '{"query":"","variables":{"a":null}}'],
+          ['map', '{"1":["variables.a"]}'],
+          ['1', file]
+        ]
+        expect(fetchOptions.body).toBeInstanceOf(global.FormData)
+        expect(actual).toEqual(expected)
+      })
+
+      it('does not set Content-Type header', () => {
+        expect(fetchOptions.headers).not.toHaveProperty('Content-Type')
+      })
+    })
+
+    describe('with files in Node JS', () => {
+      const originalFormData = global.FormData
+
+      const client = new GraphQLClient({ ...validConfig, FormData })
+      const stream = new Readable()
+
+      const operation = { query: '', variables: { a: stream } }
+      const fetchOptions = client.getFetchOptions(operation)
+
+      beforeAll(() => {
+        delete global.FormData
+      })
+
+      afterAll(() => {
+        global.FormData = originalFormData
       })
 
       it('sets body conforming to the graphql multipart request spec', () => {
         const actual = [...fetchOptions.body]
         const expected = [
-          ['operations', '{"query":"","variables":{"a":null,"b":null}}'],
-          ['map', '{"1":["variables.a"],"2":["variables.b"]}'],
-          ['1', '[object Object]'],
-          ['2', stream]
+          ['operations', '{"query":"","variables":{"a":null}}'],
+          ['map', '{"1":["variables.a"]}'],
+          ['1', stream]
         ]
+        expect(fetchOptions.body).toBeInstanceOf(FormData)
         expect(actual).toEqual(expected)
       })
 
@@ -363,10 +383,8 @@ describe('GraphQLClient', () => {
       })
 
       it('throws if no FormData polyfill provided', () => {
-        delete global.FormData
-
         const client = new GraphQLClient(validConfig)
-        const operation = { query: '', variables: { a: stream } }
+        const operation = { query: '', variables: { a: new Readable() } }
 
         expect(() => client.getFetchOptions(operation)).toThrow(
           'GraphQLClient: FormData must be polyfilled or passed in new GraphQLClient({ FormData })'

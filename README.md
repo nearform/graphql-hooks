@@ -549,7 +549,7 @@ If there are files to upload, the request's body will be a [`FormData`](https://
 import React, { useRef } from 'react'
 import { useMutation } from 'graphql-hooks'
 
-const uploadPostPictureMutation = /* GraphQL */ `
+const uploadPostPictureMutation = `
   mutation UploadPostPicture($picture: Upload!) {
     uploadPostPicture(picture: $picture) {
       id
@@ -589,12 +589,11 @@ export default function PostForm() {
 ```js
 const client = new GraphQLClient({
   url: 'https://domain.com/graphql',
-  cache: memCache(),
   fetch: require('node-fetch'),
   FormData: require('formdata-node')
 })
 
-const uploadPostPictureMutation = /* GraphQL */ `
+const uploadPostPictureMutation = `
   mutation UploadPostPicture($picture: Upload!) {
     uploadPostPicture(picture: $picture) {
       id
