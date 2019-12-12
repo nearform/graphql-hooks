@@ -149,14 +149,13 @@ describe('GraphQLClient', () => {
       jest.restoreAllMocks()
     })
 
-    it('calls onError if present', () => {
-      const onError = jest.fn()
-      const client = new GraphQLClient({ ...validConfig, onError })
+    it('logs without error', () => {
+      const client = new GraphQLClient({ ...validConfig })
+
       client.logErrorResult({ result: 'result', operation: 'operation' })
-      expect(onError).toHaveBeenCalledWith({
-        result: 'result',
-        operation: 'operation'
-      })
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(2)
+      expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupEndSpy).toHaveBeenCalledTimes(2)
     })
 
     it('logs a fetchError', () => {
@@ -166,18 +165,20 @@ describe('GraphQLClient', () => {
         result: { error: { fetchError: 'on no fetch!' } }
       })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('FETCH ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no fetch!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
 
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult({ result: { error: { httpError: 'on no http!' } } })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no http!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
 
     it('logs all graphQLErrors', () => {
@@ -185,10 +186,11 @@ describe('GraphQLClient', () => {
       const graphQLErrors = ['on no GraphQL!', 'oops GraphQL!']
       client.logErrorResult({ result: { error: { graphQLErrors } } })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
+      expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('GRAPHQL ERROR:')
       expect(logSpy).toHaveBeenCalledWith('on no GraphQL!')
       expect(logSpy).toHaveBeenCalledWith('oops GraphQL!')
-      expect(groupEndSpy).toHaveBeenCalled()
+      expect(groupEndSpy).toHaveBeenCalledTimes(3)
     })
   })
 
@@ -428,6 +430,66 @@ describe('GraphQLClient', () => {
         status: 403,
         statusText: 'Forbidden',
         body: 'Denied!'
+      })
+    })
+
+    describe('if logErrors is present', () => {
+      it('calls logErrorResults if logErrors is true', async () => {
+        const client = new GraphQLClient({ ...validConfig, logErrors: true })
+        client.logErrorResult = jest.fn()
+
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(client.logErrorResult).toHaveBeenCalled()
+      })
+
+      it('skips calling logErrorResults if logErrors is false', async () => {
+        const client = new GraphQLClient({ ...validConfig, logErrors: false })
+        client.logErrorResult = jest.fn()
+
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(client.logErrorResult).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('if onError is present', () => {
+      it('calls onError', async () => {
+        const onError = jest.fn()
+
+        const client = new GraphQLClient({ ...validConfig, onError })
+        client.logErrorResult = jest.fn()
+        fetch.mockResponseOnce('Denied!', {
+          status: 403
+        })
+
+        await client.request({ query: TEST_QUERY })
+
+        expect(onError).toHaveBeenCalledWith({
+          operation: {
+            query: TEST_QUERY
+          },
+          result: {
+            data: undefined,
+            error: {
+              fetchError: undefined,
+              graphQLErrors: undefined,
+              httpError: {
+                body: 'Denied!',
+                status: 403,
+                statusText: 'Forbidden'
+              }
+            }
+          }
+        })
       })
     })
 

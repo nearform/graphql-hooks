@@ -55,10 +55,6 @@ class GraphQLClient {
   }
   /* eslint-disable no-console */
   logErrorResult({ result, operation }) {
-    if (this.onError) {
-      return this.onError({ result, operation })
-    }
-
     console.error('GraphQL Hooks Error')
     console.groupCollapsed('---> Full Error Details')
     console.groupCollapsed('Operation:')
@@ -67,27 +63,30 @@ class GraphQLClient {
 
     const error = result.error
 
-    if (error.fetchError) {
-      console.groupCollapsed('FETCH ERROR:')
-      console.log(error.fetchError)
-      console.groupEnd()
-    }
+    if (error) {
+      if (error.fetchError) {
+        console.groupCollapsed('FETCH ERROR:')
+        console.log(error.fetchError)
+        console.groupEnd()
+      }
 
-    if (error.httpError) {
-      console.groupCollapsed('HTTP ERROR:')
-      console.log(error.httpError)
-      console.groupEnd()
-    }
+      if (error.httpError) {
+        console.groupCollapsed('HTTP ERROR:')
+        console.log(error.httpError)
+        console.groupEnd()
+      }
 
-    if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-      console.groupCollapsed('GRAPHQL ERROR:')
-      error.graphQLErrors.forEach(err => console.log(err))
-      console.groupEnd()
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        console.groupCollapsed('GRAPHQL ERROR:')
+        error.graphQLErrors.forEach(err => console.log(err))
+        console.groupEnd()
+      }
     }
 
     console.groupEnd()
   }
   /* eslint-enable no-console */
+
   generateResult({ fetchError, httpError, graphQLErrors, data }) {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
@@ -234,8 +233,14 @@ class GraphQLClient {
         })
       })
       .then(result => {
-        if (result.error && this.logErrors) {
-          this.logErrorResult({ result, operation })
+        if (result.error) {
+          if (this.logErrors) {
+            this.logErrorResult({ result, operation })
+          }
+
+          if (this.onError) {
+            this.onError({ result, operation })
+          }
         }
         return result
       })
