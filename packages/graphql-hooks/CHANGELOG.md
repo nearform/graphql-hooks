@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.2.0...graphql-hooks@4.3.0) (2019-12-12)
+
+
+### Features
+
+* separate onError and logErrors config options ([#419](https://github.com/nearform/graphql-hooks/issues/419)) ([b125275](https://github.com/nearform/graphql-hooks/commit/b125275de6a5804b73907c53152d20d97207a94e))
+* support file upload in NodeJS ([#422](https://github.com/nearform/graphql-hooks/issues/422)) ([5f1174e](https://github.com/nearform/graphql-hooks/commit/5f1174e08526ca10d4d3acaff20c73674e7c4a2d))
+
+
+
+
+
 # [4.2.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.1.2...graphql-hooks@4.2.0) (2019-12-02)
 
 
