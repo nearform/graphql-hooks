@@ -18,11 +18,11 @@ export class GraphQLClient {
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
   removeHeader(key: string): GraphQLClient
-  logErrorResult({
+  logErrorResult<ResponseData, TGraphQLError>({
     result,
     operation
   }: {
-    result: Result
+    result: Result<ResponseData, TGraphQLError>
     operation: Operation
   }): void
   getCacheKey<Variables = object>(
@@ -30,32 +30,45 @@ export class GraphQLClient {
     options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
   getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
-  request<ResponseData>(operation: Operation, options?: object):
-    Promise<Result<ResponseData>>
+  request<ResponseData, TGraphQLError>(
+    operation: Operation,
+    options?: object
+  ): Promise<Result<ResponseData, TGraphQLError>>
 }
 
-export function useClientRequest<ResponseData = any, Variables = object>(
+export function useClientRequest<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>
+]
 
-export function useQuery<ResponseData = any, Variables = object>(
+export function useQuery<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseQueryOptions<Variables>
-): UseQueryResult<ResponseData, Variables>
+): UseQueryResult<ResponseData, Variables, TGraphQLError>
 
-export function useManualQuery<ResponseData = any, Variables = object>(
+export function useManualQuery<ResponseData = any, Variables = object, TGraphQLError = object>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
+): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>]
 
-export function useMutation<ResponseData = any, Variables = object>(
+export function useMutation<ResponseData = any, Variables = object, TGraphQLError = object>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables>, UseClientRequestResult<ResponseData>]
+): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>]
 
 export interface SubscriptionRequest {
-  query: string,
+  query: string
   variables: object
 }
 
@@ -108,15 +121,15 @@ interface HttpError {
   body: string
 }
 
-interface APIError {
+interface APIError<TGraphQLError = object> {
   fetchError?: Error
   httpError?: HttpError
-  graphQLErrors?: object[]
+  graphQLErrors?: TGraphQLError[]
 }
 
-interface Result<ResponseData = any> {
+interface Result<ResponseData = any, TGraphQLError = object> {
   data?: ResponseData
-  error?: APIError
+  error?: APIError<TGraphQLError>
 }
 
 interface UseClientRequestOptions<Variables = object> {
@@ -135,23 +148,26 @@ interface UseQueryOptions<Variables = object>
   ssr?: boolean
 }
 
-interface UseClientRequestResult<ResponseData> {
+interface UseClientRequestResult<ResponseData, TGraphQLError> {
   loading: boolean
   cacheHit: boolean
   data: ResponseData
-  error?: APIError
+  error?: APIError<TGraphQLError>
 }
 
-interface UseQueryResult<ResponseData, Variables = object>
-  extends UseClientRequestResult<ResponseData> {
+interface UseQueryResult<
+  ResponseData,
+  Variables = object,
+  TGraphQLError = object
+> extends UseClientRequestResult<ResponseData, TGraphQLError> {
   refetch(
     options?: UseQueryOptions<Variables>
-  ): Promise<UseClientRequestResult<ResponseData>>
+  ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
-type FetchData<ResponseData, Variables = object> = (
+type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
   options?: UseClientRequestOptions<Variables>
-) => Promise<UseClientRequestResult<ResponseData>>
+) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 
 interface CacheKeyObject {
   operation: Operation
