@@ -267,7 +267,30 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "panz3r",
+      "name": "Mattia Panzeri",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1754457?v=4",
+      "profile": "http://panz3r.dev",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "lynxtaa",
+      "name": "Alex Kondratyuk",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/22496946?v=4",
+      "profile": "https://github.com/lynxtaa",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "bug"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
