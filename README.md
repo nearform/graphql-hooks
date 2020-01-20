@@ -945,12 +945,12 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/frikille"><img src="https://avatars2.githubusercontent.com/u/569278?v=4" width="100px;" alt=""/><br /><sub><b>Peter Balazs</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=frikille" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=frikille" title="Documentation">📖</a> <a href="#example-frikille" title="Examples">💡</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=frikille" title="Tests">⚠️</a></td>
     <td align="center"><a href="http://panz3r.dev"><img src="https://avatars3.githubusercontent.com/u/1754457?v=4" width="100px;" alt=""/><br /><sub><b>Mattia Panzeri</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=panz3r" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=panz3r" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/lynxtaa"><img src="https://avatars1.githubusercontent.com/u/22496946?v=4" width="100px;" alt=""/><br /><sub><b>Alex Kondratyuk</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=lynxtaa" title="Code">💻</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=lynxtaa" title="Tests">⚠️</a> <a href="https://github.com/nearform/graphql-hooks/commits?author=lynxtaa" title="Documentation">📖</a> <a href="https://github.com/nearform/graphql-hooks/issues?q=author%3Alynxtaa" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/cepelinc"><img src="https://avatars1.githubusercontent.com/u/25613873?v=4" width="100px;" alt=""/><br /><sub><b>Matias Cepeda</b></sub></a><br /><a href="https://github.com/nearform/graphql-hooks/commits?author=cepelinc" title="Documentation">📖</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
