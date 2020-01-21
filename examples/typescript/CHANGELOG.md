@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/nearform/graphql-hooks/compare/typescript-example@1.0.7...typescript-example@1.0.8) (2020-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @types/jest to v24.9.0 ([#430](https://github.com/nearform/graphql-hooks/issues/430)) ([0217fd0](https://github.com/nearform/graphql-hooks/commit/0217fd0603f776e6be126a5a5b6318c9eb232c4f))
+* **deps:** update dependency @types/node to v11.15.4 ([#436](https://github.com/nearform/graphql-hooks/issues/436)) ([f13408d](https://github.com/nearform/graphql-hooks/commit/f13408db57a11a5f6cf13bdc55023cbf27646410))
+* **deps:** update dependency @types/react to v16.9.17 ([#431](https://github.com/nearform/graphql-hooks/issues/431)) ([3e1db00](https://github.com/nearform/graphql-hooks/commit/3e1db0062b5d6e0b29899bc4606822fe2525f604))
+* **deps:** update dependency @types/react to v16.9.18 ([#446](https://github.com/nearform/graphql-hooks/issues/446)) ([64c1654](https://github.com/nearform/graphql-hooks/commit/64c165453974eb979dde73516f91d4e98b64837f))
+* **deps:** update dependency @types/react-dom to v16.9.5 ([#443](https://github.com/nearform/graphql-hooks/issues/443)) ([71cf3dc](https://github.com/nearform/graphql-hooks/commit/71cf3dc8a899db117b59e4d637bc5dfd380bebfb))
+* **deps:** update dependency typescript to v3.7.5 ([#432](https://github.com/nearform/graphql-hooks/issues/432)) ([114bbf1](https://github.com/nearform/graphql-hooks/commit/114bbf1350251ff43c9522d12d8f76efa1ee4962))
+
+
+
+
+
 ## [1.0.7](https://github.com/nearform/graphql-hooks/compare/typescript-example@1.0.6...typescript-example@1.0.7) (2019-12-12)
 
 

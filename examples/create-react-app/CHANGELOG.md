@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/nearform/graphql-hooks/compare/create-react-app@1.0.7...create-react-app@1.0.8) (2020-01-21)
+
+
+### Bug Fixes
+
+* memcache IE11 support fixes [#331](https://github.com/nearform/graphql-hooks/issues/331) ([#445](https://github.com/nearform/graphql-hooks/issues/445)) ([cd2b49d](https://github.com/nearform/graphql-hooks/commit/cd2b49d7181ef1899fae1c2e7fa89f9fa4e26a85))
+
+
+
+
+
 ## [1.0.7](https://github.com/nearform/graphql-hooks/compare/create-react-app@1.0.6...create-react-app@1.0.7) (2019-12-12)
 
 **Note:** Version bump only for package create-react-app

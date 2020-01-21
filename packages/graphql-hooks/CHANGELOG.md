@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.3.0...graphql-hooks@4.4.0) (2020-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency extract-files to v7 ([#435](https://github.com/nearform/graphql-hooks/issues/435)) ([b5de6df](https://github.com/nearform/graphql-hooks/commit/b5de6dfe1d6bc5baf5e19cd6f1407426919319d2))
+
+
+### Features
+
+* **TS:** Improve Typescript definition to allow custom type for 'GraphQLErrors' result ([#425](https://github.com/nearform/graphql-hooks/issues/425)) ([4352e63](https://github.com/nearform/graphql-hooks/commit/4352e63481ab907ac14f1215a734d94de970a6ae))
+
+
+
+
+
 # [4.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.2.0...graphql-hooks@4.3.0) (2019-12-12)
 
 

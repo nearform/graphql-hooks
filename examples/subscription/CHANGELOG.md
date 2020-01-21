@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.1...subscription@1.1.2) (2020-01-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fastify-gql to v3 ([#440](https://github.com/nearform/graphql-hooks/issues/440)) ([e157a40](https://github.com/nearform/graphql-hooks/commit/e157a40227f7e966cbf45c4dd0eb1b971b5f51cc))
+
+
+
+
+
 ## [1.1.1](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.0...subscription@1.1.1) (2019-12-12)
 
 

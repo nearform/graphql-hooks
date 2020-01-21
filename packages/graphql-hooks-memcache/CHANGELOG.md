@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.0...graphql-hooks-memcache@1.3.1) (2020-01-21)
+
+
+### Bug Fixes
+
+* memcache IE11 support fixes [#331](https://github.com/nearform/graphql-hooks/issues/331) ([#445](https://github.com/nearform/graphql-hooks/issues/445)) ([cd2b49d](https://github.com/nearform/graphql-hooks/commit/cd2b49d7181ef1899fae1c2e7fa89f9fa4e26a85))
+
+
+
+
+
 # [1.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.2.4...graphql-hooks-memcache@1.3.0) (2019-11-27)
 
 
