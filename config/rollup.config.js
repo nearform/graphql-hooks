@@ -12,13 +12,14 @@ const pkg = require(`${packageDir}/package.json`)
 const external = [...Object.keys(pkg.peerDependencies || {})]
 
 // name will be used as the global name exposed in the UMD bundles
-const generateRollupConfig = name => [
+const generateRollupConfig = (name, overrides = {}) => [
   // CommonJS
   {
     input: 'src/index.js',
     output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
     external,
-    plugins: [babel(), sizeSnapshot()]
+    plugins: [babel(), sizeSnapshot()],
+    ...overrides
   },
 
   // ES
@@ -26,7 +27,8 @@ const generateRollupConfig = name => [
     input: 'src/index.js',
     output: { file: `es/${pkg.name}.js`, format: 'es', indent: false },
     external,
-    plugins: [babel(), sizeSnapshot()]
+    plugins: [babel(), sizeSnapshot()],
+    ...overrides
   },
 
   // ES for Browsers
@@ -51,7 +53,8 @@ const generateRollupConfig = name => [
         }
       }),
       sizeSnapshot()
-    ]
+    ],
+    ...overrides
   },
 
   // UMD Development
@@ -76,7 +79,8 @@ const generateRollupConfig = name => [
         'process.env.NODE_ENV': JSON.stringify('development')
       }),
       sizeSnapshot()
-    ]
+    ],
+    ...overrides
   },
 
   // UMD Production
@@ -109,7 +113,8 @@ const generateRollupConfig = name => [
         }
       }),
       sizeSnapshot()
-    ]
+    ],
+    ...overrides
   }
 ]
 
