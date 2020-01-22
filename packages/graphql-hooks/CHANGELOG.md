@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.0...graphql-hooks@4.4.1) (2020-01-22)
+
+
+### Bug Fixes
+
+* **TS:** Make TGraphQLError default to "object" ([#448](https://github.com/nearform/graphql-hooks/issues/448)) ([f4cdb6d](https://github.com/nearform/graphql-hooks/commit/f4cdb6dc1d5ed623c67a5633ee24f70db670a7e6))
+
+
+
+
+
 # [4.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.3.0...graphql-hooks@4.4.0) (2020-01-21)
 
 
