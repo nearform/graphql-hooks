@@ -19,7 +19,7 @@ export class GraphQLClient {
   setHeader(key: string, value: string): GraphQLClient
   setHeaders(headers: Headers): GraphQLClient
   removeHeader(key: string): GraphQLClient
-  logErrorResult<ResponseData, TGraphQLError>({
+  logErrorResult<ResponseData, TGraphQLError = object>({
     result,
     operation
   }: {
@@ -31,7 +31,7 @@ export class GraphQLClient {
     options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
   getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
-  request<ResponseData, TGraphQLError>(
+  request<ResponseData, TGraphQLError = object>(
     operation: Operation,
     options?: object
   ): Promise<Result<ResponseData, TGraphQLError>>
@@ -150,7 +150,7 @@ interface UseQueryOptions<Variables = object>
   ssr?: boolean
 }
 
-interface UseClientRequestResult<ResponseData, TGraphQLError> {
+interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
   data: ResponseData
