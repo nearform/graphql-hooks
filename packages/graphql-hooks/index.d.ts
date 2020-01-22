@@ -87,6 +87,7 @@ interface ClientOptions {
   cache?: Cache
   headers?: Headers
   ssrMode?: boolean
+  useGETForQueries?: boolean;
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   FormData?: any
