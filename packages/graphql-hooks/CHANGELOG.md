@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.1...graphql-hooks@4.4.2) (2020-01-28)
+
+
+### Bug Fixes
+
+* **TS:** Add useGETForQueries to TS typings for client constructor ([#449](https://github.com/nearform/graphql-hooks/issues/449)) ([7ce5685](https://github.com/nearform/graphql-hooks/commit/7ce568564d0623cc6f8f20299db759017a066f78)), closes [#450](https://github.com/nearform/graphql-hooks/issues/450)
+
+
+
+
+
 ## [4.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.0...graphql-hooks@4.4.1) (2020-01-22)
 
 

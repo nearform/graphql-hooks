@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.3...subscription@1.1.4) (2020-01-28)
+
+**Note:** Version bump only for package subscription
+
+
+
+
+
 ## [1.1.3](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.2...subscription@1.1.3) (2020-01-22)
 
 **Note:** Version bump only for package subscription
