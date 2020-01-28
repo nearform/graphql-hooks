@@ -247,6 +247,10 @@ class GraphQLClient {
   }
 
   createSubscription(operation) {
+    if (!this.subscriptionClient) {
+      throw new Error('No SubscriptionClient! Please set in the constructor.')
+    }
+
     return this.subscriptionClient.request(operation)
   }
 }
