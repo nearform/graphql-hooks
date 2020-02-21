@@ -4,6 +4,7 @@ import { renderHook, act } from '@testing-library/react-hooks'
 import { useClientRequest, ClientContext } from '../../src'
 
 let mockClient
+let mockClient2
 
 const Wrapper = props => (
   <ClientContext.Provider value={mockClient}>
@@ -32,6 +33,17 @@ describe('useClientRequest', () => {
       },
       request: jest.fn().mockResolvedValue({ data: 'data' })
     }
+
+    mockClient2 = {
+      getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: jest.fn(),
+      saveCache: jest.fn(),
+      cache: {
+        get: jest.fn(),
+        set: jest.fn()
+      },
+      request: jest.fn().mockResolvedValue({ data: 'data' })
+    }
   })
 
   it('returns a fetch function & state', () => {
@@ -41,6 +53,21 @@ describe('useClientRequest', () => {
     })
     expect(fetchData).toEqual(expect.any(Function))
     expect(state).toEqual({ cacheHit: false, loading: true })
+  })
+
+  it('uses a passed client', async () => {
+    const options = { isMutation: false, client: mockClient2 }
+    let fetchData
+    renderHook(() => ([fetchData] = useClientRequest(TEST_QUERY, options)), {
+      wrapper: Wrapper
+    })
+
+    await act(fetchData)
+
+    expect(mockClient2.request).toHaveBeenCalledWith(
+      { query: TEST_QUERY },
+      options
+    )
   })
 
   it('resets data when query or variables change', async () => {

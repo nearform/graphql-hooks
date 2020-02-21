@@ -5,7 +5,7 @@ import { ClientContext, useQuery, useClientRequest } from '../../src'
 
 jest.mock('../../src/useClientRequest')
 
-let mockQueryReq, mockState, mockClient
+let mockQueryReq, mockState, mockClient, mockClient2
 
 const Wrapper = ({ children }) => (
   <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
@@ -36,6 +36,11 @@ describe('useQuery', () => {
       ssrMode: false,
       ssrPromises: []
     }
+
+    mockClient2 = {
+      ssrMode: false,
+      ssrPromises: []
+    }
   })
 
   it('calls useClientRequest with query', () => {
@@ -47,14 +52,20 @@ describe('useQuery', () => {
 
   it('calls useClientRequest with options', () => {
     renderHook(
-      () => useQuery(TEST_QUERY, { useCache: false, extra: 'option' }),
+      () =>
+        useQuery(TEST_QUERY, {
+          useCache: false,
+          extra: 'option',
+          client: mockClient2
+        }),
       {
         wrapper: Wrapper
       }
     )
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: false,
-      extra: 'option'
+      extra: 'option',
+      client: mockClient2
     })
   })
 
@@ -338,5 +349,15 @@ describe('useQuery', () => {
       expect(typeof refetchFns[1]).toBe('function')
       expect(refetchFns[0]).not.toBe(refetchFns[1])
     })
+  })
+
+  it('uses a passed client internally', () => {
+    mockClient2.ssrMode = true
+    mockQueryReq.mockResolvedValueOnce('data')
+    mockState.loading = false
+    renderHook(() => useQuery(TEST_QUERY, { client: mockClient2 }), {
+      wrapper: Wrapper
+    })
+    expect(mockClient2.ssrPromises[0]).resolves.toBe('data')
   })
 })
