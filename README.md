@@ -223,6 +223,7 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `updateData(previousData, data)`: Function - Custom handler for merging previous & new query results; return value will replace `data` in `useQuery` return value
     - `previousData`: Previous GraphQL query or `updateData` result
     - `data`: New GraphQL query result
+  - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
 
 ### `useQuery` return value
 
@@ -339,6 +340,7 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `variables`: Object e.g. `{ limit: 10 }`
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
+- `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
 
 ## `useSubscription`
 
@@ -352,6 +354,7 @@ To use subscription you need to use [subscriptions-transport-ws](https://github.
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
   - `operationName`: String (optional) - If your query has mulitple operations, you can choose which operation you want to call.
+  - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
 - `callback`: Function - This will be invoked when the subscription recieves an event from your GraphQL server - it will recieve an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
 
 **Usage**
