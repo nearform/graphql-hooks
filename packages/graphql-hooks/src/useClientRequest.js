@@ -72,7 +72,8 @@ function useClientRequest(query, initialOpts = {}) {
     )
   }
 
-  const client = React.useContext(ClientContext)
+  const contextClient = React.useContext(ClientContext)
+  const client = initialOpts.client || contextClient
   const isMounted = React.useRef(true)
   const activeCacheKey = React.useRef(null)
   const operation = {

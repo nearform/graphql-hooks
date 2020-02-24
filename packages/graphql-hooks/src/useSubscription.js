@@ -6,7 +6,8 @@ function useSubscription(options, callback) {
   const callbackRef = useRef(callback)
   callbackRef.current = callback
 
-  const client = useContext(ClientContext)
+  const contextClient = useContext(ClientContext)
+  const client = options.client || contextClient
 
   const request = {
     query: options.query,

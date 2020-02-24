@@ -77,7 +77,7 @@ export interface SubscriptionRequest {
 }
 
 export function useSubscription(
-  operation: Operation,
+  operation: UseSubscriptionOperation,
   callback: (response: Result) => void
 ): void
 
@@ -148,6 +148,7 @@ interface UseClientRequestOptions<Variables = object> {
   skipCache?: boolean
   fetchOptionsOverrides?: object
   updateData?(previousData: any, data: any): any
+  client?: GraphQLClient
 }
 
 interface UseQueryOptions<Variables = object>
@@ -170,6 +171,10 @@ interface UseQueryResult<
   refetch(
     options?: UseQueryOptions<Variables>
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
+}
+
+interface UseSubscriptionOperation extends Operation {
+  client?: GraphqlClient
 }
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (

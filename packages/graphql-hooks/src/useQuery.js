@@ -9,7 +9,8 @@ const defaultOpts = {
 
 function useQuery(query, opts = {}) {
   const allOpts = { ...defaultOpts, ...opts }
-  const client = React.useContext(ClientContext)
+  const contextClient = React.useContext(ClientContext)
+  const client = opts.client || contextClient
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
   const [queryReq, state] = useClientRequest(query, allOpts)
 
