@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.4...subscription@1.1.5) (2020-02-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mqemitter-redis to v4 ([#458](https://github.com/nearform/graphql-hooks/issues/458)) ([8305df0](https://github.com/nearform/graphql-hooks/commit/8305df0311bfcba6acf77813b9cffd646dda919b))
+
+
+
+
+
 ## [1.1.4](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.3...subscription@1.1.4) (2020-01-28)
 
 **Note:** Version bump only for package subscription
