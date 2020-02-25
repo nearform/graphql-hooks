@@ -156,7 +156,7 @@ describe('useQuery', () => {
   })
 
   it('does not add query to ssrPromises when in ssrMode if there is an error', () => {
-    mockState.error = true
+    mockState.error = { graphQLErrors: ['bad thing'] }
     mockClient.ssrMode = true
     mockQueryReq.mockResolvedValueOnce('data')
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper })
@@ -206,7 +206,7 @@ describe('useQuery', () => {
     const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
       wrapper: Wrapper
     })
-    mockState.error = true
+    mockState.error = { graphQLErrors: ['bad thing'] }
     options.variables.limit = 3
     rerender()
     expect(mockQueryReq).toHaveBeenCalledTimes(2)
@@ -238,7 +238,7 @@ describe('useQuery', () => {
     const { rerender } = renderHook(() => useQuery(TEST_QUERY, options), {
       wrapper: Wrapper
     })
-    mockState.error = true
+    mockState.error = { graphQLErrors: ['bad thing'] }
     options.operationName = 'Operation2'
     rerender()
     expect(mockQueryReq).toHaveBeenCalledTimes(2)
@@ -300,7 +300,7 @@ describe('useQuery', () => {
     const { rerender } = renderHook(() => useQuery(query), {
       wrapper: Wrapper
     })
-    mockState.error = true
+    mockState.error = { graphQLErrors: ['bad thing'] }
     query = ANOTHER_TEST_QUERY
     rerender()
     expect(mockQueryReq).toHaveBeenCalledTimes(2)
