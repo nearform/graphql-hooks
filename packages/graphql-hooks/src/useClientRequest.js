@@ -14,6 +14,14 @@ function reducer(state, action) {
     case actionTypes.RESET_STATE:
       return action.initialState
     case actionTypes.LOADING:
+      // if previous action resulted in error - refetch will reset the state
+      if (state.error) {
+        return {
+          ...action.initialState,
+          data: state.data,
+          loading: true
+        }
+      }
       if (state.loading) {
         return state // saves a render cycle as state is the same
       }
@@ -154,7 +162,7 @@ function useClientRequest(query, initialOpts = {}) {
         return Promise.resolve(cacheHit)
       }
 
-      dispatch({ type: actionTypes.LOADING })
+      dispatch({ type: actionTypes.LOADING, initialState })
       return client.request(revisedOperation, revisedOpts).then(result => {
         if (
           revisedOpts.updateData &&
