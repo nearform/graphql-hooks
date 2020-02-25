@@ -255,7 +255,9 @@
       "contributions": [
         "code",
         "bug",
-        "maintenance"
+        "maintenance",
+        "doc",
+        "test"
       ]
     },
     {
