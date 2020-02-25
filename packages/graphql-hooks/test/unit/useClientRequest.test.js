@@ -102,7 +102,7 @@ describe('useClientRequest', () => {
     })
   })
 
-  it('does reset data if previous call resulted in error', async () => {
+  it('should clear errors when calling fetchData', async () => {
     let fetchData
     let state
 
@@ -117,15 +117,19 @@ describe('useClientRequest', () => {
     )
 
     mockClient.request.mockResolvedValueOnce({
-      error: true,
-      errors: ['oh no!']
+      data: 'data', // ensure data is maintained
+      error: {
+        graphQLErrors: ['oh no!']
+      }
     })
 
     await fetchData()
     expect(state).toEqual({
       cacheHit: false,
-      error: true,
-      errors: ['oh no!'],
+      data: 'data',
+      error: {
+        graphQLErrors: ['oh no!']
+      },
       loading: false
     })
 
@@ -137,7 +141,7 @@ describe('useClientRequest', () => {
     mockClient.request.mockResolvedValueOnce(promise)
     fetchData()
 
-    expect(state).toEqual({ cacheHit: false, loading: true })
+    expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
     promiseResolve()
   })
 

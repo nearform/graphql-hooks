@@ -14,7 +14,7 @@ function reducer(state, action) {
     case actionTypes.RESET_STATE:
       return action.initialState
     case actionTypes.LOADING:
-      // if previous action resulted in error - refetch will reset the state
+      // if the previous action resulted in an error - refetch should clear any errors
       if (state.error) {
         return {
           ...action.initialState,
