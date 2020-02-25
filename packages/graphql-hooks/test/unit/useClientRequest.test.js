@@ -510,7 +510,9 @@ describe('useClientRequest', () => {
 
         await act(fetchData)
 
-        mockClient.request.mockResolvedValueOnce({ errors: ['on no!'] })
+        mockClient.request.mockResolvedValueOnce({
+          error: { graphQLErrors: ['on no!'] }
+        })
         await act(() => fetchData({ variables: { limit: 20 } }))
 
         expect(updateDataMock).not.toHaveBeenCalled()
