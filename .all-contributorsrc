@@ -312,6 +312,15 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "chughes87",
+      "name": "Charles Hughes",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/3608619?v=4",
+      "profile": "https://github.com/chughes87",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
