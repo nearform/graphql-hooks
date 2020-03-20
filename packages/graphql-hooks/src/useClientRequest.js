@@ -180,7 +180,8 @@ function useClientRequest(query, initialOpts = {}) {
             const cacheValue = {
               data: revisedOpts.updateData
                 ? revisedOpts.updateData(state.data, actionResult.data)
-                : actionResult.data
+                : actionResult.data,
+              error: actionResult.error
             }
             client.saveCache(revisedCacheKey, cacheValue)
           }
