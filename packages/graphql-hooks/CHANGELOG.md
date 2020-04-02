@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.3...graphql-hooks@4.4.4) (2020-04-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency extract-files to v8 ([#481](https://github.com/nearform/graphql-hooks/issues/481)) ([b58c51a](https://github.com/nearform/graphql-hooks/commit/b58c51a3590a2960fb0270b88150c73d2f2abc23))
+* clear errors on refetch via loading action ([#469](https://github.com/nearform/graphql-hooks/issues/469)) ([1caece3](https://github.com/nearform/graphql-hooks/commit/1caece33d5aabdf320433263d0a95f23a212e559))
+
+
+
+
+
 ## [4.4.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.2...graphql-hooks@4.4.3) (2020-02-25)
 
 **Note:** Version bump only for package graphql-hooks
