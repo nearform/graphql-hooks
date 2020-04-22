@@ -672,5 +672,25 @@ describe('useClientRequest', () => {
         )
       })
     })
+
+    describe('persisted', () => {
+      it('should pass method=GET when persisted=true', async () => {
+        const options = { persisted: true }
+        let fetchData
+        renderHook(
+          () => ([fetchData] = useClientRequest(TEST_QUERY, options)),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        await act(fetchData)
+
+        expect(mockClient.request).toHaveBeenCalledWith(
+          { query: TEST_QUERY, persisted: true },
+          { ...options, fetchOptionsOverrides: { method: 'GET' } }
+        )
+      })
+    })
   })
 })
