@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 // Exports
 
@@ -61,15 +61,29 @@ export function useQuery<
   options?: UseQueryOptions<Variables>
 ): UseQueryResult<ResponseData, Variables, TGraphQLError>
 
-export function useManualQuery<ResponseData = any, Variables = object, TGraphQLError = object>(
+export function useManualQuery<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>]
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>
+]
 
-export function useMutation<ResponseData = any, Variables = object, TGraphQLError = object>(
+export function useMutation<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>]
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>
+]
 
 export interface SubscriptionRequest {
   query: string
