@@ -58,3 +58,15 @@ All the queries extracted are saved on disk in one file. The file is saved in th
   "3f0587e447e0eee76801682a24ce1b44b68c5d298ed24a010ce259b0361b1ef2": "query Div($x: Int!, $y: Int!) {\n    div(x: $x, y: $y)\n  }"
 }
 ```
+
+Transforming all queries to their hashes tells graphql-hooks to make GET requests with `query=<hash>&persisted=true`. Following is how a request looks like
+
+```
+http://localhost:5000/graphql?query=248eb276edb4f22aced0a2848c539810b55f79d89abc531b91145e76838f5602&persisted=true
+```
+
+Or with variables
+
+```
+http://localhost:5000/graphql?query=495ccd73abc8436544cfeedd65f24beee660d2c7be2c32536e3fbf911f935ddf&persisted=true&variables=\{"x":3,"y":6\}
+```
