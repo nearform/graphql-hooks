@@ -1,0 +1,33 @@
+{
+  "name": "babel-plugin-extract-gql",
+  "version": "2.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rm -rf lib",
+    "build": "babel src --out-dir lib",
+    "lint": "eslint",
+    "test": "mocha --require @babel/register",
+    "test:watch": "npm run test -- --watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/register": "^7.0.0",
+    "glob": "^7.1.4",
+    "mocha": "^5.2.0"
+  },
+  "author": "Salman Mitha <salmanmitha@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "babel",
+    "plugin",
+    "extract",
+    "strings"
+  ],
+  "dependencies": {
+    "pkg-dir": "^4.2.0"
+  }
+}
