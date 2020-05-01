@@ -1,7 +1,7 @@
-import fs from 'fs'
-import path from 'path'
-import crypto from 'crypto'
-import pkgDir from 'pkg-dir'
+const fs = require('fs')
+const path = require('path')
+const crypto = require('crypto')
+const pkgDir = require('pkg-dir')
 
 const pkgRoot = pkgDir.sync()
 const outputFile = path.join(pkgRoot, 'gql-queries.json')
@@ -19,7 +19,7 @@ function appendJSON(json) {
   fs.writeFileSync(outputFile, JSON.stringify(data, null, 2))
 }
 
-export default function({ types: t }) {
+function extractGql({ types: t }) {
   const queries = {}
   const varsTransformed = {}
 
@@ -71,3 +71,5 @@ export default function({ types: t }) {
     }
   }
 }
+
+module.exports = extractGql
