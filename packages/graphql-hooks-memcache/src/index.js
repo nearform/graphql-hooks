@@ -1,5 +1,5 @@
 import LRU from 'tiny-lru'
-import fnv1a from '@sindresorhus/fnv1a'
+import fnv1a from './fnv1a'
 
 function generateKey(keyObj) {
   return fnv1a(JSON.stringify(keyObj)).toString(36)
