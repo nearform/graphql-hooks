@@ -50,7 +50,7 @@ export function useClientRequest<
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetData
+  () => void
 ]
 
 export function useQuery<
@@ -181,8 +181,6 @@ interface UseSubscriptionOperation extends Operation {
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
   options?: UseClientRequestOptions<Variables>
 ) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
-
-type ResetData = () => void
 
 interface CacheKeyObject {
   operation: Operation
