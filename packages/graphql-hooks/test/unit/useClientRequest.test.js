@@ -92,6 +92,31 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('resets state preserving previous data when reset function is called', async () => {
+    let fetchData, state, resetData
+    renderHook(
+      () => ([fetchData, state, resetData] = useClientRequest(TEST_QUERY)),
+      {
+        wrapper: Wrapper
+      }
+    )
+    // initial state
+    expect(state).toEqual({ cacheHit: false, loading: true })
+    await act(fetchData)
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    })
+    await act(() => resetData({ data: 'my previous data' }))
+    // should be back to initial state with previous data
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: true,
+      data: 'my previous data'
+    })
+  })
+
   it('resets data when query or variables change', async () => {
     let fetchData
     let state

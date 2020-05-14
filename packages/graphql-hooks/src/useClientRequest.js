@@ -208,7 +208,11 @@ function useClientRequest(query, initialOpts = {}) {
     }
   }, [client, state])
 
-  const reset = () => dispatch({ type: actionTypes.RESET_STATE, initialState })
+  const reset = (desiredState = {}) =>
+    dispatch({
+      type: actionTypes.RESET_STATE,
+      initialState: { ...initialState, ...desiredState }
+    })
 
   return [fetchData, state, reset]
 }
