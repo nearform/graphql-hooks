@@ -174,7 +174,7 @@ interface UseQueryResult<
 }
 
 interface UseSubscriptionOperation extends Operation {
-  client?: GraphqlClient
+  client?: GraphQLClient
 }
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
