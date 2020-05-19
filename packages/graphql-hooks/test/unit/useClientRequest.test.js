@@ -151,6 +151,75 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('should keep the error when cached in ssrMode', async () => {
+    let fetchData
+    let state
+
+    let cache = {}
+
+    mockClient = {
+      ...mockClient,
+      getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: key => cache[key],
+      saveCache: (key, value) => (cache[key] = value),
+      cache: {
+        get: key => cache[key],
+        set: (key, value) => (cache[key] = value)
+      },
+      ssrMode: true
+    }
+
+    const updateDataMock = jest.fn().mockReturnValue('merged data')
+
+    renderHook(
+      () =>
+        ([fetchData, state] = useClientRequest(TEST_QUERY, {
+          useCache: true,
+          updateData: updateDataMock
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+
+    mockClient.request.mockResolvedValueOnce({
+      data: 'data',
+      error: {
+        graphQLErrors: ['some error!']
+      }
+    })
+
+    await fetchData()
+
+    expect(state).toEqual({
+      cacheHit: false,
+      data: 'data',
+      cacheKey: 'cacheKey',
+      useCache: true,
+      error: {
+        graphQLErrors: ['some error!']
+      },
+      loading: false
+    })
+
+    // now with no errors
+    mockClient.request.mockResolvedValueOnce({
+      data: 'new data'
+    })
+
+    await fetchData()
+
+    // it should keep the error when cached
+    expect(state).toEqual({
+      cacheHit: true,
+      data: 'merged data',
+      error: {
+        graphQLErrors: ['some error!']
+      },
+      loading: false
+    })
+  })
+
   it('should clear errors when calling fetchData', async () => {
     let fetchData
     let state

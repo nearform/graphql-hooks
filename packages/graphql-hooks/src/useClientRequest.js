@@ -178,6 +178,7 @@ function useClientRequest(query, initialOpts = {}) {
 
           if (client.ssrMode) {
             const cacheValue = {
+              error: actionResult.error,
               data: revisedOpts.updateData
                 ? revisedOpts.updateData(state.data, actionResult.data)
                 : actionResult.data
