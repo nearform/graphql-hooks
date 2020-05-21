@@ -319,7 +319,7 @@ Mutations unlike Queries are not cached.
 **Usage**:
 
 ```js
-const [mutationFn, state] = useMutation(mutation, [options])
+const [mutationFn, state, resetFn] = useMutation(mutation, [options])
 ```
 
 **Example**:
@@ -358,6 +358,13 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
+
+In addition, there is an option to reset the current state before calling the mutation again, by calling `resetFn(desiredState)` where `desiredState` is optional and if passed, it will override the initial state with:
+
+- `data`: Object - the data
+- `error`: Error - the error
+- `loading`: Boolean - true if it is still loading
+- `cacheHit`: Boolean - true if the result was cached
 
 ## `useSubscription`
 
