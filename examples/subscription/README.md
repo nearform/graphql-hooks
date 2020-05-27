@@ -8,12 +8,11 @@
 1. Visit [http://localhost:8000](http://localhost:8000)
 1. Each Vote is isolated, voting yes/no will auto update the total votes using via graphql subscriptions. You can also open the same url in a new tab, add more votes and the changes will be reflected across each app instance.
 
-
 ## Running the application
 
 ### Server
 
-Make sure  that there is a **`Redis`** server running on `127.0.0.1:6379`. Or update the configuration in `/src/server/index.js` file.
+Make sure that there is a **`Redis`** server running on `127.0.0.1:6379`. Or update the configuration in `/src/server/index.js` file.
 
 In the `examples/subscription` folder, run the following command
 

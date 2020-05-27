@@ -902,10 +902,10 @@ import { GraphQLClient } from 'graphql-hooks'
 
 const gqlAxios = axios.create()
 gqlAxios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response
   },
-  function(error) {
+  function (error) {
     // Handle expired JWT and refresh token
   }
 )
@@ -962,6 +962,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

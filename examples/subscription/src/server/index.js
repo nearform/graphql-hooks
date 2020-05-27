@@ -126,7 +126,7 @@ app.register(GQL, {
   }
 })
 
-app.get('/', async function(req, reply) {
+app.get('/', async function (req, reply) {
   reply.header('Content-Type', 'text/html').send(indexHtml)
 })
 
