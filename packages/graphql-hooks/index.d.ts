@@ -93,9 +93,16 @@ export interface SubscriptionRequest {
   variables: object
 }
 
-export function useSubscription(
-  operation: UseSubscriptionOperation,
-  callback: (response: Result) => void
+export function useSubscription<
+  ResponseData = any,
+  Variables extends object = object,
+  TGraphQLError = object
+>(
+  operation: UseSubscriptionOperation<Variables>,
+  callback: (response: {
+    data?: ResponseData
+    errors?: TGraphQLError[]
+  }) => void
 ): void
 
 export const ClientContext: React.Context<GraphQLClient>
@@ -192,7 +199,9 @@ interface UseQueryResult<
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
-interface UseSubscriptionOperation extends Operation {
+interface UseSubscriptionOperation<Variables extends object = object>
+  extends Operation {
+  variables?: Variables
   client?: GraphQLClient
 }
 
