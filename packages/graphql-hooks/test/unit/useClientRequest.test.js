@@ -654,7 +654,7 @@ describe('useClientRequest', () => {
       })
 
       describe('caching', () => {
-        it('shoud update the state when the second cacheHit is different from the first', async () => {
+        it('should update the state when the second cacheHit is different from the first', async () => {
           let fetchData, state
           const updateDataMock = jest.fn().mockReturnValue('merged data')
           renderHook(
