@@ -15,26 +15,28 @@
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^26.0.0",
     "coveralls": "^3.0.4",
-    "eslint": "^6.0.0",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "husky": "^4.0.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "husky": "^4.2.5",
     "jest": "^26.0.0",
     "lerna": "^3.15.0",
     "lint-staged": "^10.0.0",
-    "prettier": "^1.18.2",
-    "rollup": "^1.25.2",
+    "prettier": "^2.0.0",
+    "rollup": "^2.0.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.2",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-size-snapshot": "^0.11.0",
-    "rollup-plugin-terser": "^5.0.0",
+    "rollup-plugin-size-snapshot": "^0.12.0",
+    "rollup-plugin-terser": "^6.0.0",
     "testcafe": "^1.2.1",
     "testcafe-reporter-xunit": "^2.1.0"
   },
@@ -47,7 +49,14 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "avoid"
   }
 }
