@@ -1,14 +1,12 @@
 const https = require('https')
 
-exports.handler = function(event, context, callback) {
+exports.handler = function (event, context, callback) {
   const e = JSON.parse(event.body)
 
   const options = {
     hostname: 'circleci.com',
     port: 443,
-    path: `/api/v1.1/project/github/nearform/graphql-hooks/tree/${
-      e.payload.branch
-    }`,
+    path: `/api/v1.1/project/github/nearform/graphql-hooks/tree/${e.payload.branch}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
