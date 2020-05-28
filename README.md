@@ -90,10 +90,6 @@ function MyComponent() {
 }
 ```
 
-
-
-
-
 ## Why `graphql-hooks`?
 The first thing you may ask when seeing `graphql-hooks` is "Why not use Apollo hooks?".
 It's the comparison most will make. In fact, there's an [article comparing the two](https://blog.logrocket.com/comparing-hooks-libraries-for-graphql/) over on LogRocket.
@@ -109,7 +105,6 @@ If you need a client that offers middleware and advanced cache configuration, th
 |Small in size|Middleware support|
 |Concise API|Less "advanced" caching configuration|
 |Quick to get up and running|
-
 
 # Table of Contents
 
