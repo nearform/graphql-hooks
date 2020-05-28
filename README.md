@@ -253,7 +253,7 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 - `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
-- `error`: Object - Set if at least one of the following errors has occured and contains:
+- `error`: Object - Set if at least one of the following errors has occurred and contains:
   - `fetchError`: Object - Set if an error occurred during the `fetch` call
   - `httpError`: Object - Set if an error response was returned from the server
   - `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
@@ -377,9 +377,9 @@ To use subscription you need to use [subscriptions-transport-ws](https://github.
 - `operation`: Object - The GraphQL operation the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
-  - `operationName`: String (optional) - If your query has mulitple operations, you can choose which operation you want to call.
+  - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
-- `callback`: Function - This will be invoked when the subscription recieves an event from your GraphQL server - it will recieve an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
+- `callback`: Function - This will be invoked when the subscription receives an event from your GraphQL server - it will receive an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
 
 **Usage**
 
@@ -427,7 +427,7 @@ function TotalCountComponent() {
   })
 
   if (error) {
-    return <span>An error occured {error.message}</span>
+    return <span>An error occurred {error.message}</span>
   }
 
   return <div>Current count: {count}</div>
@@ -919,10 +919,10 @@ import { GraphQLClient } from 'graphql-hooks'
 
 const gqlAxios = axios.create()
 gqlAxios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response
   },
-  function(error) {
+  function (error) {
     // Handle expired JWT and refresh token
   }
 )
@@ -979,6 +979,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
