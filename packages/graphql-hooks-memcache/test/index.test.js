@@ -13,6 +13,11 @@ describe('memcache', () => {
     cache.set({ foo: 'foo' }, 'baz')
     expect(cache.get({ foo: 'foo' })).toEqual('baz')
   })
+  it('gets value from a hashed key', () => {
+    cache.set('foo', 'bar')
+    const rawKey = cache.keys().pop()
+    expect(cache.rawGet(rawKey)).toEqual('bar')
+  })
   it('deletes a key', () => {
     cache.set('foo', 'baz')
     expect(cache.get('foo')).toEqual('baz')
@@ -34,5 +39,20 @@ describe('memcache', () => {
   it('returns initial state', () => {
     cache = memCache({ initialState: { foo: 'bar' } })
     expect(cache.getInitialState()).toEqual({ foo: 'bar' })
+  })
+  it('throws an error if rawToKey is used', () => {
+    expect(() => cache.rawToKey('test')).toThrow()
+  })
+})
+
+describe('memcache (debug)', () => {
+  let cache
+  beforeEach(() => {
+    cache = memCache({ debug: true })
+  })
+  it('returns the original key', () => {
+    cache.set('foo', 'bar')
+    const rawKey = cache.keys().pop()
+    expect(cache.rawToKey(rawKey)).toEqual('foo')
   })
 })
