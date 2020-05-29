@@ -90,6 +90,22 @@ function MyComponent() {
 }
 ```
 
+## Why `graphql-hooks`?
+The first thing you may ask when seeing `graphql-hooks` is "Why not use Apollo hooks?".
+It's the comparison most will make. In fact, there's an [article comparing the two](https://blog.logrocket.com/comparing-hooks-libraries-for-graphql/) over on LogRocket.
+
+We believe `graphql-hooks` is a great choice as a hooks-first GraphQL client due to its concise API and package size.
+
+In terms of performance, this is more of a grey area as we have no official benchmarks yet.
+
+If you need a client that offers middleware and advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
+
+|Pros | Cons|
+|-----|-----|
+|Small in size|Middleware support|
+|Concise API|Less "advanced" caching configuration|
+|Quick to get up and running|
+
 # Table of Contents
 
 - API
