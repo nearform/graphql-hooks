@@ -1,0 +1,16 @@
+{
+  "name": "fastify-gql-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "Salman Mitha <SalmanMitha@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^2.13.1",
+    "fastify-cors": "^3.0.3",
+    "fastify-gql": "^3.9.0"
+  }
+}

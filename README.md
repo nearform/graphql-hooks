@@ -232,6 +232,7 @@ This is a custom hook that takes care of fetching your query and storing the res
 - `options`: Object with the following optional properties
   - `variables`: Object e.g. `{ limit: 10 }`
   - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
+  - `persisted`: Boolean - defaults to `false`; Pass `true` if your graphql server supports `persisted` flag to serve persisted queries.
   - `useCache`: Boolean - defaults to `true`; cache the query result
   - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
