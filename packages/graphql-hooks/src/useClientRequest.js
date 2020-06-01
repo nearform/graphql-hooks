@@ -87,10 +87,14 @@ function useClientRequest(query, initialOpts = {}) {
   const operation = {
     query,
     variables: initialOpts.variables,
-    operationName: initialOpts.operationName
+    operationName: initialOpts.operationName,
+    persisted: initialOpts.persisted
   }
 
-  if (client.useGETForQueries && !initialOpts.isMutation) {
+  if (
+    initialOpts.persisted ||
+    (client.useGETForQueries && !initialOpts.isMutation)
+  ) {
     initialOpts.fetchOptionsOverrides = {
       ...initialOpts.fetchOptionsOverrides,
       method: 'GET'
