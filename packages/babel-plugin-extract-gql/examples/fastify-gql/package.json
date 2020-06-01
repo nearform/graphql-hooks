@@ -11,6 +11,6 @@
   "dependencies": {
     "fastify": "^2.13.1",
     "fastify-cors": "^3.0.3",
-    "fastify-gql": "salmanm/fastify-gql"
+    "fastify-gql": "^3.9.0"
   }
 }
