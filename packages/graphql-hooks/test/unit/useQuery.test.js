@@ -87,6 +87,7 @@ describe('useQuery', () => {
     refetch()
     expect(mockQueryReq).toHaveBeenCalledWith({
       skipCache: true,
+      patch: false,
       updateData: expect.any(Function)
     })
   })
@@ -110,6 +111,7 @@ describe('useQuery', () => {
     })
     expect(mockQueryReq).toHaveBeenCalledWith({
       skipCache: true,
+      patch: false,
       extra: 'option',
       variables: { skip: 10, first: 10, extra: 'variable' },
       updateData
@@ -127,10 +129,57 @@ describe('useQuery', () => {
         wrapper: Wrapper
       }
     )
+    const previousData = { data: [{ previous: 'data' }] }
+    const data = {
+      data: [{ previous: 'data', foo: 'bar' }, { next: 'newdata' }]
+    }
     mockQueryReq.mockImplementationOnce(({ updateData }) => {
-      return updateData('previousData', 'data')
+      return updateData(previousData, data)
     })
     refetch()
+    expect(mockQueryReq).toHaveReturnedWith(data)
+    expect(previousData).not.toEqual(data)
+  })
+
+  it('gets updateData to patch the result if patch is set in refetch', () => {
+    let refetch
+    renderHook(
+      () =>
+        ({ refetch } = useQuery(TEST_QUERY, {
+          variables: { skip: 0, first: 10 }
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+    const previousItem = { previous: 'data' }
+    const previousData = [previousItem]
+    const data = [{ previous: 'data', foo: 'bar' }, { next: 'newdata' }]
+    mockQueryReq.mockImplementationOnce(({ updateData }) => {
+      return updateData(previousData, data)
+    })
+    refetch({ patch: true })
+    expect(previousData).toEqual(data)
+    expect(previousData).not.toBe(data)
+    expect(previousData).toContain(previousItem)
+    expect(mockQueryReq).toHaveReturnedWith(previousData)
+  })
+
+  it('correctly handles primitive types when patch is set in refetch', () => {
+    let refetch
+    renderHook(
+      () =>
+        ({ refetch } = useQuery(TEST_QUERY, {
+          variables: { skip: 0, first: 10 }
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+    mockQueryReq.mockImplementationOnce(({ updateData }) => {
+      return updateData('previous', 'data')
+    })
+    refetch({ patch: true })
     expect(mockQueryReq).toHaveReturnedWith('data')
   })
 
