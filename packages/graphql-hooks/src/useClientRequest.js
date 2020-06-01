@@ -182,6 +182,7 @@ function useClientRequest(query, initialOpts = {}) {
 
           if (client.ssrMode) {
             const cacheValue = {
+              error: actionResult.error,
               data: revisedOpts.updateData
                 ? revisedOpts.updateData(state.data, actionResult.data)
                 : actionResult.data
@@ -212,7 +213,13 @@ function useClientRequest(query, initialOpts = {}) {
     }
   }, [client, state])
 
-  return [fetchData, state]
+  const reset = (desiredState = {}) =>
+    dispatch({
+      type: actionTypes.RESET_STATE,
+      initialState: { ...initialState, ...desiredState }
+    })
+
+  return [fetchData, state, reset]
 }
 
 export default useClientRequest

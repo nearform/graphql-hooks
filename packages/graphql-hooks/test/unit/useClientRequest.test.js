@@ -68,6 +68,55 @@ describe('useClientRequest', () => {
     )
   })
 
+  it('resets data when reset function is called', async () => {
+    let fetchData, state, resetData
+    renderHook(
+      () => ([fetchData, state, resetData] = useClientRequest(TEST_QUERY)),
+      {
+        wrapper: Wrapper
+      }
+    )
+    // initial state
+    expect(state).toEqual({ cacheHit: false, loading: true })
+    await act(fetchData)
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    })
+    await act(resetData)
+    // should be back to initial state
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: true
+    })
+  })
+
+  it('resets state preserving previous data when reset function is called', async () => {
+    let fetchData, state, resetData
+    renderHook(
+      () => ([fetchData, state, resetData] = useClientRequest(TEST_QUERY)),
+      {
+        wrapper: Wrapper
+      }
+    )
+    // initial state
+    expect(state).toEqual({ cacheHit: false, loading: true })
+    await act(fetchData)
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: false,
+      data: 'data'
+    })
+    await act(() => resetData({ data: 'my previous data' }))
+    // should be back to initial state with previous data
+    expect(state).toEqual({
+      cacheHit: false,
+      loading: true,
+      data: 'my previous data'
+    })
+  })
+
   it('resets data when query or variables change', async () => {
     let fetchData
     let state
@@ -99,6 +148,75 @@ describe('useClientRequest', () => {
     expect(state).toEqual({
       cacheHit: false,
       loading: true
+    })
+  })
+
+  it('should keep the error when cached in ssrMode', async () => {
+    let fetchData
+    let state
+
+    let cache = {}
+
+    mockClient = {
+      ...mockClient,
+      getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: key => cache[key],
+      saveCache: (key, value) => (cache[key] = value),
+      cache: {
+        get: key => cache[key],
+        set: (key, value) => (cache[key] = value)
+      },
+      ssrMode: true
+    }
+
+    const updateDataMock = jest.fn().mockReturnValue('merged data')
+
+    renderHook(
+      () =>
+        ([fetchData, state] = useClientRequest(TEST_QUERY, {
+          useCache: true,
+          updateData: updateDataMock
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+
+    mockClient.request.mockResolvedValueOnce({
+      data: 'data',
+      error: {
+        graphQLErrors: ['some error!']
+      }
+    })
+
+    await fetchData()
+
+    expect(state).toEqual({
+      cacheHit: false,
+      data: 'data',
+      cacheKey: 'cacheKey',
+      useCache: true,
+      error: {
+        graphQLErrors: ['some error!']
+      },
+      loading: false
+    })
+
+    // now with no errors
+    mockClient.request.mockResolvedValueOnce({
+      data: 'new data'
+    })
+
+    await fetchData()
+
+    // it should keep the error when cached
+    expect(state).toEqual({
+      cacheHit: true,
+      data: 'merged data',
+      error: {
+        graphQLErrors: ['some error!']
+      },
+      loading: false
     })
   })
 
@@ -536,7 +654,7 @@ describe('useClientRequest', () => {
       })
 
       describe('caching', () => {
-        it('shoud update the state when the second cacheHit is different from the first', async () => {
+        it('should update the state when the second cacheHit is different from the first', async () => {
           let fetchData, state
           const updateDataMock = jest.fn().mockReturnValue('merged data')
           renderHook(

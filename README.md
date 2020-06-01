@@ -90,6 +90,22 @@ function MyComponent() {
 }
 ```
 
+## Why `graphql-hooks`?
+The first thing you may ask when seeing `graphql-hooks` is "Why not use Apollo hooks?".
+It's the comparison most will make. In fact, there's an [article comparing the two](https://blog.logrocket.com/comparing-hooks-libraries-for-graphql/) over on LogRocket.
+
+We believe `graphql-hooks` is a great choice as a hooks-first GraphQL client due to its concise API and package size.
+
+In terms of performance, this is more of a grey area as we have no official benchmarks yet.
+
+If you need a client that offers middleware and advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
+
+|Pros | Cons|
+|-----|-----|
+|Small in size|Middleware support|
+|Concise API|Less "advanced" caching configuration|
+|Quick to get up and running|
+
 # Table of Contents
 
 - API
@@ -237,7 +253,7 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 - `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
-- `error`: Object - Set if at least one of the following errors has occured and contains:
+- `error`: Object - Set if at least one of the following errors has occurred and contains:
   - `fetchError`: Object - Set if an error occurred during the `fetch` call
   - `httpError`: Object - Set if an error response was returned from the server
   - `graphQLErrors`: Array - Populated if any errors occurred whilst resolving the query
@@ -303,7 +319,7 @@ Mutations unlike Queries are not cached.
 **Usage**:
 
 ```js
-const [mutationFn, state] = useMutation(mutation, [options])
+const [mutationFn, state, resetFn] = useMutation(mutation, [options])
 ```
 
 **Example**:
@@ -343,6 +359,13 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
 
+In addition, there is an option to reset the current state before calling the mutation again, by calling `resetFn(desiredState)` where `desiredState` is optional and if passed, it will override the initial state with:
+
+- `data`: Object - the data
+- `error`: Error - the error
+- `loading`: Boolean - true if it is still loading
+- `cacheHit`: Boolean - true if the result was cached
+
 ## `useSubscription`
 
 To use subscription you need to use [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
@@ -354,9 +377,9 @@ To use subscription you need to use [subscriptions-transport-ws](https://github.
 - `operation`: Object - The GraphQL operation the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
-  - `operationName`: String (optional) - If your query has mulitple operations, you can choose which operation you want to call.
+  - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
-- `callback`: Function - This will be invoked when the subscription recieves an event from your GraphQL server - it will recieve an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
+- `callback`: Function - This will be invoked when the subscription receives an event from your GraphQL server - it will receive an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
 
 **Usage**
 
@@ -404,7 +427,7 @@ function TotalCountComponent() {
   })
 
   if (error) {
-    return <span>An error occured {error.message}</span>
+    return <span>An error occurred {error.message}</span>
   }
 
   return <div>Current count: {count}</div>
@@ -896,10 +919,10 @@ import { GraphQLClient } from 'graphql-hooks'
 
 const gqlAxios = axios.create()
 gqlAxios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response
   },
-  function(error) {
+  function (error) {
     // Handle expired JWT and refresh token
   }
 )

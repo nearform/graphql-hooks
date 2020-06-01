@@ -1,6 +1,6 @@
 const https = require('https')
 
-exports.handler = function(event, context, callback) {
+exports.handler = function (event, context, callback) {
   const e = JSON.parse(event.body)
 
   const options = {

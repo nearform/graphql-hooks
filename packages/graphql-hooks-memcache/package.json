@@ -31,7 +31,6 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@sindresorhus/fnv1a": "^2.0.0",
     "tiny-lru": "^7.0.0"
   },
   "repository": {
@@ -43,6 +42,6 @@
   },
   "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
   "devDependencies": {
-    "rollup": "^1.25.2"
+    "rollup": "^2.0.0"
   }
 }

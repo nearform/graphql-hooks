@@ -55,7 +55,7 @@ function HomePage() {
     <div>
       Home page
       {loading && <div>...loading</div>}
-      {error && <div>error occured</div>}
+      {error && <div>error occurred</div>}
       {!loading && !error && data.users && (
         <Fragment>
           List of users:

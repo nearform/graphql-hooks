@@ -49,7 +49,8 @@ export function useClientRequest<
   options?: UseClientRequestOptions<Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
 ]
 
 export function useQuery<
@@ -70,7 +71,8 @@ export function useManualQuery<
   options?: UseClientRequestOptions<Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
 ]
 
 export function useMutation<
@@ -82,7 +84,8 @@ export function useMutation<
   options?: UseClientRequestOptions<Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
 ]
 
 export interface SubscriptionRequest {
@@ -90,14 +93,23 @@ export interface SubscriptionRequest {
   variables: object
 }
 
-export function useSubscription(
-  operation: UseSubscriptionOperation,
-  callback: (response: Result) => void
+export function useSubscription<
+  ResponseData = any,
+  Variables extends object = object,
+  TGraphQLError = object
+>(
+  operation: UseSubscriptionOperation<Variables>,
+  callback: (response: {
+    data?: ResponseData
+    errors?: TGraphQLError[]
+  }) => void
 ): void
 
 export const ClientContext: React.Context<GraphQLClient>
 
 // internal types
+
+type ResetFunction = (desiredState?: object) => void
 
 interface ClientOptions {
   url: string
@@ -187,8 +199,10 @@ interface UseQueryResult<
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
-interface UseSubscriptionOperation extends Operation {
-  client?: GraphqlClient
+interface UseSubscriptionOperation<Variables extends object = object>
+  extends Operation {
+  variables?: Variables
+  client?: GraphQLClient
 }
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
