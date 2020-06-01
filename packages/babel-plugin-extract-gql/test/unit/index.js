@@ -9,7 +9,7 @@ import { transformFileSync } from '@babel/core'
 import plugin from '../../src'
 
 const babelOptions = {
-  presets: [['@babel/env', { modules: false }], ['@babel/react']],
+  presets: [['@babel/react']],
   plugins: [[plugin, {}]],
   babelrc: false
 }
