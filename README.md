@@ -533,8 +533,7 @@ export default function PostList() {
 
   const { loading, error, data } = useQuery(
     allPostsQuery,
-    { variables: { skip: skipCount, first: 10 } },
-    updateData
+    { variables: { skip: skipCount, first: 10 }, updateData },
   )
 
   if (error) return <div>There was an error!</div>
