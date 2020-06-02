@@ -75,7 +75,8 @@ describe('useQuery', () => {
     expect(state).toEqual({
       loading: true,
       cacheHit: false,
-      refetch: expect.any(Function)
+      refetch: expect.any(Function),
+      data: {}
     })
   })
 

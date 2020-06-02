@@ -34,6 +34,7 @@ function useQuery(query, opts = {}) {
 
   return {
     ...state,
+    data: state.data ? state.data : {},
     refetch: React.useCallback(
       (options = {}) =>
         queryReq({

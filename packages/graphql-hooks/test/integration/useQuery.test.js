@@ -21,7 +21,7 @@ const TestComponent = ({ query = '{ hello }', options }) => {
     <div>
       {loading && <div data-testid="loading">Loading...</div>}
       {error && <div data-testid="error">Error</div>}
-      {data && <div data-testid="data">{data}</div>}
+      {data && <div data-testid="data">{JSON.stringify(data)}</div>}
     </div>
   )
 }
@@ -54,7 +54,7 @@ describe('useQuery Integrations', () => {
     // loading -> data
     expect(getByTestId('loading')).toBeTruthy()
     dataNode = await waitForElement(() => getByTestId('data'))
-    expect(dataNode.textContent).toBe('data v1')
+    expect(dataNode.textContent).toBe('"data v1"')
     expect(() => getByTestId('loading')).toThrow()
 
     // second render
@@ -63,9 +63,9 @@ describe('useQuery Integrations', () => {
     rerender(<TestComponent query={'{ goodbye }'} />, { wrapper })
 
     expect(getByTestId('loading')).toBeTruthy()
-    expect(() => getByTestId('data')).toThrow()
+    expect(getByTestId('data').textContent).toBe('{}')
     dataNode = await waitForElement(() => getByTestId('data'))
-    expect(dataNode.textContent).toBe('data v2')
+    expect(dataNode.textContent).toBe('"data v2"')
     expect(() => getByTestId('loading')).toThrow()
 
     // 1. loading
@@ -90,7 +90,7 @@ describe('useQuery Integrations', () => {
     // loading -> data
     expect(getByTestId('loading')).toBeTruthy()
     dataNode = await waitForElement(() => getByTestId('data'))
-    expect(dataNode.textContent).toBe('data v1')
+    expect(dataNode.textContent).toBe('"data v1"')
     expect(() => getByTestId('loading')).toThrow()
 
     // second render
@@ -101,9 +101,8 @@ describe('useQuery Integrations', () => {
     rerender(<TestComponent options={options} />, { wrapper })
 
     expect(getByTestId('loading')).toBeTruthy()
-    expect(() => getByTestId('data')).toThrow()
     dataNode = await waitForElement(() => getByTestId('data'))
-    expect(dataNode.textContent).toBe('data v2')
+    expect(dataNode.textContent).toBe('"data v2"')
     expect(() => getByTestId('loading')).toThrow()
 
     // 1. loading
@@ -136,7 +135,7 @@ describe('useQuery Integrations', () => {
     })
 
     expect(() => getByTestId('loading')).toThrow()
-    expect(getByTestId('data').textContent).toBe('hello')
+    expect(getByTestId('data').textContent).toBe('"hello"')
     expect(testComponentRenderCount).toBe(1)
   })
 })
