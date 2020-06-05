@@ -25,7 +25,7 @@ export default function normCache({ size = 100, ttl = 0, initialState } = {}) {
     get: keyObj => {
       const denormalized = denormalizeData({
         query: keyObj.operation.query,
-        variables: keyObj.operation.variables,
+        variables: keyObj.operation.variables || {},
         cache: proxy
       })
       return (
@@ -39,7 +39,7 @@ export default function normCache({ size = 100, ttl = 0, initialState } = {}) {
     set: (keyObj, data) => {
       const updates = normalizeData({
         query: keyObj.operation.query,
-        variables: keyObj.operation.variables,
+        variables: keyObj.operation.variables || {},
         data: data.data
       })
       Object.keys(updates).forEach(key =>
