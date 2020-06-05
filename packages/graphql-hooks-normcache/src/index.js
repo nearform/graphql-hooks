@@ -15,11 +15,7 @@ export default function normCache({ size = 100, ttl = 0, initialState } = {}) {
   const lru = LRU(size, ttl)
 
   // Proxy required for denormalize because it uses the [] operator
-  const proxy = new Proxy(lru, {
-    get: (cache, key) => cache.get(key),
-    ownKeys: cache => cache.keys(),
-    enumerate: cache => cache.keys()
-  })
+  const proxy = new Proxy(lru, { get: (cache, key) => cache.get(key) })
 
   if (initialState) {
     Object.keys(initialState).forEach(k => lru.set(k, initialState[k]))
