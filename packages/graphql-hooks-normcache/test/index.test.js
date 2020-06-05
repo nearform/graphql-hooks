@@ -84,6 +84,10 @@ describe('normcache', () => {
     cache.set(testKey, testValue)
     expect(cache.get(testKey)).toEqual(testValue)
   })
+  it('returns undefined on get if key does not exist', () => {
+    cache = normCache()
+    expect(cache.get(testKey)).toBe(undefined)
+  })
   it('gets value from a raw key', () => {
     expect(cache.rawGet('Post:123')).toEqual(initialState['Post:123'])
   })
