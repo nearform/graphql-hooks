@@ -1,0 +1,42 @@
+{
+  "name": "graphql-hooks-normcache",
+  "version": "1.0.0",
+  "description": "Normalized in memory cache for graphql-hooks",
+  "main": "lib/graphql-hooks-normcache.js",
+  "module": "es/graphql-hooks-normcache.js",
+  "unpkg": "dist/graphql-hooks-normcache.min.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist ./es ./lib",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build && cp ../../LICENSE ."
+  },
+  "files": [
+    "dist",
+    "es",
+    "lib",
+    "src",
+    "index.d.ts"
+  ],
+  "keywords": [
+    "graphql",
+    "hooks",
+    "react",
+    "graphql-hooks",
+    "cache",
+    "ssr",
+    "server-side rendering"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "graphql": "^15.0.0",
+    "graphql-norm": "^1.3.6",
+    "graphql-tag": "^2.10.3",
+    "tiny-lru": "^7.0.4"
+  },
+  "devDependencies": {
+    "rollup": "^2.13.1"
+  }
+}
