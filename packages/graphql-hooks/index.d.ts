@@ -142,25 +142,25 @@ interface Cache {
   getInitialState(): object
 }
 
-interface Operation {
+export interface Operation {
   query: string
   variables?: object
   operationName?: string
 }
 
-interface HttpError {
+export interface HttpError {
   status: number
   statusText: string
   body: string
 }
 
-interface APIError<TGraphQLError = object> {
+export interface APIError<TGraphQLError = object> {
   fetchError?: Error
   httpError?: HttpError
   graphQLErrors?: TGraphQLError[]
 }
 
-interface Result<ResponseData = any, TGraphQLError = object> {
+export interface Result<ResponseData = any, TGraphQLError = object> {
   data?: ResponseData
   error?: APIError<TGraphQLError>
 }
