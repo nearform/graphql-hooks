@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.4...graphql-hooks@4.5.0) (2020-06-19)
+
+
+### Bug Fixes
+
+* correct types for useSubscription ([#513](https://github.com/nearform/graphql-hooks/issues/513)) ([7bfb996](https://github.com/nearform/graphql-hooks/commit/7bfb9967ff3fea4a9388a7354ec609981ca34a11))
+
+
+### Features
+
+* **persisted:** Add support for persisted queries. ([#493](https://github.com/nearform/graphql-hooks/issues/493)) ([099c937](https://github.com/nearform/graphql-hooks/commit/099c937df648ae9478780b913fc19d35f3d044db))
+* adding reset function after useMutation ([#503](https://github.com/nearform/graphql-hooks/issues/503)) ([1b51571](https://github.com/nearform/graphql-hooks/commit/1b515718e3ae17ea5b2576aee5ef5c5e8ba29c6b))
+
+
+
+
+
 ## [4.4.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.3...graphql-hooks@4.4.4) (2020-04-02)
 
 
