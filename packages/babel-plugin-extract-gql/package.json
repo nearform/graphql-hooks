@@ -16,7 +16,7 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.0.0",
-    "fastify-gql": "^3.9.0",
+    "fastify-gql": "^4.0.0",
     "glob": "^7.1.4",
     "mocha": "^8.0.0"
   },
