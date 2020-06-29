@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.6...subscription@1.1.7) (2020-06-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency graphql to v15 ([#486](https://github.com/nearform/graphql-hooks/issues/486)) ([0180932](https://github.com/nearform/graphql-hooks/commit/0180932f6840d995ada068cfc777342a71792ca0))
+
+
+
+
+
 ## [1.1.6](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.5...subscription@1.1.6) (2020-04-02)
 
 **Note:** Version bump only for package subscription

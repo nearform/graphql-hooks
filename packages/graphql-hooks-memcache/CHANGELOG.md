@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.2...graphql-hooks-memcache@1.3.3) (2020-06-19)
+
+
+### Bug Fixes
+
+* **deps:** fnv1a included which supports Safari ([#500](https://github.com/nearform/graphql-hooks/issues/500)) ([f22f269](https://github.com/nearform/graphql-hooks/commit/f22f26902aa04a2ca699c6ba1942428f2b5bccb1)), closes [#496](https://github.com/nearform/graphql-hooks/issues/496)
+
+
+
+
+
 ## [1.3.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.1...graphql-hooks-memcache@1.3.2) (2020-04-02)
 
 **Note:** Version bump only for package graphql-hooks-memcache

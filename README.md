@@ -390,7 +390,7 @@ import { GraphQLClient } from 'graphql-hooks'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 const client = new GraphQLClient({
-  url: 'http://localhost:8000/graphql'
+  url: 'http://localhost:8000/graphql',
   subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
     /* additional config options */
   })

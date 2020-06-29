@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "4.4.4",
+  "version": "4.5.0",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
@@ -41,7 +41,7 @@
     "@testing-library/react": "^10.0.0",
     "@testing-library/react-hooks": "^3.2.1",
     "formdata-node": "^2.0.0",
-    "graphql-hooks-memcache": "^1.3.2",
+    "graphql-hooks-memcache": "^1.3.3",
     "graphql-hooks-ssr": "^1.1.5",
     "jest-fetch-mock": "^3.0.0",
     "react": "^16.12.0",

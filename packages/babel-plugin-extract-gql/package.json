@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-extract-gql",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@babel/register": "^7.0.0",
     "fastify-gql": "^3.9.0",
     "glob": "^7.1.4",
-    "mocha": "^7.0.0"
+    "mocha": "^8.0.0"
   },
   "author": "Salman Mitha <salmanmitha@gmail.com>",
   "license": "MIT",
