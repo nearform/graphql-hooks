@@ -9,7 +9,7 @@
   "author": "Salman Mitha <SalmanMitha@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^2.13.1",
+    "fastify": "^3.0.0",
     "fastify-cors": "^3.0.3",
     "fastify-gql": "^3.9.0"
   }

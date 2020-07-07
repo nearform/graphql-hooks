@@ -22,7 +22,7 @@
   "dependencies": {
     "@reach/router": "^1.2.1",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "fastify": "^2.5.0",
+    "fastify": "^3.0.0",
     "fastify-gql": "^3.0.0",
     "fastify-static": "^2.4.0",
     "graphql-hooks": "^4.5.0",
