@@ -34,20 +34,20 @@
     "react": "^16.12.0"
   },
   "dependencies": {
-    "dequal": "^1.0.0",
-    "extract-files": "^8.0.0"
+    "dequal": "^1.0.1",
+    "extract-files": "^9.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^10.0.0",
     "@testing-library/react-hooks": "^3.2.1",
-    "formdata-node": "^2.0.0",
+    "formdata-node": "^2.3.0",
     "graphql-hooks-memcache": "^1.3.3",
     "graphql-hooks-ssr": "^1.1.5",
     "jest-fetch-mock": "^3.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-test-renderer": "^16.12.0",
-    "rollup": "^2.0.0",
+    "rollup": "^2.26.9",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "repository": {
