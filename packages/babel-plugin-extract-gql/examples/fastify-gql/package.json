@@ -11,6 +11,6 @@
   "dependencies": {
     "fastify": "^2.13.1",
     "fastify-cors": "^4.0.0",
-    "fastify-gql": "^3.9.0"
+    "fastify-gql": "^5.0.0"
   }
 }
