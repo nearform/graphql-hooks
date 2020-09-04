@@ -1,5 +1,5 @@
 import React from 'react'
-import deepEqual from 'dequal'
+import { dequal } from 'dequal'
 import ClientContext from './ClientContext'
 
 const actionTypes = {
@@ -58,7 +58,7 @@ function reducer(state, action) {
 function useDeepCompareCallback(callback, deps) {
   const ref = React.useRef()
 
-  if (!deepEqual(deps, ref.current)) {
+  if (!dequal(deps, ref.current)) {
     ref.current = deps
   }
 
