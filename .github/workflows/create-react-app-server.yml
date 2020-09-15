@@ -3,55 +3,44 @@ name: Mock GrapQL Server to GCP
 on:
   push:
     branches:
-      - master
-    paths:
-      - 'examples/create-react-app/**'
+    - master
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  RUN_REGION: europe-west1
+  SERVICE_NAME: create-react-app-server
 
 jobs:
-  deploy-create-react-app-server:
-    name: Build & Deploy create-react-app-server
+  setup-build-deploy:
+    name: Setup, Build, and Deploy
     runs-on: ubuntu-latest
 
-    env:
-      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      CLOUDRUN_SERVICE_NAME: create-react-app-server
-      CLOUDRUN_SERVICE_REGION: europe-west1
-      CI: true
-
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Set up Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '290.0.1'
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Set up GCP CLI
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '290.0.1'
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-
-      - name: Configure Docker repository
-        run: |
-          echo "::set-env name=DOCKER_IMAGE::gcr.io/$PROJECT_ID/$CLOUDRUN_SERVICE_NAME:$GITHUB_SHA"
-          gcloud auth configure-docker
-      - name: Build container
-        working-directory: ./examples/create-react-app
-        run: |
-          docker build -t $DOCKER_IMAGE .
-      - name: Push container
-        working-directory: ./examples/create-react-app
-        run: |
-          docker push $DOCKER_IMAGE
-      - name: Run service
-        working-directory: ./examples/create-react-app
-        run: |
-          gcloud run deploy $CLOUDRUN_SERVICE_NAME \
-            --image $DOCKER_IMAGE \
-            --region $CLOUDRUN_SERVICE_REGION \
-            --project $PROJECT_ID \
-            --platform managed
+    # Build and push image to Google Container Registry
+    - name: Build
+      working-directory: ./examples/create-react-app
+      run: |-
+        gcloud builds submit \
+          --quiet \
+          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+           
+    # Deploy image to Cloud Run
+    - name: Deploy
+      working-directory: ./examples/create-react-app
+      run: |-
+        gcloud run deploy "$SERVICE_NAME" \
+          --quiet \
+          --region "$RUN_REGION" \
+          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+          --platform "managed" \
+          --allow-unauthenticated
