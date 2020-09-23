@@ -173,7 +173,9 @@ describe('GraphQLClient', () => {
 
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
-      client.logErrorResult({ result: { error: { httpError: 'on no http!' } } })
+      client.logErrorResult({
+        result: { error: { httpError: 'on no http!' } }
+      })
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 
-export function getInitialState(options: Options): object
+export function getInitialState(options: Options): Promise<object>
 
 interface Options {
   App: ReactElement

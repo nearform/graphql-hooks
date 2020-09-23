@@ -8,5 +8,11 @@
     "package.json",
     "packages/**",
     "examples/**"
+  ],
+  "packageRules": [
+    {
+      "updateTypes": ["minor", "patch"],
+      "automerge": true
+    }
   ]
 }
