@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 // Exports
 
@@ -62,24 +62,47 @@ export function useQuery<
   options?: UseQueryOptions<Variables>
 ): UseQueryResult<ResponseData, Variables, TGraphQLError>
 
-export function useManualQuery<ResponseData = any, Variables = object, TGraphQLError = object>(
+export function useManualQuery<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>, ResetFunction]
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
+]
 
-export function useMutation<ResponseData = any, Variables = object, TGraphQLError = object>(
+export function useMutation<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
   query: string,
   options?: UseClientRequestOptions<Variables>
-): [FetchData<ResponseData, Variables, TGraphQLError>, UseClientRequestResult<ResponseData, TGraphQLError>, ResetFunction]
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
+]
 
 export interface SubscriptionRequest {
   query: string
   variables: object
 }
 
-export function useSubscription(
-  operation: UseSubscriptionOperation,
-  callback: (response: Result) => void
+export function useSubscription<
+  ResponseData = any,
+  Variables extends object = object,
+  TGraphQLError = object
+>(
+  operation: UseSubscriptionOperation<Variables>,
+  callback: (response: {
+    data?: ResponseData
+    errors?: TGraphQLError[]
+  }) => void
 ): void
 
 export const ClientContext: React.Context<GraphQLClient>
@@ -181,8 +204,10 @@ interface UseQueryResult<
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
-interface UseSubscriptionOperation extends Operation {
-  client?: GraphqlClient
+interface UseSubscriptionOperation<Variables extends object = object>
+  extends Operation {
+  variables?: Variables
+  client?: GraphQLClient
 }
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (

@@ -5,7 +5,7 @@ import CreatePost from './CreatePost'
 
 export const allPostsQuery = `
   query {
-    allPosts(orderBy: createdAt_DESC, first: 20) {
+    allPosts {
       id
       title
       url

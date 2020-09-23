@@ -5,7 +5,7 @@ import Posts from './components/Posts'
 
 const client = new GraphQLClient({
   cache: memCache(),
-  url: 'https://api.graph.cool/simple/v1/cjs4qo29b2w0c0130tfx6maca'
+  url: 'https://create-react-app-server-kqtv5azt3q-ew.a.run.app'
 })
 
 export default function App() {

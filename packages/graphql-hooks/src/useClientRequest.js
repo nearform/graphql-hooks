@@ -1,5 +1,5 @@
 import React from 'react'
-import deepEqual from 'dequal'
+import { dequal } from 'dequal'
 import ClientContext from './ClientContext'
 
 const actionTypes = {
@@ -58,7 +58,7 @@ function reducer(state, action) {
 function useDeepCompareCallback(callback, deps) {
   const ref = React.useRef()
 
-  if (!deepEqual(deps, ref.current)) {
+  if (!dequal(deps, ref.current)) {
     ref.current = deps
   }
 
@@ -87,10 +87,14 @@ function useClientRequest(query, initialOpts = {}) {
   const operation = {
     query,
     variables: initialOpts.variables,
-    operationName: initialOpts.operationName
+    operationName: initialOpts.operationName,
+    persisted: initialOpts.persisted
   }
 
-  if (client.useGETForQueries && !initialOpts.isMutation) {
+  if (
+    initialOpts.persisted ||
+    (client.useGETForQueries && !initialOpts.isMutation)
+  ) {
     initialOpts.fetchOptionsOverrides = {
       ...initialOpts.fetchOptionsOverrides,
       method: 'GET'
@@ -178,6 +182,7 @@ function useClientRequest(query, initialOpts = {}) {
 
           if (client.ssrMode) {
             const cacheValue = {
+              error: actionResult.error,
               data: revisedOpts.updateData
                 ? revisedOpts.updateData(state.data, actionResult.data)
                 : actionResult.data
