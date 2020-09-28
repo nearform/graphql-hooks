@@ -1,6 +1,5 @@
 node_modules
 graphql-hooks-*.*.*.tgz
-package-lock.json
 coverage
 .DS_Store
 lib
