@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.3...graphql-hooks-memcache@2.0.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* publishing with lerna ([3b566dc](https://github.com/nearform/graphql-hooks/commit/3b566dcf3123d432c8d1e48eaac2743e4eb886a1))
+
+
+
+
+
 ## [1.3.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.2...graphql-hooks-memcache@1.3.3) (2020-06-19)
 
 

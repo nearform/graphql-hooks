@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.1.5...graphql-hooks-ssr@2.0.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* publishing with lerna ([3b566dc](https://github.com/nearform/graphql-hooks/commit/3b566dcf3123d432c8d1e48eaac2743e4eb886a1))
+
+
+
+
+
 ## [1.1.5](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@1.1.4...graphql-hooks-ssr@1.1.5) (2019-11-28)
 
 

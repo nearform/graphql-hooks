@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.7...subscription@2.0.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* publishing with lerna ([3b566dc](https://github.com/nearform/graphql-hooks/commit/3b566dcf3123d432c8d1e48eaac2743e4eb886a1))
+* **deps:** update dependency fastify to v3 ([#541](https://github.com/nearform/graphql-hooks/issues/541)) ([5d1e14e](https://github.com/nearform/graphql-hooks/commit/5d1e14e07a25caa5a95a63f378e91480946f85fc))
+* **deps:** update dependency fastify-cors to v4 ([#538](https://github.com/nearform/graphql-hooks/issues/538)) ([4543d25](https://github.com/nearform/graphql-hooks/commit/4543d2512c5e2b9dc71cabb7e5596e65da489f29))
+* **deps:** update dependency fastify-static to v3 ([#539](https://github.com/nearform/graphql-hooks/issues/539)) ([f22e07c](https://github.com/nearform/graphql-hooks/commit/f22e07c8f241a2d7ae8fbb5f9ebe25e7fedd27bb))
+
+
+
+
+
 ## [1.1.7](https://github.com/nearform/graphql-hooks/compare/subscription@1.1.6...subscription@1.1.7) (2020-06-19)
 
 

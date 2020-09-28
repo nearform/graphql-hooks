@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@1.0.13...create-react-app@2.0.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* mock server ([#560](https://github.com/nearform/graphql-hooks/issues/560)) ([39497b9](https://github.com/nearform/graphql-hooks/commit/39497b985ce02650394a05667d1d61ae49187060))
+* publishing with lerna ([3b566dc](https://github.com/nearform/graphql-hooks/commit/3b566dcf3123d432c8d1e48eaac2743e4eb886a1))
+
+
+
+
+
 ## [1.0.13](https://github.com/nearform/graphql-hooks/compare/create-react-app@1.0.12...create-react-app@1.0.13) (2020-06-19)
 
 **Note:** Version bump only for package create-react-app
