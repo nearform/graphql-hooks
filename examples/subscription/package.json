@@ -21,8 +21,8 @@
     "graphql-hooks-memcache": "^2.0.0",
     "lowdb": "^1.0.0",
     "mqemitter-redis": "^4.0.0",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
