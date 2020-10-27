@@ -6,7 +6,7 @@
     "@types/jest": "26.0.15",
     "@types/node": "11.15.34",
     "@types/react": "16.9.53",
-    "@types/react-dom": "16.9.8",
+    "@types/react-dom": "16.9.9",
     "graphql-hooks": "^5.0.0",
     "graphql-hooks-memcache": "^2.0.0",
     "react": "17.0.1",
