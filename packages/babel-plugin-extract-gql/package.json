@@ -29,6 +29,6 @@
     "strings"
   ],
   "dependencies": {
-    "pkg-dir": "^4.2.0"
+    "pkg-dir": "^5.0.0"
   }
 }
