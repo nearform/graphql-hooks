@@ -1,7 +1,7 @@
 {
   "extends": ["config:base"],
   "includePaths": ["package.json", "packages/**", "examples/**"],
-  "label": "renovate",
+  "labels": ["renovate"],
   "automerge": true,
   "automergeType": "branch",
   "dependencyDashboard": true
