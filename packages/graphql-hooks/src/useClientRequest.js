@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { dequal } from 'dequal'
 import ClientContext from './ClientContext'
 
@@ -53,6 +53,17 @@ function reducer(state, action) {
     default:
       return state
   }
+}
+
+function useSomething(initialState, opts, cacheKey) {
+  const ref = React.useRef(cacheKey)
+  const [_state, dispatch] = React.useReducer(reducer, initialState)
+
+  const state =
+    ref.current !== cacheKey && !opts.updateData ? initialState : _state
+  ref.current = cacheKey
+
+  return [state, dispatch]
 }
 
 function useDeepCompareCallback(callback, deps) {
@@ -110,12 +121,16 @@ function useClientRequest(query, initialOpts = {}) {
     cacheHit: !!initialCacheHit,
     loading: isDeferred ? false : !initialCacheHit
   }
-  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const stringifiedCacheKey = JSON.stringify(cacheKey)
+  const [state, dispatch] = useSomething(
+    initialState,
+    initialOpts,
+    stringifiedCacheKey
+  )
 
   // NOTE: state from useReducer is only initialState on the first render
   // in subsequent renders the operation could have changed
   // if so the state would be invalid, this effect ensures we reset it back
-  const stringifiedCacheKey = JSON.stringify(cacheKey)
   React.useEffect(() => {
     if (!initialOpts.updateData) {
       // if using updateData we can assume that the consumer cares about the previous data
