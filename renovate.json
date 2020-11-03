@@ -1,18 +1,11 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "rangeStrategy": "replace",
-  "ignorePaths": [],
-  "includePaths": [
-    "package.json",
-    "packages/**",
-    "examples/**"
-  ],
+  "extends": ["config:base"],
+  "includePaths": ["package.json", "packages/**", "examples/**"],
+  "label": "renovate",
   "packageRules": [
     {
-      "updateTypes": ["minor", "patch"],
-      "automerge": true
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
