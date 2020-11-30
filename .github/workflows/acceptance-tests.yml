@@ -1,0 +1,31 @@
+name: acceptance-tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      ACCEPTANCE_URL:
+        description: 'Url of the target application'
+        required: true
+
+env:
+  ACCEPTANCE_URL: ${{ github.event.inputs.ACCEPTANCE_URL }}
+
+jobs:
+  acceptance-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - run: echo Running on target url $ACCEPTANCE_URL
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: 'chrome test/acceptance'
