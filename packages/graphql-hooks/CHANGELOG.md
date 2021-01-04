@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.0.0...graphql-hooks@5.0.1) (2021-01-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency pkg-dir to v5 ([#579](https://github.com/nearform/graphql-hooks/issues/579)) ([7713e1a](https://github.com/nearform/graphql-hooks/commit/7713e1a53f817ec5cf66e40d55797a86fe73ec02))
+
+
+
+
+
 # [5.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.5.0...graphql-hooks@5.0.0) (2020-09-28)
 
 

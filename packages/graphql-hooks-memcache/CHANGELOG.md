@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@2.0.0...graphql-hooks-memcache@2.0.1) (2021-01-04)
+
+
+### Bug Fixes
+
+* remove Buffer support from fnv1a ([#609](https://github.com/nearform/graphql-hooks/issues/609)) ([2388926](https://github.com/nearform/graphql-hooks/commit/2388926c905e3098338176a5e9d712094f283976))
+* **deps:** update dependency pkg-dir to v5 ([#579](https://github.com/nearform/graphql-hooks/issues/579)) ([7713e1a](https://github.com/nearform/graphql-hooks/commit/7713e1a53f817ec5cf66e40d55797a86fe73ec02))
+
+
+
+
+
 # [2.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@1.3.3...graphql-hooks-memcache@2.0.0) (2020-09-28)
 
 
