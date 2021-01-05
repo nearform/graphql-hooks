@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.0.0...graphql-hooks@5.1.0) (2021-01-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency pkg-dir to v5 ([#579](https://github.com/nearform/graphql-hooks/issues/579)) ([7713e1a](https://github.com/nearform/graphql-hooks/commit/7713e1a53f817ec5cf66e40d55797a86fe73ec02))
+
+
+
+
+
+# [5.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.5.0...graphql-hooks@5.0.0) (2020-09-28)
+
+
+### Bug Fixes
+
+* publishing with lerna ([3b566dc](https://github.com/nearform/graphql-hooks/commit/3b566dcf3123d432c8d1e48eaac2743e4eb886a1))
+* response data is optional ([#567](https://github.com/nearform/graphql-hooks/issues/567)) ([975914a](https://github.com/nearform/graphql-hooks/commit/975914aa2948fb0787e7cfe40a82dc7acb53cb8d))
+* **deps:** update dependency dequal to v2 ([#546](https://github.com/nearform/graphql-hooks/issues/546)) ([eca16e6](https://github.com/nearform/graphql-hooks/commit/eca16e616655f0ed76a27b252a7ce101abd64433))
+* **deps:** update dependency extract-files to v9 ([#542](https://github.com/nearform/graphql-hooks/issues/542)) ([ba0a3f6](https://github.com/nearform/graphql-hooks/commit/ba0a3f6893bc4aa49a0b69d7af823f76e8ed5963))
+
+
+
+
+
 # [4.5.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@4.4.4...graphql-hooks@4.5.0) (2020-06-19)
 
 

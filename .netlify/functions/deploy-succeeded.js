@@ -4,42 +4,45 @@ exports.handler = function (event, context, callback) {
   const e = JSON.parse(event.body)
 
   const options = {
-    hostname: 'circleci.com',
+    hostname: 'api.github.com',
     port: 443,
-    path: `/api/v1.1/project/github/nearform/graphql-hooks/tree/${e.payload.branch}`,
+    path: `/repos/nearform/graphql-hooks/actions/workflows/acceptance-tests.yml/dispatches`,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'netlify'
     },
-    auth: process.env.CIRCLECI_PROJECT_TOKEN
+    auth: process.env.GITHUB_BASIC_AUTH
   }
 
   const postData = JSON.stringify({
-    build_parameters: {
-      CIRCLE_JOB: 'acceptance-tests',
+    ref: e.payload.branch,
+    inputs: {
       ACCEPTANCE_URL: e.payload.deploy_ssl_url
     }
   })
 
   const req = https.request(options, res => {
-    console.log(`STATUS: ${res.statusCode}`)
-    console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
     res.setEncoding('utf8')
+
+    let body = ''
+
     res.on('data', chunk => {
-      console.log(`BODY: ${chunk}`)
+      body += chunk
     })
+
+    res.on('error', e => callback(e))
+
     res.on('end', () => {
-      console.log('No more data in response.')
       callback(null, {
-        statusCode: 200,
-        body: 'Success'
+        statusCode: res.statusCode,
+        body
       })
     })
   })
 
-  req.on('error', e => {
-    console.error(`problem with request: ${e.message}`)
-  })
+  req.on('error', e => callback(e))
 
   // write data to request body
   req.write(postData)

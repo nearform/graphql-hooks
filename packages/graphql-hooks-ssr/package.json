@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks-ssr",
-  "version": "1.1.5",
+  "version": "2.1.0",
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "types": "index.d.ts",
@@ -21,13 +21,13 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "devDependencies": {
-    "@types/react": "^16.8.20",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "@types/react": "^17.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "repository": {
     "type": "git",

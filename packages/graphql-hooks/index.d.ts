@@ -190,7 +190,7 @@ interface RefetchOptions<Variables = object>
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
-  data: ResponseData
+  data?: ResponseData
   error?: APIError<TGraphQLError>
 }
 
