@@ -30,5 +30,14 @@
   ],
   "dependencies": {
     "pkg-dir": "^5.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nearform/graphql-hooks.git"
+
+  },
+  "bugs": {
+    "url": "https://github.com/nearform/graphql-hooks/issues"
+  },
+  "homepage": "https://github.com/nearform/graphql-hooks/tree/master/packages/babel-plugin-extract-gql#readme"
 }
