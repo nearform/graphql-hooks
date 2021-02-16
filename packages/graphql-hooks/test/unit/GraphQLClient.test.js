@@ -30,7 +30,7 @@ describe('GraphQLClient', () => {
       }).toThrow('GraphQLClient: config.fetch must be a function')
     })
 
-    it('throws if fetch is not present or polyfilled', () => {
+    it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
       const oldFetch = global.fetch
       try {
         global.fetch = null
@@ -660,6 +660,22 @@ describe('GraphQLClient', () => {
 
         expect(actual).toMatchObject(expected)
       })
+    })
+
+    it('throws if fetch is not present or polyfilled when ssrMode is false', async () => {
+      const oldFetch = global.fetch
+      try {
+        global.fetch = null
+        const client = new GraphQLClient({ ...validConfig })
+
+        expect(() => {
+          client.request({ query: TEST_QUERY })
+        }).toThrow(
+          'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+        )
+      } finally {
+        global.fetch = oldFetch
+      }
     })
   })
 })
