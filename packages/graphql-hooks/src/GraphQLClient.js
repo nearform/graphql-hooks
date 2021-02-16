@@ -2,6 +2,9 @@ import { extractFiles } from 'extract-files'
 
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
+const FETCH_POLYFILL_ERROR =
+  'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
@@ -13,10 +16,8 @@ class GraphQLClient {
       throw new Error('GraphQLClient: config.fetch must be a function')
     }
 
-    if (!config.fetch && !fetch) {
-      throw new Error(
-        'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
-      )
+    if (config.ssr && !config.fetch && !fetch) {
+      throw new Error(FETCH_POLYFILL_ERROR)
     }
 
     if (config.ssrMode && !config.cache) {
@@ -28,7 +29,7 @@ class GraphQLClient {
     this.ssrMode = config.ssrMode
     this.ssrPromises = []
     this.url = config.url
-    this.fetch = config.fetch || fetch.bind()
+    this.fetch = config.fetch || (typeof fetch !== 'undefined' && fetch.bind())
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
@@ -182,6 +183,9 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
+    if (!this.fetch) {
+      throw new Error(FETCH_POLYFILL_ERROR)
+    }
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
