@@ -1,6 +1,6 @@
 {
   "name": "subscription",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "private": true,
   "description": "",
   "scripts": {
@@ -17,8 +17,8 @@
     "fastify-gql": "^5.0.0",
     "fastify-static": "^3.0.0",
     "graphql": "^15.0.0",
-    "graphql-hooks": "^5.1.0",
-    "graphql-hooks-memcache": "^2.1.0",
+    "graphql-hooks": "^5.1.1",
+    "graphql-hooks-memcache": "^2.1.1",
     "lowdb": "^1.0.0",
     "mqemitter-redis": "^4.0.0",
     "react": "^17.0.0",
