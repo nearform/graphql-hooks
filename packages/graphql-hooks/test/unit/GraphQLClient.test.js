@@ -33,7 +33,7 @@ describe('GraphQLClient', () => {
     it('throws if fetch is not present or polyfilled on the client', () => {
       const oldFetch = global.fetch
       try {
-        expect(window.document.createElement).not.toBeUndefined()
+        expect(window.document.createElement).toBeTruthy()
         global.fetch = null
         expect(() => {
           new GraphQLClient({
@@ -71,7 +71,7 @@ describe('GraphQLClient', () => {
       const oldWindow = global.window
       try {
         global.fetch = null
-        expect(global.window.document.createElement).not.toBeUndefined()
+        expect(global.window.document.createElement).toBeTruthy()
         delete global.window
         const client = new GraphQLClient({
           ...validConfig,
