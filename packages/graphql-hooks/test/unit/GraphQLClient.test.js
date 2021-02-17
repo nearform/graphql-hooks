@@ -30,6 +30,24 @@ describe('GraphQLClient', () => {
       }).toThrow('GraphQLClient: config.fetch must be a function')
     })
 
+    it('throws if fetch is not present or polyfilled on the client', () => {
+      const oldFetch = global.fetch
+      try {
+        expect(window.document.createElement).not.toBeUndefined()
+        global.fetch = null
+        expect(() => {
+          new GraphQLClient({
+            ...validConfig,
+            cache: { get: 'get', set: 'set' }
+          })
+        }).toThrow(
+          'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+        )
+      } finally {
+        global.fetch = oldFetch
+      }
+    })
+
     it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
       const oldFetch = global.fetch
       try {
@@ -48,10 +66,13 @@ describe('GraphQLClient', () => {
       }
     })
 
-    it("doesn't require fetch to be polyfilled when ssrMode is false", () => {
+    it("doesn't require fetch to be polyfilled when ssrMode is false and running on the server", () => {
       const oldFetch = global.fetch
+      const oldWindow = global.window
       try {
         global.fetch = null
+        expect(global.window.document.createElement).not.toBeUndefined()
+        delete global.window
         const client = new GraphQLClient({
           ...validConfig,
           ssrMode: false
@@ -59,6 +80,7 @@ describe('GraphQLClient', () => {
         expect(client.ssrMode).toBe(false)
       } finally {
         global.fetch = oldFetch
+        global.window = oldWindow
       }
     })
 
@@ -660,22 +682,6 @@ describe('GraphQLClient', () => {
 
         expect(actual).toMatchObject(expected)
       })
-    })
-
-    it('throws if fetch is not present or polyfilled when ssrMode is false', async () => {
-      const oldFetch = global.fetch
-      try {
-        global.fetch = null
-        const client = new GraphQLClient({ ...validConfig })
-
-        expect(() => {
-          client.request({ query: TEST_QUERY })
-        }).toThrow(
-          'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
-        )
-      } finally {
-        global.fetch = oldFetch
-      }
     })
   })
 })
