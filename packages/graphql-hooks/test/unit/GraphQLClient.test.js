@@ -30,15 +30,58 @@ describe('GraphQLClient', () => {
       }).toThrow('GraphQLClient: config.fetch must be a function')
     })
 
-    it('throws if fetch is not present or polyfilled', () => {
+    it('throws if fetch is not present or polyfilled on the client', () => {
       const oldFetch = global.fetch
-      global.fetch = null
-      expect(() => {
-        new GraphQLClient(validConfig)
-      }).toThrow(
-        'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
-      )
-      global.fetch = oldFetch
+      try {
+        expect(window.document.createElement).toBeTruthy()
+        global.fetch = null
+        expect(() => {
+          new GraphQLClient({
+            ...validConfig,
+            cache: { get: 'get', set: 'set' }
+          })
+        }).toThrow(
+          'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+        )
+      } finally {
+        global.fetch = oldFetch
+      }
+    })
+
+    it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
+      const oldFetch = global.fetch
+      try {
+        global.fetch = null
+        expect(() => {
+          new GraphQLClient({
+            ...validConfig,
+            ssrMode: true,
+            cache: { get: 'get', set: 'set' }
+          })
+        }).toThrow(
+          'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
+        )
+      } finally {
+        global.fetch = oldFetch
+      }
+    })
+
+    it("doesn't require fetch to be polyfilled when ssrMode is false and running on the server", () => {
+      const oldFetch = global.fetch
+      const oldWindow = global.window
+      try {
+        global.fetch = null
+        expect(global.window.document.createElement).toBeTruthy()
+        delete global.window
+        const client = new GraphQLClient({
+          ...validConfig,
+          ssrMode: false
+        })
+        expect(client.ssrMode).toBe(false)
+      } finally {
+        global.fetch = oldFetch
+        global.window = oldWindow
+      }
     })
 
     it('throws if config.ssrMode is true and no config.cache is provided', () => {
