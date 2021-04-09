@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { render, waitForElement } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import memCache from 'graphql-hooks-memcache'
 import { getInitialState } from 'graphql-hooks-ssr'
 import { GraphQLClient, ClientContext, useQuery } from '../../src'
@@ -53,7 +53,7 @@ describe('useQuery Integrations', () => {
     // first render
     // loading -> data
     expect(getByTestId('loading')).toBeTruthy()
-    dataNode = await waitForElement(() => getByTestId('data'))
+    dataNode = await screen.findByTestId('data')
     expect(dataNode.textContent).toBe('data v1')
     expect(() => getByTestId('loading')).toThrow()
 
@@ -64,7 +64,7 @@ describe('useQuery Integrations', () => {
 
     expect(getByTestId('loading')).toBeTruthy()
     expect(() => getByTestId('data')).toThrow()
-    dataNode = await waitForElement(() => getByTestId('data'))
+    dataNode = await screen.findByTestId('data')
     expect(dataNode.textContent).toBe('data v2')
     expect(() => getByTestId('loading')).toThrow()
 
@@ -89,7 +89,7 @@ describe('useQuery Integrations', () => {
     // first render
     // loading -> data
     expect(getByTestId('loading')).toBeTruthy()
-    dataNode = await waitForElement(() => getByTestId('data'))
+    dataNode = await screen.findByTestId('data')
     expect(dataNode.textContent).toBe('data v1')
     expect(() => getByTestId('loading')).toThrow()
 
@@ -102,7 +102,7 @@ describe('useQuery Integrations', () => {
 
     expect(getByTestId('loading')).toBeTruthy()
     expect(() => getByTestId('data')).toThrow()
-    dataNode = await waitForElement(() => getByTestId('data'))
+    dataNode = await screen.findByTestId('data')
     expect(dataNode.textContent).toBe('data v2')
     expect(() => getByTestId('loading')).toThrow()
 

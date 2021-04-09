@@ -1,8 +1,9 @@
 /* global spyOn */
 import fetchMock from 'jest-fetch-mock'
 import { Readable } from 'stream'
-import FormData from 'formdata-node'
+import { FormData, File as FormDataFile } from 'formdata-node'
 import { GraphQLClient } from '../../src'
+import { createReadStream } from 'fs'
 
 const validConfig = {
   url: 'https://my.graphql.api'
@@ -401,7 +402,7 @@ describe('GraphQLClient', () => {
       const originalFormData = global.FormData
 
       const client = new GraphQLClient({ ...validConfig, FormData })
-      const stream = new Readable()
+      const stream = createReadStream('test/mocks/sample.txt')
 
       const operation = { query: '', variables: { a: stream } }
       const fetchOptions = client.getFetchOptions(operation)
@@ -415,14 +416,15 @@ describe('GraphQLClient', () => {
       })
 
       it('sets body conforming to the graphql multipart request spec', () => {
-        const actual = [...fetchOptions.body]
-        const expected = [
-          ['operations', '{"query":"","variables":{"a":null}}'],
-          ['map', '{"1":["variables.a"]}'],
-          ['1', stream]
-        ]
-        expect(fetchOptions.body).toBeInstanceOf(FormData)
-        expect(actual).toEqual(expected)
+        const actual = fetchOptions.body
+        expect(actual).toBeInstanceOf(FormData)
+        expect(actual.get('operations')).toBe(
+          '{"query":"","variables":{"a":null}}'
+        )
+        expect(actual.get('map')).toBe('{"1":["variables.a"]}')
+        const actualFile = actual.get('1')
+        expect(actualFile).toBeInstanceOf(FormDataFile)
+        expect(actualFile.name).toBe('sample.txt')
       })
 
       it('does not set Content-Type header', () => {
