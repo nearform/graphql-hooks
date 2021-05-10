@@ -7,7 +7,7 @@
     "test:acceptance": "testcafe chrome test/acceptance/",
     "postinstall": "lerna bootstrap --no-ci && lerna run build",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "eslint": "eslint '**/*.js'",
+    "eslint": "eslint **/*.js",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
     "release": "lerna publish",
     "clean": "lerna run clean && lerna clean && rm -rf ./node_modules"
