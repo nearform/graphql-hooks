@@ -8,9 +8,10 @@ import { GraphQLClient, ClientContext, useQuery } from '../../src'
 let testComponentRenderCount = 0
 
 /* eslint-disable react/display-name, react/prop-types */
-const getWrapper = client => ({ children }) => (
-  <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
-)
+const getWrapper =
+  client =>
+  ({ children }) =>
+    <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
 /* eslint-enable react/display-name, react/prop-types */
 
 const TestComponent = ({ query = '{ hello }', options }) => {

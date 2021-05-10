@@ -31,9 +31,12 @@ const CREATE_USER_MUTATION = `
 
 function HomePage() {
   const [name, setName] = React.useState('')
-  const { loading, data, error, refetch: refetchUsers } = useQuery(
-    HOMEPAGE_QUERY
-  )
+  const {
+    loading,
+    data,
+    error,
+    refetch: refetchUsers
+  } = useQuery(HOMEPAGE_QUERY)
   const [createUser] = useMutation(CREATE_USER_MUTATION)
 
   const [getFirstUser, { data: firstUserData }] = useManualQuery(

@@ -30,7 +30,7 @@ All contributions should use the [prettier](https://prettier.io/) formatter, pas
 You can do this by running:
 
 ```
-npm run eslint
+npm run lint
 npm run prettier
 npm test
 ```
