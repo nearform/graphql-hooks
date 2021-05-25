@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^11.0.0",
-    "@testing-library/react-hooks": "^6.0.0",
+    "@testing-library/react-hooks": "^7.0.0",
     "formdata-node": "^3.0.0",
     "graphql-hooks-memcache": "^2.1.1",
     "graphql-hooks-ssr": "^2.1.0",
