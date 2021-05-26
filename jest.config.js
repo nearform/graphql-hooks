@@ -18,6 +18,11 @@ const projects = [
     roots: ['./packages/graphql-hooks-ssr'],
     displayName: 'graphql-hooks-ssr',
     testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js']
+  },
+  {
+    roots: ['./packages/graphql-hooks-normcache'],
+    displayName: 'graphql-hooks-normcache',
+    testMatch: ['<rootDir>/packages/graphql-hooks-normcache/**/*.test.js']
   }
 ]
 module.exports = {
