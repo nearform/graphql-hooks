@@ -1,4 +1,3 @@
-/* global spyOn */
 import fetchMock from 'jest-fetch-mock'
 import { Readable } from 'stream'
 import { FormData, File as FormDataFile } from 'formdata-node'
@@ -183,10 +182,10 @@ describe('GraphQLClient', () => {
     let errorLogSpy, logSpy, groupCollapsedSpy, groupEndSpy
 
     beforeEach(() => {
-      errorLogSpy = spyOn(global.console, 'error')
-      logSpy = spyOn(global.console, 'log')
-      groupCollapsedSpy = spyOn(global.console, 'groupCollapsed')
-      groupEndSpy = spyOn(global.console, 'groupEnd')
+      errorLogSpy = jest.spyOn(global.console, 'error')
+      logSpy = jest.spyOn(global.console, 'log')
+      groupCollapsedSpy = jest.spyOn(global.console, 'groupCollapsed')
+      groupEndSpy = jest.spyOn(global.console, 'groupEnd')
     })
 
     afterEach(() => {

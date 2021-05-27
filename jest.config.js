@@ -7,17 +7,20 @@ const projects = [
     setupFilesAfterEnv: [
       '<rootDir>/packages/graphql-hooks/test/setupAfterEnv.js'
     ],
-    automock: false
+    automock: false,
+    testEnvironment: 'jsdom'
   },
   {
     roots: ['./packages/graphql-hooks-memcache'],
     displayName: 'graphql-hooks-memcache',
-    testMatch: ['<rootDir>/packages/graphql-hooks-memcache/**/*.test.js']
+    testMatch: ['<rootDir>/packages/graphql-hooks-memcache/**/*.test.js'],
+    testEnvironment: 'jsdom'
   },
   {
     roots: ['./packages/graphql-hooks-ssr'],
     displayName: 'graphql-hooks-ssr',
-    testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js']
+    testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js'],
+    testEnvironment: 'jsdom'
   }
 ]
 module.exports = {
