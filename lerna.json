@@ -7,7 +7,8 @@
       "message": "chore(release): :rocket:"
     },
     "version": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "createRelease": "github"
     },
     "bootstrap": {
       "hoist": ["react", "react-dom"],
