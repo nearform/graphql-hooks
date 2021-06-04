@@ -33,9 +33,9 @@ export class GraphQLClient {
     operation: Operation,
     options: UseClientRequestOptions<Variables>
   ): CacheKeyObject
-  getFetchOptions(operation: Operation, fetchOptionsOverrides?: object): object
-  request<ResponseData, TGraphQLError = object>(
-    operation: Operation,
+  getFetchOptions<Variables = object>(operation: Operation<Variables>, fetchOptionsOverrides?: object): object
+  request<ResponseData, TGraphQLError = object, Variables = object>(
+    operation: Operation<Variables>,
     options?: object
   ): Promise<Result<ResponseData, TGraphQLError>>
 }
@@ -142,9 +142,9 @@ interface Cache {
   getInitialState(): object
 }
 
-interface Operation {
+interface Operation<TVariables = object> {
   query: string
-  variables?: object
+  variables?: TVariables
   operationName?: string
 }
 
