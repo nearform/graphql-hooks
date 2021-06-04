@@ -142,9 +142,9 @@ interface Cache {
   getInitialState(): object
 }
 
-interface Operation {
+interface Operation<TVariables = object> {
   query: string
-  variables?: object
+  variables?: TVariables
   operationName?: string
 }
 
