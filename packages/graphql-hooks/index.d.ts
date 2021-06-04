@@ -165,7 +165,7 @@ interface Result<ResponseData = any, TGraphQLError = object> {
   error?: APIError<TGraphQLError>
 }
 
-interface UseClientRequestOptions<Variables = object> {
+export interface UseClientRequestOptions<Variables = object> {
   useCache?: boolean
   isMutation?: boolean
   isManual?: boolean
@@ -177,7 +177,7 @@ interface UseClientRequestOptions<Variables = object> {
   client?: GraphQLClient
 }
 
-interface UseQueryOptions<Variables = object>
+export interface UseQueryOptions<Variables = object>
   extends UseClientRequestOptions<Variables> {
   ssr?: boolean
 }
