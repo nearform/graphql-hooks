@@ -28,7 +28,7 @@
     "husky": "^4.3.8",
     "jest": "^27.0.0",
     "json-graphql-server": "^2.2.3",
-    "lerna": "^4.0.0",
+    "lerna": "^3.22.1",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "rollup": "^2.47.0",
