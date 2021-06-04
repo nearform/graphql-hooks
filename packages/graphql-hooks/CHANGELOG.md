@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.1.2...graphql-hooks@5.1.3) (2021-06-04)
+
+
+### Features
+
+* **typing:** Export RequestOptions interface ([#646](https://github.com/nearform/graphql-hooks/issues/646)) ([1d0a3c8](https://github.com/nearform/graphql-hooks/commit/1d0a3c8346f13a4c9bcc340a5dcd96eecd73f33c))
+* **typing:** make Operation generic to be able to type variables ([#645](https://github.com/nearform/graphql-hooks/issues/645)) ([b4df7a9](https://github.com/nearform/graphql-hooks/commit/b4df7a90d81e4201d17194b3a7c1c6da6a10fa25))
+
+
+
+
+
 ## [5.1.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.1.1...graphql-hooks@5.1.2) (2021-05-29)
 
 **Note:** Version bump only for package graphql-hooks
