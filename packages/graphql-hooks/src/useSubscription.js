@@ -7,15 +7,14 @@ function useSubscription(options, callback) {
   callbackRef.current = callback
 
   const contextClient = useContext(ClientContext)
-  const client = options.client || contextClient
-
-  const request = {
-    query: options.query,
-    variables: options.variables
-  }
 
   useEffect(() => {
-    const observable = client.createSubscription(request)
+    const client = options.client || contextClient
+
+    const observable = client.createSubscription({
+      query: options.query,
+      variables: options.variables
+    })
 
     const subscription = observable.subscribe({
       next: result => {
@@ -32,8 +31,7 @@ function useSubscription(options, callback) {
     return () => {
       subscription.unsubscribe()
     }
-  }, []) // eslint-disable-line
-  // the effect should be run when component is mounted and unmounted
+  }, [contextClient, options])
 }
 
 export default useSubscription
