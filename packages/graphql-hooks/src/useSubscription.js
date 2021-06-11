@@ -22,15 +22,33 @@ function useSubscription(options, callback) {
         callbackRef.current(result)
       },
       error: () => {
-        subscription.unsubscribe()
+        if (typeof subscription === 'function') {
+          // graphql-ws
+          subscription()
+        } else {
+          // subscriptions-transport-ws
+          subscription.unsubscribe()
+        }
       },
       complete: () => {
-        subscription.unsubscribe()
+        if (typeof subscription === 'function') {
+          // graphql-ws
+          subscription()
+        } else {
+          // subscriptions-transport-ws
+          subscription.unsubscribe()
+        }
       }
     })
 
     return () => {
-      subscription.unsubscribe()
+      if (typeof subscription === 'function') {
+        // graphql-ws
+        subscription()
+      } else {
+        // subscriptions-transport-ws
+        subscription.unsubscribe()
+      }
     }
   }, []) // eslint-disable-line
   // the effect should be run when component is mounted and unmounted

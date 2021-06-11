@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { Client } from 'graphql-ws' // TODO-db-210611 npm i graphql-ws
 
 // Exports
 
@@ -14,7 +15,7 @@ export class GraphQLClient {
   logErrors: boolean
   useGETForQueries: boolean
 
-  subscriptionClient?: SubscriptionClient
+  subscriptionClient?: SubscriptionClient | Client
 
   private onError(): any
   private fetch(): Promise<any>
