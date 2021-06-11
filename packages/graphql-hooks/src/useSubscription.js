@@ -22,6 +22,8 @@ function useSubscription(options, callback) {
         callbackRef.current(result)
       },
       error: () => {
+        // TODO-db-210611 errors are important, why not handle them?
+
         if (typeof subscription === 'function') {
           // graphql-ws
           subscription()
