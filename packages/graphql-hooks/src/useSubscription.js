@@ -23,34 +23,15 @@ function useSubscription(options, callback) {
       },
       error: () => {
         // TODO-db-210611 errors are important, why not handle them?
-
-        if (typeof subscription === 'function') {
-          // graphql-ws
-          subscription()
-        } else {
-          // subscriptions-transport-ws
-          subscription.unsubscribe()
-        }
+        subscription.unsubscribe()
       },
       complete: () => {
-        if (typeof subscription === 'function') {
-          // graphql-ws
-          subscription()
-        } else {
-          // subscriptions-transport-ws
-          subscription.unsubscribe()
-        }
+        subscription.unsubscribe()
       }
     })
 
     return () => {
-      if (typeof subscription === 'function') {
-        // graphql-ws
-        subscription()
-      } else {
-        // subscriptions-transport-ws
-        subscription.unsubscribe()
-      }
+      subscription.unsubscribe()
     }
   }, []) // eslint-disable-line
   // the effect should be run when component is mounted and unmounted
