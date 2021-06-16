@@ -255,9 +255,11 @@ class GraphQLClient {
 
     if (typeof this.subscriptionClient.subscribe === 'function') {
       // graphql-ws
-      return sink => ({
-        unsubscribe: this.subscriptionClient.subscribe(operation, sink)
-      })
+      return {
+        subscribe: sink => ({
+          unsubscribe: this.subscriptionClient.subscribe(operation, sink)
+        })
+      }
     } else {
       // subscriptions-transport-ws
       return this.subscriptionClient.request(operation)
