@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { Client } from 'graphql-ws'
 
 // Exports
 
@@ -14,7 +15,7 @@ export class GraphQLClient {
   logErrors: boolean
   useGETForQueries: boolean
 
-  subscriptionClient?: SubscriptionClient
+  subscriptionClient?: SubscriptionClient | Client
 
   private onError(): any
   private fetch(): Promise<any>
@@ -117,7 +118,7 @@ interface ClientOptions {
   headers?: Headers
   ssrMode?: boolean
   useGETForQueries?: boolean
-  subscriptionClient?: SubscriptionClient
+  subscriptionClient?: SubscriptionClient | Client
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   FormData?: any

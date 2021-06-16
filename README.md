@@ -146,7 +146,7 @@ const client = new GraphQLClient(config)
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
-- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
+- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws)
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -368,7 +368,7 @@ In addition, there is an option to reset the current state before calling the mu
 
 ## `useSubscription`
 
-To use subscription you need to use [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws)
+To use subscription you can use either [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or [graphql-ws](https://github.com/enisdenjo/graphql-ws)
 
 **API**
 
@@ -388,10 +388,17 @@ First follow the [quick start guide](#Quick-Start) to create the client and povi
 ```js
 import { GraphQLClient } from 'graphql-hooks'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+// or
+import { createClient } from 'graphql-ws';
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
   subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
+    /* additional config options */
+  }),
+  // or
+  subscriptionClient: createClient({
+    url: 'ws://localhost:8000/graphql'
     /* additional config options */
   })
 })

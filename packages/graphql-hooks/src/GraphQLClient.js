@@ -253,7 +253,17 @@ class GraphQLClient {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
 
-    return this.subscriptionClient.request(operation)
+    if (typeof this.subscriptionClient.subscribe === 'function') {
+      // graphql-ws
+      return {
+        subscribe: sink => ({
+          unsubscribe: this.subscriptionClient.subscribe(operation, sink)
+        })
+      }
+    } else {
+      // subscriptions-transport-ws
+      return this.subscriptionClient.request(operation)
+    }
   }
 }
 
