@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import { Client } from 'graphql-ws' // TODO-db-210611 npm i graphql-ws
+import { Client } from 'graphql-ws'
 
 // Exports
 
