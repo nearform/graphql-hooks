@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.1.3...graphql-hooks@5.2.0) (2021-06-17)
+
+
+### Features
+
+* support `graphql-ws` ([#649](https://github.com/nearform/graphql-hooks/issues/649)) ([ea8d886](https://github.com/nearform/graphql-hooks/commit/ea8d88614e7c9e3c401f71e191eb4ff08681f884))
+
+
+
+
+
 ## [5.1.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.1.2...graphql-hooks@5.1.3) (2021-06-04)
 
 
