@@ -1,5 +1,5 @@
 import React from 'react'
-
+import diff from 'deep-diff'
 import useClientRequest from './useClientRequest'
 import ClientContext from './ClientContext'
 
@@ -35,15 +35,25 @@ function useQuery(query, opts = {}) {
   return {
     ...state,
     refetch: React.useCallback(
-      (options = {}) =>
-        queryReq({
+      (options = {}) => {
+        const defaultOptions = { patch: false }
+        const allOptions = { ...defaultOptions, ...options }
+        const patchData = (previousData, data) => {
+          // diff only works on objects so both sides need to be wrapped
+          let previous = { data: previousData }
+          diff.applyDiff(previous, { data })
+          return previous.data
+        }
+        const replaceData = (_, data) => data
+        return queryReq({
           skipCache: true,
           // don't call the updateData that has been passed into useQuery here
-          // reset to the default behaviour of returning the raw query result
-          // this can be overridden in refetch options
-          updateData: (_, data) => data,
-          ...options
-        }),
+          // set the default behaviour based on the patch option
+          // the callback can also be overridden in refetch options
+          updateData: allOptions.patch ? patchData : replaceData,
+          ...allOptions
+        })
+      },
       [queryReq]
     )
   }

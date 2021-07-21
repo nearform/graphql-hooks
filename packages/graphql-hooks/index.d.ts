@@ -183,6 +183,11 @@ export interface UseQueryOptions<Variables = object>
   ssr?: boolean
 }
 
+interface RefetchOptions<Variables = object>
+  extends UseQueryOptions<Variables> {
+    patch?: boolean
+}
+
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
@@ -196,7 +201,7 @@ interface UseQueryResult<
   TGraphQLError = object
 > extends UseClientRequestResult<ResponseData, TGraphQLError> {
   refetch(
-    options?: UseQueryOptions<Variables>
+    options?: RefetchOptions<Variables>
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
