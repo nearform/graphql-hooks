@@ -6,7 +6,6 @@
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
   "types": "index.d.ts",
-  "type": "module",
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
