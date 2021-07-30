@@ -3,6 +3,9 @@ import { Readable } from 'stream'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { GraphQLClient } from '../../src'
 import { createReadStream } from 'fs'
+import { TextEncoder } from 'util'
+
+global.TextEncoder = TextEncoder
 
 const validConfig = {
   url: 'https://my.graphql.api'
