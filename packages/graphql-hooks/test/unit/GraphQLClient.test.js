@@ -3,9 +3,10 @@ import { Readable } from 'stream'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { GraphQLClient } from '../../src'
 import { createReadStream } from 'fs'
-import { TextEncoder, TextDecoder } from 'util'
+import { TextEncoder } from 'util'
+
 global.TextEncoder = TextEncoder
-global.TextDecoder = TextDecoder
+
 const validConfig = {
   url: 'https://my.graphql.api'
 }
