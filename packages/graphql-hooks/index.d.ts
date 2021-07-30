@@ -176,6 +176,7 @@ export interface UseClientRequestOptions<Variables = object> {
   fetchOptionsOverrides?: object
   updateData?(previousData: any, data: any): any
   client?: GraphQLClient
+  skip?: boolean
 }
 
 export interface UseQueryOptions<Variables = object>

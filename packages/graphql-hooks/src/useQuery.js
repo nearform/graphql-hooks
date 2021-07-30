@@ -4,7 +4,8 @@ import useClientRequest from './useClientRequest'
 import ClientContext from './ClientContext'
 
 const defaultOpts = {
-  useCache: true
+  useCache: true,
+  skip: false
 }
 
 function useQuery(query, opts = {}) {
@@ -29,22 +30,29 @@ function useQuery(query, opts = {}) {
   }
   const stringifiedAllOpts = JSON.stringify(allOpts)
   React.useEffect(() => {
-    queryReq()
+    if (!allOpts.skip) {
+      queryReq()
+    }
   }, [query, stringifiedAllOpts]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state,
     refetch: React.useCallback(
-      (options = {}) =>
-        queryReq({
+      (options = {}) => {
+        // Do not refetch is query is skipped
+        if (allOpts.skip) {
+          return
+        }
+        return queryReq({
           skipCache: true,
           // don't call the updateData that has been passed into useQuery here
           // reset to the default behaviour of returning the raw query result
           // this can be overridden in refetch options
           updateData: (_, data) => data,
           ...options
-        }),
-      [queryReq]
+        })
+      },
+      [allOpts.skip, queryReq]
     )
   }
 }

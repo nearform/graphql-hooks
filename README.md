@@ -91,6 +91,7 @@ function MyComponent() {
 ```
 
 ## Why `graphql-hooks`?
+
 The first thing you may ask when seeing `graphql-hooks` is "Why not use Apollo hooks?".
 It's the comparison most will make. In fact, there's an [article comparing the two](https://blog.logrocket.com/comparing-hooks-libraries-for-graphql/) over on LogRocket.
 
@@ -100,11 +101,11 @@ In terms of performance, this is more of a grey area as we have no official benc
 
 If you need a client that offers middleware and advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
 
-|Pros | Cons|
-|-----|-----|
-|Small in size|Middleware support|
-|Concise API|Less "advanced" caching configuration|
-|Quick to get up and running|
+| Pros                        | Cons                                  |
+| --------------------------- | ------------------------------------- |
+| Small in size               | Middleware support                    |
+| Concise API                 | Less "advanced" caching configuration |
+| Quick to get up and running |
 
 # Table of Contents
 
@@ -234,6 +235,7 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
   - `persisted`: Boolean - defaults to `false`; Pass `true` if your graphql server supports `persisted` flag to serve persisted queries.
   - `useCache`: Boolean - defaults to `true`; cache the query result
+  - `skip`: Boolean - defaults to `false`; do not trigger the query if set to `true`, the `refetch` function will be a noop function.
   - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
   - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
@@ -389,7 +391,7 @@ First follow the [quick start guide](#Quick-Start) to create the client and povi
 import { GraphQLClient } from 'graphql-hooks'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 // or
-import { createClient } from 'graphql-ws';
+import { createClient } from 'graphql-ws'
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
@@ -539,10 +541,10 @@ const updateData = (prevData, data) => ({
 export default function PostList() {
   const [skipCount, setSkipCount] = useState(0)
 
-  const { loading, error, data } = useQuery(
-    allPostsQuery,
-    { variables: { skip: skipCount, first: 10 }, updateData },
-  )
+  const { loading, error, data } = useQuery(allPostsQuery, {
+    variables: { skip: skipCount, first: 10 },
+    updateData
+  })
 
   if (error) return <div>There was an error!</div>
   if (loading && !data) return <div>Loading</div>
