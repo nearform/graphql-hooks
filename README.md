@@ -235,7 +235,7 @@ This is a custom hook that takes care of fetching your query and storing the res
   - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
   - `persisted`: Boolean - defaults to `false`; Pass `true` if your graphql server supports `persisted` flag to serve persisted queries.
   - `useCache`: Boolean - defaults to `true`; cache the query result
-  - `skip`: Boolean - defaults to `false`; do not trigger the query if set to `true`, the `refetch` function will be a noop function.
+  - `skip`: Boolean - defaults to `false`; do not execute the query if set to `true`
   - `skipCache`: Boolean - defaults to `false`; If `true` it will by-pass the cache and fetch, but the result will then be cached for subsequent calls. Note the `refetch` function will do this automatically
   - `ssr`: Boolean - defaults to `true`. Set to `false` if you wish to skip this query during SSR
   - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
