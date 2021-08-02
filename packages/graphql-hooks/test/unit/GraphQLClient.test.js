@@ -192,7 +192,7 @@ describe('GraphQLClient', () => {
     })
 
     afterEach(() => {
-      jest.restoreAllMocks()
+      jest.clearAllMocks()
     })
 
     it('logs without error', () => {

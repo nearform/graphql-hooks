@@ -84,7 +84,7 @@ describe('useClientRequest', () => {
       loading: false,
       data: 'data'
     })
-    await act(resetData)
+    act(resetData)
     // should be back to initial state
     expect(state).toEqual({
       cacheHit: false,
@@ -108,7 +108,7 @@ describe('useClientRequest', () => {
       loading: false,
       data: 'data'
     })
-    await act(() => resetData({ data: 'my previous data' }))
+    act(() => resetData({ data: 'my previous data' }))
     // should be back to initial state with previous data
     expect(state).toEqual({
       cacheHit: false,
@@ -207,7 +207,7 @@ describe('useClientRequest', () => {
       data: 'new data'
     })
 
-    await fetchData()
+    await act(fetchData)
 
     // it should keep the error when cached
     expect(state).toEqual({
@@ -241,7 +241,8 @@ describe('useClientRequest', () => {
       }
     })
 
-    await fetchData()
+    await act(fetchData)
+
     expect(state).toEqual({
       cacheHit: false,
       data: 'data',
@@ -257,10 +258,11 @@ describe('useClientRequest', () => {
     })
 
     mockClient.request.mockResolvedValueOnce(promise)
-    fetchData()
+    const fetchDataPromise = act(fetchData)
 
     expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
     promiseResolve()
+    return fetchDataPromise
   })
 
   it('does not reset data when query or variables change if updateData is set', async () => {

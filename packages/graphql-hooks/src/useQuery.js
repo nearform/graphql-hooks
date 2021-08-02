@@ -4,7 +4,8 @@ import useClientRequest from './useClientRequest'
 import ClientContext from './ClientContext'
 
 const defaultOpts = {
-  useCache: true
+  useCache: true,
+  skip: false
 }
 
 function useQuery(query, opts = {}) {
@@ -18,7 +19,8 @@ function useQuery(query, opts = {}) {
     client.ssrMode &&
     opts.ssr !== false &&
     !calledDuringSSR &&
-    !opts.skipCache
+    !opts.skipCache &&
+    !opts.skip
   ) {
     // result may already be in the cache from previous SSR iterations
     if (!state.data && !state.error) {
@@ -29,6 +31,10 @@ function useQuery(query, opts = {}) {
   }
   const stringifiedAllOpts = JSON.stringify(allOpts)
   React.useEffect(() => {
+    if (allOpts.skip) {
+      return
+    }
+
     queryReq()
   }, [query, stringifiedAllOpts]) // eslint-disable-line react-hooks/exhaustive-deps
 
