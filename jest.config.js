@@ -4,9 +4,6 @@ const projects = [
     roots: ['./packages/graphql-hooks'],
     testMatch: ['<rootDir>/packages/graphql-hooks/**/*.test.js'],
     setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
-    setupFilesAfterEnv: [
-      '<rootDir>/packages/graphql-hooks/test/setupAfterEnv.js'
-    ],
     automock: false,
     testEnvironment: 'jsdom'
   },

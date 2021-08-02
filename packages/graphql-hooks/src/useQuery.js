@@ -30,29 +30,26 @@ function useQuery(query, opts = {}) {
   }
   const stringifiedAllOpts = JSON.stringify(allOpts)
   React.useEffect(() => {
-    if (!allOpts.skip) {
-      queryReq()
+    if (allOpts.skip) {
+      return
     }
+
+    queryReq()
   }, [query, stringifiedAllOpts]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     ...state,
     refetch: React.useCallback(
-      (options = {}) => {
-        // Do not refetch is query is skipped
-        if (allOpts.skip) {
-          return
-        }
-        return queryReq({
+      (options = {}) =>
+        queryReq({
           skipCache: true,
           // don't call the updateData that has been passed into useQuery here
           // reset to the default behaviour of returning the raw query result
           // this can be overridden in refetch options
           updateData: (_, data) => data,
           ...options
-        })
-      },
-      [allOpts.skip, queryReq]
+        }),
+      [queryReq]
     )
   }
 }
