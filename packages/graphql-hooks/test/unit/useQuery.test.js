@@ -364,49 +364,77 @@ describe('useQuery', () => {
     expect(mockClient2.ssrPromises[0]).resolves.toBe('data')
   })
 
-  describe('skip options', () => {
-    it('should skip query if `skip` is `true', () => {
+  describe('skip option', () => {
+    it('should skip query if `skip` is `true`', () => {
       const queryReqMock = jest.fn()
       useClientRequest.mockReturnValue([queryReqMock, mockState])
-      let skip = true
-      const { rerender } = renderHook(
-        () =>
+
+      renderHook(
+        ({ skip }) =>
           useQuery(TEST_QUERY, {
             skip
           }),
         {
-          wrapper: Wrapper
+          wrapper: Wrapper,
+          initialProps: {
+            skip: true
+          }
         }
       )
-      rerender()
 
       expect(queryReqMock).not.toHaveBeenCalled()
+    })
 
-      skip = false
-      rerender()
+    it('should query if `skip` value changes from `true` to `false`', () => {
+      const queryReqMock = jest.fn()
+      useClientRequest.mockReturnValue([queryReqMock, mockState])
+      const { rerender } = renderHook(
+        ({ skip }) =>
+          useQuery(TEST_QUERY, {
+            skip
+          }),
+        {
+          wrapper: Wrapper,
+          initialProps: {
+            skip: true
+          }
+        }
+      )
+
+      rerender({ skip: false })
 
       expect(queryReqMock).toHaveBeenCalled()
     })
 
-    it('should query if `skip` value changes', () => {
+    it('should not execute query again query if `skip` value changes from `false` to `true`', () => {
       const queryReqMock = jest.fn()
       useClientRequest.mockReturnValue([queryReqMock, mockState])
-      let skip = true
       const { rerender } = renderHook(
-        () =>
+        ({ skip }) =>
           useQuery(TEST_QUERY, {
             skip
           }),
         {
-          wrapper: Wrapper
+          wrapper: Wrapper,
+          initialProps: {
+            skip: false
+          }
         }
       )
-      rerender()
-      expect(queryReqMock).not.toHaveBeenCalled()
+      expect(queryReqMock).toHaveBeenCalledTimes(1)
 
-      skip = false
-      rerender()
-      expect(queryReqMock).toHaveBeenCalled()
+      rerender({ skip: true })
+
+      expect(queryReqMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not add query to ssrPromises when in ssrMode if `skip` is `true`', () => {
+      mockClient.ssrMode = true
+      mockQueryReq.mockResolvedValueOnce('data')
+      renderHook(() => useQuery(TEST_QUERY, { skip: true }), {
+        wrapper: Wrapper
+      })
+      expect(mockClient.ssrPromises).toHaveLength(0)
     })
   })
 })

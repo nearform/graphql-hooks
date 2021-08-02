@@ -19,7 +19,8 @@ function useQuery(query, opts = {}) {
     client.ssrMode &&
     opts.ssr !== false &&
     !calledDuringSSR &&
-    !opts.skipCache
+    !opts.skipCache &&
+    !opts.skip
   ) {
     // result may already be in the cache from previous SSR iterations
     if (!state.data && !state.error) {
