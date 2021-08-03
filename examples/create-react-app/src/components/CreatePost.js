@@ -1,5 +1,5 @@
 import { useMutation } from 'graphql-hooks'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import React from 'react'
 import CreatePostForm from './CreatePostForm'
 
@@ -26,5 +26,5 @@ export default function CreatePost({ onSuccess }) {
 }
 
 CreatePost.propTypes = {
-  onSuccess: PropTypes.func
+  onSuccess: T.func
 }

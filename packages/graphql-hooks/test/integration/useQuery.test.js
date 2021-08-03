@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import memCache from 'graphql-hooks-memcache'
@@ -27,8 +27,8 @@ const TestComponent = ({ query = '{ hello }', options }) => {
   )
 }
 TestComponent.propTypes = {
-  options: PropTypes.object,
-  query: PropTypes.string
+  options: T.object,
+  query: T.string
 }
 
 describe('useQuery Integrations', () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import { renderHook } from '@testing-library/react-hooks'
 import { ClientContext, useQuery, useClientRequest } from '../../src'
 
@@ -11,7 +11,7 @@ const Wrapper = ({ children }) => (
   <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
 )
 Wrapper.propTypes = {
-  children: PropTypes.node
+  children: T.node
 }
 
 const TEST_QUERY = `query Test($limit: Int) {
@@ -47,7 +47,8 @@ describe('useQuery', () => {
     renderHook(() => useQuery(TEST_QUERY), { wrapper: Wrapper })
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: true,
-      skip: false
+      skip: false,
+      throwErrors: false
     })
   })
 
@@ -58,7 +59,8 @@ describe('useQuery', () => {
           useCache: false,
           extra: 'option',
           client: mockClient2,
-          skip: true
+          skip: true,
+          throwErrors: true
         }),
       {
         wrapper: Wrapper
@@ -68,7 +70,8 @@ describe('useQuery', () => {
       useCache: false,
       extra: 'option',
       client: mockClient2,
-      skip: true
+      skip: true,
+      throwErrors: true
     })
   })
 
@@ -435,6 +438,29 @@ describe('useQuery', () => {
         wrapper: Wrapper
       })
       expect(mockClient.ssrPromises).toHaveLength(0)
+    })
+  })
+
+  describe('throwErrors option', () => {
+    it('should throw error if `throwErrors` is `true`', () => {
+      const errorState = { error: new Error('boom') }
+
+      useClientRequest.mockReturnValue([jest.fn(), errorState])
+
+      const { result } = renderHook(
+        ({ throwErrors }) =>
+          useQuery(TEST_QUERY, {
+            throwErrors
+          }),
+        {
+          wrapper: Wrapper,
+          initialProps: {
+            throwErrors: true
+          }
+        }
+      )
+
+      expect(result.error).toBe(errorState.error)
     })
   })
 })

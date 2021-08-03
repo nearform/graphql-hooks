@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import { renderHook } from '@testing-library/react-hooks'
 import { ClientContext, useSubscription, GraphQLClient } from '../../src'
 
@@ -73,7 +73,7 @@ const Wrapper = ({ children }) => (
   <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
 )
 Wrapper.propTypes = {
-  children: PropTypes.node
+  children: T.node
 }
 
 const TEST_SUBSCRIPTION = `subscription TestSubscription($id: ID!) {

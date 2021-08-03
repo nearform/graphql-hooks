@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
+import T from 'prop-types'
 
 export default function CreatePostForm({ loading, error, onSubmit }) {
   const [title, setTitle] = useState('')
@@ -36,7 +36,7 @@ export default function CreatePostForm({ loading, error, onSubmit }) {
 }
 
 CreatePostForm.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-  onSubmit: PropTypes.func.isRequired
+  loading: T.bool,
+  error: T.bool,
+  onSubmit: T.func.isRequired
 }
