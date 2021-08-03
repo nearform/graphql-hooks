@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.1.4...create-react-app@2.2.0) (2021-08-03)
+
+**Note:** Version bump only for package create-react-app
+
+
+
+
+
 ## [2.1.4](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.1.3...create-react-app@2.1.4) (2021-06-17)
 
 **Note:** Version bump only for package create-react-app
