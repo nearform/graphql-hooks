@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.2.0...fastify-ssr@3.3.0) (2021-08-04)
+
+
+### Features
+
+* throwErrors option in useQuery ([#665](https://github.com/nearform/graphql-hooks/issues/665)) ([27f83f9](https://github.com/nearform/graphql-hooks/commit/27f83f975cd5d0d1ffcf0a4abce3ecb16e382e9b))
+
+
+
+
+
 # [3.2.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.1.4...fastify-ssr@3.2.0) (2021-08-03)
 
 **Note:** Version bump only for package fastify-ssr

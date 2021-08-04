@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/nearform/graphql-hooks/compare/babel-plugin-extract-gql@2.2.0...babel-plugin-extract-gql@2.2.1) (2021-08-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency extract-files to v11 ([#650](https://github.com/nearform/graphql-hooks/issues/650)) ([454c673](https://github.com/nearform/graphql-hooks/commit/454c673a8327d6dbe3668180b80e2bdb28fb782c))
+
+
+
+
+
 # [2.2.0](https://github.com/nearform/graphql-hooks/compare/babel-plugin-extract-gql@2.1.3...babel-plugin-extract-gql@2.2.0) (2021-08-03)
 
 **Note:** Version bump only for package babel-plugin-extract-gql

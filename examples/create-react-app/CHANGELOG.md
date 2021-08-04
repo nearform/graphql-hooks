@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.2.0...create-react-app@2.3.0) (2021-08-04)
+
+
+### Features
+
+* throwErrors option in useQuery ([#665](https://github.com/nearform/graphql-hooks/issues/665)) ([27f83f9](https://github.com/nearform/graphql-hooks/commit/27f83f975cd5d0d1ffcf0a4abce3ecb16e382e9b))
+
+
+
+
+
 # [2.2.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.1.4...create-react-app@2.2.0) (2021-08-03)
 
 **Note:** Version bump only for package create-react-app

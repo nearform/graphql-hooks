@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.3.0...graphql-hooks@5.4.0) (2021-08-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency extract-files to v11 ([#650](https://github.com/nearform/graphql-hooks/issues/650)) ([454c673](https://github.com/nearform/graphql-hooks/commit/454c673a8327d6dbe3668180b80e2bdb28fb782c))
+
+
+### Features
+
+* throwErrors option in useQuery ([#665](https://github.com/nearform/graphql-hooks/issues/665)) ([27f83f9](https://github.com/nearform/graphql-hooks/commit/27f83f975cd5d0d1ffcf0a4abce3ecb16e382e9b))
+
+
+
+
+
 # [5.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.2.0...graphql-hooks@5.3.0) (2021-08-03)
 
 
