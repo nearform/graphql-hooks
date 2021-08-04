@@ -1,5 +1,5 @@
 import { useQuery } from 'graphql-hooks'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import React from 'react'
 import CreatePost from './CreatePost'
 
@@ -43,13 +43,13 @@ function PostList({ loading, error, data }) {
 }
 
 PostList.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.shape({
-    fetchError: PropTypes.any,
-    httpError: PropTypes.any,
-    graphQLErrors: PropTypes.array
+  loading: T.bool,
+  error: T.shape({
+    fetchError: T.any,
+    httpError: T.any,
+    graphQLErrors: T.array
   }),
-  data: PropTypes.shape({
-    allPosts: PropTypes.array
+  data: T.shape({
+    allPosts: T.array
   })
 }

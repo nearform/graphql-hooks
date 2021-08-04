@@ -5,7 +5,8 @@ import ClientContext from './ClientContext'
 
 const defaultOpts = {
   useCache: true,
-  skip: false
+  skip: false,
+  throwErrors: false
 }
 
 function useQuery(query, opts = {}) {
@@ -29,6 +30,7 @@ function useQuery(query, opts = {}) {
     }
     setCalledDuringSSR(true)
   }
+
   const stringifiedAllOpts = JSON.stringify(allOpts)
   React.useEffect(() => {
     if (allOpts.skip) {
@@ -37,6 +39,12 @@ function useQuery(query, opts = {}) {
 
     queryReq()
   }, [query, stringifiedAllOpts]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  React.useEffect(() => {
+    if (state.error && allOpts.throwErrors) {
+      throw state.error
+    }
+  }, [state.error, allOpts.throwErrors])
 
   return {
     ...state,

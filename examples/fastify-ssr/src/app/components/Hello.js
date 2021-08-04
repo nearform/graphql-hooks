@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import { useQuery } from 'graphql-hooks'
 
 const HELLO_QUERY = `
@@ -20,8 +20,8 @@ function HelloComponent({ user }) {
 }
 
 HelloComponent.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string
+  user: T.shape({
+    name: T.string
   })
 }
 

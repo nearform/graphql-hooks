@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import T from 'prop-types'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useClientRequest, ClientContext } from '../../src'
 
@@ -11,7 +11,7 @@ const Wrapper = props => (
   </ClientContext.Provider>
 )
 Wrapper.propTypes = {
-  children: PropTypes.node
+  children: T.node
 }
 
 const TEST_QUERY = `query Test($limit: Int) {
