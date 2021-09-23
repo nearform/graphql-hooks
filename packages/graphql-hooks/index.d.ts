@@ -32,7 +32,7 @@ export class GraphQLClient {
   }): void
   getCacheKey<Variables = object>(
     operation: Operation,
-    options: UseClientRequestOptions<Variables>
+    options: UseClientRequestOptions<any, Variables>
   ): CacheKeyObject
   getFetchOptions<Variables = object>(
     operation: Operation<Variables>,
@@ -50,7 +50,7 @@ export function useClientRequest<
   TGraphQLError = object
 >(
   query: string,
-  options?: UseClientRequestOptions<Variables>
+  options?: UseClientRequestOptions<ResponseData, Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
@@ -63,7 +63,7 @@ export function useQuery<
   TGraphQLError = object
 >(
   query: string,
-  options?: UseQueryOptions<Variables>
+  options?: UseQueryOptions<ResponseData, Variables>
 ): UseQueryResult<ResponseData, Variables, TGraphQLError>
 
 export function useManualQuery<
@@ -72,7 +72,7 @@ export function useManualQuery<
   TGraphQLError = object
 >(
   query: string,
-  options?: UseClientRequestOptions<Variables>
+  options?: UseClientRequestOptions<ResponseData, Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
@@ -85,7 +85,7 @@ export function useMutation<
   TGraphQLError = object
 >(
   query: string,
-  options?: UseClientRequestOptions<Variables>
+  options?: UseClientRequestOptions<ResponseData, Variables>
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
@@ -169,7 +169,7 @@ interface Result<ResponseData = any, TGraphQLError = object> {
   error?: APIError<TGraphQLError>
 }
 
-export interface UseClientRequestOptions<Variables = object> {
+export interface UseClientRequestOptions<ResponseData = any, Variables = object> {
   useCache?: boolean
   isMutation?: boolean
   isManual?: boolean
@@ -177,12 +177,12 @@ export interface UseClientRequestOptions<Variables = object> {
   operationName?: string
   skipCache?: boolean
   fetchOptionsOverrides?: object
-  updateData?(previousData: any, data: any): any
+  updateData?(previousData: ResponseData, data: ResponseData): any
   client?: GraphQLClient
 }
 
-export interface UseQueryOptions<Variables = object>
-  extends UseClientRequestOptions<Variables> {
+export interface UseQueryOptions<ResponseData = any, Variables = object>
+  extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
   skip?: boolean
 }
@@ -200,7 +200,7 @@ interface UseQueryResult<
   TGraphQLError = object
 > extends UseClientRequestResult<ResponseData, TGraphQLError> {
   refetch(
-    options?: UseQueryOptions<Variables>
+    options?: UseQueryOptions<ResponseData, Variables>
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
@@ -211,7 +211,7 @@ interface UseSubscriptionOperation<Variables extends object = object>
 }
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
-  options?: UseClientRequestOptions<Variables>
+  options?: UseClientRequestOptions<ResponseData, Variables>
 ) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 
 interface CacheKeyObject {
