@@ -34,6 +34,8 @@ export class GraphQLClient {
     operation: Operation,
     options: UseClientRequestOptions<any, Variables>
   ): CacheKeyObject
+  getCache(cacheKey: CacheKeyObject): undefined | object
+  saveCache(cacheKey: CacheKeyObject, value: object): void
   getFetchOptions<Variables = object>(
     operation: Operation<Variables>,
     fetchOptionsOverrides?: object
