@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.4.0...graphql-hooks@5.4.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* missing GraphQLClient type definitions ([#677](https://github.com/nearform/graphql-hooks/issues/677)) ([#678](https://github.com/nearform/graphql-hooks/issues/678)) ([b4a807b](https://github.com/nearform/graphql-hooks/commit/b4a807ba447bb9a1d827aa44031fa469e478e9f7))
+* types ([#670](https://github.com/nearform/graphql-hooks/issues/670)) ([47dbf7e](https://github.com/nearform/graphql-hooks/commit/47dbf7ec00ffcff031b168318c2d83903a0d46bd))
+
+
+
+
+
 # [5.4.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.3.0...graphql-hooks@5.4.0) (2021-08-04)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.3.0...create-react-app@2.3.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* **ci:** fix ci for mock graphql api ([#674](https://github.com/nearform/graphql-hooks/issues/674)) ([8100200](https://github.com/nearform/graphql-hooks/commit/8100200e44bd130362538ba24779195c306441b9))
+
+
+
+
+
 # [2.3.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.2.0...create-react-app@2.3.0) (2021-08-04)
 
 
