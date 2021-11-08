@@ -21,9 +21,8 @@ function useSubscription(options, callback) {
       next: result => {
         callbackRef.current(result)
       },
-      error: () => {
-        // TODO-db-210611 errors are important, why not handle them?
-        subscription.unsubscribe()
+      error: errors => {
+        callbackRef.current({ errors })
       },
       complete: () => {
         subscription.unsubscribe()
