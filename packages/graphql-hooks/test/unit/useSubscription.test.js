@@ -43,7 +43,7 @@ class MockSubscriptionClient {
           if (error === null && result === null) {
             observer.complete()
           } else if (error) {
-            observer.error(error[0])
+            observer.error(error)
           } else {
             observer.next(result)
           }
@@ -139,14 +139,11 @@ describe('useSubscription', () => {
     })
   })
 
-  it('unsubscribes the subscription when subscription errs', done => {
-    const unsubscribe = jest.fn(() => {
-      done()
-    })
+  it('calls the update callback when subscription receives errors', () => {
+    const graphqlErrors = [{ message: 'error1' }, { message: 'error2' }]
     const subscriptionClient = new MockSubscriptionClient({
       type: 'ERROR',
-      data: [{ message: 'error' }],
-      unsubscribe
+      data: graphqlErrors
     })
 
     mockClient = new GraphQLClient({
@@ -161,7 +158,10 @@ describe('useSubscription', () => {
       }
     }
 
-    const callback = jest.fn()
+    const callback = ({ data, errors }) => {
+      expect(data).toEqual(undefined)
+      expect(errors).toEqual(graphqlErrors)
+    }
 
     renderHook(() => useSubscription(request, callback), {
       wrapper: Wrapper
