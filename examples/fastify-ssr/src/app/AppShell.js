@@ -1,9 +1,8 @@
 import React from 'react'
-import { Link, Router } from '@reach/router'
-
+import { BrowserRouter as Router, Link } from 'react-router-dom'
+import HomePage from './pages/HomePage'
 // components
 import NotFoundPage from './pages/NotFoundPage'
-import HomePage from './pages/HomePage'
 import PaginationPage from './pages/PaginationPage'
 
 class AppShell extends React.Component {
