@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { GraphQLClient, ClientContext } from 'graphql-hooks'
+import { ClientContext, GraphQLClient } from 'graphql-hooks'
 import memCache from 'graphql-hooks-memcache'
-
+import React, { useState } from 'react'
 import Posts from './components/Posts'
 import PostsWithErrorBoundary from './components/PostsWithErrorBoundary'
+
 
 const client = new GraphQLClient({
   cache: memCache(),

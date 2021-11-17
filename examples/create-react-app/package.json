@@ -3,14 +3,16 @@
   "version": "2.3.1",
   "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
     "graphql-hooks": "^5.4.1",
     "graphql-hooks-memcache": "^2.2.1",
     "json-graphql-server": "2.2.3",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.0",
-    "react-app-polyfill": "^1.0.1",
-    "react-dom": "^17.0.0",
-    "react-scripts": "^3.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -19,7 +21,22 @@
     "eject": "react-scripts eject",
     "start:server": "json-graphql-server ./server/db.js --h 0.0.0.0 --p 8080"
   },
-  "browserslist": [
-    "ie >= 11"
-  ]
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
