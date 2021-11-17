@@ -1,7 +1,6 @@
 import React from 'react'
-
-import useClientRequest from './useClientRequest'
 import ClientContext from './ClientContext'
+import useClientRequest from './useClientRequest'
 
 const defaultOpts = {
   useCache: true,
@@ -46,20 +45,57 @@ function useQuery(query, opts = {}) {
     }
   }, [state.error, allOpts.throwErrors])
 
+  const refetch = React.useCallback(
+    (options = {}) =>
+      queryReq({
+        skipCache: true,
+        // don't call the updateData that has been passed into useQuery here
+        // reset to the default behaviour of returning the raw query result
+        // this can be overridden in refetch options
+        updateData: (_, data) => data,
+        ...options
+      }),
+    [queryReq]
+  )
+
+  React.useEffect(
+    function subscribeToMutationsAndRefetch() {
+      if (!Array.isArray(opts.refetchAfterMutations)) return
+
+      const mutationsMap = opts.refetchAfterMutations.reduce((acc, value) => {
+        // value comes from useClientRequest and contains the mutation result
+        // in case that we want to do something more with it
+        acc[value.mutation] = {
+          filter: value.filter
+        }
+
+        return acc
+      }, {})
+
+      const conditionalRefetch = ({ mutation, variables }) => {
+        const { filter } = mutationsMap[mutation]
+
+        if (!filter || (variables && filter(variables))) {
+          refetch()
+        }
+      }
+
+      opts.refetchAfterMutations.forEach(({ mutation }) => {
+        client.mutationsEmitter.on(mutation, conditionalRefetch)
+      })
+
+      return () => {
+        opts.refetchAfterMutations.forEach(({ mutation }) => {
+          client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
+        })
+      }
+    },
+    [opts.refetchAfterMutations, refetch, client.mutationsEmitter]
+  )
+
   return {
     ...state,
-    refetch: React.useCallback(
-      (options = {}) =>
-        queryReq({
-          skipCache: true,
-          // don't call the updateData that has been passed into useQuery here
-          // reset to the default behaviour of returning the raw query result
-          // this can be overridden in refetch options
-          updateData: (_, data) => data,
-          ...options
-        }),
-      [queryReq]
-    )
+    refetch
   }
 }
 

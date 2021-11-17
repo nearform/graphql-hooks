@@ -1,5 +1,5 @@
-import React from 'react'
 import { dequal } from 'dequal'
+import React from 'react'
 import ClientContext from './ClientContext'
 
 const actionTypes = {
@@ -195,6 +195,14 @@ function useClientRequest(query, initialOpts = {}) {
           dispatch({
             type: actionTypes.REQUEST_RESULT,
             updateData: revisedOpts.updateData,
+            result: actionResult
+          })
+        }
+
+        if (initialOpts.isMutation) {
+          client.mutationsEmitter.emit(query, {
+            ...revisedOperation,
+            mutation: query,
             result: actionResult
           })
         }

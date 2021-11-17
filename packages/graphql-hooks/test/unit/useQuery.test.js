@@ -1,7 +1,8 @@
-import React from 'react'
-import T from 'prop-types'
 import { renderHook } from '@testing-library/react-hooks'
-import { ClientContext, useQuery, useClientRequest } from '../../src'
+import EventEmitter from 'events'
+import T from 'prop-types'
+import React from 'react'
+import { ClientContext, useClientRequest, useQuery } from '../../src'
 
 jest.mock('../../src/useClientRequest')
 
@@ -461,6 +462,79 @@ describe('useQuery', () => {
       )
 
       expect(result.error).toBe(errorState.error)
+    })
+  })
+
+  describe('refetchAfterMutations', () => {
+    it('re-execute the query when a listed mutation executes', async () => {
+      const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
+      const mockClient = {
+        mutationsEmitter: new EventEmitter()
+      }
+
+      const { unmount } = renderHook(
+        () =>
+          useQuery(TEST_QUERY, {
+            client: mockClient,
+            refetchAfterMutations: [
+              {
+                mutation: MY_MUTATION
+              }
+            ]
+          }),
+        {
+          wrapper: Wrapper
+        }
+      ) // 1
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 2
+      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 3
+      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 4
+
+      unmount()
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION })
+
+      expect(mockQueryReq).toHaveBeenCalledTimes(4)
+    })
+
+    it("doesn't refetch the query when variables are filtered out by the filter", async () => {
+      const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
+      const mockClient = {
+        mutationsEmitter: new EventEmitter()
+      }
+
+      renderHook(
+        () =>
+          useQuery(TEST_QUERY, {
+            client: mockClient,
+            refetchAfterMutations: [
+              {
+                mutation: MY_MUTATION,
+                filter: ({ userId }) => userId === 1
+              }
+            ]
+          }),
+        {
+          wrapper: Wrapper
+        }
+      ) // 1
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 2
+        }
+      }) // filtered out!
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        }
+      }) // 2
+
+      expect(mockQueryReq).toHaveBeenCalledTimes(2)
     })
   })
 })
