@@ -20,9 +20,18 @@ const TEST_QUERY = `query Test($limit: Int) {
   }
 }`
 
+const TEST_MUTATION = `mutation UpdateUser($userId: Number!, $name: String!) {
+  updateUser(userId: $userId, name: $name) {
+    name
+  }
+}`
+
 describe('useClientRequest', () => {
   beforeEach(() => {
     mockClient = {
+      mutationsEmitter: {
+        emit: jest.fn()
+      },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
       saveCache: jest.fn(),
@@ -45,6 +54,9 @@ describe('useClientRequest', () => {
 
   it('uses a passed client', async () => {
     const mockClient2 = {
+      mutationsEmitter: {
+        emit: jest.fn()
+      },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
       saveCache: jest.fn(),
@@ -793,6 +805,48 @@ describe('useClientRequest', () => {
           { ...options, fetchOptionsOverrides: { method: 'GET' } }
         )
       })
+    })
+
+    it('emits an event when a mutation returns its result', async () => {
+      const mockClient = {
+        mutationsEmitter: {
+          emit: jest.fn()
+        },
+        getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+        getCache: jest.fn(),
+        saveCache: jest.fn(),
+        cache: {
+          get: jest.fn(),
+          set: jest.fn()
+        },
+        request: jest.fn().mockResolvedValue({ data: 'data' })
+      }
+      const options = {
+        isMutation: true,
+        client: mockClient,
+        variables: {
+          userId: 2,
+          name: 'test'
+        }
+      }
+      let fetchData
+
+      renderHook(
+        () => ([fetchData] = useClientRequest(TEST_MUTATION, options)),
+        {
+          wrapper: Wrapper
+        }
+      )
+
+      await act(fetchData)
+
+      expect(mockClient.mutationsEmitter.emit).toHaveBeenCalledWith(
+        TEST_MUTATION,
+        expect.objectContaining({
+          variables: options.variables,
+          mutation: TEST_MUTATION
+        })
+      )
     })
 
     describe('persisted', () => {
