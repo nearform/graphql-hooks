@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import T from 'prop-types'
+import React, { useState } from 'react'
 
 export default function CreatePostForm({ loading, error, onSubmit }) {
   const [title, setTitle] = useState('')

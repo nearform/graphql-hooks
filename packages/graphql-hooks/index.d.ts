@@ -189,7 +189,7 @@ export interface UseClientRequestOptions<
 
 type RefetchAferMutationsData = {
   mutation: string
-  filter?: (variables: any) => void
+  filter?: (variables: any) => boolean
 }
 
 export interface UseQueryOptions<ResponseData = any, Variables = object>

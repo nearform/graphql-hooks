@@ -1,7 +1,7 @@
 import { useQuery } from 'graphql-hooks'
 import T from 'prop-types'
 import React from 'react'
-import CreatePost from './CreatePost'
+import CreatePost, { createPostMutation } from './CreatePost'
 
 export const allPostsQuery = `
   query {
@@ -14,7 +14,13 @@ export const allPostsQuery = `
 `
 
 export default function Posts() {
-  const { loading, data, error, refetch } = useQuery(allPostsQuery)
+  const { loading, data, error, refetch } = useQuery(allPostsQuery, {
+    refetchAfterMutations: [
+      {
+        mutation: createPostMutation
+      }
+    ]
+  })
 
   return (
     <>
