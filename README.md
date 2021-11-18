@@ -243,6 +243,9 @@ This is a custom hook that takes care of fetching your query and storing the res
     - `previousData`: Previous GraphQL query or `updateData` result
     - `data`: New GraphQL query result
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
+  - `refetchAfterMutations`: Array of RefetchAferMutationsData - Mutations that will cause the refetch of the query
+    - `mutation`: String - The mutation string
+    - `filter`: Function (optional) - It receives mutation variables as parameter and blocks refetch if it returns false
 
 ### `useQuery` return value
 
@@ -573,6 +576,50 @@ export default function PostList() {
   )
 }
 ```
+
+## Refetch queries with mutations subscription
+
+We can have a query to automatically refetch when any mutation from a provided list execute.  
+In the following example we are refetching a list of posts for a given user.
+
+**Example**
+
+```jsx
+export const allPostsByUserIdQuery = `
+  query allPosts($userId: Int!) {
+    allPosts(userId: $userId) {
+      id
+      title
+      url
+    }
+  }
+`
+
+export const createPostMutation = `
+  mutation createPost($userId: Int!, $text: String!) {
+    createPost(userId: $userId, text: $text) {
+      id
+      title
+      url
+    }
+  }
+`
+
+const myUserId = 5
+
+useQuery(allPostsByUserIdQuery, {
+  variables: {
+    userId: myUserId
+  },
+  refetchAfterMutations: [
+    {
+      mutation: createPostMutation,
+      filter: (variables) => variables.userId === myUserId
+    }
+  ]
+})
+```
+
 
 ## File uploads
 
