@@ -196,7 +196,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
   skip?: boolean
-  refetchAfterMutations?: RefetchAferMutationsData
+  refetchAfterMutations?: RefetchAferMutationsData[]
 }
 
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
