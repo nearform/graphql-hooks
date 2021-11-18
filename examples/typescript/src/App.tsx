@@ -20,7 +20,7 @@ const client = new GraphQLClient({
 
 export const allPostsQuery = `
   query {
-    allPosts(orderBy: createdAt_DESC, first: 20) {
+    allPosts {
       id
       title
       url
@@ -46,7 +46,7 @@ const postQuery = `
   }
 `
 
-function AddPost({ onSuccess }: { onSuccess: () => void }) {
+function AddPost() {
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   const [createPost, { loading, error }] = useMutation(createPostMutation)
@@ -54,7 +54,6 @@ function AddPost({ onSuccess }: { onSuccess: () => void }) {
   async function handleSubmit(e: any) {
     e.preventDefault()
     await createPost({ variables: { title, url } })
-    onSuccess && onSuccess()
   }
 
   return (
@@ -83,12 +82,18 @@ function AddPost({ onSuccess }: { onSuccess: () => void }) {
 }
 
 function Posts() {
-  const { loading, error, data, refetch } = useQuery(allPostsQuery)
+  const { loading, error, data, refetch } = useQuery(allPostsQuery, {
+    refetchAfterMutations: [
+      {
+        mutation: createPostMutation
+      }
+    ]
+  })
 
   return (
     <>
       <h2>Add post</h2>
-      <AddPost onSuccess={refetch} />
+      <AddPost />
       <h2>Posts</h2>
       <button onClick={() => refetch()}>Reload</button>
       <PostList loading={loading} error={error} data={data} />
