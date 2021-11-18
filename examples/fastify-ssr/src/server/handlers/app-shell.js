@@ -1,6 +1,6 @@
 const React = require('react')
 const ReactDOMServer = require('react-dom/server')
-const { StaticRouter } = require('react-router')
+const { StaticRouter } = require('react-router-dom/server')
 
 // graphql-hooks
 const { getInitialState } = require('graphql-hooks-ssr')
