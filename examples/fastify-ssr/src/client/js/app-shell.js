@@ -1,4 +1,3 @@
-// graphql-hooks
 import { ClientContext, GraphQLClient } from 'graphql-hooks'
 import memCache from 'graphql-hooks-memcache'
 import React from 'react'
