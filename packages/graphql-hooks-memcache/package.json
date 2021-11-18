@@ -42,5 +42,6 @@
   },
   "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
   "devDependencies": {
+    "rollup": "^2.0.0"
   }
 }

@@ -11,10 +11,7 @@
       "createRelease": "github"
     },
     "bootstrap": {
-      "hoist": [
-        "react",
-        "react-dom"
-      ],
+      "hoist": ["react", "react-dom"],
       "npmClientArgs": ["--no-package-lock"]
     }
   }
