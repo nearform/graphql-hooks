@@ -17,8 +17,7 @@ jobs:
         with:
           path: ~/.npm
           key: npm-${{ hashFiles('**/package.json') }}
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2.4.1
+      - uses: actions/setup-node@v2.4.1
         with:
           node-version: 16
       - run: npm install
