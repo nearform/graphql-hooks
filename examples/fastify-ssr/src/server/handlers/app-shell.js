@@ -1,6 +1,6 @@
 const React = require('react')
 const ReactDOMServer = require('react-dom/server')
-const { ServerLocation } = require('@reach/router')
+const { StaticRouter } = require('react-router')
 
 // graphql-hooks
 const { getInitialState } = require('graphql-hooks-ssr')
@@ -28,7 +28,7 @@ async function renderScripts({ initialState }) {
       window.__INITIAL_STATE__=${JSON.stringify(initialState).replace(
         /</g,
         '\\u003c'
-      )};  
+      )};
     </script>
     <script src="${appShellBundlePath}"></script>
   `
@@ -45,11 +45,11 @@ async function appShellHandler(req, reply) {
   })
 
   const App = (
-    <ServerLocation url={req.raw.url}>
+    <StaticRouter location={req.raw.url} >
       <ClientContext.Provider value={client}>
         <AppShell />
       </ClientContext.Provider>
-    </ServerLocation>
+    </StaticRouter>
   )
 
   const initialState = await getInitialState({ App, client })

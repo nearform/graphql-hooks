@@ -11,7 +11,7 @@
       "createRelease": "github"
     },
     "bootstrap": {
-      "hoist": ["react", "react-dom"],
+      "hoist": ["react", "react-dom", "@rollup/plugin-node-resolve", "rollup-plugin-babel", "rollup-plugin-commonjs", "rollup-plugin-replace", "rollup-plugin-size-snapshot", "rollup-plugin-terser", "@babel/preset-env", "@babel/preset-react"],
       "npmClientArgs": ["--no-package-lock"]
     }
   }
