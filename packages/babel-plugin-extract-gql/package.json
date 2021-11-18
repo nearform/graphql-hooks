@@ -11,10 +11,10 @@
     "test:watch": "npm run test -- --watch"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.0.0",
     "fastify-gql": "^5.0.0",
     "glob": "^7.1.4",
