@@ -45,7 +45,7 @@ async function appShellHandler(req, reply) {
   })
 
   const App = (
-    <StaticRouter location={req.raw.url} >
+    <StaticRouter location={req.raw.url}>
       <ClientContext.Provider value={client}>
         <AppShell />
       </ClientContext.Provider>

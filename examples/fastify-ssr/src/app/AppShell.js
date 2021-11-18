@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 import PaginationPage from './pages/PaginationPage'
 
-
 class AppShell extends React.Component {
   render() {
     return (
