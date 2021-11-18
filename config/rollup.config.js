@@ -1,10 +1,10 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve'
 import path from 'path'
+import nodeResolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
 import replace from 'rollup-plugin-replace'
-import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
+import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
+import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 
 // get the package.json for the current package
 const packageDir = path.join(__filename, '..')
