@@ -45,5 +45,8 @@
       "eslint",
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": "^16"
   }
 }
