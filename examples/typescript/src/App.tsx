@@ -8,7 +8,7 @@ import {
 } from 'graphql-hooks'
 import React, { useState } from 'react'
 
-interface Post {
+interface PostData {
   id: string
   title: string
   url: string
@@ -116,7 +116,7 @@ function PostList({
 
   return (
     <ul>
-      {data.allPosts.map((post: Post) => (
+      {data.allPosts.map((post: PostData) => (
         <li key={post.id}>
           <a href={post.url}>{post.title}</a>
           <small>(id: {post.id})</small>

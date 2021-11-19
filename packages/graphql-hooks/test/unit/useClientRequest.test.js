@@ -664,7 +664,9 @@ describe('useClientRequest', () => {
         const fn = async () =>
           await act(() => fetchData({ variables: { limit: 20 } }))
 
-        expect(fn()).rejects.toThrow('options.updateData must be a function')
+        await expect(fn()).rejects.toThrow(
+          'options.updateData must be a function'
+        )
       })
 
       describe('caching', () => {
