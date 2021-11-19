@@ -243,11 +243,12 @@ This is a custom hook that takes care of fetching your query and storing the res
     - `previousData`: Previous GraphQL query or `updateData` result
     - `data`: New GraphQL query result
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
-  - `refetchAfterMutations`: list of mutations that will trigger the query refetch. It can be either:
-    - String | String[] - The string containing the mutation's definition or an array of them
-    - Object | Object[] with the following properties or an array of them
+  - `refetchAfterMutations`: String | Object | (String | Object)[] - You can specify when a mutation should trigger query refetch.
+    - If it's a string, it's the mutation string
+    - If it's an object then it has properties mutation and filter
       - `mutation`: String - The mutation string
-      - `filter`: Function (optional) - It receives mutation variables as parameter and blocks refetch if it returns false
+      - `filter`: Function (optional) - It receives mutation's variables as parameter and blocks refetch if it returns false
+    - If it's an array, the elements can be of either type above
 
 ### `useQuery` return value
 

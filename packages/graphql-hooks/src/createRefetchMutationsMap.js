@@ -2,7 +2,7 @@
  * Checks values of refetchAfterMutations public option and maps them to an object
  * @typedef {import('../index').RefetchAferMutationsData} RefetchAferMutationsData
  *
- * @param {string | string[] | RefetchAferMutationsData | RefetchAferMutationsData[]} refetchAfterMutations
+ * @param {RefetchAferMutationsData} refetchAfterMutations
  * @returns {object}
  */
 export default function createRefetchMutationsMap(refetchAfterMutations) {
