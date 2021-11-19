@@ -83,11 +83,7 @@ function AddPost() {
 
 function Posts() {
   const { loading, error, data, refetch } = useQuery(allPostsQuery, {
-    refetchAfterMutations: [
-      {
-        mutation: createPostMutation
-      }
-    ]
+    refetchAfterMutations: createPostMutation
   })
 
   return (

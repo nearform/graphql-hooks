@@ -15,11 +15,7 @@ export const allPostsQuery = `
 
 export default function Posts() {
   const { loading, data, error, refetch } = useQuery(allPostsQuery, {
-    refetchAfterMutations: [
-      {
-        mutation: createPostMutation
-      }
-    ]
+    refetchAfterMutations: createPostMutation
   })
 
   return (

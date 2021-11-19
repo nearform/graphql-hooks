@@ -187,16 +187,20 @@ export interface UseClientRequestOptions<
   client?: GraphQLClient
 }
 
-type RefetchAferMutationsData = {
+export type RefetchAferMutationsData = {
   mutation: string
-  filter?: (variables: any) => boolean
+  filter?: (variables: object) => boolean
 }
 
 export interface UseQueryOptions<ResponseData = any, Variables = object>
   extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
   skip?: boolean
-  refetchAfterMutations?: RefetchAferMutationsData[]
+  refetchAfterMutations?:
+    | string
+    | string[]
+    | RefetchAferMutationsData
+    | RefetchAferMutationsData[]
 }
 
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {

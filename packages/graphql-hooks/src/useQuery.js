@@ -1,5 +1,6 @@
 import React from 'react'
 import ClientContext from './ClientContext'
+import createRefetchMutationsMap from './createRefetchMutationsMap'
 import useClientRequest from './useClientRequest'
 
 const defaultOpts = {
@@ -60,17 +61,8 @@ function useQuery(query, opts = {}) {
 
   React.useEffect(
     function subscribeToMutationsAndRefetch() {
-      if (!Array.isArray(opts.refetchAfterMutations)) return
-
-      const mutationsMap = opts.refetchAfterMutations.reduce((acc, value) => {
-        // value comes from useClientRequest and contains the mutation result
-        // in case that we want to do something more with it
-        acc[value.mutation] = {
-          filter: value.filter
-        }
-
-        return acc
-      }, {})
+      const mutationsMap = createRefetchMutationsMap(opts.refetchAfterMutations)
+      const mutations = Object.keys(mutationsMap)
 
       const conditionalRefetch = ({ mutation, variables }) => {
         const { filter } = mutationsMap[mutation]
@@ -80,12 +72,13 @@ function useQuery(query, opts = {}) {
         }
       }
 
-      opts.refetchAfterMutations.forEach(({ mutation }) => {
+      mutations.forEach(mutation => {
+        // this event is emitted from useClientRequest
         client.mutationsEmitter.on(mutation, conditionalRefetch)
       })
 
       return () => {
-        opts.refetchAfterMutations.forEach(({ mutation }) => {
+        mutations.forEach(mutation => {
           client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
         })
       }
