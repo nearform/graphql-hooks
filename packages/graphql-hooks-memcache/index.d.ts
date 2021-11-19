@@ -4,6 +4,7 @@ declare function MemCacheFunction(options?: {
   size?: number
   ttl?: number
   initialState?: object
+  debug?: boolean
 }): MemCache
 
 interface MemCache {
