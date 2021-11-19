@@ -1,7 +1,7 @@
-import React from 'react'
+import { act, renderHook } from '@testing-library/react-hooks'
 import T from 'prop-types'
-import { renderHook, act } from '@testing-library/react-hooks'
-import { useClientRequest, ClientContext } from '../../src'
+import React from 'react'
+import { ClientContext, useClientRequest } from '../../src'
 
 let mockClient
 
@@ -652,7 +652,9 @@ describe('useClientRequest', () => {
         const fn = async () =>
           await act(() => fetchData({ variables: { limit: 20 } }))
 
-        expect(fn()).rejects.toThrow('options.updateData must be a function')
+        await expect(fn()).rejects.toThrow(
+          'options.updateData must be a function'
+        )
       })
 
       describe('caching', () => {
