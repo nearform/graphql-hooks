@@ -1,7 +1,7 @@
+import EventEmitter from 'events'
+import { Client } from 'graphql-ws'
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import { Client } from 'graphql-ws'
-
 // Exports
 
 export class GraphQLClient {
@@ -14,6 +14,7 @@ export class GraphQLClient {
   FormData?: any
   logErrors: boolean
   useGETForQueries: boolean
+  mutationsEmitter: EventEmitter
 
   subscriptionClient?: SubscriptionClient | Client
 
@@ -171,7 +172,10 @@ interface Result<ResponseData = any, TGraphQLError = object> {
   error?: APIError<TGraphQLError>
 }
 
-export interface UseClientRequestOptions<ResponseData = any, Variables = object> {
+export interface UseClientRequestOptions<
+  ResponseData = any,
+  Variables = object
+> {
   useCache?: boolean
   isMutation?: boolean
   isManual?: boolean
@@ -183,10 +187,22 @@ export interface UseClientRequestOptions<ResponseData = any, Variables = object>
   client?: GraphQLClient
 }
 
+type RefetchAfterMutationItem = {
+  mutation: string
+  filter?: (variables: object) => boolean
+}
+
+export type RefetchAferMutationsData =
+  | string
+  | string[]
+  | RefetchAfterMutationItem
+  | RefetchAfterMutationItem[]
+
 export interface UseQueryOptions<ResponseData = any, Variables = object>
   extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
   skip?: boolean
+  refetchAfterMutations?: RefetchAferMutationsData
 }
 
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {

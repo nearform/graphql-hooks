@@ -1,7 +1,7 @@
 import React from 'react'
-
-import useClientRequest from './useClientRequest'
 import ClientContext from './ClientContext'
+import createRefetchMutationsMap from './createRefetchMutationsMap'
+import useClientRequest from './useClientRequest'
 
 const defaultOpts = {
   useCache: true,
@@ -46,20 +46,49 @@ function useQuery(query, opts = {}) {
     }
   }, [state.error, allOpts.throwErrors])
 
+  const refetch = React.useCallback(
+    (options = {}) =>
+      queryReq({
+        skipCache: true,
+        // don't call the updateData that has been passed into useQuery here
+        // reset to the default behaviour of returning the raw query result
+        // this can be overridden in refetch options
+        updateData: (_, data) => data,
+        ...options
+      }),
+    [queryReq]
+  )
+
+  React.useEffect(
+    function subscribeToMutationsAndRefetch() {
+      const mutationsMap = createRefetchMutationsMap(opts.refetchAfterMutations)
+      const mutations = Object.keys(mutationsMap)
+
+      const conditionalRefetch = ({ mutation, variables }) => {
+        const { filter } = mutationsMap[mutation]
+
+        if (!filter || (variables && filter(variables))) {
+          refetch()
+        }
+      }
+
+      mutations.forEach(mutation => {
+        // this event is emitted from useClientRequest
+        client.mutationsEmitter.on(mutation, conditionalRefetch)
+      })
+
+      return () => {
+        mutations.forEach(mutation => {
+          client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
+        })
+      }
+    },
+    [opts.refetchAfterMutations, refetch, client.mutationsEmitter]
+  )
+
   return {
     ...state,
-    refetch: React.useCallback(
-      (options = {}) =>
-        queryReq({
-          skipCache: true,
-          // don't call the updateData that has been passed into useQuery here
-          // reset to the default behaviour of returning the raw query result
-          // this can be overridden in refetch options
-          updateData: (_, data) => data,
-          ...options
-        }),
-      [queryReq]
-    )
+    refetch
   }
 }
 

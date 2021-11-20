@@ -1,7 +1,7 @@
+import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
-
-import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import canUseDOM from './canUseDOM'
+import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -39,6 +39,7 @@ class GraphQLClient {
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
     this.subscriptionClient = config.subscriptionClient
+    this.mutationsEmitter = new EventEmitter()
   }
 
   setHeader(key, value) {

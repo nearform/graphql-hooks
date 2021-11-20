@@ -1,30 +1,23 @@
 import { useMutation } from 'graphql-hooks'
-import T from 'prop-types'
 import React from 'react'
 import CreatePostForm from './CreatePostForm'
 
-const createPostMutation = `
-  mutation CreatePost($id: ID!, $title: String!, $url: String!) {
-    createPost(id: $id, title: $title, url: $url) {
+export const createPostMutation = `
+  mutation CreatePost($title: String!, $url: String!) {
+    createPost(title: $title, url: $url) {
       id
     }
   }
 `
 
-export default function CreatePost({ onSuccess }) {
+export default function CreatePost() {
   const [createPost, { loading, error }] = useMutation(createPostMutation)
 
   async function handleSubmit({ title, url }) {
-    const id = Math.floor(Math.random() * 1000000)
-    await createPost({ variables: { id, title, url } })
-    onSuccess && onSuccess()
+    await createPost({ variables: { title, url } })
   }
 
   return (
     <CreatePostForm loading={loading} error={error} onSubmit={handleSubmit} />
   )
-}
-
-CreatePost.propTypes = {
-  onSuccess: T.func
 }
