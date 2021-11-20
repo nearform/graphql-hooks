@@ -13,3 +13,4 @@ yarn.lock
 .vscode
 .env
 *.log
+package-lock.json
