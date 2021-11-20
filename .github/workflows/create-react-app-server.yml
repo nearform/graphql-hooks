@@ -1,4 +1,4 @@
-name: Mock GrapQL Server to GCP
+name: Mock GraphQL Server to GCP
 
 on:
   push:
