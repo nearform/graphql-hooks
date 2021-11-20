@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.2.2...typescript-example@2.3.0) (2021-11-20)
+
+
+### Features
+
+* refetch query when subscribed mutation executes ([#686](https://github.com/nearform/graphql-hooks/issues/686)) ([19f3829](https://github.com/nearform/graphql-hooks/commit/19f3829788e8382a241f7315f4b8f69d7d39487a))
+
+
+
+
+
 ## [2.2.2](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.2.1...typescript-example@2.2.2) (2021-10-20)
 
 **Note:** Version bump only for package typescript-example

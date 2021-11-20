@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.3.1...create-react-app@2.4.0) (2021-11-20)
+
+
+### Bug Fixes
+
+* package-lock file to use right version ([b7ff57d](https://github.com/nearform/graphql-hooks/commit/b7ff57d30fa9894162e7145bc5a5ad98e0561f0b))
+
+
+### Features
+
+* refetch query when subscribed mutation executes ([#686](https://github.com/nearform/graphql-hooks/issues/686)) ([19f3829](https://github.com/nearform/graphql-hooks/commit/19f3829788e8382a241f7315f4b8f69d7d39487a))
+
+
+
+
+
 ## [2.3.1](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.3.0...create-react-app@2.3.1) (2021-10-20)
 
 

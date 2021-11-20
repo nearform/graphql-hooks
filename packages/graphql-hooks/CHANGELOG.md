@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.4.1...graphql-hooks@5.5.0) (2021-11-20)
+
+
+### Bug Fixes
+
+* handle errors in useSubscription ([#683](https://github.com/nearform/graphql-hooks/issues/683)) ([3c43bee](https://github.com/nearform/graphql-hooks/commit/3c43beee73ad74092205fdf8796cc2cc35d4c712))
+
+
+### Features
+
+* refetch query when subscribed mutation executes ([#686](https://github.com/nearform/graphql-hooks/issues/686)) ([19f3829](https://github.com/nearform/graphql-hooks/commit/19f3829788e8382a241f7315f4b8f69d7d39487a))
+
+
+
+
+
 ## [5.4.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.4.0...graphql-hooks@5.4.1) (2021-10-20)
 
 
