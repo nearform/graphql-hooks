@@ -1,8 +1,0 @@
-{
-  "extends": ["config:base", ":preserveSemverRanges"],
-  "includePaths": ["package.json", "packages/**", "examples/**"],
-  "labels": ["renovate"],
-  "automerge": true,
-  "automergeType": "branch",
-  "dependencyDashboard": true
-}
