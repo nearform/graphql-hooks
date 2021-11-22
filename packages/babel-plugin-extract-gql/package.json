@@ -29,7 +29,7 @@
     "strings"
   ],
   "dependencies": {
-    "pkg-dir": "^5.0.0"
+    "pkg-dir": "^6.0.1"
   },
   "repository": {
     "type": "git",
