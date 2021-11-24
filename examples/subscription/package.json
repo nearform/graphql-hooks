@@ -19,7 +19,7 @@
     "graphql": "^15.0.0",
     "graphql-hooks": "^5.5.0",
     "graphql-hooks-memcache": "^2.2.2",
-    "lowdb": "^1.0.0",
+    "lowdb": "^3.0.0",
     "mqemitter-redis": "^4.0.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
