@@ -16,7 +16,7 @@
     "fastify-cors": "^6.0.2",
     "fastify-gql": "^5.0.0",
     "fastify-static": "^4.5.0",
-    "graphql": "^15.0.0",
+    "graphql": "^16.0.1",
     "graphql-hooks": "^5.5.0",
     "graphql-hooks-memcache": "^2.2.2",
     "lowdb": "^3.0.0",
