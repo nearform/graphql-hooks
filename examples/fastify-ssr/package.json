@@ -23,7 +23,7 @@
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^3.0.0",
     "fastify-gql": "^5.0.0",
-    "fastify-static": "^3.0.0",
+    "fastify-static": "^4.5.0",
     "graphql-hooks": "^5.5.0",
     "graphql-hooks-memcache": "^2.2.2",
     "graphql-hooks-ssr": "^2.2.1",
