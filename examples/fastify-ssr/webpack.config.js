@@ -1,6 +1,6 @@
 const path = require('path')
 const { merge } = require('webpack-merge')
-const ManifestPlugin = require('webpack-manifest-plugin')
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 
 const PATHS = {
   build: path.join(__dirname, 'build'),
@@ -12,7 +12,7 @@ const commonConfig = {
   entry: {
     'app-shell': path.join(PATHS.src, 'client/js/app-shell.js')
   },
-  devtool: '#cheap-module-source-map',
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -48,7 +48,7 @@ const commonConfig = {
     publicPath: '/js/',
     path: path.join(PATHS.build, 'public/js')
   },
-  plugins: [new ManifestPlugin()]
+  plugins: [new WebpackManifestPlugin()]
 }
 
 const productionConfig = {
