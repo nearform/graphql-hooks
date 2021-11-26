@@ -1,11 +1,16 @@
-const fastify = require('fastify')
-const GQL = require('fastify-gql')
-const path = require('path')
-const fs = require('fs')
-const fastifyStatic = require('fastify-static')
-const lowdb = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const mq = require('mqemitter-redis')
+import fastify from 'fastify'
+import GQL from 'fastify-gql'
+import { join, dirname } from 'path'
+import fs from 'fs'
+import fastifyStatic from 'fastify-static'
+import { LowSync, JSONFileSync } from 'lowdb'
+import mq from 'mqemitter-redis'
+import { fileURLToPath } from 'url'
+import cors from 'fastify-cors'
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+
 const emitter = mq({
   port: 6379,
   host: '127.0.0.1'
@@ -15,12 +20,12 @@ const NUMBER_OF_VOTES = 5
 const APP_PORT = parseInt(process.env.APP_PORT || '8000', 10)
 
 const app = fastify()
-const indexHtml = fs.readFileSync(path.join(__dirname, './index.html'), {
+const indexHtml = fs.readFileSync(join(__dirname, './index.html'), {
   encoding: 'utf8'
 })
 
 app.register(fastifyStatic, {
-  root: path.join(__dirname, '../../build/public'),
+  root: join(__dirname, '../../build/public'),
   prefix: '/public/'
 })
 
@@ -30,12 +35,12 @@ for (let i = 1; i <= NUMBER_OF_VOTES; i++) {
 }
 const defaults = { votes }
 
-const adapter = new FileSync('votes.json', {
-  defaultValue: defaults
-})
-const db = lowdb(adapter)
+const adapter = new JSONFileSync('votes.json')
+const db = new LowSync(adapter)
+await db.read()
+db.data = db.data || defaults
 
-app.register(require('fastify-cors'), {
+app.register(cors, {
   origin: '*'
 })
 
@@ -65,17 +70,17 @@ const schema = `
 
 const resolvers = {
   Query: {
-    votes: async () => db.get('votes').value()
+    votes: async () => db.data.votes
   },
   Mutation: {
     voteAye: async (_, { voteId }, { pubsub }) => {
-      const vote = db.get(`votes[${voteId - 1}]`)
+      const vote = db.data.votes[voteId - 1]
 
       if (vote) {
-        const v = vote.value()
-
+        const v = {...vote}
         v.ayes++
-        vote.assign(v).write()
+        db.data.votes[voteId - 1] = v
+        await db.write()
         await pubsub.publish({
           topic: `${VOTE_ADDED}_${voteId}`,
           payload: {
@@ -89,12 +94,13 @@ const resolvers = {
       throw new Error('Invalid vote id')
     },
     voteNo: async (_, { voteId }, { pubsub }) => {
-      const vote = db.get(`votes[${voteId - 1}]`)
-      if (vote) {
-        const v = vote.value()
+      const vote = db.data.votes[voteId - 1]
 
+      if (vote) {
+        const v = {...vote}
         v.noes++
-        vote.assign(v).write()
+        db.data.votes[voteId - 1] = v
+        await db.write()
 
         await pubsub.publish({
           topic: `VOTE_ADDED_${voteId}`,
