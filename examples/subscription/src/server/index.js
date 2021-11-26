@@ -8,8 +8,7 @@ import mq from 'mqemitter-redis'
 import { fileURLToPath } from 'url'
 import cors from 'fastify-cors'
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const emitter = mq({
   port: 6379,
@@ -77,7 +76,7 @@ const resolvers = {
       const vote = db.data.votes[voteId - 1]
 
       if (vote) {
-        const v = {...vote}
+        const v = { ...vote }
         v.ayes++
         db.data.votes[voteId - 1] = v
         await db.write()
@@ -97,7 +96,7 @@ const resolvers = {
       const vote = db.data.votes[voteId - 1]
 
       if (vote) {
-        const v = {...vote}
+        const v = { ...vote }
         v.noes++
         db.data.votes[voteId - 1] = v
         await db.write()
