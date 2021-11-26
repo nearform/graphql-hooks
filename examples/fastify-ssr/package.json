@@ -41,7 +41,7 @@
     "babel-loader": "^8.0.6",
     "nodemon": "^2.0.0",
     "pino-pretty": "^7.2.0",
-    "webpack": "^4.34.0",
+    "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-merge": "^5.0.0"
