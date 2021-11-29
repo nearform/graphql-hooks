@@ -1,4 +1,4 @@
-module.exports = `
+const schema = `
   type User {
     name: String
   }
@@ -13,3 +13,5 @@ module.exports = `
     createUser(name: String!): User
   }
 `
+
+export default schema

@@ -1,7 +1,7 @@
-const fastifyGQL = require('fastify-gql')
+import fastifyGQL from 'fastify-gql'
 
-const schema = require('./schema')
-const resolvers = require('./resolvers')
+import schema from './schema.js'
+import resolvers from './resolvers.js'
 
 function registerGraphQL(fastify, opts, next) {
   fastify.register(fastifyGQL, {
@@ -15,4 +15,4 @@ function registerGraphQL(fastify, opts, next) {
 
 registerGraphQL[Symbol.for('skip-override')] = true
 
-module.exports = registerGraphQL
+export default registerGraphQL

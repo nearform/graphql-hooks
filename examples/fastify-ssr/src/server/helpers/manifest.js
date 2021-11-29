@@ -1,6 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const { promisify } = require('util')
+import fs from 'fs'
+import path from 'path'
+import { promisify } from 'util'
 
 const readFileAsync = promisify(fs.readFile)
 
@@ -9,7 +9,7 @@ let cachedManifest
 
 getManifest()
 
-async function getManifest() {
+export async function getManifest() {
   if (cachedManifest) {
     return cachedManifest
   }
@@ -27,12 +27,7 @@ async function getManifest() {
   }
 }
 
-async function getBundlePath(manifestKey) {
+export async function getBundlePath(manifestKey) {
   const manifest = await getManifest()
   return manifest[manifestKey] || manifestKey
-}
-
-module.exports = {
-  getManifest,
-  getBundlePath
 }

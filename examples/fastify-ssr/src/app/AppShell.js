@@ -1,9 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import HomePage from './pages/HomePage'
+import * as ReactRouterDom from 'react-router-dom'
+const { Link } = ReactRouterDom
+
 // components
-import NotFoundPage from './pages/NotFoundPage'
-import PaginationPage from './pages/PaginationPage'
+import NotFoundPage from './pages/NotFoundPage.js'
+import PaginationPage from './pages/PaginationPage.js'
+import HomePage from './pages/HomePage.js'
 
 class AppShell extends React.Component {
   render() {

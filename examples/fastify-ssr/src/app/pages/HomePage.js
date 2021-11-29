@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { useQuery, useManualQuery, useMutation } from 'graphql-hooks'
 
 // components
-import HelloComponent from '../components/Hello'
+import HelloComponent from '../components/Hello.js'
 
 const HOMEPAGE_QUERY = `
   query HomepageQuery {

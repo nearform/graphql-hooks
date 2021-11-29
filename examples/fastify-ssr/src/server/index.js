@@ -1,18 +1,19 @@
-const path = require('path')
-const fastify = require('fastify')
+import path from 'path'
+import fastify from 'fastify'
 
 // plugins
-const graphqlPlugin = require('./graphql')
+import graphqlPlugin from './graphql/index.js'
+import fastifyStatic from 'fastify-static'
 
 // handlers
-const appShellHandler = require('./handlers/app-shell')
+import appShellHandler from './handlers/app-shell.js'
 
-module.exports = () => {
+const startServer = () => {
   const app = fastify({
     logger: true
   })
 
-  app.register(require('fastify-static'), {
+  app.register(fastifyStatic, {
     root: path.join(process.cwd(), 'build/public')
   })
 
@@ -23,3 +24,5 @@ module.exports = () => {
 
   app.listen(3000)
 }
+
+export default startServer
