@@ -1,17 +1,19 @@
-const React = require('react')
-const ReactDOMServer = require('react-dom/server')
-const { StaticRouter } = require('react-router-dom/server')
+import React from 'react'
+import ReactDOMServer from 'react-dom/server.js'
+import ReactRouterDom from 'react-router-dom'
+const { StaticRouter } = ReactRouterDom
 
 // graphql-hooks
-const { getInitialState } = require('graphql-hooks-ssr')
-const { GraphQLClient, ClientContext } = require('graphql-hooks')
-const memCache = require('graphql-hooks-memcache')
+import { getInitialState } from 'graphql-hooks-ssr'
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
+import memCache from 'graphql-hooks-memcache'
 
 // components
-const { default: AppShell } = require('../../app/AppShell')
+import AppShell from '../../app/AppShell.js'
 
 // helpers
-const { getBundlePath } = require('../helpers/manifest')
+import { getBundlePath } from '../helpers/manifest.js'
+import unfetch from 'isomorphic-unfetch'
 
 function renderHead() {
   return `
@@ -40,11 +42,11 @@ async function appShellHandler(req, reply) {
   const client = new GraphQLClient({
     url: 'http://127.0.0.1:3000/graphql',
     cache: memCache(),
-    fetch: require('isomorphic-unfetch'),
+    fetch: unfetch,
     logErrors: true
   })
 
-  const App = (
+  const App = () => (
     <StaticRouter location={req.raw.url}>
       <ClientContext.Provider value={client}>
         <AppShell />
@@ -70,4 +72,4 @@ async function appShellHandler(req, reply) {
   reply.type('text/html').send(html)
 }
 
-module.exports = appShellHandler
+export default appShellHandler

@@ -3,7 +3,11 @@
   "version": "3.3.2",
   "private": true,
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "exports": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:client": "webpack",
@@ -54,7 +58,8 @@
         {
           "targets": {
             "node": "current"
-          }
+          },
+          "modules": false
         }
       ],
       "@babel/preset-react"

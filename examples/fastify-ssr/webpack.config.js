@@ -1,6 +1,8 @@
-const path = require('path')
-const { merge } = require('webpack-merge')
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
+import path, { dirname } from 'path'
+import { merge } from 'webpack-merge'
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
+import { fileURLToPath } from 'url'
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const PATHS = {
   build: path.join(__dirname, 'build'),
@@ -68,7 +70,7 @@ const developmentConfig = {
   mode: 'development'
 }
 
-module.exports = () => {
+const config = () => {
   if (
     process.env.NODE_ENV === 'production' ||
     process.env.NODE_ENV === 'staging'
@@ -78,3 +80,5 @@ module.exports = () => {
 
   return merge(commonConfig, developmentConfig)
 }
+
+export default config

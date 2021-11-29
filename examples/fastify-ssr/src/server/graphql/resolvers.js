@@ -10,7 +10,7 @@ const users = [
   }
 ]
 
-module.exports = {
+const resolvers = {
   Query: {
     users: (_, { skip = 0, limit }) => {
       const end = limit ? skip + limit : undefined
@@ -26,3 +26,5 @@ module.exports = {
     }
   }
 }
+
+export default resolvers

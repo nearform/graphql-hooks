@@ -3,7 +3,7 @@ import memCache from 'graphql-hooks-memcache'
 import React from 'react'
 import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import AppShell from '../../app/AppShell'
+import AppShell from '../../app/AppShell.js'
 
 const initialState = window.__INITIAL_STATE__
 const client = new GraphQLClient({
