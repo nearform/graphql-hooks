@@ -991,7 +991,7 @@ const client = new GraphQLClient({
 
 ## Community
 
-We now use GitHub Discussions for our community. To join, click on "Discussions".
+We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions).
 If you want to see the old community posts (on Spectrum) you can access them [here](https://spectrum.chat/graphql-hooks).
 ## Contributors
 
