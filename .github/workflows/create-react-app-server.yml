@@ -18,15 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2.4.0
 
-      - id: auth
-        uses: google-github-actions/auth@v0.4.1
+      - uses: google-github-actions/auth@v0.4.1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - uses: google-github-actions/setup-gcloud@v0.3
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - working-directory: ./examples/create-react-app
         run: |-
