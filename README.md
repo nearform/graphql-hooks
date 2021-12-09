@@ -1,6 +1,5 @@
 # graphql-hooks
 
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/graphql-hooks)
 [![ci](https://github.com/nearform/graphql-hooks/workflows/ci/badge.svg)](https://github.com/nearform/graphql-hooks/actions?query=workflow%3Aci)
 [![Coverage Status](https://coveralls.io/repos/github/nearform/graphql-hooks/badge.svg?branch=master)](https://coveralls.io/github/nearform/graphql-hooks?branch=master)
 [![bundlephobia](https://img.shields.io/bundlephobia/minzip/graphql-hooks.svg?style=flat&label=size)](https://bundlephobia.com/result?p=graphql-hooks)
@@ -990,6 +989,10 @@ const client = new GraphQLClient({
 })
 ```
 
+## Community
+
+We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions). We encourage you to start a new discussion, share some ideas or ask questions from the community.
+If you want to see the old community posts (on Spectrum) you can access them [here](https://spectrum.chat/graphql-hooks).
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
