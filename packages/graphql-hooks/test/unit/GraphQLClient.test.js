@@ -1,9 +1,10 @@
-import fetchMock from 'jest-fetch-mock'
-import { Readable } from 'stream'
 import { FormData, File as FormDataFile } from 'formdata-node'
+
 import { GraphQLClient } from '../../src'
-import { createReadStream } from 'fs'
+import { Readable } from 'stream'
 import { TextEncoder } from 'util'
+import { createReadStream } from 'fs'
+import fetchMock from 'jest-fetch-mock'
 
 global.TextEncoder = TextEncoder
 
@@ -580,6 +581,41 @@ describe('GraphQLClient', () => {
       const expected = fetchOptionsOverrides
 
       expect(actual).toMatchObject(expected)
+    })
+
+    it('will use responseProxy option implementation', async () => {
+      const data = 'data!',
+        status = 200,
+        statusText = 'OK',
+        headers = {
+          'content-type': 'application/json',
+          'x-cache-tags': '1234,5678,9000'
+        }
+      const client = new GraphQLClient({ ...validConfig })
+      fetch.mockResponseOnce(JSON.stringify({ data }), {
+        status,
+        statusText,
+        headers
+      })
+      const {
+        data: _data,
+        headers: _headers,
+        status: _status,
+        statusText: _statusText
+      } = await client.request(
+        { query: TEST_QUERY },
+        {
+          responseProxy: {
+            headers: response => response.headers,
+            status: response => response.status,
+            statusText: response => response.statusText
+          }
+        }
+      )
+      expect(_headers).toEqual(headers)
+      expect(_data).toBe(data)
+      expect(_status).toBe(status)
+      expect(_statusText).toBe(statusText)
     })
 
     describe('GET Support', () => {

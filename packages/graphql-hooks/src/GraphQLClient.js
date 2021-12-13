@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
-import { extractFiles } from 'extract-files'
 import canUseDOM from './canUseDOM'
+import { extractFiles } from 'extract-files'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
 class GraphQLClient {
@@ -90,14 +90,20 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult({ fetchError, httpError, graphQLErrors, data }) {
+  generateResult({
+    fetchError,
+    httpError,
+    graphQLErrors,
+    data,
+    responseProxy = {}
+  }) {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
       fetchError ||
       httpError
     )
     return !errorFound
-      ? { data }
+      ? { ...responseProxy, data }
       : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
@@ -222,10 +228,31 @@ class GraphQLClient {
             })
           })
         } else {
+          const responseProxy = {}
+          if (
+            options.responseProxy &&
+            typeof options.responseProxy === 'object' &&
+            !Array.isArray(options.responseProxy)
+          ) {
+            Object.keys(options.responseProxy).forEach(key => {
+              if (typeof options.responseProxy[key] === 'function') {
+                responseProxy[key] =
+                  key === 'headers'
+                    ? /* convert Headers Map to serializabe object */ Object.fromEntries(
+                        options.responseProxy[key](response).entries()
+                      )
+                    : options.responseProxy[key](response)
+              }
+            })
+
+            console.log(responseProxy)
+          }
+
           return response.json().then(({ errors, data }) => {
             return this.generateResult({
               graphQLErrors: errors,
-              data
+              data,
+              responseProxy
             })
           })
         }

@@ -172,6 +172,7 @@ const client = new GraphQLClient(config)
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
+- `options.responseProxy`: Key-Value pairs to map parts of the original Fetch API response into the return value. Example for header forwarding would look like `{responseProxy: {header: resp => resp.headers}}`. Accessable is everything which the chosen Fetch implementation supports on the `Response` object.
 
 ## `ClientContext`
 
@@ -615,12 +616,11 @@ useQuery(allPostsByUserIdQuery, {
   refetchAfterMutations: [
     {
       mutation: createPostMutation,
-      filter: (variables) => variables.userId === myUserId
+      filter: variables => variables.userId === myUserId
     }
   ]
 })
 ```
-
 
 ## File uploads
 
@@ -993,6 +993,7 @@ const client = new GraphQLClient({
 
 We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions). We encourage you to start a new discussion, share some ideas or ask questions from the community.
 If you want to see the old community posts (on Spectrum) you can access them [here](https://spectrum.chat/graphql-hooks).
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
