@@ -244,8 +244,6 @@ class GraphQLClient {
                     : options.responseProxy[key](response)
               }
             })
-
-            console.log(responseProxy)
           }
 
           return response.json().then(({ errors, data }) => {
