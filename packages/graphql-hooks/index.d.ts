@@ -185,6 +185,7 @@ export interface UseClientRequestOptions<
   fetchOptionsOverrides?: object
   updateData?(previousData: ResponseData, data: ResponseData): any
   client?: GraphQLClient
+  responseReducer(response: object): object
 }
 
 type RefetchAfterMutationItem = {

@@ -583,7 +583,7 @@ describe('GraphQLClient', () => {
       expect(actual).toMatchObject(expected)
     })
 
-    it('will use responseProxy option implementation', async () => {
+    it('will use responseReducer option implementation', async () => {
       const data = 'data!',
         status = 200,
         statusText = 'OK',
@@ -597,25 +597,22 @@ describe('GraphQLClient', () => {
         statusText,
         headers
       })
-      const {
-        data: _data,
-        headers: _headers,
-        status: _status,
-        statusText: _statusText
-      } = await client.request(
+      const { data: _data, responseReducer } = await client.request(
         { query: TEST_QUERY },
         {
-          responseProxy: {
-            headers: response => response.headers,
-            status: response => response.status,
-            statusText: response => response.statusText
-          }
+          responseReducer: response => ({
+            cacheTags: response.headers.get('x-cache-tags'),
+            contentType: response.headers.get('content-type'),
+            status: response.status,
+            statusText: response.statusText
+          })
         }
       )
-      expect(_headers).toEqual(headers)
       expect(_data).toBe(data)
-      expect(_status).toBe(status)
-      expect(_statusText).toBe(statusText)
+      expect(responseReducer.status).toBe(status)
+      expect(responseReducer.statusText).toBe(statusText)
+      expect(responseReducer.cacheTags).toEqual(headers['x-cache-tags'])
+      expect(responseReducer.contentType).toEqual(headers['content-type'])
     })
 
     describe('GET Support', () => {

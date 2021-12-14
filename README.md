@@ -172,7 +172,7 @@ const client = new GraphQLClient(config)
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
-- `options.responseProxy`: Key-Value pairs to map parts of the original Fetch API response into the return value. Example for header forwarding would look like `{responseProxy: {header: resp => resp.headers}}`. Accessable is everything which the chosen Fetch implementation supports on the `Response` object.
+- `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are appended to the `request` response under the `responseReducer` key. Example usage: `{responseReducer: (response) => ({myKey: response.header.get('content-length)})`
 
 ## `ClientContext`
 

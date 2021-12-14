@@ -95,7 +95,7 @@ class GraphQLClient {
     httpError,
     graphQLErrors,
     data,
-    responseProxy = {}
+    responseReducer = null
   }) {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
@@ -103,7 +103,7 @@ class GraphQLClient {
       httpError
     )
     return !errorFound
-      ? { ...responseProxy, data }
+      ? Object.assign({ data }, !!responseReducer && { responseReducer })
       : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
@@ -228,29 +228,14 @@ class GraphQLClient {
             })
           })
         } else {
-          const responseProxy = {}
-          if (
-            options.responseProxy &&
-            typeof options.responseProxy === 'object' &&
-            !Array.isArray(options.responseProxy)
-          ) {
-            Object.keys(options.responseProxy).forEach(key => {
-              if (typeof options.responseProxy[key] === 'function') {
-                responseProxy[key] =
-                  key === 'headers'
-                    ? /* convert Headers Map to serializabe object */ Object.fromEntries(
-                        options.responseProxy[key](response).entries()
-                      )
-                    : options.responseProxy[key](response)
-              }
-            })
-          }
-
           return response.json().then(({ errors, data }) => {
             return this.generateResult({
               graphQLErrors: errors,
               data,
-              responseProxy
+              responseReducer:
+                (typeof options.responseReducer === 'function' &&
+                  options.responseReducer(response)) ||
+                null
             })
           })
         }
