@@ -95,7 +95,7 @@ class GraphQLClient {
     httpError,
     graphQLErrors,
     data,
-    responseReducer = null
+    responseReducer
   }) {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
