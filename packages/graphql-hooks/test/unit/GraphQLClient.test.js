@@ -584,7 +584,7 @@ describe('GraphQLClient', () => {
     })
 
     it('will use responseReducer option implementation', async () => {
-      const data = 'data!',
+      const data = { some: 'data' },
         status = 200,
         statusText = 'OK',
         headers = {
@@ -597,10 +597,11 @@ describe('GraphQLClient', () => {
         statusText,
         headers
       })
-      const { data: _data, responseReducer } = await client.request(
+      const { data: _data } = await client.request(
         { query: TEST_QUERY },
         {
-          responseReducer: response => ({
+          responseReducer: (fetchedData, response) => ({
+            ...fetchedData,
             cacheTags: response.headers.get('x-cache-tags'),
             contentType: response.headers.get('content-type'),
             status: response.status,
@@ -608,11 +609,11 @@ describe('GraphQLClient', () => {
           })
         }
       )
-      expect(_data).toBe(data)
-      expect(responseReducer.status).toBe(status)
-      expect(responseReducer.statusText).toBe(statusText)
-      expect(responseReducer.cacheTags).toEqual(headers['x-cache-tags'])
-      expect(responseReducer.contentType).toEqual(headers['content-type'])
+      expect(_data.some).toBe(data.some)
+      expect(_data.status).toBe(status)
+      expect(_data.statusText).toBe(statusText)
+      expect(_data.cacheTags).toEqual(headers['x-cache-tags'])
+      expect(_data.contentType).toEqual(headers['content-type'])
     })
 
     describe('GET Support', () => {

@@ -90,20 +90,14 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult({
-    fetchError,
-    httpError,
-    graphQLErrors,
-    data,
-    responseReducer
-  }) {
+  generateResult({ fetchError, httpError, graphQLErrors, data }) {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
       fetchError ||
       httpError
     )
     return !errorFound
-      ? Object.assign({ data }, !!responseReducer && { responseReducer })
+      ? { data }
       : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
@@ -231,11 +225,11 @@ class GraphQLClient {
           return response.json().then(({ errors, data }) => {
             return this.generateResult({
               graphQLErrors: errors,
-              data,
-              responseReducer:
+              data:
+                // enrich data with responseReducer if defined
                 (typeof options.responseReducer === 'function' &&
-                  options.responseReducer(response)) ||
-                null
+                  options.responseReducer(data, response)) ||
+                data
             })
           })
         }

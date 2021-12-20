@@ -172,7 +172,7 @@ const client = new GraphQLClient(config)
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
-- `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are appended to the `request` response under the `responseReducer` key. Example usage: `{responseReducer: (response) => ({myKey: response.headers.get('content-length)})`
+- `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are merged to the `request` response under the `data` key. Example usage: `{responseReducer: (data, response) => ({...data, myKey: response.headers.get('content-length)})`
 
 ## `ClientContext`
 
