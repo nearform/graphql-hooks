@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
-import { extractFiles } from 'extract-files'
 import canUseDOM from './canUseDOM'
+import { extractFiles } from 'extract-files'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
 class GraphQLClient {
@@ -225,7 +225,11 @@ class GraphQLClient {
           return response.json().then(({ errors, data }) => {
             return this.generateResult({
               graphQLErrors: errors,
-              data
+              data:
+                // enrich data with responseReducer if defined
+                (typeof options.responseReducer === 'function' &&
+                  options.responseReducer(data, response)) ||
+                data
             })
           })
         }

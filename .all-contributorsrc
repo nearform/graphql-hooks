@@ -312,6 +312,16 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "zanettin",
+      "name": "Roman Zanettin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3241476?v=4",
+      "profile": "https://github.com/zanettin",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -1,9 +1,10 @@
-import fetchMock from 'jest-fetch-mock'
-import { Readable } from 'stream'
 import { FormData, File as FormDataFile } from 'formdata-node'
+
 import { GraphQLClient } from '../../src'
-import { createReadStream } from 'fs'
+import { Readable } from 'stream'
 import { TextEncoder } from 'util'
+import { createReadStream } from 'fs'
+import fetchMock from 'jest-fetch-mock'
 
 global.TextEncoder = TextEncoder
 
@@ -580,6 +581,39 @@ describe('GraphQLClient', () => {
       const expected = fetchOptionsOverrides
 
       expect(actual).toMatchObject(expected)
+    })
+
+    it('will use responseReducer option implementation', async () => {
+      const data = { some: 'data' },
+        status = 200,
+        statusText = 'OK',
+        headers = {
+          'content-type': 'application/json',
+          'x-cache-tags': '1234,5678,9000'
+        }
+      const client = new GraphQLClient({ ...validConfig })
+      fetch.mockResponseOnce(JSON.stringify({ data }), {
+        status,
+        statusText,
+        headers
+      })
+      const { data: _data } = await client.request(
+        { query: TEST_QUERY },
+        {
+          responseReducer: (fetchedData, response) => ({
+            ...fetchedData,
+            cacheTags: response.headers.get('x-cache-tags'),
+            contentType: response.headers.get('content-type'),
+            status: response.status,
+            statusText: response.statusText
+          })
+        }
+      )
+      expect(_data.some).toBe(data.some)
+      expect(_data.status).toBe(status)
+      expect(_data.statusText).toBe(statusText)
+      expect(_data.cacheTags).toEqual(headers['x-cache-tags'])
+      expect(_data.contentType).toEqual(headers['content-type'])
     })
 
     describe('GET Support', () => {
