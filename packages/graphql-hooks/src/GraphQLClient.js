@@ -258,6 +258,10 @@ class GraphQLClient {
   }
 
   createSubscription(operation) {
+    if (typeof this.subscriptionClient === 'function') {
+      this.subscriptionClient = this.subscriptionClient()
+    }
+
     if (!this.subscriptionClient) {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
