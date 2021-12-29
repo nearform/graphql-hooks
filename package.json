@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-react": "^7.13.13",
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.0",
