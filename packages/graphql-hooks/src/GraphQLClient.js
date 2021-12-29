@@ -14,7 +14,11 @@ class GraphQLClient {
       throw new Error('GraphQLClient: config.fetch must be a function')
     }
 
-    if ((canUseDOM() || config.ssrMode) && !config.fetch && !fetch) {
+    if (
+      (canUseDOM() || config.ssrMode) &&
+      !config.fetch &&
+      typeof fetch !== 'function'
+    ) {
       throw new Error(
         'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
       )
