@@ -12,7 +12,7 @@
     "json-graphql-server": "2.2.3",
     "prop-types": "^15.7.2",
     "react": "^17.0.0",
-    "react-app-polyfill": "^2.0.0",
+    "react-app-polyfill": "^3.0.0",
     "react-dom": "^17.0.0",
     "react-scripts": "^3.0.1"
   },
