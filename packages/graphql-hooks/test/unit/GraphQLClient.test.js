@@ -38,7 +38,7 @@ describe('GraphQLClient', () => {
       const oldFetch = global.fetch
       try {
         expect(window.document.createElement).toBeTruthy()
-        global.fetch = null
+        delete global.fetch
         expect(() => {
           new GraphQLClient({
             ...validConfig,
@@ -55,7 +55,7 @@ describe('GraphQLClient', () => {
     it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
       const oldFetch = global.fetch
       try {
-        global.fetch = null
+        delete global.fetch
         expect(() => {
           new GraphQLClient({
             ...validConfig,
@@ -74,7 +74,7 @@ describe('GraphQLClient', () => {
       const oldFetch = global.fetch
       const oldWindow = global.window
       try {
-        global.fetch = null
+        delete global.fetch
         expect(global.window.document.createElement).toBeTruthy()
         delete global.window
         const client = new GraphQLClient({
