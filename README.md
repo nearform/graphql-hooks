@@ -145,7 +145,7 @@ const client = new GraphQLClient(config)
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
-- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws)
+- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws). A factory function can also be passed in order to avoid the creation of the client in ssr environments.
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -400,11 +400,11 @@ import { createClient } from 'graphql-ws'
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
-  subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
+  subscriptionClient: () => new SubscriptionClient('ws://localhost:8000/graphql', {
     /* additional config options */
   }),
   // or
-  subscriptionClient: createClient({
+  subscriptionClient: () => createClient({
     url: 'ws://localhost:8000/graphql'
     /* additional config options */
   })
