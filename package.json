@@ -42,8 +42,7 @@
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^7.0.0",
     "testcafe": "^1.14.0",
-    "testcafe-reporter-xunit": "^2.1.0",
-    "tsd": "^0.19.1"
+    "testcafe-reporter-xunit": "^2.1.0"
   },
   "lint-staged": {
     "**/*.js": [
