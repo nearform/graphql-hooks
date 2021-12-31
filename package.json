@@ -9,7 +9,7 @@
     "build:packages": "lerna run build --no-private",
     "build:site": "lerna run build --scope=create-react-app",
     "postinstall": "lerna bootstrap --hoist --no-ci && npm run build:packages",
-    "tsd:hooks": "lerna exec tsd --scope=graphql-hooks",
+    "tsd": "lerna run tsd",
     "lint": "eslint .",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
     "release": "lerna publish",

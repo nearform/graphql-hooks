@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
-    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
+    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
+    "tsd": "tsd"
   },
   "files": [
     "dist",
