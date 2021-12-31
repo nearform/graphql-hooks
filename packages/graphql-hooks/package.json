@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
-    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
+    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
+    "tsd": "tsd"
   },
   "files": [
     "dist",
@@ -49,7 +50,8 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-test-renderer": "^17.0.0",
-    "subscriptions-transport-ws": "^0.11.0"
+    "subscriptions-transport-ws": "^0.11.0",
+    "tsd": "^0.19.1"
   },
   "repository": {
     "type": "git",
