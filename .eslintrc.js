@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   root: true,
   parser: '@babel/eslint-parser',
@@ -24,7 +26,10 @@ module.exports = {
       jsx: true
     },
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: 'module',
+    babelOptions: {
+      configFile: path.join(__dirname, 'babel.config.js')
+    }
   },
   settings: {
     react: {
