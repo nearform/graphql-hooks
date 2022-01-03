@@ -2,7 +2,6 @@
   "name": "create-react-app",
   "version": "2.4.0",
   "private": true,
-  "type": "module",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -23,7 +22,16 @@
     "eject": "react-scripts eject",
     "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080"
   },
-  "browserslist": [
-    "ie >= 11"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
