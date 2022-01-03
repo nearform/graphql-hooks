@@ -145,7 +145,7 @@ const client = new GraphQLClient(config)
 - `url` (**Required**): The url to your GraphQL server
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
-- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws)
+- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws). A factory function can also be passed in order to avoid the creation of the client in ssr environments.
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -172,6 +172,7 @@ const client = new GraphQLClient(config)
 - `request(operation, options)`: Make a request to your GraphQL server; returning a Promise
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
+- `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are merged to the `request` response under the `data` key. Example usage: `{responseReducer: (data, response) => ({...data, myKey: response.headers.get('content-length)})`
 
 ## `ClientContext`
 
@@ -399,11 +400,11 @@ import { createClient } from 'graphql-ws'
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
-  subscriptionClient: new SubscriptionClient('ws://localhost:8000/graphql', {
+  subscriptionClient: () => new SubscriptionClient('ws://localhost:8000/graphql', {
     /* additional config options */
   }),
   // or
-  subscriptionClient: createClient({
+  subscriptionClient: () => createClient({
     url: 'ws://localhost:8000/graphql'
     /* additional config options */
   })
@@ -615,12 +616,11 @@ useQuery(allPostsByUserIdQuery, {
   refetchAfterMutations: [
     {
       mutation: createPostMutation,
-      filter: (variables) => variables.userId === myUserId
+      filter: variables => variables.userId === myUserId
     }
   ]
 })
 ```
-
 
 ## File uploads
 
@@ -993,6 +993,7 @@ const client = new GraphQLClient({
 
 We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions). We encourage you to start a new discussion, share some ideas or ask questions from the community.
 If you want to see the old community posts (on Spectrum) you can access them [here](https://spectrum.chat/graphql-hooks).
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

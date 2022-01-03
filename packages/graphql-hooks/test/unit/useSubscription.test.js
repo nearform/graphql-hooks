@@ -139,6 +139,38 @@ describe('useSubscription', () => {
     })
   })
 
+  it('works when a factory function is passed to `subscriptionClient`', () => {
+    const data = {
+      data: {
+        onTestEvent: {
+          id: 1
+        }
+      }
+    }
+    mockClient = new GraphQLClient({
+      url: 'fetch-url',
+      subscriptionClient: () =>
+        new MockSubscriptionClient({
+          type: 'DATA',
+          data
+        })
+    })
+    const request = {
+      query: TEST_SUBSCRIPTION,
+      variables: {
+        id: 1
+      }
+    }
+
+    const callback = response => {
+      expect(response).toEqual(data)
+    }
+
+    renderHook(() => useSubscription(request, callback), {
+      wrapper: Wrapper
+    })
+  })
+
   it('calls the update callback when subscription receives errors', () => {
     const graphqlErrors = [{ message: 'error1' }, { message: 'error2' }]
     const subscriptionClient = new MockSubscriptionClient({

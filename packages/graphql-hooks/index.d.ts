@@ -16,7 +16,10 @@ export class GraphQLClient {
   useGETForQueries: boolean
   mutationsEmitter: EventEmitter
 
-  subscriptionClient?: SubscriptionClient | Client
+  subscriptionClient?:
+    | SubscriptionClient
+    | Client
+    | (() => SubscriptionClient | Client)
 
   private onError(): any
   private fetch(): Promise<any>
@@ -124,7 +127,10 @@ interface ClientOptions {
   headers?: Headers
   ssrMode?: boolean
   useGETForQueries?: boolean
-  subscriptionClient?: SubscriptionClient | Client
+  subscriptionClient?:
+    | SubscriptionClient
+    | Client
+    | (() => SubscriptionClient | Client)
   fetch?(url: string, options?: object): Promise<object>
   fetchOptions?: object
   FormData?: any
@@ -185,6 +191,7 @@ export interface UseClientRequestOptions<
   fetchOptionsOverrides?: object
   updateData?(previousData: ResponseData, data: ResponseData): any
   client?: GraphQLClient
+  responseReducer?(data: object, response: object): object
 }
 
 type RefetchAfterMutationItem = {

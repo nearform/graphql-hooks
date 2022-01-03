@@ -15,7 +15,7 @@ or
 The below example is for `fastify` but the same principles apply for `express` & `hapi`.
 
 ```js
-const { GraphQLClient } = require('graphql-hooks')
+const { GraphQLClient, ClientContext } = require('graphql-hooks')
 const memCache = require('graphql-hooks-memcache')
 const { getInitialState } = require('graphql-hooks-ssr')
 const { ServerLocation } = require('@reach/router')
@@ -26,7 +26,7 @@ app.get('/', async (req, reply) => {
   // Step 1: Create the client inside the request handler
   const client = new GraphQLClient({
     url: 'https://domain.com/graphql',
-    cache: memCache() // NOTE: a cache is required for SSR,
+    cache: memCache(), // NOTE: a cache is required for SSR
     fetch
   })
 

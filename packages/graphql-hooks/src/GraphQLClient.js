@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
-import { extractFiles } from 'extract-files'
 import canUseDOM from './canUseDOM'
+import { extractFiles } from 'extract-files'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
 class GraphQLClient {
@@ -14,7 +14,11 @@ class GraphQLClient {
       throw new Error('GraphQLClient: config.fetch must be a function')
     }
 
-    if ((canUseDOM() || config.ssrMode) && !config.fetch && !fetch) {
+    if (
+      (canUseDOM() || config.ssrMode) &&
+      !config.fetch &&
+      typeof fetch !== 'function'
+    ) {
       throw new Error(
         'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
       )
@@ -225,7 +229,11 @@ class GraphQLClient {
           return response.json().then(({ errors, data }) => {
             return this.generateResult({
               graphQLErrors: errors,
-              data
+              data:
+                // enrich data with responseReducer if defined
+                (typeof options.responseReducer === 'function' &&
+                  options.responseReducer(data, response)) ||
+                data
             })
           })
         }
@@ -250,6 +258,10 @@ class GraphQLClient {
   }
 
   createSubscription(operation) {
+    if (typeof this.subscriptionClient === 'function') {
+      this.subscriptionClient = this.subscriptionClient()
+    }
+
     if (!this.subscriptionClient) {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
