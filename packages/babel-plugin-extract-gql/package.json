@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-extract-gql",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "",
   "main": "lib/index.js",
   "scripts": {

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.3.0...typescript-example@2.3.1) (2022-01-04)
+
+**Note:** Version bump only for package typescript-example
+
+
+
+
+
 # [2.3.0](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.2.2...typescript-example@2.3.0) (2021-11-20)
 
 
