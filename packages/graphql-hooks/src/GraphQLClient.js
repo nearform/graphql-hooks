@@ -209,10 +209,7 @@ class GraphQLClient {
       url = url + '?' + paramsQueryString
     }
 
-    return this.fetch(
-      url,
-      this.getFetchOptions(operation, options.fetchOptionsOverrides)
-    )
+    return this.fetch(url, fetchOptions)
       .then(response => {
         if (!response.ok) {
           return response.text().then(body => {
