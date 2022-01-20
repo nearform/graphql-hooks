@@ -238,7 +238,7 @@ interface UseSubscriptionOperation<Variables extends object = object>
 
 type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
   options?: UseClientRequestOptions<ResponseData, Variables>
-) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
+) => Promise<UseClientRequestResult<ResponseData, TGraphQLError> | undefined>
 
 interface CacheKeyObject {
   operation: Operation
