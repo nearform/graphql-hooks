@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import canUseDOM from './canUseDOM'
-import { extractFiles } from 'extract-files'
+import extractFiles from 'extract-files/extractFiles.mjs'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 
 class GraphQLClient {
