@@ -1,4 +1,4 @@
-import isExtractableFile from "extract-files/isExtractableFile.mjs";
+import isExtractableFile from 'extract-files/isExtractableFile.mjs';
 
 // Support streams for NodeJS compatibility
 const isExtractableFileEnhanced = value =>
