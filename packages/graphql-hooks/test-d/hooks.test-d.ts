@@ -1,4 +1,4 @@
-import { expectType } from 'tsd'
+import { expectType, expectError } from 'tsd'
 import {
   FetchData,
   ResetFunction,
@@ -35,6 +35,10 @@ type UseClientRequestReturn = [
 ]
 expectType<UseClientRequestReturn>(useClientRequest(query))
 expectType<UseClientRequestReturn>(useClientRequest(query, clientRequestOptions))
+
+const [fetchData] = useClientRequest(query);
+expectType<Promise<UseClientRequestResult<any, object> | undefined>>(fetchData());
+expectError<Promise<UseClientRequestResult<any, object>>>(fetchData());
 
 const useQueryOptions: UseQueryOptions = {
   ssr: false,
