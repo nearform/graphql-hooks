@@ -133,7 +133,6 @@ function useClientRequest(query, initialOpts = {}) {
   // arguments to fetchData override the useClientRequest arguments
   const fetchData = useDeepCompareCallback(
     newOpts => {
-      if (!isMounted.current) return Promise.resolve()
       const revisedOpts = {
         ...initialOpts,
         ...newOpts
@@ -143,6 +142,18 @@ function useClientRequest(query, initialOpts = {}) {
         ...operation,
         variables: revisedOpts.variables,
         operationName: revisedOpts.operationName
+      }
+
+      if (!isMounted.current) {
+        return Promise.resolve({
+          error: {
+            fetchError: new Error(
+              'fetchData should not be called after hook unmounted'
+            )
+          },
+          loading: false,
+          cacheHit: false
+        })
       }
 
       const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
