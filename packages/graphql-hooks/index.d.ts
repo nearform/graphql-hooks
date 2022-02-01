@@ -7,6 +7,7 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 export class GraphQLClient {
   constructor(options: ClientOptions)
 
+  local: LocalQueries
   cache: Cache
   headers: Headers
   ssrMode: boolean
@@ -122,7 +123,8 @@ export const ClientContext: React.Context<GraphQLClient>
 type ResetFunction = (desiredState?: object) => void
 
 interface ClientOptions {
-  url: string
+  url?: string
+  local?: LocalQueries
   cache?: Cache
   headers?: Headers
   ssrMode?: boolean
@@ -145,6 +147,10 @@ interface ClientOptions {
 }
 
 type Headers = { [k: string]: string }
+
+type LocalQueries = {
+  [q: string]: (variables: object, operationName?: string) => object
+}
 
 interface Cache {
   get(keyObject: CacheKeyObject): object

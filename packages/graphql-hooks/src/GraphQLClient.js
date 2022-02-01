@@ -6,7 +6,7 @@ import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
-    if (!config.url) {
+    if (!config.local && !config.url) {
       throw new Error('GraphQLClient: config.url is required')
     }
 
@@ -15,6 +15,7 @@ class GraphQLClient {
     }
 
     if (
+      !config.local &&
       (canUseDOM() || config.ssrMode) &&
       !config.fetch &&
       typeof fetch !== 'function'
@@ -28,6 +29,7 @@ class GraphQLClient {
       throw new Error('GraphQLClient: config.cache is required when in ssrMode')
     }
 
+    this.local = config.local
     this.cache = config.cache
     this.headers = config.headers || {}
     this.ssrMode = config.ssrMode
@@ -189,6 +191,19 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
+    if (this.local) {
+      if (this.local[operation.query]) {
+        return Promise.resolve(
+          this.local[operation.query](
+            operation.variables,
+            operation.operationName
+          )
+        ).then(data => ({ data }))
+      } else if (!this.url) {
+        throw new Error('GraphQLClient: no match for\n ' + operation.query)
+      }
+    }
+
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
