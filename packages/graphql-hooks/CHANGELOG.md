@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.1...graphql-hooks@5.6.0) (2022-02-02)
+
+
+### Features
+
+* **fetchData:** no undefined when unmounted ([#777](https://github.com/nearform/graphql-hooks/issues/777)) ([e4f4f4c](https://github.com/nearform/graphql-hooks/commit/e4f4f4c073f87b4c9cac72f499da49095f1c1640))
+
+
+
+
+
 ## [5.5.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.0...graphql-hooks@5.5.1) (2022-01-04)
 
 
