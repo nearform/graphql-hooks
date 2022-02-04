@@ -400,14 +400,16 @@ import { createClient } from 'graphql-ws'
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
-  subscriptionClient: () => new SubscriptionClient('ws://localhost:8000/graphql', {
-    /* additional config options */
-  }),
+  subscriptionClient: () =>
+    new SubscriptionClient('ws://localhost:8000/graphql', {
+      /* additional config options */
+    }),
   // or
-  subscriptionClient: () => createClient({
-    url: 'ws://localhost:8000/graphql'
-    /* additional config options */
-  })
+  subscriptionClient: () =>
+    createClient({
+      url: 'ws://localhost:8000/graphql'
+      /* additional config options */
+    })
 })
 ```
 
@@ -581,7 +583,7 @@ export default function PostList() {
 
 ## Refetch queries with mutations subscription
 
-We can have a query to automatically refetch when any mutation from a provided list execute.  
+We can have a query to automatically refetch when any mutation from a provided list execute.
 In the following example we are refetching a list of posts for a given user.
 
 **Example**
@@ -670,10 +672,13 @@ export default function PostForm() {
 ### File uploads Node.js
 
 ```js
+import { FormData } = from 'formdata-node'
+import { fileFromPath } = from 'formdata-node/file-from-path'
+
 const client = new GraphQLClient({
   url: 'https://domain.com/graphql',
   fetch: require('node-fetch'),
-  FormData: require('formdata-node')
+  FormData
 })
 
 const uploadPostPictureMutation = `
@@ -687,7 +692,7 @@ const uploadPostPictureMutation = `
 
 const { data, error } = await client.request({
   query: uploadPostPictureMutation,
-  variables: { picture: createReadStream('some-file.txt') }
+  variables: { picture: await fileFromPath('some-file.txt') }
 })
 ```
 
