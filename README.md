@@ -142,10 +142,11 @@ const client = new GraphQLClient(config)
 
 **`config`**: Object containing configuration properties
 
-- `url` (**Required**): The url to your GraphQL server
+- `url`: The URL of your GraphQL **HTTP** server. If not specified, you must enable `fullWsTransport` and provide a valid `subscriptionClient`; otherwise is **required**.
+- `fullWsTransport`: Boolean - set to `true` if you want to use `subscriptionClient` to also send query and mutations via WebSocket; defaults to `false`
 - `ssrMode`: Boolean - set to `true` when using on the server for server-side rendering; defaults to `false`
 - `useGETForQueries`: Boolean - set to `true` to use HTTP GET method for all queries; defaults to false. See [HTTP Get Support](#HTTP-Get-support) for more info
-- `subscriptionClient`: An instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws). A factory function can also be passed in order to avoid the creation of the client in ssr environments.
+- `subscriptionClient`: The **WebSocket** client configuration. Accepts either an instance of `SubscriptionClient` from [subscriptions-transport-ws](https://github.com/apollographql/subscriptions-transport-ws) or `Client` from [graphql-ws](https://github.com/enisdenjo/graphql-ws). A factory function is also accepted e.g. to avoid the creation of the client in SSR environments.
 - `cache` (**Required** if `ssrMode` is `true`, otherwise optional): Object with the following methods:
   - `cache.get(key)`
   - `cache.set(key, data)`
@@ -453,6 +454,8 @@ function TotalCountComponent() {
 **Working Example**:
 
 See our [subscription example](examples/subscription) which has both the client and server code to integrate subscriptions into your application.
+
+See also the [full WS transport example](examples/full-ws-transport) if you want to see how to send every operation through WebSocket.
 
 # Guides
 
