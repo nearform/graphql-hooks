@@ -23,10 +23,19 @@ const TEST_QUERY = /* GraphQL */ `
 
 describe('GraphQLClient', () => {
   describe('when instantiated', () => {
-    it('throws if no url provided', () => {
+    it('throws if no url (nor subscriptionClient) provided', () => {
       expect(() => {
         new GraphQLClient()
       }).toThrow('GraphQLClient: config.url is required')
+    })
+
+    it('works if no url is provided but fullWsTransport:true and subscriptionClient is provided', () => {
+      expect(() => {
+        new GraphQLClient({
+          fullWsTransport: true,
+          subscriptionClient: {}
+        })
+      }).not.toThrow()
     })
 
     it('throws if fetch is not a function', () => {
