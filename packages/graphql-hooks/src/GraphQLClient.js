@@ -204,13 +204,12 @@ class GraphQLClient {
   request(operation, options = {}) {
     if (this.fullWsTransport) {
       return this.requestViaWS(operation)
-    } else {
-      if (this.url) {
-        return this.requestViaHttp(operation, options)
-      } else {
-        throw new Error('GraphQLClient: config.url is required')
-      }
     }
+
+    if (this.url) {
+      return this.requestViaHttp(operation, options)
+    }
+    throw new Error('GraphQLClient: config.url is required')
   }
 
   requestViaHttp(operation, options) {
