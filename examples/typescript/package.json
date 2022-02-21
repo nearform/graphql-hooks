@@ -1,14 +1,14 @@
 {
   "name": "typescript-example",
-  "version": "2.3.0",
+  "version": "2.5.0",
   "private": true,
   "dependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.5",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.11",
-    "graphql-hooks": "^5.5.0",
-    "graphql-hooks-memcache": "^2.2.2",
+    "graphql-hooks": "^5.7.0",
+    "graphql-hooks-memcache": "^2.2.3",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-scripts": "^4.0.3",

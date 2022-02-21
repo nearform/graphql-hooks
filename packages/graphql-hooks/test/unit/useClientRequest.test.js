@@ -473,7 +473,7 @@ describe('useClientRequest', () => {
       expect(state).toEqual({ cacheHit: false, loading: true })
     })
 
-    it('returns undefined instantly if not mounted', async () => {
+    it('returns result with error instantly if not mounted', async () => {
       let fetchData, state
       const { unmount } = renderHook(
         () =>
@@ -487,8 +487,16 @@ describe('useClientRequest', () => {
       )
 
       unmount()
-      const result = await act(fetchData)
-      expect(result).toBe(undefined)
+
+      let result
+      await act(async () => {
+        result = await fetchData()
+      })
+
+      expect(result.data).toBe(undefined)
+      expect(result.loading).toBe(false)
+      expect(result.cacheHit).toBe(false)
+      expect(result.error.fetchError).toBeInstanceOf(Error)
       expect(mockClient.request).not.toHaveBeenCalled()
       expect(state).toEqual({ cacheHit: false, loading: true })
     })

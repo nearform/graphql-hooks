@@ -1,10 +1,11 @@
-import { FormData, File as FormDataFile } from 'formdata-node'
-
 import { GraphQLClient } from '../../src'
-import { Readable } from 'stream'
 import { TextEncoder } from 'util'
-import { createReadStream } from 'fs'
 import fetchMock from 'jest-fetch-mock'
+import { FormData, File as FormDataFile } from 'formdata-node'
+import { Readable } from 'stream'
+
+// workaround for https://github.com/octet-stream/form-data/issues/50
+const { fileFromPathSync } = require('formdata-node/lib/cjs/fileFromPath')
 
 global.TextEncoder = TextEncoder
 
@@ -22,10 +23,19 @@ const TEST_QUERY = /* GraphQL */ `
 
 describe('GraphQLClient', () => {
   describe('when instantiated', () => {
-    it('throws if no url provided', () => {
+    it('throws if no url (nor subscriptionClient) provided', () => {
       expect(() => {
         new GraphQLClient()
       }).toThrow('GraphQLClient: config.url is required')
+    })
+
+    it('works if no url is provided but fullWsTransport:true and subscriptionClient is provided', () => {
+      expect(() => {
+        new GraphQLClient({
+          fullWsTransport: true,
+          subscriptionClient: {}
+        })
+      }).not.toThrow()
     })
 
     it('throws if fetch is not a function', () => {
@@ -405,9 +415,9 @@ describe('GraphQLClient', () => {
       const originalFormData = global.FormData
 
       const client = new GraphQLClient({ ...validConfig, FormData })
-      const stream = createReadStream('test/mocks/sample.txt')
+      const file = fileFromPathSync('test/mocks/sample.txt')
 
-      const operation = { query: '', variables: { a: stream } }
+      const operation = { query: '', variables: { a: file } }
       const fetchOptions = client.getFetchOptions(operation)
 
       beforeAll(() => {

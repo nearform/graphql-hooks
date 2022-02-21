@@ -1,0 +1,15 @@
+name: Check Linked Issues
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  check_pull_requests:
+    runs-on: ubuntu-latest
+    name: Check linked issues
+    steps:
+      - uses: nearform/github-action-check-linked-issues@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          exclude-branches: 'release/**, dependabot/**'

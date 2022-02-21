@@ -6,8 +6,22 @@ import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
+    this.fullWsTransport = config.fullWsTransport
+    this.subscriptionClient = config.subscriptionClient
+
+    if (typeof this.subscriptionClient === 'function') {
+      this.subscriptionClient = this.subscriptionClient()
+    }
+
     if (!config.url) {
-      throw new Error('GraphQLClient: config.url is required')
+      if (this.fullWsTransport) {
+        // check if there's a subscriptionClient
+        if (!this.subscriptionClient) {
+          throw new Error('GraphQLClient: subscriptionClient is required')
+        }
+      } else {
+        throw new Error('GraphQLClient: config.url is required')
+      }
     }
 
     if (config.fetch && typeof config.fetch !== 'function') {
@@ -42,7 +56,6 @@ class GraphQLClient {
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
-    this.subscriptionClient = config.subscriptionClient
     this.mutationsEmitter = new EventEmitter()
   }
 
@@ -189,6 +202,17 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
+    if (this.fullWsTransport) {
+      return this.requestViaWS(operation)
+    }
+
+    if (this.url) {
+      return this.requestViaHttp(operation, options)
+    }
+    throw new Error('GraphQLClient: config.url is required')
+  }
+
+  requestViaHttp(operation, options) {
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
@@ -209,10 +233,7 @@ class GraphQLClient {
       url = url + '?' + paramsQueryString
     }
 
-    return this.fetch(
-      url,
-      this.getFetchOptions(operation, options.fetchOptionsOverrides)
-    )
+    return this.fetch(url, fetchOptions)
       .then(response => {
         if (!response.ok) {
           return response.text().then(body => {
@@ -257,11 +278,28 @@ class GraphQLClient {
       })
   }
 
-  createSubscription(operation) {
-    if (typeof this.subscriptionClient === 'function') {
-      this.subscriptionClient = this.subscriptionClient()
-    }
+  requestViaWS(operationPayload) {
+    return new Promise((resolve, reject) => {
+      let data
+      try {
+        const observable = this.createSubscription(operationPayload)
+        const subscription = observable.subscribe({
+          next: result => {
+            data = result
+          },
+          error: reject,
+          complete: () => {
+            subscription.unsubscribe()
+            resolve(data)
+          }
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
 
+  createSubscription(operationPayload) {
     if (!this.subscriptionClient) {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
@@ -270,12 +308,12 @@ class GraphQLClient {
       // graphql-ws
       return {
         subscribe: sink => ({
-          unsubscribe: this.subscriptionClient.subscribe(operation, sink)
+          unsubscribe: this.subscriptionClient.subscribe(operationPayload, sink)
         })
       }
     } else {
       // subscriptions-transport-ws
-      return this.subscriptionClient.request(operation)
+      return this.subscriptionClient.request(operationPayload)
     }
   }
 }

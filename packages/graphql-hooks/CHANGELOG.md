@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.6.0...graphql-hooks@5.7.0) (2022-02-10)
+
+
+### Features
+
+* add fullWsTransport support ([#767](https://github.com/nearform/graphql-hooks/issues/767)) ([6a3e7ab](https://github.com/nearform/graphql-hooks/commit/6a3e7ab879e8d2a85ded42fb6cf34e124541018f))
+
+
+
+
+
+# [5.6.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.1...graphql-hooks@5.6.0) (2022-02-02)
+
+
+### Features
+
+* **fetchData:** no undefined when unmounted ([#777](https://github.com/nearform/graphql-hooks/issues/777)) ([e4f4f4c](https://github.com/nearform/graphql-hooks/commit/e4f4f4c073f87b4c9cac72f499da49095f1c1640))
+
+
+
+
+
+## [5.5.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.0...graphql-hooks@5.5.1) (2022-01-04)
+
+
+### Bug Fixes
+
+* adjusted typing ([#758](https://github.com/nearform/graphql-hooks/issues/758)) ([a90f860](https://github.com/nearform/graphql-hooks/commit/a90f86036e0c7c95fcb46741b0d3dba3318454c8))
+* corrects the fetch existence check ([#754](https://github.com/nearform/graphql-hooks/issues/754)) ([3e21b51](https://github.com/nearform/graphql-hooks/commit/3e21b513fb466179e66d6a5e905e366b7495be34))
+
+
+### Features
+
+* add tsd tests ([#756](https://github.com/nearform/graphql-hooks/issues/756)) ([cc30336](https://github.com/nearform/graphql-hooks/commit/cc303364db5534c301fece0327614cb3e94f7997))
+* added response proxy ([#730](https://github.com/nearform/graphql-hooks/issues/730)) ([dacce10](https://github.com/nearform/graphql-hooks/commit/dacce1097e046f2cec6606d654a165c8e431bb0b))
+* subscriptionClient accepts now a factory function as value ([#755](https://github.com/nearform/graphql-hooks/issues/755)) ([453c9b2](https://github.com/nearform/graphql-hooks/commit/453c9b20266209d7ed6fc55425e343324691be08))
+
+
+
+
+
 # [5.5.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.4.1...graphql-hooks@5.5.0) (2021-11-20)
 
 
