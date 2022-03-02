@@ -225,9 +225,10 @@ function useClientRequest(query, initialOpts = {}) {
   )
 
   // We perform caching after reducer update
-  // To include the outcome of updateData
+  // to include the outcome of updateData.
+  // The cache is already saved if in ssrMode.
   React.useEffect(() => {
-    if (state.useCache) {
+    if (state.useCache && !client.ssrMode) {
       client.saveCache(state.cacheKey, state)
     }
   }, [client, state])

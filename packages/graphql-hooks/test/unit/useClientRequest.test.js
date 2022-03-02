@@ -201,7 +201,7 @@ describe('useClientRequest', () => {
       }
     })
 
-    await fetchData()
+    await act(fetchData)
 
     expect(state).toEqual({
       cacheHit: false,
