@@ -2,6 +2,11 @@ const last = a => a[a.length - 1]
 const reduce = a => a.slice(0, -1)
 
 export default class Middleware {
+  constructor(fns) {
+    for (const fn of fns) {
+      this.use(fn)
+    }
+  }
   use(method) {
     this.go = (
       stack =>
