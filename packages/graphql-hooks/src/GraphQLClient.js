@@ -2,6 +2,7 @@ import EventEmitter from 'events'
 import canUseDOM from './canUseDOM'
 import { extractFiles } from 'extract-files'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
+import Middleware from './Middleware'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -56,6 +57,17 @@ class GraphQLClient {
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
+    this.middleware = new Middleware()
+    const middlewares = [
+      (opts, next) => {
+        console.log('LOGGER', opts)
+        next()
+      }
+    ]
+      .concat(config.middleware)
+      .filter(Boolean)
+    middlewares.forEach(mid => this.middleware.use(mid))
+
     this.mutationsEmitter = new EventEmitter()
   }
 
@@ -201,15 +213,20 @@ class GraphQLClient {
     return fetchOptions
   }
 
-  request(operation, options = {}) {
-    if (this.fullWsTransport) {
-      return this.requestViaWS(operation)
-    }
+  request(rawOperation, options = {}) {
+    return new Promise(resolve =>
+      this.middleware.go({ operation: rawOperation }, ({ operation }) => {
+        console.log(operation)
+        if (this.fullWsTransport) {
+          return resolve(this.requestViaWS(operation))
+        }
 
-    if (this.url) {
-      return this.requestViaHttp(operation, options)
-    }
-    throw new Error('GraphQLClient: config.url is required')
+        if (this.url) {
+          return resolve(this.requestViaHttp(operation, options))
+        }
+        throw new Error('GraphQLClient: config.url is required')
+      })
+    )
   }
 
   requestViaHttp(operation, options) {
