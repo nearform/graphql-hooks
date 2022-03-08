@@ -6,14 +6,14 @@ export default class Middleware {
   }
 
   use(method) {
-    this.go = (stack => (opts, next) => {
+    this.run = (stack => (opts, next) => {
       stack(opts, () => {
         method.apply(this, [opts, next.bind.apply(next, [null, opts])])
       })
-    })(this.go)
+    })(this.run)
   }
 
-  go(opts, next) {
+  run(opts, next) {
     next.apply(this, opts)
   }
 }

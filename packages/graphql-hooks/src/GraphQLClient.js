@@ -3,7 +3,6 @@ import canUseDOM from './canUseDOM'
 import { extractFiles } from 'extract-files'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
-import DebugMiddleware from './middlewares/debugMiddleware'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -59,8 +58,8 @@ class GraphQLClient {
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
     this.middleware = new Middleware([
-      DebugMiddleware,
-      ...(this.middleware || [])
+      (_, next) => next(),
+      ...(config.middleware || [])
     ])
 
     this.mutationsEmitter = new EventEmitter()
@@ -208,17 +207,17 @@ class GraphQLClient {
     return fetchOptions
   }
 
-  request(rawOperation, options = {}) {
+  request(operation, options = {}) {
     return new Promise((resolve, reject) =>
-      this.middleware.go(
-        { operation: rawOperation, resolve, reject },
-        ({ operation }) => {
+      this.middleware.run(
+        { operation, client: this, resolve, reject },
+        ({ operation: updatedOperation }) => {
           if (this.fullWsTransport) {
-            return resolve(this.requestViaWS(operation))
+            return resolve(this.requestViaWS(updatedOperation))
           }
 
           if (this.url) {
-            return resolve(this.requestViaHttp(operation, options))
+            return resolve(this.requestViaHttp(updatedOperation, options))
           }
           reject(new Error('GraphQLClient: config.url is required'))
         }
@@ -235,7 +234,7 @@ class GraphQLClient {
 
     if (fetchOptions.method === 'GET') {
       const paramsQueryString = Object.entries(operation)
-        .filter(([, v]) => !!v)
+        .filter(([k, v]) => (options.hashOnly ? k === 'variables' : !!v))
         .map(([k, v]) => {
           if (k === 'variables') {
             v = JSON.stringify(v)
@@ -244,7 +243,18 @@ class GraphQLClient {
           return `${k}=${encodeURIComponent(v)}`
         })
         .join('&')
+
       url = url + '?' + paramsQueryString
+
+      if (operation.hash) {
+        url += `&extensions=${JSON.stringify(
+          {
+            persistedQuery: { version: 1, sha256Hash: operation.hash }
+          },
+          null,
+          0
+        )}`
+      }
     }
 
     return this.fetch(url, fetchOptions)
