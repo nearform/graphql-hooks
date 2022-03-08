@@ -210,16 +210,19 @@ class GraphQLClient {
 
   request(rawOperation, options = {}) {
     return new Promise((resolve, reject) =>
-      this.middleware.go({ operation: rawOperation }, ({ operation }) => {
-        if (this.fullWsTransport) {
-          return resolve(this.requestViaWS(operation))
-        }
+      this.middleware.go(
+        { operation: rawOperation, resolve, reject },
+        ({ operation }) => {
+          if (this.fullWsTransport) {
+            return resolve(this.requestViaWS(operation))
+          }
 
-        if (this.url) {
-          return resolve(this.requestViaHttp(operation, options))
+          if (this.url) {
+            return resolve(this.requestViaHttp(operation, options))
+          }
+          reject(new Error('GraphQLClient: config.url is required'))
         }
-        reject(new Error('GraphQLClient: config.url is required'))
-      })
+      )
     )
   }
 
