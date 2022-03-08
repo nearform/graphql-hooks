@@ -1,27 +1,19 @@
-const last = a => a[a.length - 1]
-const reduce = a => a.slice(0, -1)
-
 export default class Middleware {
   constructor(fns) {
     for (const fn of fns) {
       this.use(fn)
     }
   }
+
   use(method) {
-    this.go = (
-      stack =>
-      (...args) =>
-        stack(...reduce(args), () => {
-          const next = last(args)
-          method.apply(this, [
-            ...reduce(args),
-            next.bind.apply(next, [null, ...reduce(args)])
-          ])
-        })
-    )(this.go)
+    this.go = (stack => (opts, next) => {
+      stack(opts, () => {
+        method.apply(this, [opts, next.bind.apply(next, [null, opts])])
+      })
+    })(this.go)
   }
 
-  go(...args) {
-    last(args).apply(this, reduce(args))
+  go(opts, next) {
+    next.apply(this, opts)
   }
 }
