@@ -1,16 +1,18 @@
 export default class Middleware {
   constructor(fns) {
     for (const fn of fns) {
-      this.use(fn)
-    }
-  }
+      if (typeof fn !== 'function') {
+        throw new Error(
+          'GraphQLClient Middleware: middleware has to be of type `function`'
+        )
+      }
 
-  use(method) {
-    this.run = (stack => (opts, next) => {
-      stack(opts, () => {
-        method.apply(this, [opts, next.bind.apply(next, [null, opts])])
-      })
-    })(this.run)
+      this.run = (stack => (opts, next) => {
+        stack(opts, () => {
+          fn.apply(this, [opts, next.bind.apply(next, [null, opts])])
+        })
+      })(this.run)
+    }
   }
 
   /**
