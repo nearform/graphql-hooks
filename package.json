@@ -54,8 +54,5 @@
   },
   "engines": {
     "node": "^16"
-  },
-  "dependencies": {
-    "wonka": "^4.0.15"
   }
 }
