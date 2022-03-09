@@ -1,8 +1,9 @@
 import EventEmitter from 'events'
-import canUseDOM from './canUseDOM'
 import { extractFiles } from 'extract-files'
+import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
+import { pipe } from './utils'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -208,16 +209,32 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
+    let responseHandlers = []
+    const addResponseHook = handler => responseHandlers.push(handler)
+
     return new Promise((resolve, reject) =>
       this.middleware.run(
-        { operation, client: this, resolve, reject },
+        { operation, client: this, addResponseHook, resolve, reject },
         ({ operation: updatedOperation }) => {
+          const transformResponse = res => {
+            if (responseHandlers.length > 0) {
+              return pipe(responseHandlers)(res)
+            }
+            return res
+          }
+
           if (this.fullWsTransport) {
-            return resolve(this.requestViaWS(updatedOperation))
+            return this.requestViaWS(updatedOperation)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
           }
 
           if (this.url) {
-            return resolve(this.requestViaHttp(updatedOperation, options))
+            return this.requestViaHttp(updatedOperation, options)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
           }
           reject(new Error('GraphQLClient: config.url is required'))
         }
