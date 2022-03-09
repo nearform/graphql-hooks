@@ -58,10 +58,7 @@ class GraphQLClient {
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
-    this.middleware = new Middleware([
-      (_, next) => next(),
-      ...(config.middleware || [])
-    ])
+    this.middleware = new Middleware(config.middleware || [])
 
     this.mutationsEmitter = new EventEmitter()
   }

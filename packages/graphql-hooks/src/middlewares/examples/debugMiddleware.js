@@ -1,3 +1,7 @@
+/**
+ * DebugMiddleware - example
+ * @param {function} logger
+ */
 const DebugMiddleware =
   (logger = console.log) =>
   (opts, next) => {

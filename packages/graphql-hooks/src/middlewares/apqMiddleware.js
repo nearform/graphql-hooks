@@ -9,7 +9,7 @@ async function sha256(data) {
 /**
  * AutomaticPersistedQueryMiddleware - must be last in the middleware list
  * @param {function} makeRequest
- * @returns Promise<response>
+ * @returns Promise<object>
  */
 const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
   try {
