@@ -16,13 +16,13 @@ const LoggerMiddleware = ({ operation }, next) => {
 
 ## Parameters
 
-Middleware is a simple function that receives 2 parameters:
+Middleware is a function with 2 parameters:
 
 - `options` object:
   - `operation` - GraphQL operation object - includes `query`, `variables` etc.
-  - `addResponseHook` - a hook that can be called from within the middleware fn to intercept a response - it accepts function to read/transform and return the data
+  - `addResponseHook` - a function that can be called from within the middleware to add a response hook - it accepts a handler to read/transform and return the data - passthrough ex.: `addResponseHook(response => response)`
   - `client` - the GraphQLClient instance
-  - `resolve`, `reject` - advanced usage only, these would be used only when we won't to resolve/reject the request `Promise` early without doing the usual fetch (see [example](examples/cacheMiddleware.js))
+  - `resolve`, `reject` - advanced usage only, these would be used only when we want to resolve/reject the request `Promise` early without doing the usual fetch (see [example](examples/cacheMiddleware.js))
 - `next` function - calls the next middleware function in line. Generally it should always be called, unless we want to change the control flow
 
 ## More examples
