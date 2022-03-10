@@ -22,7 +22,10 @@ const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
       hashOnly: true
     })
 
-    if (!res.error) resolve(res)
+    // Data fetched successfully -> resolve early
+    if (!res.error) {
+      resolve(res)
+    }
 
     const { error } = res
     // If a server has not recognized the hash, send both query and hash

@@ -261,13 +261,12 @@ class GraphQLClient {
       url = url + '?' + paramsQueryString
 
       if (operation.hash) {
-        url += `&extensions=${JSON.stringify(
-          {
+        const extensions = encodeURIComponent(
+          JSON.stringify({
             persistedQuery: { version: 1, sha256Hash: operation.hash }
-          },
-          null,
-          0
-        )}`
+          })
+        )
+        url += `&extensions=${extensions}`
       }
     }
 
