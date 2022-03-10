@@ -24,7 +24,7 @@ const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
 
     // Data fetched successfully -> resolve early
     if (!res.error) {
-      resolve(res)
+      return resolve(res)
     }
 
     const { error } = res
