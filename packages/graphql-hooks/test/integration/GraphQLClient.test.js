@@ -42,6 +42,61 @@ describe('GraphQLClient', () => {
     })
   })
 
+  describe('multiple asynchronous response hooks', () => {
+    let client
+    const logger = jest.fn()
+
+    const AsyncMidd =
+      (logger, timeout) =>
+      ({ addResponseHook }, next) => {
+        addResponseHook(async res => {
+          await new Promise(resolve => setTimeout(resolve, timeout))
+          logger('Timeout:', timeout)
+          return res
+        })
+        next()
+      }
+
+    const SyncMidd =
+      logger =>
+      ({ addResponseHook }, next) => {
+        addResponseHook(res => {
+          logger('Timeout: none')
+          return res
+        })
+        next()
+      }
+
+    beforeEach(() => {
+      logger.mockReset()
+      fetchMock.mockReset()
+      client = new GraphQLClient({
+        middleware: [
+          AsyncMidd(logger, 20),
+          AsyncMidd(logger, 10),
+          SyncMidd(logger)
+        ],
+        fetch: fetchMock,
+        url: 'localhost:3000/graphql'
+      })
+    })
+
+    it('Handles async response hooks in correct order', async () => {
+      const MOCK_DATA = { data: 'data' }
+      fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
+
+      await client.request({
+        query: TEST_QUERY
+      })
+      expect(logger).toHaveBeenCalledTimes(3)
+      expect(logger.mock.calls).toEqual([
+        ['Timeout:', 20],
+        ['Timeout:', 10],
+        ['Timeout: none']
+      ])
+    })
+  })
+
   describe('DebugMiddleware', () => {
     let client
     const logger = jest.fn()

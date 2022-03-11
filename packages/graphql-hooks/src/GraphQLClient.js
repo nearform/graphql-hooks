@@ -3,7 +3,7 @@ import { extractFiles } from 'extract-files'
 import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
-import { pipe } from './utils'
+import { pipeP } from './utils'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -215,7 +215,8 @@ class GraphQLClient {
         ({ operation: updatedOperation }) => {
           const transformResponse = res => {
             if (responseHandlers.length > 0) {
-              return pipe(responseHandlers)(res)
+              // Pipe for promises
+              return pipeP(responseHandlers)(res)
             }
             return res
           }
