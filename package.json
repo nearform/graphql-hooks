@@ -54,5 +54,8 @@
   },
   "engines": {
     "node": "^16"
+  },
+  "dependencies": {
+    "@aws-crypto/sha256-browser": "^2.0.1"
   }
 }

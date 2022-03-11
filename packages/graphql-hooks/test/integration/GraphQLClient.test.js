@@ -191,7 +191,7 @@ describe('GraphQLClient', () => {
 
       expect(res).toEqual(MOCK_DATA)
       expect(fetchMock).toHaveBeenCalledWith(
-        'localhost:3000/graphql?variables=%7B%22limit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2210323211%22%7D%7D',
+        'localhost:3000/graphql?variables=%7B%22limit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2226d6478a7140fba74900a0fea5ffe3552d5ee584a4991612250dc5ef8ddf0948%22%7D%7D',
         { headers: {}, method: 'GET' }
       )
     })
@@ -217,7 +217,7 @@ describe('GraphQLClient', () => {
 
       expect(res).toEqual(MOCK_DATA)
       expect(fetchMock.mock.calls[0]).toEqual([
-        'localhost:3000/graphql?variables=%7B%22limit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2210323211%22%7D%7D',
+        'localhost:3000/graphql?variables=%7B%22limit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2226d6478a7140fba74900a0fea5ffe3552d5ee584a4991612250dc5ef8ddf0948%22%7D%7D',
         { method: 'GET', headers: {} }
       ])
       expect(fetchMock.mock.calls[1]).toEqual([
@@ -227,7 +227,17 @@ describe('GraphQLClient', () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: '{"query":"\\n  query Test($limit: Int) {\\n    test(limit: $limit) {\\n      id\\n    }\\n  }\\n","variables":{"limit":3}}'
+          body: JSON.stringify({
+            query: TEST_QUERY,
+            variables: { limit: 3 },
+            extensions: {
+              persistedQuery: {
+                version: 1,
+                sha256Hash:
+                  '26d6478a7140fba74900a0fea5ffe3552d5ee584a4991612250dc5ef8ddf0948'
+              }
+            }
+          })
         }
       ])
     })
