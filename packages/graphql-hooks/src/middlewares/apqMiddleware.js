@@ -1,6 +1,6 @@
 import { Sha256 } from '@aws-crypto/sha256-browser'
 
-async function sha256(query) {
+export async function sha256(query) {
   const hash = new Sha256()
   hash.update(query, 'utf8')
   const hashBuffer = await hash.digest()
