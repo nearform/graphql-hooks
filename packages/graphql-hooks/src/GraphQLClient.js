@@ -206,7 +206,7 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
-    let responseHandlers = []
+    const responseHandlers = []
     const addResponseHook = handler => responseHandlers.push(handler)
 
     return new Promise((resolve, reject) =>

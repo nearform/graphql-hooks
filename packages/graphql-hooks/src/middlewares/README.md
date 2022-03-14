@@ -32,6 +32,7 @@ See [examples folder](examples/)
 ### Update response post-request
 
 ```js
+// Convert response object keys to camelCase
 const camelCaseMiddleware = ({ operation, addResponseHook }, next) => {
   addResponseHook(response => {
     // Need to return
@@ -45,6 +46,7 @@ const camelCaseMiddleware = ({ operation, addResponseHook }, next) => {
 ### Change the control flow (async)
 
 ```js
+// Check pre-request if API is up and running
 const healthCheckMiddleware = async ({ operation, client, reject }, next) => {
   const isWorking = await client.request('/health')
   if (isWorking) {
