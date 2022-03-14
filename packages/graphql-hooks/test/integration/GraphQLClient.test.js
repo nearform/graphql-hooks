@@ -1,5 +1,4 @@
 import { GraphQLClient } from '../../src'
-import APQMiddleware from '../../src/middlewares/apqMiddleware'
 import fetchMock from 'jest-fetch-mock'
 import CacheMiddleware from '../../src/middlewares/examples/cacheMiddleware'
 import DebugMiddleware from '../../src/middlewares/examples/debugMiddleware'
