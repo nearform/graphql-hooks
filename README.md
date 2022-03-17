@@ -97,12 +97,12 @@ We believe `graphql-hooks` is a great choice as a hooks-first GraphQL client due
 
 In terms of performance, this is more of a grey area as we have no official benchmarks yet.
 
-If you need a client that offers middleware and advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
+If you need a client that offers more customization such as advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
 
 | Pros                        | Cons                                  |
 | --------------------------- | ------------------------------------- |
-| Small in size               | Middleware support                    |
-| Concise API                 | Less "advanced" caching configuration |
+| Small in size               | Less "advanced" caching configuration |
+| Concise API                 |
 | Quick to get up and running |
 
 # Table of Contents
@@ -160,6 +160,7 @@ const client = new GraphQLClient(config)
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
+- `middleware`: Accepts an array of middleware functions, default: none, see more in [middlewares readme](packages/graphql-hooks/src/middlewares/README.md)
 - `onError({ operation, result })`: Custom error handler
   - `operation`: Object with `query`, `variables` and `operationName`
   - `result`: Object containing `data` and `error` object that contains `fetchError`, `httpError` and `graphqlErrors`
