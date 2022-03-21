@@ -1,11 +1,11 @@
-import { ClientContext, GraphQLClient } from 'graphql-hooks'
+import { ClientContext, LocalGraphQLClient } from 'graphql-hooks'
 import { render } from '@testing-library/react'
 import React from 'react'
 import T from 'prop-types'
 
 const customRender = (ui, options) => {
-  const client = new GraphQLClient({
-    local: options.localQueries
+  const client = new LocalGraphQLClient({
+    localQueries: options.localQueries
   })
 
   const Wrapper = ({ children }) => {
