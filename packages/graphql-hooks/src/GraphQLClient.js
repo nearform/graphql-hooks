@@ -1,13 +1,29 @@
 import EventEmitter from 'events'
-import canUseDOM from './canUseDOM'
 import { extractFiles } from 'extract-files'
+import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
+import Middleware from './Middleware'
+import { pipeP } from './utils'
 
 class GraphQLClient {
   constructor(config = {}) {
     // validate config
-    if (!config.local && !config.url) {
-      throw new Error('GraphQLClient: config.url is required')
+    this.fullWsTransport = config.fullWsTransport
+    this.subscriptionClient = config.subscriptionClient
+
+    if (typeof this.subscriptionClient === 'function') {
+      this.subscriptionClient = this.subscriptionClient()
+    }
+
+    if (!config.url) {
+      if (this.fullWsTransport) {
+        // check if there's a subscriptionClient
+        if (!this.subscriptionClient) {
+          throw new Error('GraphQLClient: subscriptionClient is required')
+        }
+      } else {
+        throw new Error('GraphQLClient: config.url is required')
+      }
     }
 
     if (config.fetch && typeof config.fetch !== 'function') {
@@ -15,7 +31,6 @@ class GraphQLClient {
     }
 
     if (
-      !config.local &&
       (canUseDOM() || config.ssrMode) &&
       !config.fetch &&
       typeof fetch !== 'function'
@@ -29,7 +44,6 @@ class GraphQLClient {
       throw new Error('GraphQLClient: config.cache is required when in ssrMode')
     }
 
-    this.local = config.local
     this.cache = config.cache
     this.headers = config.headers || {}
     this.ssrMode = config.ssrMode
@@ -44,7 +58,8 @@ class GraphQLClient {
     this.logErrors = config.logErrors !== undefined ? config.logErrors : true
     this.onError = config.onError
     this.useGETForQueries = config.useGETForQueries === true
-    this.subscriptionClient = config.subscriptionClient
+    this.middleware = new Middleware(config.middleware || [])
+
     this.mutationsEmitter = new EventEmitter()
   }
 
@@ -191,19 +206,41 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
-    if (this.local) {
-      if (this.local[operation.query]) {
-        return Promise.resolve(
-          this.local[operation.query](
-            operation.variables,
-            operation.operationName
-          )
-        ).then(data => ({ data }))
-      } else if (!this.url) {
-        throw new Error('GraphQLClient: no match for\n ' + operation.query)
-      }
-    }
+    const responseHandlers = []
+    const addResponseHook = handler => responseHandlers.push(handler)
 
+    return new Promise((resolve, reject) =>
+      this.middleware.run(
+        { operation, client: this, addResponseHook, resolve, reject },
+        ({ operation: updatedOperation }) => {
+          const transformResponse = res => {
+            if (responseHandlers.length > 0) {
+              // Pipe for promises
+              return pipeP(responseHandlers)(res)
+            }
+            return res
+          }
+
+          if (this.fullWsTransport) {
+            return this.requestViaWS(updatedOperation)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
+          }
+
+          if (this.url) {
+            return this.requestViaHttp(updatedOperation, options)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
+          }
+          reject(new Error('GraphQLClient: config.url is required'))
+        }
+      )
+    )
+  }
+
+  requestViaHttp(operation, options) {
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
@@ -212,7 +249,7 @@ class GraphQLClient {
 
     if (fetchOptions.method === 'GET') {
       const paramsQueryString = Object.entries(operation)
-        .filter(([, v]) => !!v)
+        .filter(([k, v]) => (options.hashOnly ? k === 'variables' : !!v))
         .map(([k, v]) => {
           if (k === 'variables') {
             v = JSON.stringify(v)
@@ -221,7 +258,17 @@ class GraphQLClient {
           return `${k}=${encodeURIComponent(v)}`
         })
         .join('&')
+
       url = url + '?' + paramsQueryString
+
+      if (operation.hash) {
+        const extensions = encodeURIComponent(
+          JSON.stringify({
+            persistedQuery: { version: 1, sha256Hash: operation.hash }
+          })
+        )
+        url += `&extensions=${extensions}`
+      }
     }
 
     return this.fetch(url, fetchOptions)
@@ -269,11 +316,28 @@ class GraphQLClient {
       })
   }
 
-  createSubscription(operation) {
-    if (typeof this.subscriptionClient === 'function') {
-      this.subscriptionClient = this.subscriptionClient()
-    }
+  requestViaWS(operationPayload) {
+    return new Promise((resolve, reject) => {
+      let data
+      try {
+        const observable = this.createSubscription(operationPayload)
+        const subscription = observable.subscribe({
+          next: result => {
+            data = result
+          },
+          error: reject,
+          complete: () => {
+            subscription.unsubscribe()
+            resolve(data)
+          }
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
 
+  createSubscription(operationPayload) {
     if (!this.subscriptionClient) {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
@@ -282,12 +346,12 @@ class GraphQLClient {
       // graphql-ws
       return {
         subscribe: sink => ({
-          unsubscribe: this.subscriptionClient.subscribe(operation, sink)
+          unsubscribe: this.subscriptionClient.subscribe(operationPayload, sink)
         })
       }
     } else {
       // subscriptions-transport-ws
-      return this.subscriptionClient.request(operation)
+      return this.subscriptionClient.request(operationPayload)
     }
   }
 }

@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.7.0...graphql-hooks@5.7.1) (2022-03-11)
+
+
+### Bug Fixes
+
+* dont overwrite the cache for ssrMode ([#787](https://github.com/nearform/graphql-hooks/issues/787)) ([754e191](https://github.com/nearform/graphql-hooks/commit/754e191822cd4b0cbff78f3701f7e35f6d6451af))
+
+
+### Features
+
+* **typescript:** adds cacheKey to UseClientRequestResult type ([#793](https://github.com/nearform/graphql-hooks/issues/793)) ([da796ce](https://github.com/nearform/graphql-hooks/commit/da796ceb7d0877f9d162ee4a7e25c7a7dc6889a0))
+
+
+
+
+
+# [5.7.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.6.0...graphql-hooks@5.7.0) (2022-02-10)
+
+
+### Features
+
+* add fullWsTransport support ([#767](https://github.com/nearform/graphql-hooks/issues/767)) ([6a3e7ab](https://github.com/nearform/graphql-hooks/commit/6a3e7ab879e8d2a85ded42fb6cf34e124541018f))
+
+
+
+
+
+# [5.6.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.1...graphql-hooks@5.6.0) (2022-02-02)
+
+
+### Features
+
+* **fetchData:** no undefined when unmounted ([#777](https://github.com/nearform/graphql-hooks/issues/777)) ([e4f4f4c](https://github.com/nearform/graphql-hooks/commit/e4f4f4c073f87b4c9cac72f499da49095f1c1640))
+
+
+
+
+
 ## [5.5.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.5.0...graphql-hooks@5.5.1) (2022-01-04)
 
 

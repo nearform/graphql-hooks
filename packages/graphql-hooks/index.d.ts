@@ -222,6 +222,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
+  cacheKey?: CacheKeyObject
   data?: ResponseData
   error?: APIError<TGraphQLError>
 }
