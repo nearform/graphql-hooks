@@ -1,4 +1,5 @@
 import GraphQLClient from './GraphQLClient'
+import LocalGraphQLError from './LocalGraphQLError'
 
 /** Local version of the GraphQLClient which only returns specified queries
  * Meant to be used as a way to easily mock and test queries during development. This client never contacts any actual server.
@@ -36,18 +37,22 @@ class LocalGraphQLClient extends GraphQLClient {
   }
 
   request(operation) {
-    if (this.localQueries[operation.query]) {
-      return Promise.resolve(
-        this.localQueries[operation.query](
-          operation.variables,
-          operation.operationName
-        )
-      ).then(data => ({ data }))
-    } else {
+    if (!this.localQueries[operation.query]) {
       throw new Error(
         `LocalGraphQLClient: no query match for: ${operation.query}`
       )
     }
+    return Promise.resolve(
+      this.localQueries[operation.query](
+        operation.variables,
+        operation.operationName
+      )
+    ).then(result => {
+      if (result instanceof LocalGraphQLError) {
+        return { error: result }
+      }
+      return { data: result }
+    })
   }
 }
 
