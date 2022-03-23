@@ -1,18 +1,108 @@
 import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
+import { Client } from 'graphql-ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+import type { UseClientRequestOptions, Cache } from '../index.d'
 import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
 import { pipeP } from './utils'
 
+export type FetchFunction = (
+  input: RequestInfo,
+  init?: RequestInit
+) => Promise<Response>
+export type OnErrorFunction<TVariables = any> = ({
+  result,
+  operation
+}: {
+  operation: Operation<TVariables>
+  result: Result
+}) => void
+
+export type MiddlewareFunction = () => any
+
+export interface GraphQLClientOptions {
+  url: string
+  cache?: Cache
+  // Ideally should just be `Headers`, but in some environment the `Headers` class might not exist
+  headers?: Headers | { [key: string]: string }
+  ssrMode?: boolean
+  useGETForQueries?: boolean
+  subscriptionClient?:
+    | SubscriptionClient
+    | Client
+    | (() => SubscriptionClient | Client)
+  fetch?: FetchFunction
+  fetchOptions?: object
+  FormData?: any
+  logErrors?: boolean
+  fullWsTransport?: boolean
+  onError?: OnErrorFunction
+  middleware?: MiddlewareFunction[]
+}
+
+interface Operation<TVariables = object> {
+  query: string
+  variables?: TVariables
+  operationName?: string
+  hash?: unknown
+}
+
+interface HttpError {
+  status: number
+  statusText: string
+  body: string
+}
+
+interface APIError<TGraphQLError = object> {
+  fetchError?: Error
+  httpError?: HttpError
+  graphQLErrors?: TGraphQLError[]
+}
+
+interface Result<ResponseData = any, TGraphQLError = object> {
+  data?: ResponseData
+  error?: APIError<TGraphQLError>
+}
+
+interface RequestOptions {
+  fetchOptionsOverrides?: object
+  hashOnly?: boolean
+  responseReducer?: (data: any, response: Response) => any
+}
+
+interface GenerateResultOptions<ResponseData = any, TGraphQLError = object> {
+  fetchError?: Error
+  httpError?: HttpError
+  graphQLErrors?: TGraphQLError[]
+  data?: ResponseData
+}
+
 class GraphQLClient {
-  constructor(config = {}) {
+  url: string
+  ssrPromises: Promise<any>[]
+  FormData?: any
+  fetch: FetchFunction
+  fetchOptions: RequestInit
+  logErrors: boolean
+  useGETForQueries: boolean
+  middleware: Middleware
+  mutationsEmitter: EventEmitter
+  cache?: Cache
+  headers?: Headers | { [key: string]: string }
+  ssrMode?: boolean
+  subscriptionClient?: SubscriptionClient | Client
+  fullWsTransport?: boolean
+  onError?: OnErrorFunction
+  constructor(config: GraphQLClientOptions) {
     // validate config
     this.fullWsTransport = config.fullWsTransport
-    this.subscriptionClient = config.subscriptionClient
 
-    if (typeof this.subscriptionClient === 'function') {
-      this.subscriptionClient = this.subscriptionClient()
+    if (typeof config.subscriptionClient === 'function') {
+      this.subscriptionClient = config.subscriptionClient()
+    } else {
+      this.subscriptionClient = config.subscriptionClient
     }
 
     if (!config.url) {
@@ -45,12 +135,14 @@ class GraphQLClient {
     }
 
     this.cache = config.cache
-    this.headers = config.headers || {}
+    this.headers =
+      config.headers || (typeof Headers !== 'undefined' ? new Headers() : {})
     this.ssrMode = config.ssrMode
     this.ssrPromises = []
     this.url = config.url
     this.fetch =
-      config.fetch || (typeof fetch !== 'undefined' && fetch && fetch.bind())
+      config.fetch ||
+      (typeof fetch !== 'undefined' && fetch && fetch.bind(this))
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
@@ -111,7 +203,15 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult({ fetchError, httpError, graphQLErrors, data }) {
+  generateResult<ResponseData = any, TGraphQLError = any>({
+    fetchError,
+    httpError,
+    graphQLErrors,
+    data
+  }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
+    ResponseData,
+    TGraphQLError
+  > {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
       fetchError ||
@@ -122,7 +222,10 @@ class GraphQLClient {
       : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
-  getCacheKey(operation, options = {}) {
+  getCacheKey<Variables = object>(
+    operation: Operation,
+    options: UseClientRequestOptions<any, Variables> = {}
+  ) {
     const fetchOptions = {
       ...this.fetchOptions,
       ...options.fetchOptionsOverrides
@@ -193,7 +296,9 @@ class GraphQLClient {
 
       i = 0
       files.forEach((paths, file) => {
-        form.append(`${++i}`, file, file.name)
+        /** Note during TypeScript conversion: file.name is not defined in ExtractableFile.
+         * I cast it as any since the existing code works though */
+        form.append(`${++i}`, file, (file as any).name)
       })
 
       fetchOptions.body = form
@@ -205,7 +310,10 @@ class GraphQLClient {
     return fetchOptions
   }
 
-  request(operation, options = {}) {
+  request<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options?: RequestOptions
+  ): Promise<Result<ResponseData, TGraphQLError>> {
     const responseHandlers = []
     const addResponseHook = handler => responseHandlers.push(handler)
 
@@ -240,7 +348,10 @@ class GraphQLClient {
     )
   }
 
-  requestViaHttp(operation, options) {
+  requestViaHttp<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options: RequestOptions
+  ): Promise<Result<ResponseData, TGraphQLError>> {
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
@@ -342,11 +453,14 @@ class GraphQLClient {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
 
-    if (typeof this.subscriptionClient.subscribe === 'function') {
+    if (isClient(this.subscriptionClient)) {
       // graphql-ws
       return {
         subscribe: sink => ({
-          unsubscribe: this.subscriptionClient.subscribe(operationPayload, sink)
+          unsubscribe: (this.subscriptionClient as Client).subscribe(
+            operationPayload,
+            sink
+          )
         })
       }
     } else {
@@ -354,6 +468,10 @@ class GraphQLClient {
       return this.subscriptionClient.request(operationPayload)
     }
   }
+}
+
+function isClient(value: any): value is Client {
+  return typeof value.subscribe === 'function'
 }
 
 export default GraphQLClient

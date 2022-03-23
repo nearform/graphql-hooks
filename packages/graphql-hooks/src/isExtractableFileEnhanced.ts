@@ -1,7 +1,9 @@
-import { isExtractableFile } from 'extract-files'
+import { ExtractableFile, isExtractableFile } from 'extract-files'
 
 // Support streams for NodeJS compatibility
-const isExtractableFileEnhanced = value =>
+const isExtractableFileEnhanced = <TFile = ExtractableFile>(
+  value: any
+): value is TFile =>
   isExtractableFile(value) ||
   // Check if stream
   // https://github.com/sindresorhus/is-stream/blob/3750505b0727f6df54324784fe369365ef78841e/index.js#L3

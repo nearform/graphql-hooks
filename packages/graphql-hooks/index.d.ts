@@ -121,7 +121,7 @@ export const ClientContext: React.Context<GraphQLClient>
 
 type ResetFunction = (desiredState?: object) => void
 
-interface ClientOptions {
+export interface ClientOptions {
   url: string
   cache?: Cache
   headers?: Headers

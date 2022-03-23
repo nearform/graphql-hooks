@@ -9,6 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
+    "check-types": "tsc",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
     "tsd": "tsd"
   },
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.0",
+    "@types/extract-files": "^8.1.1",
     "formdata-node": "^4.3.2",
     "graphql-hooks-memcache": "^2.2.4",
     "graphql-hooks-ssr": "^2.2.2",

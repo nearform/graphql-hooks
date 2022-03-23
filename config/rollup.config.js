@@ -19,7 +19,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
     external,
-    plugins: [typescript(), babel(), sizeSnapshot()],
+    plugins: [commonjs(), typescript(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -28,7 +28,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `es/${pkg.name}.js`, format: 'es', indent: false },
     external,
-    plugins: [typescript(), babel(), sizeSnapshot()],
+    plugins: [commonjs(), typescript(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -38,11 +38,11 @@ const generateRollupConfig = (name, overrides = {}) => [
     output: { file: `es/${pkg.name}.mjs`, format: 'es', indent: false },
     external,
     plugins: [
-      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
       }),
+      typescript(),
       replace({
         'process.env.NODE_ENV': JSON.stringify('production')
       }),
@@ -70,11 +70,11 @@ const generateRollupConfig = (name, overrides = {}) => [
     },
     external,
     plugins: [
-      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
       }),
+      typescript(),
       babel({
         exclude: 'node_modules/**'
       }),
@@ -97,11 +97,11 @@ const generateRollupConfig = (name, overrides = {}) => [
     },
     external,
     plugins: [
-      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
       }),
+      typescript(),
       babel({
         exclude: 'node_modules/**'
       }),
