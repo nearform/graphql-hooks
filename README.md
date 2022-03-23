@@ -126,6 +126,7 @@ If you need a client that offers more customization such as advanced cache confi
     - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
     - [Query Component ➡️ useQuery](#query-component-️-usequery)
     - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
+  - [Testing and mocking](#testing-and-mocking)
   - [Other]
     - [Request interceptors](#request-interceptors)
 
