@@ -34,7 +34,9 @@ type UseClientRequestReturn = [
   ResetFunction
 ]
 expectType<UseClientRequestReturn>(useClientRequest(query))
-expectType<UseClientRequestReturn>(useClientRequest(query, clientRequestOptions))
+expectType<UseClientRequestReturn>(
+  useClientRequest(query, clientRequestOptions)
+)
 
 const useQueryOptions: UseQueryOptions = {
   ssr: false,

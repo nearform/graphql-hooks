@@ -1,6 +1,7 @@
 import ClientContext from './ClientContext'
 import GraphQLClient from './GraphQLClient'
 import LocalGraphQLClient from './LocalGraphQLClient'
+import LocalGraphQLError from './LocalGraphQLError'
 import useClientRequest from './useClientRequest'
 import useQuery from './useQuery'
 import useSubscription from './useSubscription'
@@ -15,6 +16,7 @@ export {
   ClientContext,
   GraphQLClient,
   LocalGraphQLClient,
+  LocalGraphQLError,
   useClientRequest,
   useQuery,
   useSubscription,

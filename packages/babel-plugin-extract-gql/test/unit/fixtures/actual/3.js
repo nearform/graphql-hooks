@@ -13,6 +13,9 @@ const SOME_OTHER_QUERY = `
 `
 
 const MyCompA = () => {
-  const { data: data1 } = useQuery(SOME_QUERY, { other: 'options', remain: true })
+  const { data: data1 } = useQuery(SOME_QUERY, {
+    other: 'options',
+    remain: true
+  })
   const { data: data2 } = useQuery(SOME_OTHER_QUERY)
 }

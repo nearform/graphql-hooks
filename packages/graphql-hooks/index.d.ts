@@ -50,6 +50,19 @@ export class GraphQLClient {
   ): Promise<Result<ResponseData, TGraphQLError>>
 }
 
+export class LocalGraphQLClient extends GraphQLClient {
+  constructor(options: LocalClientOptions)
+}
+interface LocalClientOptions extends ClientOptions {
+  localQueries: LocalQueries
+}
+
+export class LocalGraphQLError<TGraphQLError = object>
+  implements APIError<TGraphQLError>
+{
+  constructor(error: APIError<TGraphQLError>)
+}
+
 export function useClientRequest<
   ResponseData = any,
   Variables = object,
