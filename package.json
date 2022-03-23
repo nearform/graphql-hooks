@@ -21,6 +21,7 @@
     "@babel/eslint-parser": "^7.16.5",
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.16.7",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "babel-jest": "^27.0.0",
@@ -54,5 +55,8 @@
   },
   "engines": {
     "node": "^16"
+  },
+  "dependencies": {
+    "@rollup/plugin-typescript": "^8.3.1"
   }
 }

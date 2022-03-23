@@ -5,6 +5,7 @@ import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
+import typescript from '@rollup/plugin-typescript'
 
 // get the package.json for the current package
 const packageDir = path.join(__filename, '..')
@@ -18,7 +19,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
     external,
-    plugins: [babel(), sizeSnapshot()],
+    plugins: [typescript(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -27,7 +28,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `es/${pkg.name}.js`, format: 'es', indent: false },
     external,
-    plugins: [babel(), sizeSnapshot()],
+    plugins: [typescript(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -37,6 +38,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     output: { file: `es/${pkg.name}.mjs`, format: 'es', indent: false },
     external,
     plugins: [
+      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
@@ -68,6 +70,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     },
     external,
     plugins: [
+      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
@@ -94,6 +97,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     },
     external,
     plugins: [
+      typescript(),
       commonjs(),
       nodeResolve({
         jsnext: true
