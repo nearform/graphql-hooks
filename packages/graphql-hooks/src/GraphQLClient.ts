@@ -2,82 +2,21 @@ import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
 import { Client } from 'graphql-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import type { UseClientRequestOptions, Cache } from '../index.d'
 import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
+import type {
+  UseClientRequestOptions,
+  Cache,
+  ClientOptions,
+  FetchFunction,
+  GenerateResultOptions,
+  OnErrorFunction,
+  Operation,
+  RequestOptions,
+  Result
+} from './types/common-types'
 import { pipeP } from './utils'
-
-export type FetchFunction = (
-  input: RequestInfo,
-  init?: RequestInit
-) => Promise<Response>
-export type OnErrorFunction<TVariables = any> = ({
-  result,
-  operation
-}: {
-  operation: Operation<TVariables>
-  result: Result
-}) => void
-
-export type MiddlewareFunction = () => any
-
-export interface GraphQLClientOptions {
-  url: string
-  cache?: Cache
-  // Ideally should just be `Headers`, but in some environment the `Headers` class might not exist
-  headers?: Headers | { [key: string]: string }
-  ssrMode?: boolean
-  useGETForQueries?: boolean
-  subscriptionClient?:
-    | SubscriptionClient
-    | Client
-    | (() => SubscriptionClient | Client)
-  fetch?: FetchFunction
-  fetchOptions?: object
-  FormData?: any
-  logErrors?: boolean
-  fullWsTransport?: boolean
-  onError?: OnErrorFunction
-  middleware?: MiddlewareFunction[]
-}
-
-interface Operation<TVariables = object> {
-  query: string
-  variables?: TVariables
-  operationName?: string
-  hash?: unknown
-}
-
-interface HttpError {
-  status: number
-  statusText: string
-  body: string
-}
-
-interface APIError<TGraphQLError = object> {
-  fetchError?: Error
-  httpError?: HttpError
-  graphQLErrors?: TGraphQLError[]
-}
-
-interface Result<ResponseData = any, TGraphQLError = object> {
-  data?: ResponseData
-  error?: APIError<TGraphQLError>
-}
-
-interface RequestOptions {
-  fetchOptionsOverrides?: object
-  hashOnly?: boolean
-  responseReducer?: (data: any, response: Response) => any
-}
-
-interface GenerateResultOptions<ResponseData = any, TGraphQLError = object> {
-  fetchError?: Error
-  httpError?: HttpError
-  graphQLErrors?: TGraphQLError[]
-  data?: ResponseData
-}
 
 class GraphQLClient {
   url: string
@@ -95,7 +34,7 @@ class GraphQLClient {
   subscriptionClient?: SubscriptionClient | Client
   fullWsTransport?: boolean
   onError?: OnErrorFunction
-  constructor(config: GraphQLClientOptions) {
+  constructor(config: ClientOptions) {
     // validate config
     this.fullWsTransport = config.fullWsTransport
 

@@ -2,55 +2,44 @@ import EventEmitter from 'events'
 import { Client } from 'graphql-ws'
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import GraphQLClient from '../GraphQLClient'
 // Exports
 
-export class GraphQLClient {
-  constructor(options: ClientOptions)
+export type FetchFunction = (
+  input: RequestInfo,
+  init?: RequestInit
+) => Promise<Response>
+export type OnErrorFunction<TVariables = any> = ({
+  result,
+  operation
+}: {
+  operation: Operation<TVariables>
+  result: Result
+}) => void
 
-  cache: Cache
-  headers: Headers
-  ssrMode: boolean
-  fetchOptions: object
-  FormData?: any
-  logErrors: boolean
-  useGETForQueries: boolean
-  mutationsEmitter: EventEmitter
+export type MiddlewareFunction = () => any
 
+export interface ClientOptions {
+  url: string
+  cache?: Cache
+  // Ideally should just be `Headers`, but in some environment the `Headers` class might not exist
+  headers?: Headers | { [key: string]: string }
+  ssrMode?: boolean
+  useGETForQueries?: boolean
   subscriptionClient?:
     | SubscriptionClient
     | Client
     | (() => SubscriptionClient | Client)
-
-  private onError(): any
-  private fetch(): Promise<any>
-
-  setHeader(key: string, value: string): GraphQLClient
-  setHeaders(headers: Headers): GraphQLClient
-  removeHeader(key: string): GraphQLClient
-  logErrorResult<ResponseData, TGraphQLError = object>({
-    result,
-    operation
-  }: {
-    result: Result<ResponseData, TGraphQLError>
-    operation: Operation
-  }): void
-  getCacheKey<Variables = object>(
-    operation: Operation,
-    options: UseClientRequestOptions<any, Variables>
-  ): CacheKeyObject
-  getCache(cacheKey: CacheKeyObject): undefined | object
-  saveCache(cacheKey: CacheKeyObject, value: object): void
-  getFetchOptions<Variables = object>(
-    operation: Operation<Variables>,
-    fetchOptionsOverrides?: object
-  ): object
-  request<ResponseData, TGraphQLError = object, Variables = object>(
-    operation: Operation<Variables>,
-    options?: object
-  ): Promise<Result<ResponseData, TGraphQLError>>
+  fetch?: FetchFunction
+  fetchOptions?: object
+  FormData?: any
+  logErrors?: boolean
+  fullWsTransport?: boolean
+  onError?: OnErrorFunction
+  middleware?: MiddlewareFunction[]
 }
 
-export function useClientRequest<
+declare function useClientRequest<
   ResponseData = any,
   Variables = object,
   TGraphQLError = object
@@ -63,7 +52,7 @@ export function useClientRequest<
   ResetFunction
 ]
 
-export function useQuery<
+declare function useQuery<
   ResponseData = any,
   Variables = object,
   TGraphQLError = object
@@ -72,7 +61,7 @@ export function useQuery<
   options?: UseQueryOptions<ResponseData, Variables>
 ): UseQueryResult<ResponseData, Variables, TGraphQLError>
 
-export function useManualQuery<
+declare function useManualQuery<
   ResponseData = any,
   Variables = object,
   TGraphQLError = object
@@ -85,7 +74,7 @@ export function useManualQuery<
   ResetFunction
 ]
 
-export function useMutation<
+declare function useMutation<
   ResponseData = any,
   Variables = object,
   TGraphQLError = object
@@ -103,7 +92,7 @@ export interface SubscriptionRequest {
   variables: object
 }
 
-export function useSubscription<
+declare function useSubscription<
   ResponseData = any,
   Variables extends object = object,
   TGraphQLError = object
@@ -115,38 +104,13 @@ export function useSubscription<
   }) => void
 ): void
 
-export const ClientContext: React.Context<GraphQLClient>
-
 // internal types
 
-type ResetFunction = (desiredState?: object) => void
+export type ResetFunction = (desiredState?: object) => void
 
-export interface ClientOptions {
-  url: string
-  cache?: Cache
-  headers?: Headers
-  ssrMode?: boolean
-  useGETForQueries?: boolean
-  subscriptionClient?:
-    | SubscriptionClient
-    | Client
-    | (() => SubscriptionClient | Client)
-  fetch?(url: string, options?: object): Promise<object>
-  fetchOptions?: object
-  FormData?: any
-  logErrors?: boolean
-  onError?({
-    result,
-    operation
-  }: {
-    operation: Operation
-    result: Result
-  }): void
-}
+export type Headers = { [k: string]: string }
 
-type Headers = { [k: string]: string }
-
-interface Cache {
+export interface Cache {
   get(keyObject: CacheKeyObject): object
   set(keyObject: CacheKeyObject, data: object): void
   delete(keyObject: CacheKeyObject): void
@@ -155,27 +119,44 @@ interface Cache {
   getInitialState(): object
 }
 
-interface Operation<TVariables = object> {
+export interface Operation<TVariables = object> {
   query: string
   variables?: TVariables
   operationName?: string
+  hash?: unknown
 }
 
-interface HttpError {
+export interface HttpError {
   status: number
   statusText: string
   body: string
 }
 
-interface APIError<TGraphQLError = object> {
+export interface APIError<TGraphQLError = object> {
   fetchError?: Error
   httpError?: HttpError
   graphQLErrors?: TGraphQLError[]
 }
 
-interface Result<ResponseData = any, TGraphQLError = object> {
+export interface Result<ResponseData = any, TGraphQLError = object> {
   data?: ResponseData
   error?: APIError<TGraphQLError>
+}
+
+export interface RequestOptions {
+  fetchOptionsOverrides?: object
+  hashOnly?: boolean
+  responseReducer?: (data: any, response: Response) => any
+}
+
+export interface GenerateResultOptions<
+  ResponseData = any,
+  TGraphQLError = object
+> {
+  fetchError?: Error
+  httpError?: HttpError
+  graphQLErrors?: TGraphQLError[]
+  data?: ResponseData
 }
 
 export interface UseClientRequestOptions<
@@ -195,7 +176,7 @@ export interface UseClientRequestOptions<
   persisted?: boolean
 }
 
-type RefetchAfterMutationItem = {
+export type RefetchAfterMutationItem = {
   mutation: string
   filter?: (variables: object) => boolean
 }
@@ -213,7 +194,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   refetchAfterMutations?: RefetchAferMutationsData
 }
 
-interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
+export interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
   cacheKey?: CacheKeyObject
@@ -221,7 +202,7 @@ interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   error?: APIError<TGraphQLError>
 }
 
-interface UseQueryResult<
+export interface UseQueryResult<
   ResponseData,
   Variables = object,
   TGraphQLError = object
@@ -231,17 +212,21 @@ interface UseQueryResult<
   ): Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 }
 
-interface UseSubscriptionOperation<Variables extends object = object>
+export interface UseSubscriptionOperation<Variables extends object = object>
   extends Operation {
   variables?: Variables
   client?: GraphQLClient
 }
 
-type FetchData<ResponseData, Variables = object, TGraphQLError = object> = (
+export type FetchData<
+  ResponseData,
+  Variables = object,
+  TGraphQLError = object
+> = (
   options?: UseClientRequestOptions<ResponseData, Variables>
 ) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
 
-interface CacheKeyObject {
+export interface CacheKeyObject {
   operation: Operation
   fetchOptions: object
 }
