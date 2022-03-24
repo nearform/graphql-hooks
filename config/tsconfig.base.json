@@ -7,7 +7,6 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "noEmit": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "jsx": "react-jsx",

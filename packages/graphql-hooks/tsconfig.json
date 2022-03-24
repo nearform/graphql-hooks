@@ -1,4 +1,7 @@
 {
   "extends": "../../config/tsconfig.base",
-  "include": ["src"]
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "lib/types"
+  }
 }

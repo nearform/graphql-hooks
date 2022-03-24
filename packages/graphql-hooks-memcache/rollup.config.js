@@ -7,4 +7,7 @@ const overrides = {
   external: [...externalPeerDeps, '@sindresorhus/fnv1a', 'tiny-lru']
 }
 
-export default generateRollupConfig('GraphQLHooksMemcache', overrides)
+export default generateRollupConfig({
+  name: 'GraphQLHooksMemcache',
+  overrides
+})
