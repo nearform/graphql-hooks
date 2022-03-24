@@ -25,6 +25,7 @@ class LocalGraphQLClient extends GraphQLClient {
   constructor(config = {}) {
     super(config)
     this.localQueries = config.localQueries
+    this.requestDelayMs = config.requestDelayMs || 0
     if (!this.localQueries) {
       throw new Error(
         'LocalGraphQLClient: `localQueries` object required in the constructor options'
@@ -42,18 +43,27 @@ class LocalGraphQLClient extends GraphQLClient {
         `LocalGraphQLClient: no query match for: ${operation.query}`
       )
     }
-    return Promise.resolve(
-      this.localQueries[operation.query](
-        operation.variables,
-        operation.operationName
+    return timeoutPromise(this.requestDelayMs)
+      .then(() =>
+        Promise.resolve(
+          this.localQueries[operation.query](
+            operation.variables,
+            operation.operationName
+          )
+        )
       )
-    ).then(result => {
-      if (result instanceof LocalGraphQLError) {
-        return { error: result }
-      }
-      return { data: result }
-    })
+      .then(result => {
+        if (result instanceof LocalGraphQLError) {
+          return { error: result }
+        }
+        return { data: result }
+      })
   }
 }
 
+function timeoutPromise(delayInMs) {
+  return new Promise(resolve => {
+    setTimeout(resolve, delayInMs)
+  })
+}
 export default LocalGraphQLClient

@@ -53,8 +53,11 @@ export class GraphQLClient {
 export class LocalGraphQLClient extends GraphQLClient {
   constructor(options: LocalClientOptions)
 }
-interface LocalClientOptions extends ClientOptions {
+interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
   localQueries: LocalQueries
+  // Delay before sending responses in miliseconds for simulating latency
+  requestDelayMs?: number
+  url?: string
 }
 
 export class LocalGraphQLError<TGraphQLError = object>
@@ -160,7 +163,7 @@ interface ClientOptions {
 type Headers = { [k: string]: string }
 
 type LocalQueries = {
-  [q: string]: (variables: object, operationName?: string) => object
+  [q: string]: (variables: any, operationName?: string) => any
 }
 
 interface Cache {
