@@ -90,7 +90,7 @@ class GraphQLClient {
   middleware: Middleware
   mutationsEmitter: EventEmitter
   cache?: Cache
-  headers?: Headers | { [key: string]: string }
+  headers: Headers | { [key: string]: string }
   ssrMode?: boolean
   subscriptionClient?: SubscriptionClient | Client
   fullWsTransport?: boolean
@@ -140,9 +140,7 @@ class GraphQLClient {
     this.ssrMode = config.ssrMode
     this.ssrPromises = []
     this.url = config.url
-    this.fetch =
-      config.fetch ||
-      (typeof fetch !== 'undefined' && fetch && fetch.bind(this))
+    this.fetch = config.fetch || (fetch && fetch.bind(this))
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
@@ -314,7 +312,7 @@ class GraphQLClient {
     operation: Operation<TVariables>,
     options?: RequestOptions
   ): Promise<Result<ResponseData, TGraphQLError>> {
-    const responseHandlers = []
+    const responseHandlers: (() => any)[] = []
     const addResponseHook = handler => responseHandlers.push(handler)
 
     return new Promise((resolve, reject) =>
@@ -350,7 +348,7 @@ class GraphQLClient {
 
   requestViaHttp<ResponseData, TGraphQLError = object, TVariables = object>(
     operation: Operation<TVariables>,
-    options: RequestOptions
+    options: RequestOptions = {}
   ): Promise<Result<ResponseData, TGraphQLError>> {
     let url = this.url
     const fetchOptions = this.getFetchOptions(

@@ -5,7 +5,7 @@ import replace from 'rollup-plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
-import typescript from '@rollup/plugin-typescript'
+import esbuild from 'rollup-plugin-esbuild' // Used for TS transpiling
 
 // get the package.json for the current package
 const packageDir = path.join(__filename, '..')
@@ -19,16 +19,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
     external,
-    plugins: [
-      commonjs(),
-      typescript({
-        compilerOptions: {
-          transpileOnly: true
-        }
-      }),
-      babel(),
-      sizeSnapshot()
-    ],
+    plugins: [commonjs(), esbuild(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -37,7 +28,7 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `es/${pkg.name}.js`, format: 'es', indent: false },
     external,
-    plugins: [commonjs(), typescript(), babel(), sizeSnapshot()],
+    plugins: [commonjs(), esbuild(), babel(), sizeSnapshot()],
     ...overrides
   },
 
@@ -51,7 +42,7 @@ const generateRollupConfig = (name, overrides = {}) => [
       nodeResolve({
         jsnext: true
       }),
-      typescript(),
+      esbuild(),
       replace({
         'process.env.NODE_ENV': JSON.stringify('production')
       }),
@@ -83,7 +74,7 @@ const generateRollupConfig = (name, overrides = {}) => [
       nodeResolve({
         jsnext: true
       }),
-      typescript(),
+      esbuild(),
       babel({
         exclude: 'node_modules/**'
       }),
@@ -110,7 +101,7 @@ const generateRollupConfig = (name, overrides = {}) => [
       nodeResolve({
         jsnext: true
       }),
-      typescript(),
+      esbuild(),
       babel({
         exclude: 'node_modules/**'
       }),
