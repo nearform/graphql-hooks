@@ -12,8 +12,7 @@
     "build:code": "rollup -c",
     "build:types": "tsc --emitDeclarationOnly --declaration",
     "check-types": "tsc --noEmit",
-    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
-    "tsd": "tsd"
+    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
   },
   "files": [
     "dist",
