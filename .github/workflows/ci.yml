@@ -24,7 +24,6 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm run test:coverage
-      # Note: Remove the tsd step once we're done fully migrating to TypeScript
       - run: npm run tsd
       - run: npm run check-types
       - uses: coverallsapp/github-action@1.1.3
