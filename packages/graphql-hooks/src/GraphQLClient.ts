@@ -22,7 +22,7 @@ class GraphQLClient {
   url: string
   ssrPromises: Promise<any>[]
   FormData?: any
-  fetch: FetchFunction
+  fetch?: FetchFunction
   fetchOptions: RequestInit
   logErrors: boolean
   useGETForQueries: boolean
@@ -36,6 +36,9 @@ class GraphQLClient {
   onError?: OnErrorFunction
   constructor(config: ClientOptions) {
     // validate config
+    if (!config) {
+      throw new Error(`GraphQLClient: config is required as first parameter`)
+    }
     this.fullWsTransport = config.fullWsTransport
 
     if (typeof config.subscriptionClient === 'function') {
@@ -74,12 +77,13 @@ class GraphQLClient {
     }
 
     this.cache = config.cache
-    this.headers =
-      config.headers || (typeof Headers !== 'undefined' ? new Headers() : {})
+    this.headers = config.headers || {}
     this.ssrMode = config.ssrMode
     this.ssrPromises = []
     this.url = config.url
-    this.fetch = config.fetch || (fetch && fetch.bind(this))
+    this.fetch =
+      config.fetch ||
+      (typeof fetch !== 'undefined' && fetch ? fetch.bind(this) : undefined)
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
@@ -192,9 +196,7 @@ class GraphQLClient {
   getFetchOptions(operation, fetchOptionsOverrides = {}) {
     const fetchOptions = {
       method: 'POST',
-      headers: {
-        ...this.headers
-      },
+      headers: { ...this.headers }, // Existing code was making a copy of an object, so this is an alternative to copy a headers object
       ...this.fetchOptions,
       ...fetchOptionsOverrides
     }
@@ -319,7 +321,7 @@ class GraphQLClient {
       }
     }
 
-    return this.fetch(url, fetchOptions)
+    return this.fetch!(url, fetchOptions)
       .then(response => {
         if (!response.ok) {
           return response.text().then(body => {
