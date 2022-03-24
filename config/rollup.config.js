@@ -19,7 +19,16 @@ const generateRollupConfig = (name, overrides = {}) => [
     input: 'src/index.js',
     output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
     external,
-    plugins: [commonjs(), typescript(), babel(), sizeSnapshot()],
+    plugins: [
+      commonjs(),
+      typescript({
+        compilerOptions: {
+          transpileOnly: true
+        }
+      }),
+      babel(),
+      sizeSnapshot()
+    ],
     ...overrides
   },
 

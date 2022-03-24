@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "rollup -c",
-    "check-types": "tsc",
+    "check-types": "tsc --noEmit",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
     "tsd": "tsd"
   },
@@ -47,7 +47,7 @@
     "formdata-node": "^4.3.2",
     "graphql-hooks-memcache": "^2.2.4",
     "graphql-hooks-ssr": "^2.2.2",
-    "graphql-ws": "^5.1.2",
+    "graphql-ws": "^5.5.5",
     "jest-fetch-mock": "^3.0.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
