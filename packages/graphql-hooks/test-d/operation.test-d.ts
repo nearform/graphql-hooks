@@ -1,11 +1,11 @@
-import { expectType } from "tsd"
-import { Operation } from ".."
+import { expectType } from 'tsd'
+import { Operation } from '..'
 
 const query = 'query { foobar }'
 
 class TestOperation implements Operation {
   query = query
-  variables?: object = { foo: 'bar'}
+  variables?: object = { foo: 'bar' }
   operationName? = 'operation'
 }
 export const operation = new TestOperation()
