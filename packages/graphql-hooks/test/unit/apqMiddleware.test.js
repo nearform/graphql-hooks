@@ -13,6 +13,19 @@ const TEST_QUERY = /* GraphQL */ `
 
 describe('APQMiddleware', () => {
   const MOCK_DATA = { data: [{ id: 1 }, { id: 2 }, { id: 3 }] }
+  const MOCK_ERROR_RESP = {
+    errors: [
+      {
+        message: 'PersistedQueryNotFound',
+        extensions: {
+          code: 'PERSISTED_QUERY_NOT_FOUND',
+          exception: {
+            stacktrace: ['PersistedQueryNotFoundError: PersistedQueryNotFound']
+          }
+        }
+      }
+    ]
+  }
   let client
 
   beforeEach(() => {
@@ -53,9 +66,51 @@ describe('APQMiddleware', () => {
     })
 
     // Call with hash only
-    fetchMock.mockRejectOnce(
-      JSON.stringify({ type: 'PERSISTED_QUERY_NOT_FOUND' })
-    )
+    fetchMock.mockRejectOnce({ type: 'PERSISTED_QUERY_NOT_FOUND' })
+    // Call with query and hash
+    fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
+
+    const res = await client.request({
+      query: TEST_QUERY,
+      variables: { limit: 3 }
+    })
+
+    expect(res).toEqual(MOCK_DATA)
+    expect(fetchMock.mock.calls[0]).toEqual([
+      'localhost:3000/graphql?variables=%7B%22limit%22%3A3%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2226d6478a7140fba74900a0fea5ffe3552d5ee584a4991612250dc5ef8ddf0948%22%7D%7D',
+      { method: 'GET', headers: {} }
+    ])
+    expect(fetchMock.mock.calls[1]).toEqual([
+      'localhost:3000/graphql',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: TEST_QUERY,
+          variables: { limit: 3 },
+          extensions: {
+            persistedQuery: {
+              version: 1,
+              sha256Hash:
+                '26d6478a7140fba74900a0fea5ffe3552d5ee584a4991612250dc5ef8ddf0948'
+            }
+          }
+        })
+      }
+    ])
+  })
+
+  it('handle error from server when response is 200 ok but it does not recognize the hash', async () => {
+    const client = new GraphQLClient({
+      middleware: [APQMiddleware],
+      fetch: fetchMock,
+      url: 'localhost:3000/graphql'
+    })
+
+    // Call with hash only, but respond with graphQlError
+    fetchMock.mockResponseOnce(JSON.stringify(MOCK_ERROR_RESP))
     // Call with query and hash
     fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
 
@@ -94,9 +149,7 @@ describe('APQMiddleware', () => {
   it('returns error if even the second API request fails', async () => {
     const error = 'Failed'
     // Call with hash only
-    fetchMock.mockRejectOnce(
-      JSON.stringify({ type: 'PERSISTED_QUERY_NOT_FOUND' })
-    )
+    fetchMock.mockRejectOnce({ type: 'PERSISTED_QUERY_NOT_FOUND' })
     // Call with query and hash
     fetchMock.mockRejectOnce({ error })
 
