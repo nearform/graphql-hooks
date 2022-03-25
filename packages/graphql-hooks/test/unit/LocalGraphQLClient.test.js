@@ -101,7 +101,6 @@ describe('LocalGraphQLClient', () => {
     })
     it('can be used with useQuery', async () => {
       let dataNode
-
       const { getByTestId } = render(<TestComponent query={HooksTestQuery} />, {
         wrapper
       })
