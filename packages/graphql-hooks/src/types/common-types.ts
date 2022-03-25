@@ -39,6 +39,22 @@ export interface ClientOptions {
   middleware?: MiddlewareFunction[]
 }
 
+declare class LocalGraphQLClient extends GraphQLClient {
+  constructor(options: LocalClientOptions)
+}
+interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
+  localQueries: LocalQueries
+  // Delay before sending responses in miliseconds for simulating latency
+  requestDelayMs?: number
+  url?: string
+}
+
+declare class LocalGraphQLError<TGraphQLError = object>
+  implements APIError<TGraphQLError>
+{
+  constructor(error: APIError<TGraphQLError>)
+}
+
 declare function useClientRequest<
   ResponseData = any,
   Variables = object,
@@ -109,6 +125,10 @@ declare function useSubscription<
 export type ResetFunction = (desiredState?: object) => void
 
 export type Headers = { [k: string]: string }
+
+export type LocalQueries = {
+  [q: string]: (variables: any, operationName?: string) => any
+}
 
 export interface Cache {
   get(keyObject: CacheKeyObject): object

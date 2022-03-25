@@ -34,6 +34,19 @@ const projects = [
       displayName: 'graphql-hooks-ssr',
       testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.[jt]s']
     }
+  },
+  {
+    ...commonConfig,
+    ...{
+      roots: ['./examples/create-react-app'],
+      coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/packages/*'],
+      transform: {
+        '\\.jsx?$': 'babel-jest'
+      },
+      displayName: 'cra-example',
+      testMatch: ['<rootDir>/examples/create-react-app/**/*.test.[jt]s'],
+      testEnvironment: 'jsdom'
+    }
   }
 ]
 module.exports = {

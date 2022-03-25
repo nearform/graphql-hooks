@@ -47,6 +47,30 @@ class GraphQLClient {
       this.subscriptionClient = config.subscriptionClient
     }
 
+    this.verifyConfig(config)
+
+    this.cache = config.cache
+    this.headers = config.headers || {}
+    this.ssrMode = config.ssrMode
+    this.ssrPromises = []
+    this.url = config.url
+    this.fetch =
+      config.fetch ||
+      (typeof fetch !== 'undefined' && fetch ? fetch.bind(this) : undefined)
+    this.fetchOptions = config.fetchOptions || {}
+    this.FormData =
+      config.FormData ||
+      (typeof FormData !== 'undefined' ? FormData : undefined)
+    this.logErrors = config.logErrors !== undefined ? config.logErrors : true
+    this.onError = config.onError
+    this.useGETForQueries = config.useGETForQueries === true
+    this.middleware = new Middleware(config.middleware || [])
+
+    this.mutationsEmitter = new EventEmitter()
+  }
+
+  /** Checks that the given config has the correct required options */
+  verifyConfig(config) {
     if (!config.url) {
       if (this.fullWsTransport) {
         // check if there's a subscriptionClient
@@ -75,25 +99,6 @@ class GraphQLClient {
     if (config.ssrMode && !config.cache) {
       throw new Error('GraphQLClient: config.cache is required when in ssrMode')
     }
-
-    this.cache = config.cache
-    this.headers = config.headers || {}
-    this.ssrMode = config.ssrMode
-    this.ssrPromises = []
-    this.url = config.url
-    this.fetch =
-      config.fetch ||
-      (typeof fetch !== 'undefined' && fetch ? fetch.bind(this) : undefined)
-    this.fetchOptions = config.fetchOptions || {}
-    this.FormData =
-      config.FormData ||
-      (typeof FormData !== 'undefined' ? FormData : undefined)
-    this.logErrors = config.logErrors !== undefined ? config.logErrors : true
-    this.onError = config.onError
-    this.useGETForQueries = config.useGETForQueries === true
-    this.middleware = new Middleware(config.middleware || [])
-
-    this.mutationsEmitter = new EventEmitter()
   }
 
   setHeader(key, value) {

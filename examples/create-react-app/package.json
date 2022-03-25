@@ -1,13 +1,13 @@
 {
   "name": "create-react-app",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "graphql-hooks": "^5.7.1",
+    "graphql-hooks": "^5.8.0",
     "graphql-hooks-memcache": "^2.2.4",
     "json-graphql-server": "^2.3.1",
     "prop-types": "^15.7.2",
@@ -19,7 +19,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080"
   },
