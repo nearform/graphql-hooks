@@ -42,7 +42,7 @@ export interface ClientOptions {
 declare class LocalGraphQLClient extends GraphQLClient {
   constructor(options: LocalClientOptions)
 }
-interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
+export interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
   localQueries: LocalQueries
   // Delay before sending responses in miliseconds for simulating latency
   requestDelayMs?: number
