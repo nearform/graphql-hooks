@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
-import { Client } from 'graphql-ws'
+import { Client as GraphQLWsClient } from 'graphql-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
@@ -31,7 +31,7 @@ class GraphQLClient {
   cache?: Cache
   headers: Headers | { [key: string]: string }
   ssrMode?: boolean
-  subscriptionClient?: SubscriptionClient | Client
+  subscriptionClient?: SubscriptionClient | GraphQLWsClient
   fullWsTransport?: boolean
   onError?: OnErrorFunction
   constructor(config: ClientOptions) {
@@ -397,11 +397,11 @@ class GraphQLClient {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
 
-    if (isClient(this.subscriptionClient)) {
+    if (isGraphQLWsClient(this.subscriptionClient)) {
       // graphql-ws
       return {
         subscribe: sink => ({
-          unsubscribe: (this.subscriptionClient as Client).subscribe(
+          unsubscribe: (this.subscriptionClient as GraphQLWsClient).subscribe(
             operationPayload,
             sink
           )
@@ -414,7 +414,7 @@ class GraphQLClient {
   }
 }
 
-function isClient(value: any): value is Client {
+function isGraphQLWsClient(value: any): value is GraphQLWsClient {
   return typeof value.subscribe === 'function'
 }
 

@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import { Client } from 'graphql-ws'
+import { Client as GraphQLWsClient } from 'graphql-ws'
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import GraphQLClient from '../GraphQLClient'
@@ -28,8 +28,8 @@ export interface ClientOptions {
   useGETForQueries?: boolean
   subscriptionClient?:
     | SubscriptionClient
-    | Client
-    | (() => SubscriptionClient | Client)
+    | GraphQLWsClient
+    | (() => SubscriptionClient | GraphQLWsClient)
   fetch?: FetchFunction
   fetchOptions?: object
   FormData?: any
