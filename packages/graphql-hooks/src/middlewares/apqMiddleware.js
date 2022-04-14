@@ -1,4 +1,4 @@
-import { Sha256 } from '@aws-crypto/sha256-browser'
+import { Sha256 } from '@aws-crypto/sha256-universal'
 
 export async function sha256(query) {
   const hash = new Sha256()
