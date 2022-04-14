@@ -29,7 +29,7 @@ Middleware is a function with 2 parameters:
 
 This library also includes an Automatic Persisted Queries middleware that can improve network performance by sending smaller requests. The implementation should match the Apollo back-end functionality that is [further described here](https://www.apollographql.com/docs/apollo-server/v2/performance/apq/).
 
-Usage,
+**Usage**:
 
 ```js
 import GraphQLClient from 'graphql-hooks'
