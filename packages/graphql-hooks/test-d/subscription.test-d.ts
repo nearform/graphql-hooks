@@ -1,5 +1,9 @@
 import { expectType } from 'tsd'
-import { SubscriptionRequest, useSubscription, UseSubscriptionOperation } from '..'
+import {
+  SubscriptionRequest,
+  useSubscription,
+  UseSubscriptionOperation
+} from '..'
 
 const query = 'query { foobar }'
 
@@ -14,7 +18,7 @@ const useSubscriptionCallback = (response: UseSubscriptionCallbackResponse) => {
 
 const subscriptionOperation: UseSubscriptionOperation = {
   query,
-  variables: { foo: 'bar' },
+  variables: { foo: 'bar' }
 }
 
 expectType<void>(
