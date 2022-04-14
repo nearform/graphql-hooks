@@ -97,12 +97,12 @@ We believe `graphql-hooks` is a great choice as a hooks-first GraphQL client due
 
 In terms of performance, this is more of a grey area as we have no official benchmarks yet.
 
-If you need a client that offers middleware and advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
+If you need a client that offers more customization such as advanced cache configuration, then `apollo-hooks` may work out to be a good choice for your project if bundle size is not an issue.
 
 | Pros                        | Cons                                  |
 | --------------------------- | ------------------------------------- |
-| Small in size               | Middleware support                    |
-| Concise API                 | Less "advanced" caching configuration |
+| Small in size               | Less "advanced" caching configuration |
+| Concise API                 |
 | Quick to get up and running |
 
 # Table of Contents
@@ -126,6 +126,7 @@ If you need a client that offers middleware and advanced cache configuration, th
     - [ApolloProvider ➡️ ClientContext.Provider](#apolloprovider-️-clientcontextprovider)
     - [Query Component ➡️ useQuery](#query-component-️-usequery)
     - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
+  - [Testing and mocking](#testing-and-mocking)
   - [Other]
     - [Request interceptors](#request-interceptors)
 
@@ -160,6 +161,7 @@ const client = new GraphQLClient(config)
 - `fetchOptions`: See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `headers`: Object, e.g. `{ 'My-Header': 'hello' }`
 - `logErrors`: Boolean - defaults to `true`
+- `middleware`: Accepts an array of middleware functions, default: none, see more in [middlewares readme](packages/graphql-hooks/src/middlewares/README.md)
 - `onError({ operation, result })`: Custom error handler
   - `operation`: Object with `query`, `variables` and `operationName`
   - `result`: Object containing `data` and `error` object that contains `fetchError`, `httpError` and `graphqlErrors`
@@ -969,6 +971,162 @@ function MyComponent() {
 **Not yet supported**
 
 - `called`
+
+## Testing and mocking
+
+There is a `LocalGraphQLClient` class you can use to mock requests without a server for testing or development purposes.
+
+This client inherits from `GraphQLClient` and provides the same API, but doesn't connect to any server and instead responds to pre-defined queries.
+
+It needs to be supplied on creation with a `localQueries` object, which is an object of query functions.
+
+```js
+const localQueries = {
+  [allPostsQuery]: () => ({
+    allPosts: [
+      {
+        id: 1,
+        title: 'Test',
+        url: 'https://example.com'
+      }
+    ]
+  }),
+  [createPostMutation]: () => ({ createPost: { id: 1 } })
+}
+const client = new LocalGraphQLClient({ localQueries })
+const { data, error } = await client.request({
+  query: 'allPostsQuery'
+})
+```
+
+The `LocalGraphQLClient` will return `data` and `error` properties in the same format as the `GraphQLClient`
+
+### Variables
+
+Variables can be used in the local mock queries given to the `LocalGraphQLClient`, which can then be supplied to the `request` function:
+
+```js
+const localQueries = {
+  AddNumbersQuery: ({ a, b }) => ({
+    addedNumber: a + b
+  })
+}
+const client = new LocalGraphQLClient({ localQueries })
+const result = await client.request({
+  query: 'AddNumbersQuery',
+  variables: {
+    a: 2,
+    b: 3
+  }
+})
+console.log(result.data.addedNumber) // Will be 5
+```
+
+### Error mocking
+
+Errors can be simply mocked in `LocalGraphQLClient` queries by using the `LocalGraphQLError` class:
+
+```js
+const localQueries = {
+  ErrorQuery: () =>
+    new LocalGraphQLError({
+      httpError: {
+        status: 404,
+        statusText: 'Not found',
+        body: 'Not found'
+      }
+    })
+}
+const client = new LocalGraphQLClient({ localQueries })
+const result = await client.request({
+  query: 'ErrorQuery'
+})
+console.log(result.error) // The `error` object will have an `httpError`
+```
+
+### Testing with React
+
+Example tests that use the `LocalGraphQLClient` are provided in [the examples/create-react-app/test folder](https://github.com/nearform/graphql-hooks/blob/master/mock-client/examples/create-react-app/test/Posts.test.js).
+
+The [test-utils.js](https://github.com/nearform/graphql-hooks/blob/liana/mock-client/examples/create-react-app/test/test-utils.js) is a good example of how to create a custom render function using [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) which can wrap the render of a React component in a `ClientContext` setup to use the `LocalGraphQLClient` with supplied local queries:
+
+```js
+const customRender = (ui, options) => {
+  const client = new LocalGraphQLClient({
+    localQueries: options.localQueries
+  })
+
+  const Wrapper = ({ children }) => {
+    return (
+      <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
+    )
+  }
+
+  Wrapper.propTypes = {
+    children: T.node.isRequired
+  }
+
+  return render(ui, {
+    wrapper: Wrapper,
+    ...options
+  })
+}
+
+export * from '@testing-library/react'
+
+export { customRender as render }
+```
+
+Using this allows to easily render a component using the `LocalGraphQLClient` with local queries when writing tests:
+
+```js
+// Comes from the above code
+import { render, screen } from './test-utils'
+
+const localQueries = {
+  [allPostsQuery]: () => ({
+    allPosts: [
+      {
+        id: 1,
+        title: 'Test',
+        url: 'https://example.com'
+      }
+    ]
+  })
+}
+
+describe('Posts', () => {
+  it('should render successfully', async () => {
+    render(<Posts />, {
+      localQueries
+    })
+
+    expect(
+      await screen.findByRole('link', {
+        name: /Test/i
+      })
+    ).toBeTruthy()
+  })
+})
+```
+
+### Changing mock queries during tests
+
+Because the `LocalGraphQLClient` just uses the `localQueries` object supplied to it, it is possible to modify or spy the local queries during tests. For example:
+
+```js
+it('shows "No posts" if 0 posts are returned', async () => {
+  jest.spyOn(localQueries, allPostsQuery).mockImplementation(() => ({
+    allPosts: []
+  }))
+
+  render(<Posts />, {
+    localQueries
+  })
+
+  expect(await screen.findByText('No posts')).toBeTruthy()
+})
+```
 
 ## Other
 

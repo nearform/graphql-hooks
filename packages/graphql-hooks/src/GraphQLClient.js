@@ -1,7 +1,9 @@
 import EventEmitter from 'events'
-import canUseDOM from './canUseDOM'
 import { extractFiles } from 'extract-files'
+import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
+import Middleware from './Middleware'
+import { pipeP } from './utils'
 
 class GraphQLClient {
   constructor(config = {}) {
@@ -13,6 +15,29 @@ class GraphQLClient {
       this.subscriptionClient = this.subscriptionClient()
     }
 
+    this.verifyConfig(config)
+
+    this.cache = config.cache
+    this.headers = config.headers || {}
+    this.ssrMode = config.ssrMode
+    this.ssrPromises = []
+    this.url = config.url
+    this.fetch =
+      config.fetch || (typeof fetch !== 'undefined' && fetch && fetch.bind())
+    this.fetchOptions = config.fetchOptions || {}
+    this.FormData =
+      config.FormData ||
+      (typeof FormData !== 'undefined' ? FormData : undefined)
+    this.logErrors = config.logErrors !== undefined ? config.logErrors : true
+    this.onError = config.onError
+    this.useGETForQueries = config.useGETForQueries === true
+    this.middleware = new Middleware(config.middleware || [])
+
+    this.mutationsEmitter = new EventEmitter()
+  }
+
+  /** Checks that the given config has the correct required options */
+  verifyConfig(config) {
     if (!config.url) {
       if (this.fullWsTransport) {
         // check if there's a subscriptionClient
@@ -41,22 +66,6 @@ class GraphQLClient {
     if (config.ssrMode && !config.cache) {
       throw new Error('GraphQLClient: config.cache is required when in ssrMode')
     }
-
-    this.cache = config.cache
-    this.headers = config.headers || {}
-    this.ssrMode = config.ssrMode
-    this.ssrPromises = []
-    this.url = config.url
-    this.fetch =
-      config.fetch || (typeof fetch !== 'undefined' && fetch && fetch.bind())
-    this.fetchOptions = config.fetchOptions || {}
-    this.FormData =
-      config.FormData ||
-      (typeof FormData !== 'undefined' ? FormData : undefined)
-    this.logErrors = config.logErrors !== undefined ? config.logErrors : true
-    this.onError = config.onError
-    this.useGETForQueries = config.useGETForQueries === true
-    this.mutationsEmitter = new EventEmitter()
   }
 
   setHeader(key, value) {
@@ -202,14 +211,38 @@ class GraphQLClient {
   }
 
   request(operation, options = {}) {
-    if (this.fullWsTransport) {
-      return this.requestViaWS(operation)
-    }
+    const responseHandlers = []
+    const addResponseHook = handler => responseHandlers.push(handler)
 
-    if (this.url) {
-      return this.requestViaHttp(operation, options)
-    }
-    throw new Error('GraphQLClient: config.url is required')
+    return new Promise((resolve, reject) =>
+      this.middleware.run(
+        { operation, client: this, addResponseHook, resolve, reject },
+        ({ operation: updatedOperation }) => {
+          const transformResponse = res => {
+            if (responseHandlers.length > 0) {
+              // Pipe for promises
+              return pipeP(responseHandlers)(res)
+            }
+            return res
+          }
+
+          if (this.fullWsTransport) {
+            return this.requestViaWS(updatedOperation)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
+          }
+
+          if (this.url) {
+            return this.requestViaHttp(updatedOperation, options)
+              .then(transformResponse)
+              .then(resolve)
+              .catch(reject)
+          }
+          reject(new Error('GraphQLClient: config.url is required'))
+        }
+      )
+    )
   }
 
   requestViaHttp(operation, options) {
@@ -221,7 +254,7 @@ class GraphQLClient {
 
     if (fetchOptions.method === 'GET') {
       const paramsQueryString = Object.entries(operation)
-        .filter(([, v]) => !!v)
+        .filter(([k, v]) => (options.hashOnly ? k === 'variables' : !!v))
         .map(([k, v]) => {
           if (k === 'variables') {
             v = JSON.stringify(v)
@@ -230,7 +263,17 @@ class GraphQLClient {
           return `${k}=${encodeURIComponent(v)}`
         })
         .join('&')
+
       url = url + '?' + paramsQueryString
+
+      if (operation.hash) {
+        const extensions = encodeURIComponent(
+          JSON.stringify({
+            persistedQuery: { version: 1, sha256Hash: operation.hash }
+          })
+        )
+        url += `&extensions=${extensions}`
+      }
     }
 
     return this.fetch(url, fetchOptions)

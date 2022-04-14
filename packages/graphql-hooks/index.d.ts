@@ -50,6 +50,22 @@ export class GraphQLClient {
   ): Promise<Result<ResponseData, TGraphQLError>>
 }
 
+export class LocalGraphQLClient extends GraphQLClient {
+  constructor(options: LocalClientOptions)
+}
+interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
+  localQueries: LocalQueries
+  // Delay before sending responses in miliseconds for simulating latency
+  requestDelayMs?: number
+  url?: string
+}
+
+export class LocalGraphQLError<TGraphQLError = object>
+  implements APIError<TGraphQLError>
+{
+  constructor(error: APIError<TGraphQLError>)
+}
+
 export function useClientRequest<
   ResponseData = any,
   Variables = object,
@@ -146,6 +162,10 @@ interface ClientOptions {
 
 type Headers = { [k: string]: string }
 
+type LocalQueries = {
+  [q: string]: (variables: any, operationName?: string) => any
+}
+
 interface Cache {
   get(keyObject: CacheKeyObject): object
   set(keyObject: CacheKeyObject, data: object): void
@@ -216,6 +236,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
 interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
   loading: boolean
   cacheHit: boolean
+  cacheKey?: CacheKeyObject
   data?: ResponseData
   error?: APIError<TGraphQLError>
 }

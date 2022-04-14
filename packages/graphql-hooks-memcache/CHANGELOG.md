@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@2.2.3...graphql-hooks-memcache@2.2.4) (2022-03-11)
+
+**Note:** Version bump only for package graphql-hooks-memcache
+
+
+
+
+
 ## [2.2.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@2.2.2...graphql-hooks-memcache@2.2.3) (2022-01-04)
 
 **Note:** Version bump only for package graphql-hooks-memcache

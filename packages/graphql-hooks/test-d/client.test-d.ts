@@ -37,10 +37,12 @@ expectType<GraphQLClient>(client.setHeaders({ some: 'string' }))
 expectType<(key: string) => GraphQLClient>(client.removeHeader)
 expectType<GraphQLClient>(client.removeHeader('some'))
 
-expectType<<Variables = object>(
-  operation: Operation<object>,
-  options: UseClientRequestOptions<any, Variables>
-) => CacheKeyObject>(client.getCacheKey)
+expectType<
+  <Variables = object>(
+    operation: Operation<object>,
+    options: UseClientRequestOptions<any, Variables>
+  ) => CacheKeyObject
+>(client.getCacheKey)
 expectType<CacheKeyObject>(client.getCacheKey(operation, {}))
 
 const cacheKey: CacheKeyObject = {
@@ -54,16 +56,20 @@ expectType<undefined | object>(client.getCache(cacheKey))
 expectType<(cacheKey: CacheKeyObject, value: object) => void>(client.saveCache)
 expectType<void>(client.saveCache(cacheKey, {}))
 
-expectType<<Variables = object>(
-  operation: Operation<Variables>,
-  fetchOptionsOverrides?: object | undefined
-) => object>(client.getFetchOptions)
+expectType<
+  <Variables = object>(
+    operation: Operation<Variables>,
+    fetchOptionsOverrides?: object | undefined
+  ) => object
+>(client.getFetchOptions)
 expectType<object>(client.getFetchOptions(operation))
 
-expectType<<ResponseData, TGraphQLError = object, Variables = object>(
-  operation: Operation<Variables>,
-  options?: object | undefined
-) => Promise<Result<ResponseData, TGraphQLError>>>(client.request)
+expectType<
+  <ResponseData, TGraphQLError = object, Variables = object>(
+    operation: Operation<Variables>,
+    options?: object | undefined
+  ) => Promise<Result<ResponseData, TGraphQLError>>
+>(client.request)
 expectType<Promise<Result>>(client.request(operation))
 expectType<Promise<Result>>(client.request(operation, {}))
 
@@ -79,13 +85,15 @@ const result = {
   }
 }
 
-expectType<<ResponseData, TGraphQLError = object>({
-  result,
-  operation
-}: {
-  result: Result<ResponseData, TGraphQLError>
-  operation: Operation<object>
-}) => void>(client.logErrorResult)
+expectType<
+  <ResponseData, TGraphQLError = object>({
+    result,
+    operation
+  }: {
+    result: Result<ResponseData, TGraphQLError>
+    operation: Operation<object>
+  }) => void
+>(client.logErrorResult)
 expectType<void>(
   client.logErrorResult({
     result,

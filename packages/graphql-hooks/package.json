@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
@@ -32,7 +32,7 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^17.0.0"
+    "react": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
     "dequal": "^2.0.0",
@@ -43,7 +43,7 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.0",
     "formdata-node": "^4.3.2",
-    "graphql-hooks-memcache": "^2.2.3",
+    "graphql-hooks-memcache": "^2.2.4",
     "graphql-hooks-ssr": "^2.2.2",
     "graphql-ws": "^5.1.2",
     "jest-fetch-mock": "^3.0.0",
@@ -51,7 +51,7 @@
     "react-dom": "^17.0.0",
     "react-test-renderer": "^17.0.0",
     "subscriptions-transport-ws": "^0.11.0",
-    "tsd": "^0.19.1"
+    "tsd": "^0.20.0"
   },
   "repository": {
     "type": "git",
