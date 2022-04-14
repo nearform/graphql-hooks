@@ -3,12 +3,10 @@ import { Sha256 } from '@aws-crypto/sha256-browser'
 export async function sha256(query) {
   const hash = new Sha256()
   hash.update(query, 'utf8')
-  const hashBuffer = await hash.digest()
-  // convert buffer to byte array
-  const hashArray = Array.from(hashBuffer)
-  // convert bytes to hex string
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-  return hashHex
+  const hashUint8Array = await hash.digest()
+
+  const hashBuffer = Buffer.from(hashUint8Array)
+  return hashBuffer.toString('hex')
 }
 
 /**
