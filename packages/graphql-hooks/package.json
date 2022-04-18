@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "5.9.0",
+  "version": "5.10.0",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
@@ -37,6 +37,7 @@
     "react": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
+    "@aws-crypto/sha256-universal": "^2.0.1",
     "dequal": "^2.0.0",
     "events": "^3.3.0",
     "extract-files": "^11.0.0"

@@ -304,9 +304,9 @@ class GraphQLClient {
 
     if (fetchOptions.method === 'GET') {
       const paramsQueryString = Object.entries(operation)
-        .filter(([k, v]) => (options.hashOnly ? k === 'variables' : !!v))
+        .filter(([, v]) => !!v)
         .map(([k, v]) => {
-          if (k === 'variables') {
+          if (k === 'variables' || k === 'extensions') {
             v = JSON.stringify(v)
           }
 
@@ -315,15 +315,6 @@ class GraphQLClient {
         .join('&')
 
       url = url + '?' + paramsQueryString
-
-      if (operation.hash) {
-        const extensions = encodeURIComponent(
-          JSON.stringify({
-            persistedQuery: { version: 1, sha256Hash: operation.hash }
-          })
-        )
-        url += `&extensions=${extensions}`
-      }
     }
 
     return this.fetch!(url, fetchOptions)
