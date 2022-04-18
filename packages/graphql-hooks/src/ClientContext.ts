@@ -1,7 +1,8 @@
 import React from 'react'
 
-// TypeScript wants a default value for createContext. In the future we could default it to a localGraphQLClient maybe
-const ClientContext = React.createContext({})
+import type GraphQLClient from './GraphQLClient'
+
+const ClientContext = React.createContext<GraphQLClient | null>(null)
 
 ClientContext.displayName = 'ClientContext'
 
