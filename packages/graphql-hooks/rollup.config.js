@@ -3,7 +3,10 @@ import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 
 import generateRollupConfig from '../../config/rollup.config'
 
-export default generateRollupConfig('GraphQLHooks').concat({
+export default generateRollupConfig({
+  name: 'GraphQLHooks',
+  entryPoint: 'src/index.ts'
+}).concat({
   input: 'src/middlewares/apqMiddleware.js',
   output: {
     file: `lib/middlewares/apqMiddleware.js`,

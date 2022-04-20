@@ -11,6 +11,7 @@
     "postinstall": "lerna bootstrap --hoist --no-ci && npm run build:packages",
     "tsd": "lerna run tsd",
     "lint": "eslint .",
+    "check-types": "lerna run check-types",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
     "release": "lerna publish",
     "clean": "lerna run clean && lerna clean && rm -rf ./node_modules",
@@ -23,7 +24,9 @@
     "@babel/preset-react": "^7.13.13",
     "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
+    "@types/jest": "^27.4.1",
     "babel-jest": "^27.0.0",
+    "esbuild": "^0.14.27",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-config-react-app": "^7.0.0",
@@ -39,12 +42,15 @@
     "rollup": "^2.47.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-esbuild": "^4.8.2",
     "rollup-plugin-node-resolve": "^5.0.2",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^7.0.0",
     "testcafe": "^1.14.0",
-    "testcafe-reporter-xunit": "^2.1.0"
+    "testcafe-reporter-xunit": "^2.1.0",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.6.2"
   },
   "lint-staged": {
     "**/*.js": [

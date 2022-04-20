@@ -1,4 +1,4 @@
-import { Client } from 'graphql-ws'
+import { Client as GraphQLWsClient } from 'graphql-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { expectType } from 'tsd'
 import { ClientOptions, Cache, Headers, Operation, Result } from '..'
@@ -11,7 +11,7 @@ class TestClientOptions implements ClientOptions {
   headers?: Headers = { foo: 'bar' }
   ssrMode? = false
   useGETForQueries? = false
-  subscriptionClient?: SubscriptionClient | Client = subscriptionClient
+  subscriptionClient?: SubscriptionClient | GraphQLWsClient = subscriptionClient
   fetchOptions?: object = {}
   FormData?: any = {}
   logErrors? = false
@@ -36,7 +36,7 @@ expectType<Cache | undefined>(clientOptions.cache)
 expectType<Headers | undefined>(clientOptions.headers)
 expectType<boolean | undefined>(clientOptions.ssrMode)
 expectType<boolean | undefined>(clientOptions.useGETForQueries)
-expectType<SubscriptionClient | Client | undefined>(
+expectType<SubscriptionClient | GraphQLWsClient | undefined>(
   clientOptions.subscriptionClient
 )
 expectType<((url: string, options?: object) => Promise<object>) | undefined>(

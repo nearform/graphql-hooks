@@ -23,9 +23,14 @@ const TEST_QUERY = /* GraphQL */ `
 
 describe('GraphQLClient', () => {
   describe('when instantiated', () => {
-    it('throws if no url (nor subscriptionClient) provided', () => {
+    it('throws if no config is provided', () => {
       expect(() => {
         new GraphQLClient()
+      }).toThrow('GraphQLClient: config is required as first parameter')
+    })
+    it('throws if no url (nor subscriptionClient) provided', () => {
+      expect(() => {
+        new GraphQLClient({})
       }).toThrow('GraphQLClient: config.url is required')
     })
 

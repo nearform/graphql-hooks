@@ -1,18 +1,50 @@
 import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
+import { Client as GraphQLWsClient } from 'graphql-ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import canUseDOM from './canUseDOM'
 import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
+import type {
+  UseClientRequestOptions,
+  Cache,
+  ClientOptions,
+  FetchFunction,
+  GenerateResultOptions,
+  OnErrorFunction,
+  Operation,
+  RequestOptions,
+  Result
+} from './types/common-types'
 import { pipeP } from './utils'
 
 class GraphQLClient {
-  constructor(config = {}) {
+  url: string
+  ssrPromises: Promise<any>[]
+  FormData?: any
+  fetch?: FetchFunction
+  fetchOptions: RequestInit
+  logErrors: boolean
+  useGETForQueries: boolean
+  middleware: Middleware
+  mutationsEmitter: EventEmitter
+  cache?: Cache
+  headers: Headers | { [key: string]: string }
+  ssrMode?: boolean
+  subscriptionClient?: SubscriptionClient | GraphQLWsClient
+  fullWsTransport?: boolean
+  onError?: OnErrorFunction
+  constructor(config: ClientOptions) {
     // validate config
+    if (!config) {
+      throw new Error(`GraphQLClient: config is required as first parameter`)
+    }
     this.fullWsTransport = config.fullWsTransport
-    this.subscriptionClient = config.subscriptionClient
 
-    if (typeof this.subscriptionClient === 'function') {
-      this.subscriptionClient = this.subscriptionClient()
+    if (typeof config.subscriptionClient === 'function') {
+      this.subscriptionClient = config.subscriptionClient()
+    } else {
+      this.subscriptionClient = config.subscriptionClient
     }
 
     this.verifyConfig(config)
@@ -23,7 +55,8 @@ class GraphQLClient {
     this.ssrPromises = []
     this.url = config.url
     this.fetch =
-      config.fetch || (typeof fetch !== 'undefined' && fetch && fetch.bind())
+      config.fetch ||
+      (typeof fetch !== 'undefined' && fetch ? fetch.bind(this) : undefined)
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
@@ -116,7 +149,15 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult({ fetchError, httpError, graphQLErrors, data }) {
+  generateResult<ResponseData = any, TGraphQLError = any>({
+    fetchError,
+    httpError,
+    graphQLErrors,
+    data
+  }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
+    ResponseData,
+    TGraphQLError
+  > {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
       fetchError ||
@@ -127,7 +168,10 @@ class GraphQLClient {
       : { data, error: { fetchError, httpError, graphQLErrors } }
   }
 
-  getCacheKey(operation, options = {}) {
+  getCacheKey<Variables = object>(
+    operation: Operation,
+    options: UseClientRequestOptions<any, Variables> = {}
+  ) {
     const fetchOptions = {
       ...this.fetchOptions,
       ...options.fetchOptionsOverrides
@@ -157,9 +201,7 @@ class GraphQLClient {
   getFetchOptions(operation, fetchOptionsOverrides = {}) {
     const fetchOptions = {
       method: 'POST',
-      headers: {
-        ...this.headers
-      },
+      headers: { ...this.headers }, // Existing code was making a copy of an object, so this is an alternative to copy a headers object
       ...this.fetchOptions,
       ...fetchOptionsOverrides
     }
@@ -198,7 +240,9 @@ class GraphQLClient {
 
       i = 0
       files.forEach((paths, file) => {
-        form.append(`${++i}`, file, file.name)
+        /** Note during TypeScript conversion: file.name is not defined in ExtractableFile.
+         * I cast it as any since the existing code works though */
+        form.append(`${++i}`, file, (file as any).name)
       })
 
       fetchOptions.body = form
@@ -210,8 +254,11 @@ class GraphQLClient {
     return fetchOptions
   }
 
-  request(operation, options = {}) {
-    const responseHandlers = []
+  request<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options?: RequestOptions
+  ): Promise<Result<ResponseData, TGraphQLError>> {
+    const responseHandlers: (() => any)[] = []
     const addResponseHook = handler => responseHandlers.push(handler)
 
     return new Promise((resolve, reject) =>
@@ -245,7 +292,10 @@ class GraphQLClient {
     )
   }
 
-  requestViaHttp(operation, options) {
+  requestViaHttp<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options: RequestOptions = {}
+  ): Promise<Result<ResponseData, TGraphQLError>> {
     let url = this.url
     const fetchOptions = this.getFetchOptions(
       operation,
@@ -267,7 +317,7 @@ class GraphQLClient {
       url = url + '?' + paramsQueryString
     }
 
-    return this.fetch(url, fetchOptions)
+    return this.fetch!(url, fetchOptions)
       .then(response => {
         if (!response.ok) {
           return response.text().then(body => {
@@ -338,11 +388,14 @@ class GraphQLClient {
       throw new Error('No SubscriptionClient! Please set in the constructor.')
     }
 
-    if (typeof this.subscriptionClient.subscribe === 'function') {
+    if (isGraphQLWsClient(this.subscriptionClient)) {
       // graphql-ws
       return {
         subscribe: sink => ({
-          unsubscribe: this.subscriptionClient.subscribe(operationPayload, sink)
+          unsubscribe: (this.subscriptionClient as GraphQLWsClient).subscribe(
+            operationPayload,
+            sink
+          )
         })
       }
     } else {
@@ -350,6 +403,10 @@ class GraphQLClient {
       return this.subscriptionClient.request(operationPayload)
     }
   }
+}
+
+function isGraphQLWsClient(value: any): value is GraphQLWsClient {
+  return typeof value.subscribe === 'function'
 }
 
 export default GraphQLClient

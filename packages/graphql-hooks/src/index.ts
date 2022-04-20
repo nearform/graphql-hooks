@@ -5,11 +5,12 @@ import LocalGraphQLError from './LocalGraphQLError'
 import useClientRequest from './useClientRequest'
 import useQuery from './useQuery'
 import useSubscription from './useSubscription'
+export * from './types/common-types'
 
-const useManualQuery = (query, options) =>
+const useManualQuery = (query, options = {}) =>
   useClientRequest(query, { useCache: true, isManual: true, ...options })
 
-const useMutation = (query, options) =>
+const useMutation = (query, options = {}) =>
   useClientRequest(query, { isMutation: true, ...options })
 
 export {

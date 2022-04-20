@@ -1,5 +1,6 @@
 import GraphQLClient from './GraphQLClient'
 import LocalGraphQLError from './LocalGraphQLError'
+import { LocalClientOptions, LocalQueries } from './types/common-types'
 
 /** Local version of the GraphQLClient which only returns specified queries
  * Meant to be used as a way to easily mock and test queries during development. This client never contacts any actual server.
@@ -22,8 +23,11 @@ import LocalGraphQLError from './LocalGraphQLError'
   ```
  */
 class LocalGraphQLClient extends GraphQLClient {
-  constructor(config = {}) {
-    super(config)
+  localQueries: LocalQueries
+  // Delay before sending responses in miliseconds for simulating latency
+  requestDelayMs: number
+  constructor(config: LocalClientOptions) {
+    super({ url: '', ...config })
     this.localQueries = config.localQueries
     this.requestDelayMs = config.requestDelayMs || 0
     if (!this.localQueries) {
