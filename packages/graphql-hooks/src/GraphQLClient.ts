@@ -56,7 +56,9 @@ class GraphQLClient {
     this.url = config.url
     this.fetch =
       config.fetch ||
-      (typeof fetch !== 'undefined' && fetch ? fetch.bind(this) : undefined)
+      (typeof fetch !== 'undefined' && fetch
+        ? fetch.bind(undefined)
+        : undefined)
     this.fetchOptions = config.fetchOptions || {}
     this.FormData =
       config.FormData ||
