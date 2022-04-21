@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.11.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.0...graphql-hooks@5.11.1) (2022-04-21)
+
+
+### Bug Fixes
+
+* update fetch bind ([#820](https://github.com/nearform/graphql-hooks/issues/820)) ([1f1f1f6](https://github.com/nearform/graphql-hooks/commit/1f1f1f67895259f371c0c9fe8934eee07b9c33cd))
+
+
+
+
+
 # [5.11.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.10.0...graphql-hooks@5.11.0) (2022-04-20)
 
 

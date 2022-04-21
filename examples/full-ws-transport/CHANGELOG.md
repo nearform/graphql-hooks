@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-full-ws-transport-example@0.6.0...graphql-hooks-full-ws-transport-example@0.6.1) (2022-04-21)
+
+**Note:** Version bump only for package graphql-hooks-full-ws-transport-example
+
+
+
+
+
 # [0.6.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-full-ws-transport-example@0.5.0...graphql-hooks-full-ws-transport-example@0.6.0) (2022-04-20)
 
 **Note:** Version bump only for package graphql-hooks-full-ws-transport-example
