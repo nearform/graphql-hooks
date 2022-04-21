@@ -67,6 +67,28 @@ describe('GraphQLClient', () => {
       }
     })
 
+    it('does not bind fetch to graphql client', () => {
+      const oldFetch = global.fetch
+
+      try {
+        let fetchThis
+        global.fetch = async function () {
+          fetchThis = this
+          return {}
+        }
+
+        const client = new GraphQLClient({
+          ...validConfig
+        })
+
+        client.request({ query: TEST_QUERY })
+
+        expect(fetchThis).toEqual(undefined)
+      } finally {
+        global.fetch = oldFetch
+      }
+    })
+
     it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
       const oldFetch = global.fetch
       try {
