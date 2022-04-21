@@ -31,7 +31,7 @@ export type OnErrorFunction<TVariables = any> = ({
 }) => void
 
 
-export type MiddlewareOptions<T = object> = {
+export type MiddlewareOptions<T> = {
   client: GraphQLClient,
   operation: Operation<object, T>,
   resolve: (result: Result) => void,
@@ -39,7 +39,7 @@ export type MiddlewareOptions<T = object> = {
   reject: (reason: Error | String) => void,
 }
 
-export type MiddlewareFunction<TExtension = object> = (options: MiddlewareOptions<TExtension>, next: () => void) => any
+export type MiddlewareFunction<TExtension = any> = (options: MiddlewareOptions<TExtension>, next: () => void) => any
 
 
 export interface ClientOptions {
@@ -59,7 +59,7 @@ export interface ClientOptions {
   logErrors?: boolean
   fullWsTransport?: boolean
   onError?: OnErrorFunction
-  middleware?: MiddlewareFunction[]
+  middleware?: MiddlewareFunction<any>[]
 }
 
 declare class LocalGraphQLClient extends GraphQLClient {
@@ -167,7 +167,7 @@ export interface Operation<TVariables = object, VExtension = object> {
   variables?: TVariables
   operationName?: string
   hash?: unknown,
-  extensions?: VExtension,
+  extensions?: Record<string, unknown> & VExtension,
 }
 
 export interface HttpError {
@@ -274,3 +274,4 @@ export interface CacheKeyObject {
   operation: Operation
   fetchOptions: object
 }
+
