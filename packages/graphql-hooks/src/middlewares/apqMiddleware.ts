@@ -12,8 +12,8 @@ export async function sha256(query) {
 
 type APQExtension = {
   persistedQuery: {
-    version: number,
-    sha256Hash: string,
+    version: number
+    sha256Hash: string
   }
 }
 
@@ -22,7 +22,10 @@ type APQExtension = {
  * @param {function} makeRequest
  * @returns Promise<object>
  */
-const APQMiddleware: MiddlewareFunction<APQExtension> = async ({ operation, client, resolve, reject }, next) => {
+const APQMiddleware: MiddlewareFunction<APQExtension> = async (
+  { operation, client, resolve, reject },
+  next
+) => {
   const ERROR_PERSISTED_QUERY_NOT_FOUND = 'PERSISTED_QUERY_NOT_FOUND'
   try {
     operation.extensions = {
@@ -55,7 +58,8 @@ const APQMiddleware: MiddlewareFunction<APQExtension> = async ({ operation, clie
     const persistedQueryNotFound = error.fetchError
       ? (error.fetchError as any).type === ERROR_PERSISTED_QUERY_NOT_FOUND
       : error.graphQLErrors?.some(
-          gqError => gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
+          gqError =>
+            gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
         )
 
     // If a server has not recognized the hash, send both query and hash

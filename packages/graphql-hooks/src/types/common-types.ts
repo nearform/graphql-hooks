@@ -7,8 +7,8 @@ import GraphQLClient from '../GraphQLClient'
 
 // https://spec.graphql.org/October2021/#sec-Errors
 export interface GraphQLResponseErrorLocation {
-  line: number;
-  column: number;
+  line: number
+  column: number
 }
 export interface GraphQLResponseError {
   message: string
@@ -30,17 +30,18 @@ export type OnErrorFunction<TVariables = any> = ({
   result: Result
 }) => void
 
-
 export type MiddlewareOptions<T> = {
-  client: GraphQLClient,
-  operation: Operation<object, T>,
-  resolve: (result: Result) => void,
-  addResponseHook: (hook: (result: Result) => void) => void,
-  reject: (reason: Error | String) => void,
+  client: GraphQLClient
+  operation: Operation<object, T>
+  resolve: (result: Result) => void
+  addResponseHook: (hook: (result: Result) => void) => void
+  reject: (reason: Error | String) => void
 }
 
-export type MiddlewareFunction<TExtension = any> = (options: MiddlewareOptions<TExtension>, next: () => void) => any
-
+export type MiddlewareFunction<TExtension = any> = (
+  options: MiddlewareOptions<TExtension>,
+  next: () => void
+) => any
 
 export interface ClientOptions {
   url: string
@@ -166,8 +167,8 @@ export interface Operation<TVariables = object, VExtension = object> {
   query: string | null
   variables?: TVariables
   operationName?: string
-  hash?: unknown,
-  extensions?: Record<string, unknown> & VExtension,
+  hash?: unknown
+  extensions?: Record<string, unknown> & VExtension
 }
 
 export interface HttpError {
@@ -182,7 +183,10 @@ export interface APIError<TGraphQLError = object> {
   graphQLErrors?: GraphQLResponseError[]
 }
 
-export interface Result<ResponseData = any, TGraphQLError = GraphQLResponseError> {
+export interface Result<
+  ResponseData = any,
+  TGraphQLError = GraphQLResponseError
+> {
   data?: ResponseData
   error?: APIError<TGraphQLError>
 }
@@ -238,7 +242,10 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   refetchAfterMutations?: RefetchAferMutationsData
 }
 
-export interface UseClientRequestResult<ResponseData, TGraphQLError = GraphQLResponseError> {
+export interface UseClientRequestResult<
+  ResponseData,
+  TGraphQLError = GraphQLResponseError
+> {
   loading: boolean
   cacheHit: boolean
   cacheKey?: CacheKeyObject
@@ -274,4 +281,3 @@ export interface CacheKeyObject {
   operation: Operation
   fetchOptions: object
 }
-

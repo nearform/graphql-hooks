@@ -1,4 +1,4 @@
-import { MiddlewareFunction } from "../../types/common-types"
+import { MiddlewareFunction } from '../../types/common-types'
 
 /**
  * CacheMiddleware - just an extremely naive example
