@@ -33,11 +33,12 @@ TestComponent.propTypes = {
 
 describe('useQuery Integrations', () => {
   // reused variables
-  let client: GraphQLClient, wrapper
+  let client: jest.MockedObjectDeep<GraphQLClient>
+  let wrapper
 
   beforeEach(() => {
     testComponentRenderCount = 0
-    client = new GraphQLClient({ url: '/graphql' })
+    client = jest.mocked(new GraphQLClient({ url: '/graphql' }), true)
     client.request = jest.fn().mockResolvedValue({ data: 'data v1' })
     wrapper = getWrapper(client)
   })
@@ -119,7 +120,7 @@ describe('useQuery Integrations', () => {
 
   it('should not rerender after a SSR', () => {
     const query = 'query { hiya }'
-    client = new GraphQLClient({
+    const client = new GraphQLClient({
       url: '/graphql',
       cache: {
         get: () => ({
