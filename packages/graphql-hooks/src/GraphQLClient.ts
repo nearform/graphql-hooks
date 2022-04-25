@@ -14,7 +14,8 @@ import type {
   OnErrorFunction,
   Operation,
   RequestOptions,
-  Result
+  Result,
+  GraphQLResponseError
 } from './types/common-types'
 import { pipeP } from './utils'
 
@@ -151,14 +152,14 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult<ResponseData = any, TGraphQLError = any>({
+  generateResult<ResponseData = any>({
     fetchError,
     httpError,
     graphQLErrors,
     data
-  }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
+  }: GenerateResultOptions<ResponseData, GraphQLResponseError>): Result<
     ResponseData,
-    TGraphQLError
+    GraphQLResponseError
   > {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||

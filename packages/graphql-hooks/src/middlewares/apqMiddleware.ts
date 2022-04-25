@@ -1,4 +1,5 @@
 import { Sha256 } from '@aws-crypto/sha256-universal'
+import { MiddlewareFunction } from '../types/common-types'
 
 export async function sha256(query) {
   const hash = new Sha256()
@@ -9,15 +10,24 @@ export async function sha256(query) {
   return hashBuffer.toString('hex')
 }
 
+type APQExtension = {
+  persistedQuery: {
+    version: number
+    sha256Hash: string
+  }
+}
+
 /**
  * AutomaticPersistedQueryMiddleware - must be last in the middleware list
  * @param {function} makeRequest
  * @returns Promise<object>
  */
-const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
+const APQMiddleware: MiddlewareFunction<APQExtension> = async (
+  { operation, client, resolve, reject },
+  next
+) => {
   const ERROR_PERSISTED_QUERY_NOT_FOUND = 'PERSISTED_QUERY_NOT_FOUND'
   try {
-    // Add SHA256 of a query
     operation.extensions = {
       ...operation.extensions,
       persistedQuery: {
@@ -46,9 +56,10 @@ const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
     }
 
     const persistedQueryNotFound = error.fetchError
-      ? error.fetchError.type === ERROR_PERSISTED_QUERY_NOT_FOUND
-      : error.graphQLErrors.some(
-          gqError => gqError.extensions.code === ERROR_PERSISTED_QUERY_NOT_FOUND
+      ? (error.fetchError as any).type === ERROR_PERSISTED_QUERY_NOT_FOUND
+      : error.graphQLErrors?.some(
+          gqError =>
+            gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
         )
 
     // If a server has not recognized the hash, send both query and hash
@@ -57,7 +68,7 @@ const APQMiddleware = async ({ operation, client, resolve, reject }, next) => {
     } else {
       throw error
     }
-  } catch (err) {
+  } catch (err: any) {
     reject(err)
   }
 }

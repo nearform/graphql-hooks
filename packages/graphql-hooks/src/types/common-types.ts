@@ -5,10 +5,23 @@ import { SubscriptionClient } from 'subscriptions-transport-ws'
 import GraphQLClient from '../GraphQLClient'
 // Exports
 
+// https://spec.graphql.org/October2021/#sec-Errors
+export interface GraphQLResponseErrorLocation {
+  line: number
+  column: number
+}
+export interface GraphQLResponseError {
+  message: string
+  locations?: GraphQLResponseErrorLocation[]
+  path?: string[]
+  extensions?: Record<string, any>
+}
+
 export type FetchFunction = (
   input: RequestInfo,
   init?: RequestInit
 ) => Promise<Response>
+
 export type OnErrorFunction<TVariables = any> = ({
   result,
   operation
@@ -17,7 +30,18 @@ export type OnErrorFunction<TVariables = any> = ({
   result: Result
 }) => void
 
-export type MiddlewareFunction = () => any
+export type MiddlewareOptions<T> = {
+  client: GraphQLClient
+  operation: Operation<object, T>
+  resolve: (result: Result) => void
+  addResponseHook: (hook: (result: Result) => void) => void
+  reject: (reason: Error | String) => void
+}
+
+export type MiddlewareFunction<TExtension = any> = (
+  options: MiddlewareOptions<TExtension>,
+  next: () => void
+) => any
 
 export interface ClientOptions {
   url: string
@@ -36,7 +60,7 @@ export interface ClientOptions {
   logErrors?: boolean
   fullWsTransport?: boolean
   onError?: OnErrorFunction
-  middleware?: MiddlewareFunction[]
+  middleware?: MiddlewareFunction<any>[]
 }
 
 declare class LocalGraphQLClient extends GraphQLClient {
@@ -139,11 +163,12 @@ export interface Cache {
   getInitialState(): object
 }
 
-export interface Operation<TVariables = object> {
-  query: string
+export interface Operation<TVariables = object, VExtension = object> {
+  query: string | null
   variables?: TVariables
   operationName?: string
   hash?: unknown
+  extensions?: Record<string, unknown> & VExtension
 }
 
 export interface HttpError {
@@ -155,10 +180,13 @@ export interface HttpError {
 export interface APIError<TGraphQLError = object> {
   fetchError?: Error
   httpError?: HttpError
-  graphQLErrors?: TGraphQLError[]
+  graphQLErrors?: GraphQLResponseError[]
 }
 
-export interface Result<ResponseData = any, TGraphQLError = object> {
+export interface Result<
+  ResponseData = any,
+  TGraphQLError = GraphQLResponseError
+> {
   data?: ResponseData
   error?: APIError<TGraphQLError>
 }
@@ -171,7 +199,7 @@ export interface RequestOptions {
 
 export interface GenerateResultOptions<
   ResponseData = any,
-  TGraphQLError = object
+  TGraphQLError = GraphQLResponseError
 > {
   fetchError?: Error
   httpError?: HttpError
@@ -214,7 +242,10 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   refetchAfterMutations?: RefetchAferMutationsData
 }
 
-export interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
+export interface UseClientRequestResult<
+  ResponseData,
+  TGraphQLError = GraphQLResponseError
+> {
   loading: boolean
   cacheHit: boolean
   cacheKey?: CacheKeyObject
@@ -225,7 +256,7 @@ export interface UseClientRequestResult<ResponseData, TGraphQLError = object> {
 export interface UseQueryResult<
   ResponseData,
   Variables = object,
-  TGraphQLError = object
+  TGraphQLError = GraphQLResponseError
 > extends UseClientRequestResult<ResponseData, TGraphQLError> {
   refetch(
     options?: UseQueryOptions<ResponseData, Variables>
@@ -241,7 +272,7 @@ export interface UseSubscriptionOperation<Variables extends object = object>
 export type FetchData<
   ResponseData,
   Variables = object,
-  TGraphQLError = object
+  TGraphQLError = GraphQLResponseError
 > = (
   options?: UseClientRequestOptions<ResponseData, Variables>
 ) => Promise<UseClientRequestResult<ResponseData, TGraphQLError>>
