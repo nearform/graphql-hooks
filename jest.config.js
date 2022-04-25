@@ -14,7 +14,7 @@ const projects = [
     ...{
       displayName: 'graphql-hooks',
       roots: ['./packages/graphql-hooks'],
-      testMatch: ['<rootDir>/packages/graphql-hooks/**/*.test.[jt]s'],
+      testMatch: ['<rootDir>/packages/graphql-hooks/**/*.test.*'],
       setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
       automock: false
     }
