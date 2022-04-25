@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import memCache from 'graphql-hooks-memcache'
 import { Client, getInitialState } from 'graphql-hooks-ssr'
 import { GraphQLClient, ClientContext, useQuery, Cache } from '../../src'
+import { createMockResponse } from '../utils'
 
 let testComponentRenderCount = 0
 
@@ -162,16 +163,16 @@ describe('Server side rendering', () => {
       }
     }
     const mockQuery = 'query { stuff }'
-    const fakeResp: Partial<Response> = {
+    const fakeResponse = createMockResponse({
       ok: true,
       json: () => Promise.resolve(mockData)
-    }
+    })
 
     const client = new GraphQLClient({
       url: '/graphql',
       logErrors: true,
       cache: memCache(),
-      fetch: () => Promise.resolve(fakeResp as Response)
+      fetch: () => Promise.resolve(fakeResponse)
     })
 
     // mock cache to get the expected result
@@ -215,16 +216,16 @@ describe('Server side rendering', () => {
       }
     }
     const mockQuery = (id: number) => `query GetStuff${id}{ stuff() }`
-    const fakeResp: Partial<Response> = {
+    const fakeResponse = createMockResponse({
       ok: true,
       json: () => Promise.resolve(mockData)
-    }
+    })
 
     const client = new GraphQLClient({
       url: '/graphql',
       logErrors: true,
       cache: memCache(),
-      fetch: () => Promise.resolve(fakeResp as Response)
+      fetch: () => Promise.resolve(fakeResponse)
     })
 
     const Component1 = () => {

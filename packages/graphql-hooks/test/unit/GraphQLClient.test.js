@@ -3,6 +3,7 @@ import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { Readable } from 'stream'
+import { createMockResponse } from '../utils'
 
 // workaround for https://github.com/octet-stream/form-data/issues/50
 const { fileFromPathSync } = require('formdata-node/lib/cjs/fileFromPath')
@@ -25,9 +26,11 @@ describe('GraphQLClient', () => {
   describe('when instantiated', () => {
     it('throws if no config is provided', () => {
       expect(() => {
+        //@ts-ignore
         new GraphQLClient()
       }).toThrow('GraphQLClient: config is required as first parameter')
     })
+
     it('throws if no url (nor subscriptionClient) provided', () => {
       expect(() => {
         new GraphQLClient({})
@@ -37,6 +40,7 @@ describe('GraphQLClient', () => {
     it('works if no url is provided but fullWsTransport:true and subscriptionClient is provided', () => {
       expect(() => {
         new GraphQLClient({
+          url: '',
           fullWsTransport: true,
           subscriptionClient: {}
         })
@@ -45,6 +49,7 @@ describe('GraphQLClient', () => {
 
     it('throws if fetch is not a function', () => {
       expect(() => {
+        //@ts-ignore
         new GraphQLClient({ ...validConfig, fetch: 'fetch!' })
       }).toThrow('GraphQLClient: config.fetch must be a function')
     })
@@ -74,7 +79,7 @@ describe('GraphQLClient', () => {
         let fetchThis
         global.fetch = async function () {
           fetchThis = this
-          return {}
+          return createMockResponse()
         }
 
         const client = new GraphQLClient({

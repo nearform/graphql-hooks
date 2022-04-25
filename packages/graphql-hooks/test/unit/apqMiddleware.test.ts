@@ -66,7 +66,11 @@ describe('APQMiddleware', () => {
     })
 
     // Call with hash only
-    fetchMock.mockRejectOnce({ type: 'PERSISTED_QUERY_NOT_FOUND' })
+    fetchMock.mockRejectOnce(() =>
+      Promise.reject({
+        type: 'PERSISTED_QUERY_NOT_FOUND'
+      })
+    )
     // Call with query and hash
     fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
 
@@ -148,10 +152,16 @@ describe('APQMiddleware', () => {
 
   it('returns error if even the second API request fails', async () => {
     const error = 'Failed'
+
     // Call with hash only
-    fetchMock.mockRejectOnce({ type: 'PERSISTED_QUERY_NOT_FOUND' })
+    fetchMock.mockRejectOnce(() =>
+      Promise.reject({
+        type: 'PERSISTED_QUERY_NOT_FOUND'
+      })
+    )
+
     // Call with query and hash
-    fetchMock.mockRejectOnce({ error })
+    fetchMock.mockRejectOnce(() => Promise.reject({ error }))
 
     expect(
       client.request({
