@@ -65,10 +65,7 @@ describe('GraphQLClient', () => {
         // @ts-ignore
         delete global.fetch
         expect(() => {
-          new GraphQLClient({
-            ...validConfig
-            // cache: { get: 'get', set: 'set' }
-          })
+          new GraphQLClient(validConfig)
         }).toThrow(
           'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
         )
@@ -108,7 +105,6 @@ describe('GraphQLClient', () => {
           new GraphQLClient({
             ...validConfig,
             ssrMode: true
-            // cache: { get: 'get', set: 'set' }
           })
         }).toThrow(
           'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
@@ -447,8 +443,6 @@ describe('GraphQLClient', () => {
 
       const file = new File([''], 'test-image.png', {
         lastModified: new Date().valueOf(),
-        //  name: 'test-image.png',
-        // size: 44320,
         type: 'image/png'
       })
 
