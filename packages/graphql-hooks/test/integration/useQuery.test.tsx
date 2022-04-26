@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import memCache from 'graphql-hooks-memcache'
 import { Client, getInitialState } from 'graphql-hooks-ssr'
-import { GraphQLClient, ClientContext, useQuery, Cache } from '../../src'
+import { GraphQLClient, ClientContext, useQuery } from '../../src'
 import { createMockResponse } from '../utils'
 
 let testComponentRenderCount = 0
@@ -34,12 +34,12 @@ TestComponent.propTypes = {
 
 describe('useQuery Integrations', () => {
   // reused variables
-  let client: jest.MockedObjectDeep<GraphQLClient>
+  let client
   let wrapper
 
   beforeEach(() => {
     testComponentRenderCount = 0
-    client = jest.mocked(new GraphQLClient({ url: '/graphql' }), true)
+    client = new GraphQLClient({ url: '/graphql' })
     client.request = jest.fn().mockResolvedValue({ data: 'data v1' })
     wrapper = getWrapper(client)
   })
