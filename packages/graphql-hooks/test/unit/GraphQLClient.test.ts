@@ -3,7 +3,11 @@ import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { Readable } from 'stream'
-import { createMockResponse } from '../utils'
+import {
+  createMockCache,
+  createMockResponse,
+  createMockSubscriptionClient
+} from '../utils'
 
 // workaround for https://github.com/octet-stream/form-data/issues/50
 const { fileFromPathSync } = require('formdata-node/lib/cjs/fileFromPath')
@@ -33,7 +37,7 @@ describe('GraphQLClient', () => {
 
     it('throws if no url (nor subscriptionClient) provided', () => {
       expect(() => {
-        new GraphQLClient({})
+        new GraphQLClient({ url: '' })
       }).toThrow('GraphQLClient: config.url is required')
     })
 
@@ -42,7 +46,7 @@ describe('GraphQLClient', () => {
         new GraphQLClient({
           url: '',
           fullWsTransport: true,
-          subscriptionClient: {}
+          subscriptionClient: createMockSubscriptionClient()
         })
       }).not.toThrow()
     })
@@ -58,11 +62,12 @@ describe('GraphQLClient', () => {
       const oldFetch = global.fetch
       try {
         expect(window.document.createElement).toBeTruthy()
+        // @ts-ignore
         delete global.fetch
         expect(() => {
           new GraphQLClient({
-            ...validConfig,
-            cache: { get: 'get', set: 'set' }
+            ...validConfig
+            // cache: { get: 'get', set: 'set' }
           })
         }).toThrow(
           'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
@@ -97,12 +102,13 @@ describe('GraphQLClient', () => {
     it('throws if fetch is not present or polyfilled when ssrMode is true', () => {
       const oldFetch = global.fetch
       try {
+        // @ts-ignore
         delete global.fetch
         expect(() => {
           new GraphQLClient({
             ...validConfig,
-            ssrMode: true,
-            cache: { get: 'get', set: 'set' }
+            ssrMode: true
+            // cache: { get: 'get', set: 'set' }
           })
         }).toThrow(
           'GraphQLClient: fetch must be polyfilled or passed in new GraphQLClient({ fetch })'
@@ -116,8 +122,10 @@ describe('GraphQLClient', () => {
       const oldFetch = global.fetch
       const oldWindow = global.window
       try {
+        //@ts-ignore
         delete global.fetch
         expect(global.window.document.createElement).toBeTruthy()
+        //@ts-ignore
         delete global.window
         const client = new GraphQLClient({
           ...validConfig,
@@ -140,7 +148,7 @@ describe('GraphQLClient', () => {
     })
 
     it('assigns config.cache to an instance property', () => {
-      const cache = { get: 'get', set: 'set' }
+      const cache = createMockCache()
       const client = new GraphQLClient({ ...validConfig, cache })
       expect(client.cache).toBe(cache)
     })
@@ -155,7 +163,7 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({
         ...validConfig,
         ssrMode: true,
-        cache: { get: 'get', set: 'set' }
+        cache: createMockCache()
       })
       expect(client.ssrMode).toBe(true)
     })
@@ -251,8 +259,10 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig })
 
       client.logErrorResult({
-        result: { error: { fetchError: 'on no fetch!' } }
+        result: { error: { fetchError: 'on no fetch!' } },
+        operation: ''
       })
+
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('FETCH ERROR:')
@@ -262,9 +272,12 @@ describe('GraphQLClient', () => {
 
     it('logs an httpError', () => {
       const client = new GraphQLClient({ ...validConfig })
+
       client.logErrorResult({
-        result: { error: { httpError: 'on no http!' } }
+        result: { error: { httpError: 'on no http!' } },
+        operation: ''
       })
+
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('HTTP ERROR:')
@@ -275,7 +288,11 @@ describe('GraphQLClient', () => {
     it('logs all graphQLErrors', () => {
       const client = new GraphQLClient({ ...validConfig })
       const graphQLErrors = ['on no GraphQL!', 'oops GraphQL!']
-      client.logErrorResult({ result: { error: { graphQLErrors } } })
+      client.logErrorResult({
+        result: { error: { graphQLErrors } },
+        operation: ''
+      })
+
       expect(errorLogSpy).toHaveBeenCalledWith('GraphQL Hooks Error')
       expect(groupCollapsedSpy).toHaveBeenCalledTimes(3)
       expect(groupCollapsedSpy).toHaveBeenCalledWith('GRAPHQL ERROR:')
@@ -289,25 +306,30 @@ describe('GraphQLClient', () => {
     it('shows as errored if there are graphQL errors', () => {
       const client = new GraphQLClient({ ...validConfig })
       const result = client.generateResult({
-        graphQLErrors: ['error 1', 'error 2']
+        graphQLErrors: [{ message: 'error 1' }, { message: 'error 2' }]
       })
-      expect(result.error.graphQLErrors).toEqual(['error 1', 'error 2'])
+      expect(result?.error?.graphQLErrors).toEqual([
+        { message: 'error 1' },
+        { message: 'error 2' }
+      ])
     })
 
     it('shows as errored if there is a fetch error', () => {
       const client = new GraphQLClient({ ...validConfig })
+      const fetchError = new Error('fetch error')
       const result = client.generateResult({
-        fetchError: 'fetch error'
+        fetchError
       })
-      expect(result.error.fetchError).toBe('fetch error')
+      expect(result?.error?.fetchError).toBe(fetchError)
     })
 
     it('shows as errored if there is an http error', () => {
       const client = new GraphQLClient({ ...validConfig })
+      const httpError = { status: 400, statusText: '', body: 'http error' }
       const result = client.generateResult({
-        httpError: 'http error'
+        httpError
       })
-      expect(result.error.httpError).toBe('http error')
+      expect(result?.error?.httpError).toBe(httpError)
     })
 
     it('returns the data without an error', () => {
@@ -324,9 +346,12 @@ describe('GraphQLClient', () => {
     it('returns the errors & data', () => {
       const client = new GraphQLClient({ ...validConfig })
       const data = {
-        graphQLErrors: ['graphQL error 1', 'graphQL error 2'],
-        fetchError: 'fetch error',
-        httpError: 'http error',
+        graphQLErrors: [
+          { message: 'graphQL error 1' },
+          { message: 'graphQL error 2' }
+        ],
+        fetchError: new Error('fetch error'),
+        httpError: { status: 400, statusText: '', body: 'http error' },
         data: 'data!'
       }
       const result = client.generateResult(data)
@@ -347,11 +372,14 @@ describe('GraphQLClient', () => {
         ...validConfig,
         fetchOptions: { optionOne: 1 }
       })
-      const cacheKey = client.getCacheKey('operation', {
-        fetchOptionsOverrides: { optionTwo: 2 }
-      })
+      const cacheKey = client.getCacheKey(
+        { query: 'operation' },
+        {
+          fetchOptionsOverrides: { optionTwo: 2 }
+        }
+      )
       expect(cacheKey).toEqual({
-        operation: 'operation',
+        operation: { query: 'operation' },
         fetchOptions: { optionOne: 1, optionTwo: 2 }
       })
     })
@@ -419,8 +447,8 @@ describe('GraphQLClient', () => {
 
       const file = new File([''], 'test-image.png', {
         lastModified: new Date().valueOf(),
-        name: 'test-image.png',
-        size: 44320,
+        //  name: 'test-image.png',
+        // size: 44320,
         type: 'image/png'
       })
 
@@ -428,7 +456,7 @@ describe('GraphQLClient', () => {
       const fetchOptions = client.getFetchOptions(operation)
 
       it('sets body conforming to the graphql multipart request spec', () => {
-        const actual = [...fetchOptions.body]
+        const actual = [...(fetchOptions.body as FormData)]
         const expected = [
           ['operations', '{"query":"","variables":{"a":null}}'],
           ['map', '{"1":["variables.a"]}'],
@@ -453,6 +481,7 @@ describe('GraphQLClient', () => {
       const fetchOptions = client.getFetchOptions(operation)
 
       beforeAll(() => {
+        //@ts-ignore
         delete global.FormData
       })
 
@@ -461,13 +490,14 @@ describe('GraphQLClient', () => {
       })
 
       it('sets body conforming to the graphql multipart request spec', () => {
-        const actual = fetchOptions.body
+        const actual = fetchOptions.body as FormData
+
         expect(actual).toBeInstanceOf(FormData)
         expect(actual.get('operations')).toBe(
           '{"query":"","variables":{"a":null}}'
         )
         expect(actual.get('map')).toBe('{"1":["variables.a"]}')
-        const actualFile = actual.get('1')
+        const actualFile = actual.get('1') as unknown as File
         expect(actualFile).toBeInstanceOf(FormDataFile)
         expect(actualFile.name).toBe('sample.txt')
       })
@@ -489,15 +519,15 @@ describe('GraphQLClient', () => {
 
   describe('request', () => {
     afterEach(() => {
-      fetch.resetMocks()
+      fetchMock.resetMocks()
     })
 
     it('sends the request to the configured url', async () => {
       const client = new GraphQLClient({ ...validConfig })
-      fetch.mockResponseOnce(JSON.stringify({ data: 'data' }))
+      fetchMock.mockResponseOnce(JSON.stringify({ data: 'data' }))
       await client.request({ query: TEST_QUERY })
 
-      const actual = fetch.mock.calls[0][0]
+      const actual = fetchMock.mock.calls[0][0]
       const expected = validConfig.url
       expect(actual).toBe(expected)
     })
@@ -506,19 +536,19 @@ describe('GraphQLClient', () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult = jest.fn()
       const fetchingError = new Error('Oops fetch!')
-      fetch.mockRejectOnce(fetchingError)
+      fetchMock.mockRejectOnce(fetchingError)
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.error.fetchError).toBe(fetchingError)
+      expect(res?.error?.fetchError).toBe(fetchingError)
     })
 
     it('handles & returns http errors', async () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult = jest.fn()
-      fetch.mockResponseOnce('Denied!', {
+      fetchMock.mockResponseOnce('Denied!', {
         status: 403
       })
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.error.httpError).toEqual({
+      expect(res?.error?.httpError).toEqual({
         status: 403,
         statusText: 'Forbidden',
         body: 'Denied!'
@@ -530,7 +560,7 @@ describe('GraphQLClient', () => {
         const client = new GraphQLClient({ ...validConfig, logErrors: true })
         client.logErrorResult = jest.fn()
 
-        fetch.mockResponseOnce('Denied!', {
+        fetchMock.mockResponseOnce('Denied!', {
           status: 403
         })
 
@@ -543,7 +573,7 @@ describe('GraphQLClient', () => {
         const client = new GraphQLClient({ ...validConfig, logErrors: false })
         client.logErrorResult = jest.fn()
 
-        fetch.mockResponseOnce('Denied!', {
+        fetchMock.mockResponseOnce('Denied!', {
           status: 403
         })
 
@@ -559,7 +589,7 @@ describe('GraphQLClient', () => {
 
         const client = new GraphQLClient({ ...validConfig, onError })
         client.logErrorResult = jest.fn()
-        fetch.mockResponseOnce('Denied!', {
+        fetchMock.mockResponseOnce('Denied!', {
           status: 403
         })
 
@@ -587,7 +617,7 @@ describe('GraphQLClient', () => {
 
     it('returns valid responses', async () => {
       const client = new GraphQLClient({ ...validConfig })
-      fetch.mockResponseOnce(JSON.stringify({ data: 'data!' }))
+      fetchMock.mockResponseOnce(JSON.stringify({ data: 'data!' }))
       const res = await client.request({ query: TEST_QUERY })
       expect(res.data).toBe('data!')
       expect(res.error).toBeUndefined()
@@ -596,11 +626,11 @@ describe('GraphQLClient', () => {
     it('returns graphql errors', async () => {
       const client = new GraphQLClient({ ...validConfig })
       client.logErrorResult = jest.fn()
-      fetch.mockResponseOnce(
+      fetchMock.mockResponseOnce(
         JSON.stringify({ data: 'data!', errors: ['oops!'] })
       )
       const res = await client.request({ query: TEST_QUERY })
-      expect(res.error.graphQLErrors).toEqual(['oops!'])
+      expect(res?.error?.graphQLErrors).toEqual(['oops!'])
     })
 
     it('will use a configured fetch implementation', async () => {
@@ -634,12 +664,12 @@ describe('GraphQLClient', () => {
           'x-cache-tags': '1234,5678,9000'
         }
       const client = new GraphQLClient({ ...validConfig })
-      fetch.mockResponseOnce(JSON.stringify({ data }), {
+      fetchMock.mockResponseOnce(JSON.stringify({ data }), {
         status,
         statusText,
         headers
       })
-      const { data: _data } = await client.request(
+      const { data: _data } = await client.request<any>(
         { query: TEST_QUERY },
         {
           responseReducer: (fetchedData, response) => ({
