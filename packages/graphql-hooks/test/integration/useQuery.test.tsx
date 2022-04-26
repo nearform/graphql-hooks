@@ -2,14 +2,15 @@ import T from 'prop-types'
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import memCache from 'graphql-hooks-memcache'
-import { getInitialState } from 'graphql-hooks-ssr'
+import { Client, getInitialState } from 'graphql-hooks-ssr'
 import { GraphQLClient, ClientContext, useQuery } from '../../src'
+import { createMockResponse } from '../utils'
 
 let testComponentRenderCount = 0
 
 /* eslint-disable react/display-name, react/prop-types */
 const getWrapper =
-  client =>
+  (client: GraphQLClient) =>
   ({ children }) =>
     <ClientContext.Provider value={client}>{children}</ClientContext.Provider>
 /* eslint-enable react/display-name, react/prop-types */
@@ -33,7 +34,8 @@ TestComponent.propTypes = {
 
 describe('useQuery Integrations', () => {
   // reused variables
-  let client, wrapper
+  let client
+  let wrapper
 
   beforeEach(() => {
     testComponentRenderCount = 0
@@ -43,7 +45,8 @@ describe('useQuery Integrations', () => {
   })
 
   it('should reset data if the query changes', async () => {
-    let dataNode
+    let dataNode: HTMLElement
+
     const { rerender, getByTestId } = render(
       <TestComponent query={'{ hello }'} />,
       {
@@ -61,7 +64,7 @@ describe('useQuery Integrations', () => {
     // second render
     // new query, the data should be null from previous query
     client.request.mockResolvedValueOnce({ data: 'data v2' })
-    rerender(<TestComponent query={'{ goodbye }'} />, { wrapper })
+    rerender(<TestComponent query={'{ goodbye }'} />)
 
     expect(getByTestId('loading')).toBeTruthy()
     expect(() => getByTestId('data')).toThrow()
@@ -78,8 +81,9 @@ describe('useQuery Integrations', () => {
   })
 
   it('should reset state when options.variables change', async () => {
-    let dataNode
+    let dataNode: HTMLElement
     let options = { variables: { a: 'a' } }
+
     const { rerender, getByTestId } = render(
       <TestComponent options={options} />,
       {
@@ -99,7 +103,7 @@ describe('useQuery Integrations', () => {
     client.request.mockResolvedValueOnce({ data: 'data v2' })
     options = { variables: { a: 'b' } }
 
-    rerender(<TestComponent options={options} />, { wrapper })
+    rerender(<TestComponent options={options} />)
 
     expect(getByTestId('loading')).toBeTruthy()
     expect(() => getByTestId('data')).toThrow()
@@ -117,7 +121,7 @@ describe('useQuery Integrations', () => {
 
   it('should not rerender after a SSR', () => {
     const query = 'query { hiya }'
-    client = new GraphQLClient({
+    const client = new GraphQLClient({
       url: '/graphql',
       cache: {
         get: () => ({
@@ -126,7 +130,12 @@ describe('useQuery Integrations', () => {
           cacheKey: client.getCacheKey({
             query
           })
-        })
+        }),
+        set: () => {},
+        delete: () => {},
+        clear: () => {},
+        keys: () => {},
+        getInitialState: () => ({})
       }
     })
 
@@ -154,16 +163,16 @@ describe('Server side rendering', () => {
       }
     }
     const mockQuery = 'query { stuff }'
-    const fakeResp = {
+    const fakeResponse = createMockResponse({
       ok: true,
       json: () => Promise.resolve(mockData)
-    }
+    })
 
     const client = new GraphQLClient({
       url: '/graphql',
       logErrors: true,
       cache: memCache(),
-      fetch: () => Promise.resolve(fakeResp)
+      fetch: () => Promise.resolve(fakeResponse)
     })
 
     // mock cache to get the expected result
@@ -189,7 +198,7 @@ describe('Server side rendering', () => {
 
     const actual = await getInitialState({
       App,
-      client
+      client: client as Client
     })
     const expected = mockCache.getInitialState()
 
@@ -206,17 +215,17 @@ describe('Server side rendering', () => {
         ]
       }
     }
-    const mockQuery = id => `query GetStuff${id}{ stuff() }`
-    const fakeResp = {
+    const mockQuery = (id: number) => `query GetStuff${id}{ stuff() }`
+    const fakeResponse = createMockResponse({
       ok: true,
       json: () => Promise.resolve(mockData)
-    }
+    })
 
     const client = new GraphQLClient({
       url: '/graphql',
       logErrors: true,
       cache: memCache(),
-      fetch: () => Promise.resolve(fakeResp)
+      fetch: () => Promise.resolve(fakeResponse)
     })
 
     const Component1 = () => {
@@ -257,7 +266,7 @@ describe('Server side rendering', () => {
 
     const actual = await getInitialState({
       App,
-      client
+      client: client as Client
     })
 
     // mock cache to get the expected result
@@ -320,7 +329,7 @@ describe('Server side rendering', () => {
 
     const actual = await getInitialState({
       App,
-      client
+      client: client as Client
     })
 
     const expected = {}
