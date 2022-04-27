@@ -10,7 +10,7 @@ export default generateRollupConfig({
 }).concat({
   input: 'src/middlewares/apqMiddleware.ts',
   output: {
-    file: `lib/middlewares/apqMiddleware.js`,
+    file: 'lib/middlewares/apqMiddleware.js',
     format: 'cjs',
     indent: false
   },
