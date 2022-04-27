@@ -22,7 +22,7 @@ type APQExtension = {
  * @param {function} makeRequest
  * @returns Promise<object>
  */
-const APQMiddleware: MiddlewareFunction<APQExtension> = async (
+export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
   { operation, client, resolve, reject },
   next
 ) => {
@@ -72,5 +72,3 @@ const APQMiddleware: MiddlewareFunction<APQExtension> = async (
     reject(err)
   }
 }
-
-export default APQMiddleware
