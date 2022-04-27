@@ -2,7 +2,7 @@ import { getInitialState } from './index'
 
 describe('getInitialState', () => {
   it('runs all promises and returns state from cache', async () => {
-    const MockApp = () => 'hello world'
+    const MockApp = <p>hello world</p>
 
     let resolvedPromises = 0
     const promiseCounter = jest.fn().mockImplementation(() => {
@@ -29,7 +29,7 @@ describe('getInitialState', () => {
   })
 
   it("throws if a cache hasn't been provided", async () => {
-    const MockApp = () => 'hello world'
+    const MockApp = <p>hello world</p>
 
     const mockClient = {
       ssrPromises: []
@@ -38,6 +38,7 @@ describe('getInitialState', () => {
     expect(
       getInitialState({
         App: MockApp,
+        //@ts-ignore
         client: mockClient
       })
     ).rejects.toEqual(

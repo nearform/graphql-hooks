@@ -13,7 +13,7 @@ const TEST_QUERY = /* GraphQL */ `
 
 describe('GraphQLClient', () => {
   describe('usage of multiple middlewares together', () => {
-    let client
+    let client: GraphQLClient
     const logger = jest.fn()
 
     beforeEach(() => {
@@ -42,7 +42,7 @@ describe('GraphQLClient', () => {
   })
 
   describe('multiple asynchronous response hooks', () => {
-    let client
+    let client: GraphQLClient
     const logger = jest.fn()
 
     const AsyncMidd =
@@ -97,7 +97,7 @@ describe('GraphQLClient', () => {
   })
 
   describe('DebugMiddleware', () => {
-    let client
+    let client: GraphQLClient
     const logger = jest.fn()
 
     beforeEach(() => {
@@ -130,7 +130,7 @@ describe('GraphQLClient', () => {
   })
 
   describe('CacheMiddleware', () => {
-    let client
+    let client: GraphQLClient
 
     beforeEach(() => {
       fetchMock.mockReset()

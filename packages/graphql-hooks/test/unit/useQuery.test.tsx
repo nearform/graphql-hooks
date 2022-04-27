@@ -1,19 +1,21 @@
 import { renderHook } from '@testing-library/react-hooks'
 import EventEmitter from 'events'
-import T from 'prop-types'
 import React from 'react'
 import { ClientContext, useClientRequest, useQuery } from '../../src'
 
 jest.mock('../../src/useClientRequest')
 
+const mockUseClientRequest = useClientRequest as jest.MockedFunction<
+  typeof useClientRequest
+>
+
 let mockQueryReq, mockState, mockClient, mockClient2
 
-const Wrapper = ({ children }) => (
-  <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
+const Wrapper = props => (
+  <ClientContext.Provider value={mockClient}>
+    {props.children}
+  </ClientContext.Provider>
 )
-Wrapper.propTypes = {
-  children: T.node
-}
 
 const TEST_QUERY = `query Test($limit: Int) {
   tests(limit: $limit) {
@@ -31,7 +33,7 @@ describe('useQuery', () => {
   beforeEach(() => {
     mockQueryReq = jest.fn()
     mockState = { loading: true, cacheHit: false }
-    useClientRequest.mockReturnValue([mockQueryReq, mockState])
+    mockUseClientRequest.mockReturnValue([mockQueryReq, mockState])
 
     mockClient = {
       ssrMode: false,
@@ -315,11 +317,11 @@ describe('useQuery', () => {
 
   describe('useQuery.refetch memoisation', () => {
     it('returns the same function on every render if options remain the same', () => {
-      useClientRequest
+      mockUseClientRequest
         .mockReturnValueOnce([mockQueryReq, mockState])
         .mockReturnValueOnce([mockQueryReq, mockState])
 
-      const refetchFns = []
+      const refetchFns: any[] = []
       const { rerender } = renderHook(
         () => {
           const { refetch } = useQuery(TEST_QUERY, {})
@@ -334,11 +336,11 @@ describe('useQuery', () => {
     })
 
     it('returns a new function if the query changes', () => {
-      useClientRequest
+      mockUseClientRequest
         .mockReturnValueOnce([jest.fn(), mockState])
         .mockReturnValueOnce([jest.fn(), mockState])
 
-      const refetchFns = []
+      const refetchFns: any[] = []
       const { rerender } = renderHook(
         ({ variables }) => {
           const { refetch } = useQuery(TEST_QUERY, { variables })
@@ -371,7 +373,7 @@ describe('useQuery', () => {
   describe('skip option', () => {
     it('should skip query if `skip` is `true`', () => {
       const queryReqMock = jest.fn()
-      useClientRequest.mockReturnValue([queryReqMock, mockState])
+      mockUseClientRequest.mockReturnValue([queryReqMock, mockState])
 
       renderHook(
         ({ skip }) =>
@@ -391,7 +393,7 @@ describe('useQuery', () => {
 
     it('should query if `skip` value changes from `true` to `false`', () => {
       const queryReqMock = jest.fn()
-      useClientRequest.mockReturnValue([queryReqMock, mockState])
+      mockUseClientRequest.mockReturnValue([queryReqMock, mockState])
       const { rerender } = renderHook(
         ({ skip }) =>
           useQuery(TEST_QUERY, {
@@ -412,7 +414,7 @@ describe('useQuery', () => {
 
     it('should not execute query again query if `skip` value changes from `false` to `true`', () => {
       const queryReqMock = jest.fn()
-      useClientRequest.mockReturnValue([queryReqMock, mockState])
+      mockUseClientRequest.mockReturnValue([queryReqMock, mockState])
       const { rerender } = renderHook(
         ({ skip }) =>
           useQuery(TEST_QUERY, {
@@ -446,7 +448,7 @@ describe('useQuery', () => {
     it('should throw error if `throwErrors` is `true`', () => {
       const errorState = { error: new Error('boom') }
 
-      useClientRequest.mockReturnValue([jest.fn(), errorState])
+      mockUseClientRequest.mockReturnValue([jest.fn(), errorState])
 
       const { result } = renderHook(
         ({ throwErrors }) =>

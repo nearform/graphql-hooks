@@ -1,5 +1,4 @@
 import { act, renderHook } from '@testing-library/react-hooks'
-import T from 'prop-types'
 import React from 'react'
 import { ClientContext, useClientRequest } from '../../src'
 
@@ -10,9 +9,6 @@ const Wrapper = props => (
     {props.children}
   </ClientContext.Provider>
 )
-Wrapper.propTypes = {
-  children: T.node
-}
 
 const TEST_QUERY = `query Test($limit: Int) {
   tests(limit: $limit) {
@@ -318,7 +314,7 @@ describe('useClientRequest', () => {
     const rendered = renderHook(() => useClientRequest({}), {
       wrapper: Wrapper
     })
-    expect(rendered.result.error.message).toMatch(
+    expect(rendered?.result?.error?.message).toMatch(
       /^Your query must be a string/
     )
   })
@@ -717,7 +713,7 @@ describe('useClientRequest', () => {
 
     describe('memoisation', () => {
       it('returns the same function on every render if query and options remain the same', () => {
-        const fetchDataArr = []
+        const fetchDataArr: any[] = []
         const { rerender } = renderHook(
           () => {
             const [fetchData] = useClientRequest(TEST_QUERY, {
@@ -735,7 +731,7 @@ describe('useClientRequest', () => {
       })
 
       it('returns a new function if query or options change', () => {
-        const fetchDataArr = []
+        const fetchDataArr: any[] = []
 
         const { rerender } = renderHook(
           ({ variables }) => {
