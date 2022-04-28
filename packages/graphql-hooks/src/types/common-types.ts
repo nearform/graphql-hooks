@@ -79,32 +79,6 @@ declare class LocalGraphQLError<TGraphQLError = object>
   constructor(error: APIError<TGraphQLError>)
 }
 
-declare function useClientRequest<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
-declare function useMutation<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
 export interface SubscriptionRequest {
   query: string
   variables: object

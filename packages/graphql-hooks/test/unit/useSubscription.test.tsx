@@ -207,7 +207,7 @@ describe('useSubscription', () => {
       expect(errors).toEqual(graphqlErrors)
     }
 
-    renderHook(() => useSubscription(request, callback), {
+    renderHook(() => useSubscription(request, callback as any), {
       wrapper: Wrapper
     })
   })

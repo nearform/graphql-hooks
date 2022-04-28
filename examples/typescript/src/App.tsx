@@ -52,6 +52,7 @@ function AddPost() {
   const [url, setUrl] = useState('')
   const [createPost, { loading, error }] = useMutation(createPostMutation)
 
+
   async function handleSubmit(e: any) {
     e.preventDefault()
     await createPost({ variables: { title, url } })
