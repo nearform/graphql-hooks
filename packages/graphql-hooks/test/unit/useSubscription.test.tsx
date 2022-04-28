@@ -118,6 +118,19 @@ describe('useSubscription', () => {
     expect(mockClient.createSubscription).toHaveBeenCalledWith(request)
   })
 
+  it('throws when not provided an appropriate client', () => {
+    const request = {
+      query: TEST_SUBSCRIPTION,
+      variables: {
+        id: 1
+      }
+    }
+
+    const { result } = renderHook(() => useSubscription(request, jest.fn()))
+
+    expect(result.error?.message).toEqual('useSubscription() requires a client to be passed in the options or as a context value')
+  })
+
   it('calls the update callback when subscription receives data', () => {
     const data = {
       data: {

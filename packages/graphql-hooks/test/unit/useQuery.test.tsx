@@ -55,6 +55,11 @@ describe('useQuery', () => {
     })
   })
 
+  it('throws an error if not provided with an appropriate client', () => {
+    const { result } = renderHook(() => useQuery(TEST_QUERY, { useCache: true }))
+    expect(result.error?.message).toEqual('useQuery() requires a client to be passed in the options or as a context value')
+  })
+
   it('calls useClientRequest with options', () => {
     renderHook(
       () =>

@@ -25,8 +25,14 @@ function useQuery<
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
   const [queryReq, state] = useClientRequest(query, allOpts)
 
+  if (!client) {
+    throw new Error(
+      'useQuery() requires a client to be passed in the options or as a context value'
+    )
+  }
+
   if (
-    client?.ssrMode &&
+    client.ssrMode &&
     opts.ssr !== false &&
     !calledDuringSSR &&
     !opts.skipCache &&
@@ -83,16 +89,16 @@ function useQuery<
 
       mutations.forEach(mutation => {
         // this event is emitted from useClientRequest
-        client?.mutationsEmitter.on(mutation, conditionalRefetch)
+        client.mutationsEmitter.on(mutation, conditionalRefetch)
       })
 
       return () => {
         mutations.forEach(mutation => {
-          client?.mutationsEmitter.removeListener(mutation, conditionalRefetch)
+          client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
         })
       }
     },
-    [opts.refetchAfterMutations, refetch, client?.mutationsEmitter]
+    [opts.refetchAfterMutations, refetch, client.mutationsEmitter]
   )
 
   return {
