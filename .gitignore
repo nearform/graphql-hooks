@@ -11,5 +11,4 @@ build
 .size-snapshot.json
 yarn.lock
 .vscode
-.env
 *.log
