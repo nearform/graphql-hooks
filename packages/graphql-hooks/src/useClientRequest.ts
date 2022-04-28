@@ -1,6 +1,13 @@
 import { dequal } from 'dequal'
-import React from 'react'
+import React, { DependencyList } from 'react'
 import ClientContext from './ClientContext'
+import {
+  UseClientRequestOptions,
+  FetchData,
+  UseClientRequestResult,
+  ResetFunction,
+  CacheKeyObject
+} from './types/common-types'
 
 const actionTypes = {
   RESET_STATE: 'RESET_STATE',
@@ -56,13 +63,13 @@ function reducer(state, action) {
 }
 
 function useDeepCompareCallback(callback, deps) {
-  const ref = React.useRef()
+  const ref = React.useRef<DependencyList>()
 
   if (!dequal(deps, ref.current)) {
     ref.current = deps
   }
 
-  return React.useCallback(callback, ref.current)
+  return React.useCallback(callback, ref.current || [])
 }
 
 /*
@@ -73,7 +80,18 @@ function useDeepCompareCallback(callback, deps) {
   opts.fetchOptionsOverrides: Object
   opts.skipCache: Boolean
 */
-function useClientRequest(query, initialOpts = {}) {
+function useClientRequest<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
+  query: string,
+  initialOpts: UseClientRequestOptions<ResponseData, Variables> = {}
+): [
+  FetchData<ResponseData, Variables, TGraphQLError>,
+  UseClientRequestResult<ResponseData, TGraphQLError>,
+  ResetFunction
+] {
   if (typeof query !== 'string') {
     throw new Error(
       'Your query must be a string. If you are using the `gql` template literal from graphql-tag, remove it from your query.'
@@ -82,18 +100,25 @@ function useClientRequest(query, initialOpts = {}) {
 
   const contextClient = React.useContext(ClientContext)
   const client = initialOpts.client || contextClient
+
+  if (client === null) {
+    throw new Error(
+      'A client must be provided in order to use the useClientRequest hook.'
+    )
+  }
+
   const isMounted = React.useRef(true)
-  const activeCacheKey = React.useRef(null)
+  const activeCacheKey = React.useRef<CacheKeyObject | null>(null)
   const operation = {
     query,
     variables: initialOpts.variables,
     operationName: initialOpts.operationName,
     persisted: initialOpts.persisted
-  }
+  } as any
 
   if (
     initialOpts.persisted ||
-    (client.useGETForQueries && !initialOpts.isMutation)
+    (client?.useGETForQueries && !initialOpts.isMutation)
   ) {
     initialOpts.fetchOptionsOverrides = {
       ...initialOpts.fetchOptionsOverrides,
@@ -104,7 +129,9 @@ function useClientRequest(query, initialOpts = {}) {
   const cacheKey = client.getCacheKey(operation, initialOpts)
   const isDeferred = initialOpts.isMutation || initialOpts.isManual
   const initialCacheHit =
-    initialOpts.skipCache || !client.cache ? null : client.cache.get(cacheKey)
+    initialOpts.skipCache || !client.cache || !cacheKey
+      ? null
+      : client.cache.get(cacheKey)
   const initialState = {
     ...initialCacheHit,
     cacheHit: !!initialCacheHit,
@@ -165,7 +192,7 @@ function useClientRequest(query, initialOpts = {}) {
 
       const cacheHit = revisedOpts.skipCache
         ? null
-        : client.getCache(revisedCacheKey)
+        : client?.getCache(revisedCacheKey)
 
       if (cacheHit) {
         dispatch({
@@ -178,7 +205,7 @@ function useClientRequest(query, initialOpts = {}) {
       }
 
       dispatch({ type: actionTypes.LOADING, initialState })
-      return client.request(revisedOperation, revisedOpts).then(result => {
+      return client?.request(revisedOperation, revisedOpts).then(result => {
         if (
           revisedOpts.updateData &&
           typeof revisedOpts.updateData !== 'function'
@@ -188,8 +215,8 @@ function useClientRequest(query, initialOpts = {}) {
 
         const actionResult = { ...result }
         if (revisedOpts.useCache) {
-          actionResult.useCache = true
-          actionResult.cacheKey = revisedCacheKey
+          ;(actionResult as any).useCache = true
+          ;(actionResult as any).cacheKey = revisedCacheKey
 
           if (client.ssrMode) {
             const cacheValue = {
@@ -228,8 +255,8 @@ function useClientRequest(query, initialOpts = {}) {
   // to include the outcome of updateData.
   // The cache is already saved if in ssrMode.
   React.useEffect(() => {
-    if (state.useCache && !client.ssrMode) {
-      client.saveCache(state.cacheKey, state)
+    if (state.useCache && !client?.ssrMode) {
+      client?.saveCache(state.cacheKey, state)
     }
   }, [client, state])
 

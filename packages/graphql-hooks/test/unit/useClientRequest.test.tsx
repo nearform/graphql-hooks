@@ -62,7 +62,7 @@ describe('useClientRequest', () => {
       },
       request: jest.fn().mockResolvedValue({ data: 'data' })
     }
-    const options = { isMutation: false, client: mockClient2 }
+    const options = { isMutation: false, client: mockClient2 } as any;
     let fetchData
     renderHook(() => ([fetchData] = useClientRequest(TEST_QUERY, options)), {
       wrapper: Wrapper
@@ -311,7 +311,7 @@ describe('useClientRequest', () => {
   })
 
   it('throws if the supplied query is not a string', () => {
-    const rendered = renderHook(() => useClientRequest({}), {
+    const rendered = renderHook(() => useClientRequest({} as any), {
       wrapper: Wrapper
     })
     expect(rendered?.result?.error?.message).toMatch(
@@ -661,7 +661,7 @@ describe('useClientRequest', () => {
             ([fetchData] = useClientRequest(TEST_QUERY, {
               variables: { limit: 10 },
               updateData: 'do I look like a function to you?'
-            })),
+            } as any)),
           { wrapper: Wrapper }
         )
 
@@ -836,7 +836,7 @@ describe('useClientRequest', () => {
       let fetchData
 
       renderHook(
-        () => ([fetchData] = useClientRequest(TEST_MUTATION, options)),
+        () => ([fetchData] = useClientRequest(TEST_MUTATION, options as any)),
         {
           wrapper: Wrapper
         }
