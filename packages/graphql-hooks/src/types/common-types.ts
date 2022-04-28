@@ -92,28 +92,6 @@ declare function useClientRequest<
   ResetFunction
 ]
 
-declare function useQuery<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseQueryOptions<ResponseData, Variables>
-): UseQueryResult<ResponseData, Variables, TGraphQLError>
-
-declare function useManualQuery<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
 declare function useMutation<
   ResponseData = any,
   Variables = object,

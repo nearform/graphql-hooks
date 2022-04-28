@@ -10,10 +10,10 @@ const TEST_QUERY = `query Test($limit: Int) {
 
 describe('useMutation', () => {
   it('calls useClientRequest with options and isMutation set to true', () => {
-    useMutation(TEST_QUERY, { option: 'option' })
+    useMutation(TEST_QUERY, { isManual: true })
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       isMutation: true,
-      option: 'option'
+      isManual: true
     })
   })
 })
