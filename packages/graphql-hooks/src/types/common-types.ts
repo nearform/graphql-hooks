@@ -240,6 +240,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   ssr?: boolean
   skip?: boolean
   refetchAfterMutations?: RefetchAferMutationsData
+  [key: string]: any
 }
 
 export interface UseClientRequestResult<

@@ -454,7 +454,7 @@ describe('useQuery', () => {
         ({ throwErrors }) =>
           useQuery(TEST_QUERY, {
             throwErrors
-          }),
+          } as any),
         {
           wrapper: Wrapper,
           initialProps: {
@@ -477,7 +477,7 @@ describe('useQuery', () => {
       const { unmount } = renderHook(
         () =>
           useQuery(TEST_QUERY, {
-            client: mockClient,
+            client: mockClient as any,
             refetchAfterMutations: [
               {
                 mutation: MY_MUTATION
@@ -509,11 +509,11 @@ describe('useQuery', () => {
       renderHook(
         () =>
           useQuery(TEST_QUERY, {
-            client: mockClient,
+            client: mockClient as any,
             refetchAfterMutations: [
               {
                 mutation: MY_MUTATION,
-                filter: ({ userId }) => userId === 1
+                filter: ({ userId }: any) => userId === 1
               }
             ]
           }),

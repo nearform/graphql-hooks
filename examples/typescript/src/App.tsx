@@ -4,6 +4,7 @@ import {
   GraphQLClient,
   useManualQuery,
   useMutation,
+  useSubscription,
   useQuery
 } from 'graphql-hooks'
 import React, { useState } from 'react'
