@@ -213,10 +213,10 @@ function useClientRequest<
           throw new Error('options.updateData must be a function')
         }
 
-        const actionResult = { ...result }
+        const actionResult: any = { ...result }
         if (revisedOpts.useCache) {
-          ;(actionResult as any).useCache = true
-          ;(actionResult as any).cacheKey = revisedCacheKey
+          actionResult.useCache = true
+          actionResult.cacheKey = revisedCacheKey
 
           if (client.ssrMode) {
             const cacheValue = {
