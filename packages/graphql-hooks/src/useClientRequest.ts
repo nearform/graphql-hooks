@@ -62,14 +62,14 @@ function reducer(state, action) {
   }
 }
 
-function useDeepCompareCallback(callback, deps) {
-  const ref = React.useRef<DependencyList>()
+function useDeepCompareCallback(callback, deps: DependencyList) {
+  const ref = React.useRef<DependencyList>(deps)
 
   if (!dequal(deps, ref.current)) {
     ref.current = deps
   }
 
-  return React.useCallback(callback, ref.current || [])
+  return React.useCallback(callback, ref.current)
 }
 
 /*
