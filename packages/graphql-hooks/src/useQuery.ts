@@ -3,13 +3,22 @@ import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'
 import useClientRequest from './useClientRequest'
 
+import { UseQueryOptions, UseQueryResult } from './types/common-types'
+
 const defaultOpts = {
   useCache: true,
   skip: false,
   throwErrors: false
 }
 
-function useQuery(query, opts = {}) {
+function useQuery<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
+  query: string,
+  opts: UseQueryOptions<ResponseData, Variables> = {}
+): UseQueryResult<ResponseData, Variables, TGraphQLError> {
   const allOpts = { ...defaultOpts, ...opts }
   const contextClient = React.useContext(ClientContext)
   const client = opts.client || contextClient
@@ -17,7 +26,7 @@ function useQuery(query, opts = {}) {
   const [queryReq, state] = useClientRequest(query, allOpts)
 
   if (
-    client.ssrMode &&
+    client?.ssrMode &&
     opts.ssr !== false &&
     !calledDuringSSR &&
     !opts.skipCache &&
@@ -74,16 +83,16 @@ function useQuery(query, opts = {}) {
 
       mutations.forEach(mutation => {
         // this event is emitted from useClientRequest
-        client.mutationsEmitter.on(mutation, conditionalRefetch)
+        client?.mutationsEmitter.on(mutation, conditionalRefetch)
       })
 
       return () => {
         mutations.forEach(mutation => {
-          client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
+          client?.mutationsEmitter.removeListener(mutation, conditionalRefetch)
         })
       }
     },
-    [opts.refetchAfterMutations, refetch, client.mutationsEmitter]
+    [opts.refetchAfterMutations, refetch, client?.mutationsEmitter]
   )
 
   return {
