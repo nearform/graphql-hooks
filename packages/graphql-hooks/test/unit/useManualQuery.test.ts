@@ -10,10 +10,10 @@ const TEST_QUERY = `query Test($limit: Int) {
 
 describe('useManualQuery', () => {
   it('calls useClientRequest with useCache set to true & options', () => {
-    useManualQuery(TEST_QUERY, { option: 'option' })
+    useManualQuery(TEST_QUERY, { isMutation: true })
     expect(useClientRequest).toHaveBeenCalledWith(TEST_QUERY, {
       useCache: true,
-      option: 'option',
+      isMutation: true,
       isManual: true
     })
   })
