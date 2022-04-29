@@ -7,7 +7,7 @@ env:
 
 jobs:
   acceptance-tests:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - run: echo Running on target url $ACCEPTANCE_URL
