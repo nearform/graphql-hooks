@@ -7,8 +7,7 @@ env:
 
 jobs:
   acceptance-tests:
-  runs-on: windows-latest
-
+    runs-on: windows-latest
     steps:
       - run: echo Running on target url $ACCEPTANCE_URL
       - uses: actions/checkout@v3
