@@ -4,8 +4,9 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:acceptance": "testcafe chrome --app \"npm run test:app\" --app-init-delay 2000 test/acceptance/",
-    "test:app": "cd examples/create-react-app && npm run start",
+    "test:acceptance": "testcafe chrome --app \"npm run test:app:start\" --app-init-delay 2000 test/acceptance/",
+    "test:app:install": "cd examples/create-react-app && npm install",
+    "test:app:start": "cd examples/create-react-app && npm run start",
     "build": "lerna run build",
     "build:packages": "lerna run build --no-private",
     "build:site": "lerna run build --scope=create-react-app",

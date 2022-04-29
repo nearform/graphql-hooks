@@ -7,7 +7,7 @@ env:
 
 jobs:
   acceptance-tests:
-    runs-on: windows-latest
+  runs-on: windows-latest
 
     steps:
       - run: echo Running on target url $ACCEPTANCE_URL
@@ -15,7 +15,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Run tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-          args: 'chrome --app \"npm run test:app\" --app-init-delay 2000 test/acceptance'
+      - run: npm run test:app:install
+      - run: npm install
+      - run: npm run test:acceptance
