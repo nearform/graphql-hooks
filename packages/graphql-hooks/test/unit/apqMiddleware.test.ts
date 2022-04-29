@@ -1,7 +1,7 @@
 import fetchMock from 'jest-fetch-mock'
 
 import { GraphQLClient } from '../../src'
-import { APQMiddleware } from '../../src/middlewares/apqMiddleware'
+import { APQMiddleware, sha256 } from '../../src/middlewares/apqMiddleware'
 
 const TEST_QUERY = /* GraphQL */ `
   query Test($limit: Int) {
@@ -175,6 +175,26 @@ describe('APQMiddleware', () => {
         graphQLErrors: undefined,
         httpError: undefined
       }
+    })
+  })
+
+  describe('Hashing function', () => {
+    it('hashes SHA256 correctly', async () => {
+      const [resA, resB, resC] = await Promise.all([
+        sha256('Hello'),
+        sha256('123_test'),
+        sha256('%$%')
+      ])
+      // Expected values are hardcoded results verified to be correctly hashed via sha256
+      expect(resA).toBe(
+        '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969'
+      )
+      expect(resB).toBe(
+        'ecb432bf49775c2ba77004563a83f36dcd7eae602a2d1e1c61f08d2c7223568c'
+      )
+      expect(resC).toBe(
+        'e50f41365e77d118b44456c3931e7e46e4e354482ebd4b7ddba1245694939ff1'
+      )
     })
   })
 })

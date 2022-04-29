@@ -1,5 +1,14 @@
-import { sha256 } from 'crypto-hash'
+import { Sha256 } from '@aws-crypto/sha256-browser'
 import { MiddlewareFunction } from '../types/common-types'
+
+export async function sha256(query) {
+  const hash = new Sha256()
+  hash.update(query, 'utf8')
+  const hashUint8Array = await hash.digest()
+
+  const hashBuffer = Buffer.from(hashUint8Array)
+  return hashBuffer.toString('hex')
+}
 
 type APQExtension = {
   persistedQuery: {
@@ -23,7 +32,7 @@ export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
       ...operation.extensions,
       persistedQuery: {
         version: 1,
-        sha256Hash: operation.query ? await sha256(operation.query) : ''
+        sha256Hash: await sha256(operation.query)
       }
     }
 
