@@ -1,14 +1,9 @@
 name: acceptance-tests
 
-on:
-  workflow_dispatch:
-    inputs:
-      ACCEPTANCE_URL:
-        description: 'Url of the target application'
-        required: true
+on: [push]
 
 env:
-  ACCEPTANCE_URL: ${{ github.event.inputs.ACCEPTANCE_URL }}
+  ACCEPTANCE_URL: http://localhost:3000
 
 jobs:
   acceptance-tests:
@@ -20,7 +15,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Run tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-          args: 'chrome test/acceptance'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:acceptance
