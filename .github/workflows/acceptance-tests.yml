@@ -15,5 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm install
-      - run: npm run test:acceptance
+      - name: Run tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: 'chrome --app \"npm run test:app\" --app-init-delay 2000 test/acceptance'
