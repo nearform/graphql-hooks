@@ -63,13 +63,13 @@ function reducer(state, action) {
 }
 
 function useDeepCompareCallback(callback, deps: DependencyList) {
-  const ref = React.useRef<DependencyList>(deps)
+  const ref = React.useRef<DependencyList>()
 
   if (!dequal(deps, ref.current)) {
     ref.current = deps
   }
 
-  return React.useCallback(callback, ref.current)
+  return React.useCallback(callback, ref.current as any)
 }
 
 /*
@@ -118,7 +118,7 @@ function useClientRequest<
 
   if (
     initialOpts.persisted ||
-    (client?.useGETForQueries && !initialOpts.isMutation)
+    (client.useGETForQueries && !initialOpts.isMutation)
   ) {
     initialOpts.fetchOptionsOverrides = {
       ...initialOpts.fetchOptionsOverrides,
@@ -192,7 +192,7 @@ function useClientRequest<
 
       const cacheHit = revisedOpts.skipCache
         ? null
-        : client?.getCache(revisedCacheKey)
+        : client.getCache(revisedCacheKey)
 
       if (cacheHit) {
         dispatch({
@@ -205,7 +205,7 @@ function useClientRequest<
       }
 
       dispatch({ type: actionTypes.LOADING, initialState })
-      return client?.request(revisedOperation, revisedOpts).then(result => {
+      return client.request(revisedOperation, revisedOpts).then(result => {
         if (
           revisedOpts.updateData &&
           typeof revisedOpts.updateData !== 'function'
@@ -255,8 +255,8 @@ function useClientRequest<
   // to include the outcome of updateData.
   // The cache is already saved if in ssrMode.
   React.useEffect(() => {
-    if (state.useCache && !client?.ssrMode) {
-      client?.saveCache(state.cacheKey, state)
+    if (state.useCache && !client.ssrMode) {
+      client.saveCache(state.cacheKey, state)
     }
   }, [client, state])
 
