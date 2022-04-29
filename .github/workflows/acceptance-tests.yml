@@ -13,9 +13,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
+      - run: npm install --prefix examples/client-react-app
+      - run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          build: npm run build --prefix examples/client-react-app
           start: npm run start --prefix examples/client-react-app
