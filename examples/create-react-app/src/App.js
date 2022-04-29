@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { GraphQLClient, ClientContext } from 'graphql-hooks'
+// eslint-disable-next-line no-unused-vars
+import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
 import memCache from 'graphql-hooks-memcache'
 
 import Posts from './components/Posts'
