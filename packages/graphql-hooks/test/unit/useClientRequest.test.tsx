@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import { ClientContext, useClientRequest } from '../../src'
+import { ClientContext, useClientRequest, UseClientRequestOptions } from '../../src'
 
 let mockClient
 
@@ -49,7 +49,7 @@ describe('useClientRequest', () => {
   })
 
   it('uses a passed client', async () => {
-    const mockClient2 = {
+    const mockClient2: any = {
       mutationsEmitter: {
         emit: jest.fn()
       },
@@ -62,7 +62,7 @@ describe('useClientRequest', () => {
       },
       request: jest.fn().mockResolvedValue({ data: 'data' })
     }
-    const options = { isMutation: false, client: mockClient2 } as any;
+    const options: UseClientRequestOptions = { isMutation: false, client: mockClient2 };
     let fetchData
     renderHook(() => ([fetchData] = useClientRequest(TEST_QUERY, options)), {
       wrapper: Wrapper
@@ -74,6 +74,14 @@ describe('useClientRequest', () => {
       { query: TEST_QUERY },
       options
     )
+  })
+
+  it('returns an error if there is no client available', () => {
+    const options: UseClientRequestOptions = { isMutation: false }
+
+    const { result } = renderHook(() => useClientRequest(TEST_QUERY, options))
+
+    expect(result.error?.message).toEqual( 'A client must be provided in order to use the useClientRequest hook.')
   })
 
   it('resets data when reset function is called', async () => {
@@ -812,7 +820,7 @@ describe('useClientRequest', () => {
     })
 
     it('emits an event when a mutation returns its result', async () => {
-      const mockClient = {
+      const mockClient: any = {
         mutationsEmitter: {
           emit: jest.fn()
         },
@@ -825,7 +833,7 @@ describe('useClientRequest', () => {
         },
         request: jest.fn().mockResolvedValue({ data: 'data' })
       }
-      const options = {
+      const options: UseClientRequestOptions = {
         isMutation: true,
         client: mockClient,
         variables: {
@@ -836,7 +844,7 @@ describe('useClientRequest', () => {
       let fetchData
 
       renderHook(
-        () => ([fetchData] = useClientRequest(TEST_MUTATION, options as any)),
+        () => ([fetchData] = useClientRequest(TEST_MUTATION, options)),
         {
           wrapper: Wrapper
         }

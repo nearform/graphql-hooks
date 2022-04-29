@@ -101,7 +101,7 @@ function useClientRequest<
   const contextClient = React.useContext(ClientContext)
   const client = initialOpts.client || contextClient
 
-  if (client === null) {
+  if (client === null || client === undefined) {
     throw new Error(
       'A client must be provided in order to use the useClientRequest hook.'
     )
