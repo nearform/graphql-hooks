@@ -5,7 +5,7 @@
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
-  "types": "lib/types/index.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "npm run build:code && npm run build:types",

@@ -2,6 +2,6 @@
   "extends": "../../config/tsconfig.base",
   "include": ["src"],
   "compilerOptions": {
-    "outDir": "lib/types"
+    "outDir": "lib"
   }
 }

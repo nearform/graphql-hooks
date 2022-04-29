@@ -79,54 +79,6 @@ declare class LocalGraphQLError<TGraphQLError = object>
   constructor(error: APIError<TGraphQLError>)
 }
 
-declare function useClientRequest<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
-declare function useQuery<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseQueryOptions<ResponseData, Variables>
-): UseQueryResult<ResponseData, Variables, TGraphQLError>
-
-declare function useManualQuery<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
-declare function useMutation<
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options?: UseClientRequestOptions<ResponseData, Variables>
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-]
-
 export interface SubscriptionRequest {
   query: string
   variables: object
@@ -240,6 +192,7 @@ export interface UseQueryOptions<ResponseData = any, Variables = object>
   ssr?: boolean
   skip?: boolean
   refetchAfterMutations?: RefetchAferMutationsData
+  [key: string]: any
 }
 
 export interface UseClientRequestResult<

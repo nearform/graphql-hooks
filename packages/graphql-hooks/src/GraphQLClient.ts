@@ -15,7 +15,8 @@ import type {
   Operation,
   RequestOptions,
   Result,
-  GraphQLResponseError
+  GraphQLResponseError,
+  CacheKeyObject
 } from './types/common-types'
 import { pipeP } from './utils'
 
@@ -174,7 +175,7 @@ class GraphQLClient {
   getCacheKey<Variables = object>(
     operation: Operation,
     options: UseClientRequestOptions<any, Variables> = {}
-  ) {
+  ): CacheKeyObject {
     const fetchOptions = {
       ...this.fetchOptions,
       ...options.fetchOptionsOverrides
