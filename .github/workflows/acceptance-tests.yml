@@ -14,11 +14,11 @@ jobs:
         with:
           node-version: 16
       - name: Install example app
-        working-directory: examples/client-react-app
+        working-directory: examples/create-react-app
         run: npm install
       - name: Install root
         run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          start: npm run start --prefix ./examples/client-react-app
+          start: npm run start --prefix ./examples/create-react-app
