@@ -13,11 +13,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Install root
+        run: npm install
       - name: Install example app
         working-directory: examples/create-react-app
         run: npm install
-      - name: Install root
-        run: npm install
+      - name: Bootstrap
+        run: npm run bootstrap
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
