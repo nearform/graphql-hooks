@@ -21,4 +21,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
+          install: false
           start: npm run start --prefix ./examples/create-react-app
