@@ -16,10 +16,11 @@
     "react-scripts": "^3.0.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "npm run clean && react-app-rewired start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080"
+    "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080",
+    "clean": "rm -rf node_modules/.cache"
   },
   "browserslist": [
     "ie >= 11"
