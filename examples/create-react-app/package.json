@@ -23,8 +23,5 @@
   },
   "browserslist": [
     "ie >= 11"
-  ],
-  "devDependencies": {
-    "react-app-rewired": "^2.2.1"
-  }
+  ]
 }
