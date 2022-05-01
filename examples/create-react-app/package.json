@@ -13,14 +13,13 @@
     "react": "^17.0.0",
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^17.0.0",
-    "react-scripts": "^3.0.1"
+    "react-scripts": "^4.0.3"
   },
   "scripts": {
     "start": "npm run clean && react-app-rewired start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080",
-    "clean": "rm -rf node_modules/.cache"
+    "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080"
   },
   "browserslist": [
     "ie >= 11"
