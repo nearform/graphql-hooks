@@ -16,8 +16,13 @@ jobs:
           node-version: 16
       - name: Install root
         run: npm install
-      - name: Cypress run
+      - name: Cypress create-react-app
         uses: cypress-io/github-action@v3
         with:
           install: false
           start: npm run start --prefix ./examples/create-react-app
+      - name: Cypress persisted-queries
+        uses: cypress-io/github-action@v3
+        with:
+          install: false
+          start: npm run start --prefix ./examples/persisted-queries/server, npm run start --prefix ./examples/persisted-queries/client
