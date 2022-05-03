@@ -1,4 +1,4 @@
-import { Sha256 } from '@aws-crypto/sha256-universal'
+import { Sha256 } from '@aws-crypto/sha256-browser'
 import { MiddlewareFunction } from '../types/common-types'
 
 export async function sha256(query) {
@@ -22,7 +22,7 @@ type APQExtension = {
  * @param {function} makeRequest
  * @returns Promise<object>
  */
-const APQMiddleware: MiddlewareFunction<APQExtension> = async (
+export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
   { operation, client, resolve, reject },
   next
 ) => {
@@ -72,5 +72,3 @@ const APQMiddleware: MiddlewareFunction<APQExtension> = async (
     reject(err)
   }
 }
-
-export default APQMiddleware

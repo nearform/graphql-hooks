@@ -1,7 +1,7 @@
 import fetchMock from 'jest-fetch-mock'
 
 import { GraphQLClient } from '../../src'
-import APQMiddleware, { sha256 } from '../../src/middlewares/apqMiddleware'
+import { APQMiddleware, sha256 } from '../../src/middlewares/apqMiddleware'
 
 const TEST_QUERY = /* GraphQL */ `
   query Test($limit: Int) {

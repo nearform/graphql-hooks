@@ -47,7 +47,7 @@ We don't use async/await in this library due to transpilation costs. Instead we 
 
 ### Acceptance tests
 
-We use [testcafe](https://github.com/DevExpress/testcafe) to run acceptance tests against our [create-react-app example](examples/create-react-app) application. This is to ensure that the bundled versions of the code work as they should in an application.
+We use [Cypress](https://www.cypress.io/) to run acceptance tests against our [create-react-app example](examples/create-react-app) application. This is to ensure that the bundled versions of the code work as they should in an application.
 You can run these locally on Chrome by running `npm run test:acceptance`. You should make sure that the packages have been built and the create-react-app example is running on port 3000 locally.
 
 ## For Collaborators
