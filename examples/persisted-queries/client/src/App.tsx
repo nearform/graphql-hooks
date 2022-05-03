@@ -3,8 +3,8 @@ import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
 import { useState } from 'react'
 
 const client = new GraphQLClient({
-  url: 'http://localhost:8000/graphql'
-  // middleware: [APQMiddleware]
+  url: 'http://localhost:8000/graphql',
+  middleware: [APQMiddleware]
 })
 
 export const addQuery = `
