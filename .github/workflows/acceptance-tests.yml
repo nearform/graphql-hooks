@@ -1,26 +1,19 @@
 name: acceptance-tests
 
-on:
-  workflow_dispatch:
-    inputs:
-      ACCEPTANCE_URL:
-        description: 'Url of the target application'
-        required: true
-
-env:
-  ACCEPTANCE_URL: ${{ github.event.inputs.ACCEPTANCE_URL }}
+on: [push]
 
 jobs:
   acceptance-tests:
     runs-on: ubuntu-latest
-
     steps:
-      - run: echo Running on target url $ACCEPTANCE_URL
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Run tests
-        uses: DevExpress/testcafe-action@latest
+      - name: Install root
+        run: npm install
+      - name: Cypress run
+        uses: cypress-io/github-action@v3
         with:
-          args: 'chrome test/acceptance'
+          install: false
+          start: npm run start --prefix ./examples/create-react-app
