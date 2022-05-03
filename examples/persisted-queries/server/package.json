@@ -10,10 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@fastify/cors": "^7.0.0",
-    "fastify": "^3.29.0",
-    "graphql": "^16.4.0",
-    "mercurius": "^9.4.0"
+    "apollo-server": "^3.6.7",
+    "graphql": "^16.4.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",

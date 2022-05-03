@@ -31,7 +31,7 @@ describe('APQMiddleware', () => {
   beforeEach(() => {
     fetchMock.mockReset()
     client = new GraphQLClient({
-      middleware: [APQMiddleware()],
+      middleware: [APQMiddleware],
       fetch: fetchMock,
       url: 'localhost:3000/graphql'
     })
@@ -39,7 +39,7 @@ describe('APQMiddleware', () => {
 
   it('returns data if API recognizes the hash', async () => {
     const client = new GraphQLClient({
-      middleware: [APQMiddleware()],
+      middleware: [APQMiddleware],
       fetch: fetchMock,
       url: 'localhost:3000/graphql'
     })
@@ -60,7 +60,7 @@ describe('APQMiddleware', () => {
 
   it('calls API again with both query and hash if server does not recognize the hash', async () => {
     const client = new GraphQLClient({
-      middleware: [APQMiddleware()],
+      middleware: [APQMiddleware],
       fetch: fetchMock,
       url: 'localhost:3000/graphql'
     })
@@ -108,7 +108,7 @@ describe('APQMiddleware', () => {
 
   it('handle error from server when response is 200 ok but it does not recognize the hash', async () => {
     const client = new GraphQLClient({
-      middleware: [APQMiddleware()],
+      middleware: [APQMiddleware],
       fetch: fetchMock,
       url: 'localhost:3000/graphql'
     })

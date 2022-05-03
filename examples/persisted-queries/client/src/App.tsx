@@ -4,19 +4,7 @@ import { useState } from 'react'
 
 const client = new GraphQLClient({
   url: 'http://localhost:8000/graphql',
-  middleware: [
-    APQMiddleware({
-      isPersistedQueryNotFound: error => {
-        const errors = error?.httpError?.body
-          ? JSON.parse(error?.httpError?.body)?.errors ?? []
-          : []
-
-        return (
-          errors.length > 0 && errors[0].message === 'PersistedQueryNotFound'
-        )
-      }
-    })
-  ]
+  middleware: [APQMiddleware]
 })
 
 export const addQuery = `
