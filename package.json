@@ -27,7 +27,7 @@
     "@commitlint/config-conventional": "^16.0.0",
     "@testing-library/cypress": "^8.0.2",
     "@types/jest": "^27.4.1",
-    "babel-jest": "^27.0.0",
+    "babel-jest": "^28.0.3",
     "cypress": "^9.6.0",
     "esbuild": "^0.14.27",
     "eslint": "^8.7.0",
