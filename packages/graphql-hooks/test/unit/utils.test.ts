@@ -8,7 +8,7 @@ describe('GraphQLClient utils', () => {
         mock('fnA')
       }
       const fnB = () => mock('fnB')
-      await pipeP([fnA, fnB])()
+      await pipeP([fnA, fnB])({})
       expect(mock).toHaveBeenCalledTimes(2)
       expect(mock.mock.calls).toEqual([['fnA'], ['fnB']])
     })
@@ -23,7 +23,7 @@ describe('GraphQLClient utils', () => {
         await new Promise(res => setTimeout(res, 30))
         mock('fnB')
       }
-      await pipeP([fnA, fnB])()
+      await pipeP([fnA, fnB])({})
       expect(mock).toHaveBeenCalledTimes(2)
       expect(mock.mock.calls).toEqual([['fnA'], ['fnB']])
     })
@@ -39,7 +39,7 @@ describe('GraphQLClient utils', () => {
         await new Promise(res => setTimeout(res, 30))
         mock('fnC')
       }
-      await pipeP([fnA, fnB, fnC])()
+      await pipeP([fnA, fnB, fnC])({})
       expect(mock).toHaveBeenCalledTimes(3)
       expect(mock.mock.calls).toEqual([['fnA'], ['fnB'], ['fnC']])
     })

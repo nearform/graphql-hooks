@@ -48,7 +48,7 @@ describe('memcache', () => {
 describe('memcache (debug)', () => {
   let cache
   beforeEach(() => {
-    cache = memCache({ debug: true })
+    cache = memCache({ initialState: {}, debug: true })
   })
   it('returns the original key', () => {
     cache.set('foo', 'bar')

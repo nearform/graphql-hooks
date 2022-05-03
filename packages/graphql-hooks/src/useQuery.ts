@@ -3,18 +3,33 @@ import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'
 import useClientRequest from './useClientRequest'
 
+import { UseQueryOptions, UseQueryResult } from './types/common-types'
+
 const defaultOpts = {
   useCache: true,
   skip: false,
   throwErrors: false
 }
 
-function useQuery(query, opts = {}) {
+function useQuery<
+  ResponseData = any,
+  Variables = object,
+  TGraphQLError = object
+>(
+  query: string,
+  opts: UseQueryOptions<ResponseData, Variables> = {}
+): UseQueryResult<ResponseData, Variables, TGraphQLError> {
   const allOpts = { ...defaultOpts, ...opts }
   const contextClient = React.useContext(ClientContext)
   const client = opts.client || contextClient
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
   const [queryReq, state] = useClientRequest(query, allOpts)
+
+  if (!client) {
+    throw new Error(
+      'useQuery() requires a client to be passed in the options or as a context value'
+    )
+  }
 
   if (
     client.ssrMode &&

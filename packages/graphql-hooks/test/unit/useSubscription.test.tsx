@@ -1,10 +1,22 @@
 import React from 'react'
-import T from 'prop-types'
 import { renderHook } from '@testing-library/react-hooks'
 import { ClientContext, useSubscription, GraphQLClient } from '../../src'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 class MockSubscriptionClient {
-  constructor({ type = 'COMPLETE', data = null, unsubscribe }) {
+  type: string
+  data: Record<string, unknown> | Record<string, unknown>[] | null
+  unsubscribe?: () => void
+
+  constructor({
+    type = 'COMPLETE',
+    data = null,
+    unsubscribe
+  }: {
+    type: string
+    data: Record<string, unknown> | Record<string, unknown>[] | null
+    unsubscribe?: () => void
+  }) {
     this.type = type
     this.data = data
     this.unsubscribe = unsubscribe
@@ -69,12 +81,11 @@ class MockSubscriptionClient {
 
 let mockClient
 
-const Wrapper = ({ children }) => (
-  <ClientContext.Provider value={mockClient}>{children}</ClientContext.Provider>
+const Wrapper = props => (
+  <ClientContext.Provider value={mockClient}>
+    {props.children}
+  </ClientContext.Provider>
 )
-Wrapper.propTypes = {
-  children: T.node
-}
 
 const TEST_SUBSCRIPTION = `subscription TestSubscription($id: ID!) {
   onTestEvent(id: $id) {
@@ -89,8 +100,8 @@ describe('useSubscription', () => {
       data: {}
     })
     mockClient = {
-      createSubscription: jest.fn(request => {
-        return subscriptionClient.request(request)
+      createSubscription: jest.fn(() => {
+        return subscriptionClient.request()
       }),
       subscriptionClient
     }
@@ -107,6 +118,19 @@ describe('useSubscription', () => {
     expect(mockClient.createSubscription).toHaveBeenCalledWith(request)
   })
 
+  it('throws when not provided an appropriate client', () => {
+    const request = {
+      query: TEST_SUBSCRIPTION,
+      variables: {
+        id: 1
+      }
+    }
+
+    const { result } = renderHook(() => useSubscription(request, jest.fn()))
+
+    expect(result.error?.message).toEqual('useSubscription() requires a client to be passed in the options or as a context value')
+  })
+
   it('calls the update callback when subscription receives data', () => {
     const data = {
       data: {
@@ -118,7 +142,8 @@ describe('useSubscription', () => {
     const subscriptionClient = new MockSubscriptionClient({
       type: 'DATA',
       data
-    })
+    }) as unknown as SubscriptionClient
+
     mockClient = new GraphQLClient({
       url: 'fetch-url',
       subscriptionClient
@@ -153,7 +178,7 @@ describe('useSubscription', () => {
         new MockSubscriptionClient({
           type: 'DATA',
           data
-        })
+        }) as unknown as SubscriptionClient
     })
     const request = {
       query: TEST_SUBSCRIPTION,
@@ -176,7 +201,7 @@ describe('useSubscription', () => {
     const subscriptionClient = new MockSubscriptionClient({
       type: 'ERROR',
       data: graphqlErrors
-    })
+    }) as unknown as SubscriptionClient
 
     mockClient = new GraphQLClient({
       url: 'fetch-url',
@@ -195,7 +220,7 @@ describe('useSubscription', () => {
       expect(errors).toEqual(graphqlErrors)
     }
 
-    renderHook(() => useSubscription(request, callback), {
+    renderHook(() => useSubscription(request, callback as any), {
       wrapper: Wrapper
     })
   })
@@ -208,7 +233,7 @@ describe('useSubscription', () => {
       type: 'COMPLETE',
       data: null,
       unsubscribe
-    })
+    }) as unknown as SubscriptionClient
 
     mockClient = new GraphQLClient({
       url: 'fetch-url',
@@ -237,7 +262,7 @@ describe('useSubscription', () => {
       type: 'DATA',
       data: {},
       unsubscribe
-    })
+    }) as unknown as SubscriptionClient
 
     mockClient = new GraphQLClient({
       url: 'fetch-url',

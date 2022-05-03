@@ -14,7 +14,6 @@ const projects = [
     ...{
       displayName: 'graphql-hooks',
       roots: ['./packages/graphql-hooks'],
-      testMatch: ['<rootDir>/packages/graphql-hooks/**/*.test.[jt]s'],
       setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
       automock: false
     }
@@ -23,16 +22,14 @@ const projects = [
     ...commonConfig,
     ...{
       roots: ['./packages/graphql-hooks-memcache'],
-      displayName: 'graphql-hooks-memcache',
-      testMatch: ['<rootDir>/packages/graphql-hooks-memcache/**/*.test.[jt]s']
+      displayName: 'graphql-hooks-memcache'
     }
   },
   {
     ...commonConfig,
     ...{
       roots: ['./packages/graphql-hooks-ssr'],
-      displayName: 'graphql-hooks-ssr',
-      testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.[jt]s']
+      displayName: 'graphql-hooks-ssr'
     }
   },
   {
@@ -44,7 +41,6 @@ const projects = [
         '\\.jsx?$': 'babel-jest'
       },
       displayName: 'cra-example',
-      testMatch: ['<rootDir>/examples/create-react-app/**/*.test.[jt]s'],
       testEnvironment: 'jsdom'
     }
   }
