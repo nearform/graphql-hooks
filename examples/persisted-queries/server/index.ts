@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+import cors from '@fastify/cors'
 import mercurius, { IResolvers } from 'mercurius'
 import persistedQueries from './queries.json'
 
@@ -8,9 +9,13 @@ const app = fastify({
   }
 })
 
+app.register(cors, {
+  origin: 'http://localhost:3000'
+})
+
 const schema = `
   type Query {
-    add(x: Int, y: Int): Int
+    add(x: Int!, y: Int!): Int!
   }
 `
 
@@ -27,13 +32,12 @@ app.register(mercurius, {
   schema,
   resolvers,
   persistedQueries,
-  onlyPersisted: true, // will nullify the effect of the option below (graphiql)
   graphiql: true
 })
 
 async function start() {
   try {
-    await app.listen(3000)
+    await app.listen(8000)
   } catch (err) {
     app.log.error(err)
     process.exit(1)
