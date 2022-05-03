@@ -2,7 +2,11 @@ import fastify from 'fastify'
 import mercurius, { IResolvers } from 'mercurius'
 import persistedQueries from './queries.json'
 
-const app = fastify()
+const app = fastify({
+  logger: {
+    prettyPrint: true
+  }
+})
 
 const schema = `
   type Query {
@@ -27,4 +31,13 @@ app.register(mercurius, {
   graphiql: true
 })
 
-app.listen(8000)
+async function start() {
+  try {
+    await app.listen(3000)
+  } catch (err) {
+    app.log.error(err)
+    process.exit(1)
+  }
+}
+
+start()

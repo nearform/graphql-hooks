@@ -6,7 +6,8 @@ import {
   useMutation,
   useQuery
 } from 'graphql-hooks'
-import React, { useState } from 'react'
+import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
+import { useState } from 'react'
 
 interface PostData {
   id: string
@@ -15,7 +16,8 @@ interface PostData {
 }
 
 const client = new GraphQLClient({
-  url: 'http://localhost:8000'
+  url: 'http://localhost:8000',
+  middleware: [APQMiddleware]
 })
 
 export const allPostsQuery = `
