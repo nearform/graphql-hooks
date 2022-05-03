@@ -1,3 +1,0 @@
-{
-  "e7ff65dc1de3342c982262d3b2fd7b7b9c60a52e799726c95b4dda989167ff15": "query add($x: Int!, $y: Int!) { add(x: $x, y: $y) }"
-}

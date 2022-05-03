@@ -1,7 +1,6 @@
 import fastify from 'fastify'
 import cors from '@fastify/cors'
 import mercurius, { IResolvers } from 'mercurius'
-import persistedQueries from './queries.json'
 
 const app = fastify({
   logger: {
@@ -31,7 +30,7 @@ const resolvers: IResolvers = {
 app.register(mercurius, {
   schema,
   resolvers,
-  persistedQueries,
+  persistedQueryProvider: mercurius.persistedQueryDefaults.automatic(),
   graphiql: true
 })
 

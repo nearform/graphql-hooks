@@ -36,7 +36,7 @@ import { GraphQLClient } from 'graphql-hooks'
 import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
 
 const client = new GraphQLClient({
-  middleware: [APQMiddleware],
+  middleware: [APQMiddleware()],
   url: 'localhost:3000/graphql'
 })
 ```
