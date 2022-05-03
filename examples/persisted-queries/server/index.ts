@@ -8,7 +8,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    add: async (_: any, obj: any) => {
+    add: async (_: unknown, obj: { x: number; y: number }) => {
       const { x, y } = obj
       return x + y
     }
