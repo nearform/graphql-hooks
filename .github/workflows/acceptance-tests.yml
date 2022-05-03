@@ -20,9 +20,11 @@ jobs:
         uses: cypress-io/github-action@v3
         with:
           install: false
+          spec: cypress/integration/create-react-app.spec.ts
           start: npm run start --prefix ./examples/create-react-app
       - name: Cypress persisted-queries
         uses: cypress-io/github-action@v3
         with:
           install: false
+          spec: cypress/integration/persisted-queries.spec.ts
           start: npm run start --prefix ./examples/persisted-queries/server, npm run start --prefix ./examples/persisted-queries/client

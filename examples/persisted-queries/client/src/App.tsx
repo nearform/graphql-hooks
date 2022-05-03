@@ -35,8 +35,14 @@ function Add() {
 
   return (
     <div>
-      <input value={x} onChange={e => setX(e.target.value)} />
-      <input value={y} onChange={e => setY(e.target.value)} />
+      <label>
+        x
+        <input value={x} onChange={e => setX(e.target.value)} />
+      </label>
+      <label>
+        y
+        <input value={y} onChange={e => setY(e.target.value)} />
+      </label>
       <button onClick={() => add()}>Add</button>
       {error ? <p>There was an error.</p> : data ? <p>{data.add}</p> : null}
     </div>
