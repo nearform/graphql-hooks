@@ -15,12 +15,8 @@ const resolvers = {
   }
 }
 
-async function start() {
-  const server = new ApolloServer({ typeDefs, resolvers })
+const server = new ApolloServer({ typeDefs, resolvers })
 
-  server.listen(8000).then(({ url }: { url: string }) => {
-    console.log(`Server ready at ${url}`)
-  })
-}
-
-start()
+server.listen(8000).then(({ url }: { url: string }) => {
+  console.log(`Server ready at ${url}`)
+})
