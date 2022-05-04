@@ -2,10 +2,8 @@ import { ClientContext, GraphQLClient, useManualQuery } from 'graphql-hooks'
 import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
 import { useState } from 'react'
 
-const serverPort = process.env.SERVER_PORT ?? 8000
-
 const client = new GraphQLClient({
-  url: `http://localhost:${serverPort}/graphql`,
+  url: `http://localhost:${process.env.SERVER_PORT ?? 8000}/graphql`,
   middleware: [APQMiddleware]
 })
 

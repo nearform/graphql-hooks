@@ -24,7 +24,7 @@ const resolvers = {
 }
 
 app.register(cors, {
-  origin: 'http://localhost:3002'
+  origin: `http://localhost:${process.env.CLIENT_PORT ?? 3002}`
 })
 
 app.register(mercurius, {
@@ -36,7 +36,7 @@ app.register(mercurius, {
 
 async function start() {
   try {
-    await app.listen(process.env.PORT ?? 8000)
+    await app.listen(process.env.SERVER_PORT ?? 8000)
   } catch (err) {
     app.log.error(err)
     process.exit(1)

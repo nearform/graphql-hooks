@@ -29,4 +29,7 @@ jobs:
         with:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
-          start: PORT=8001 npm run start:apollo --prefix ./examples/persisted-queries/server, SERVER_PORT=8001 npm start --prefix ./examples/persisted-queries/client
+          env:
+            CYPRESS_CLIENT_PORT: 3003
+            CYPRESS_SERVER_PORT: 8001
+          start: npm run start:apollo --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
