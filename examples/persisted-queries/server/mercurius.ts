@@ -24,7 +24,7 @@ const resolvers = {
 }
 
 app.register(cors, {
-  origin: `http://localhost:${process.env.CLIENT_PORT ?? 3002}`
+  origin: `http://localhost:${process.env.PORT ?? 3000}`
 })
 
 app.register(mercurius, {
