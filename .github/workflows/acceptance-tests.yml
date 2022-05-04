@@ -22,9 +22,15 @@ jobs:
           install: false
           spec: cypress/integration/create-react-app.spec.ts
           start: npm start --prefix ./examples/create-react-app
-      - name: Cypress persisted-queries
+      - name: Cypress persisted-queries Mercurius
         uses: cypress-io/github-action@v3
         with:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
-          start: npm start --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
+          start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
+      - name: Cypress persisted-queries Apollo
+        uses: cypress-io/github-action@v3
+        with:
+          install: false
+          spec: cypress/integration/persisted-queries.spec.ts
+          start: npm run start:apollo --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client

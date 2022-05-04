@@ -5,11 +5,13 @@
   "main": "index.ts",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --project ./tsconfig.json index.ts"
+    "start:mercurius": "ts-node-dev --project ./tsconfig.json mercurius.ts",
+    "start:apollo": "ts-node-dev --project ./tsconfig.json apollo.ts"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@fastify/cors": "^7.0.0",
     "apollo-server": "^3.6.7",
     "graphql": "^15.4.0"
   },
