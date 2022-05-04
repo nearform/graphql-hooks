@@ -25,6 +25,7 @@ jobs:
       - run: npm run lint
       - run: npm run test:coverage
       - run: npm run tsd
+      - run: npm run check-types
       - uses: coverallsapp/github-action@1.1.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

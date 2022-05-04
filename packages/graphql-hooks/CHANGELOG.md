@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.11.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.1...graphql-hooks@5.11.2) (2022-04-29)
+
+**Note:** Version bump only for package graphql-hooks
+
+
+
+
+
+## [5.11.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.0...graphql-hooks@5.11.1) (2022-04-21)
+
+
+### Bug Fixes
+
+* update fetch bind ([#820](https://github.com/nearform/graphql-hooks/issues/820)) ([1f1f1f6](https://github.com/nearform/graphql-hooks/commit/1f1f1f67895259f371c0c9fe8934eee07b9c33cd))
+
+
+
+
+
+# [5.11.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.10.0...graphql-hooks@5.11.0) (2022-04-20)
+
+
+### Features
+
+* TypeScript conversion of the codebase ([#799](https://github.com/nearform/graphql-hooks/issues/799)) ([4319028](https://github.com/nearform/graphql-hooks/commit/431902813162c8bf47015f5a77f4632039e092ad))
+
+
+
+
+
+# [5.10.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.9.0...graphql-hooks@5.10.0) (2022-04-15)
+
+**Note:** Version bump only for package graphql-hooks
+
+
+
+
+
 # [5.9.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.8.0...graphql-hooks@5.9.0) (2022-03-25)
 
 

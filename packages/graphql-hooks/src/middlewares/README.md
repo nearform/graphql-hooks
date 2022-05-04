@@ -25,6 +25,22 @@ Middleware is a function with 2 parameters:
   - `resolve`, `reject` - advanced usage only, these would be used only when we want to resolve/reject the request `Promise` early without doing the usual fetch (see [example](examples/cacheMiddleware.js))
 - `next` function - calls the next middleware function in line. Generally it should always be called, unless we want to change the control flow
 
+## Automatic Persisted Queries (APQ) middleware
+
+This library also includes an Automatic Persisted Queries middleware that can improve network performance by sending smaller requests. The implementation should match the Apollo back-end functionality that is [further described here](https://www.apollographql.com/docs/apollo-server/v2/performance/apq/).
+
+**Usage**:
+
+```js
+import { GraphQLClient } from 'graphql-hooks'
+import { APQMiddleware } from 'graphql-hooks/lib/middlewares/apqMiddleware'
+
+const client = new GraphQLClient({
+  middleware: [APQMiddleware],
+  url: 'localhost:3000/graphql'
+})
+```
+
 ## More examples
 
 See [examples folder](examples/)

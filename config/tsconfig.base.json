@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": ["es2021", "dom"],
+    "module": "esnext",
+    "target": "es2021",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    // Eventually those should be switched to more strict options, but we can ease into it while we're converting to typescript
+    "noImplicitAny": false
+  }
+}

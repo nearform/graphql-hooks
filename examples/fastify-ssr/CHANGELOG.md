@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.2](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.9.1...fastify-ssr@3.9.2) (2022-04-29)
+
+**Note:** Version bump only for package fastify-ssr
+
+
+
+
+
+## [3.9.1](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.9.0...fastify-ssr@3.9.1) (2022-04-21)
+
+**Note:** Version bump only for package fastify-ssr
+
+
+
+
+
+# [3.9.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.8.0...fastify-ssr@3.9.0) (2022-04-20)
+
+**Note:** Version bump only for package fastify-ssr
+
+
+
+
+
+# [3.8.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.7.0...fastify-ssr@3.8.0) (2022-04-15)
+
+**Note:** Version bump only for package fastify-ssr
+
+
+
+
+
 # [3.7.0](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@3.6.0...fastify-ssr@3.7.0) (2022-03-25)
 
 **Note:** Version bump only for package fastify-ssr

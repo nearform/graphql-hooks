@@ -1,16 +1,18 @@
 {
   "name": "graphql-hooks",
-  "version": "5.9.0",
+  "version": "5.11.2",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",
   "unpkg": "dist/graphql-hooks.min.js",
-  "types": "index.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
-    "build": "rollup -c",
-    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE .",
-    "tsd": "tsd"
+    "build": "npm run build:code && npm run build:types",
+    "build:code": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly --declaration",
+    "check-types": "tsc --noEmit",
+    "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
   },
   "files": [
     "dist",
@@ -35,17 +37,20 @@
     "react": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
+    "@aws-crypto/sha256-browser": "^2.0.1",
+    "buffer": "^6.0.3",
     "dequal": "^2.0.0",
     "events": "^3.3.0",
     "extract-files": "^11.0.0"
   },
   "devDependencies": {
     "@testing-library/react": "^12.0.0",
-    "@testing-library/react-hooks": "^7.0.0",
+    "@testing-library/react-hooks": "^8.0.0",
+    "@types/extract-files": "^8.1.1",
     "formdata-node": "^4.3.2",
-    "graphql-hooks-memcache": "^2.2.4",
-    "graphql-hooks-ssr": "^2.2.2",
-    "graphql-ws": "^5.1.2",
+    "graphql-hooks-memcache": "^2.3.1",
+    "graphql-hooks-ssr": "^2.2.3",
+    "graphql-ws": "^5.5.5",
     "jest-fetch-mock": "^3.0.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",

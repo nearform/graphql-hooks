@@ -391,7 +391,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
 - `callback`: Function - This will be invoked when the subscription receives an event from your GraphQL server - it will receive an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
 
-**Usage**
+**Usage**:
 
 First follow the [quick start guide](#Quick-Start) to create the client and povider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
 

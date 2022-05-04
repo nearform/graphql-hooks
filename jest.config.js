@@ -1,33 +1,48 @@
+const commonConfig = {
+  preset: 'ts-jest/presets/js-with-ts',
+  testEnvironment: 'jsdom',
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/config/tsconfig.base.json'
+    }
+  }
+}
+
 const projects = [
   {
-    displayName: 'graphql-hooks',
-    roots: ['./packages/graphql-hooks'],
-    testMatch: ['<rootDir>/packages/graphql-hooks/**/*.test.js'],
-    setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
-    automock: false,
-    testEnvironment: 'jsdom'
+    ...commonConfig,
+    ...{
+      displayName: 'graphql-hooks',
+      roots: ['./packages/graphql-hooks'],
+      setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
+      automock: false
+    }
   },
   {
-    roots: ['./packages/graphql-hooks-memcache'],
-    displayName: 'graphql-hooks-memcache',
-    testMatch: ['<rootDir>/packages/graphql-hooks-memcache/**/*.test.js'],
-    testEnvironment: 'jsdom'
+    ...commonConfig,
+    ...{
+      roots: ['./packages/graphql-hooks-memcache'],
+      displayName: 'graphql-hooks-memcache'
+    }
   },
   {
-    roots: ['./packages/graphql-hooks-ssr'],
-    displayName: 'graphql-hooks-ssr',
-    testMatch: ['<rootDir>/packages/graphql-hooks-ssr/**/*.test.js'],
-    testEnvironment: 'jsdom'
+    ...commonConfig,
+    ...{
+      roots: ['./packages/graphql-hooks-ssr'],
+      displayName: 'graphql-hooks-ssr'
+    }
   },
   {
-    roots: ['./examples/create-react-app'],
-    coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/packages/*'],
-    transform: {
-      '\\.jsx?$': 'babel-jest'
-    },
-    displayName: 'cra-example',
-    testMatch: ['<rootDir>/examples/create-react-app/**/*.test.js'],
-    testEnvironment: 'jsdom'
+    ...commonConfig,
+    ...{
+      roots: ['./examples/create-react-app'],
+      coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/packages/*'],
+      transform: {
+        '\\.jsx?$': 'babel-jest'
+      },
+      displayName: 'cra-example',
+      testEnvironment: 'jsdom'
+    }
   }
 ]
 module.exports = {
