@@ -26,6 +26,7 @@ jobs:
           start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
         env:
           SERVER_PORT: 8001
+          REACT_APP_SERVER_PORT: 8001
           PORT: 3002
           CYPRESS_CLIENT_PORT: 3002
       - name: Cypress persisted-queries Apollo Server
@@ -36,5 +37,6 @@ jobs:
           start: npm run start:apollo --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
         env:
           SERVER_PORT: 8002
+          REACT_APP_SERVER_PORT: 8002
           PORT: 3003
           CYPRESS_CLIENT_PORT: 3003
