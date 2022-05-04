@@ -27,7 +27,7 @@ jobs:
         env:
           SERVER_PORT: 8001
           PORT: 3002
-          CYPRESS_PORT: 3002
+          CYPRESS_CLIENT_PORT: 3002
       - name: Cypress persisted-queries Apollo Server
         uses: cypress-io/github-action@v3
         with:
@@ -37,4 +37,4 @@ jobs:
         env:
           SERVER_PORT: 8002
           PORT: 3003
-          CYPRESS_PORT: 3003
+          CYPRESS_CLIENT_PORT: 3003
