@@ -1,6 +1,6 @@
 import { Sha256 } from '@aws-crypto/sha256-browser'
 import { Buffer } from 'buffer'
-import { MiddlewareFunction } from '../types/common-types'
+import { APIError, MiddlewareFunction } from '../types/common-types'
 
 export async function sha256(query) {
   const hash = new Sha256()
@@ -18,6 +18,29 @@ type APQExtension = {
   }
 }
 
+function isPersistedQueryNotFound(error: APIError) {
+  const ERROR_PERSISTED_QUERY_NOT_FOUND = 'PERSISTED_QUERY_NOT_FOUND'
+
+  if (error.httpError) {
+    try {
+      const body = JSON.parse(error.httpError.body)
+      return (body.errors ?? [])[0]?.message === 'PersistedQueryNotFound'
+    } catch {
+      return false
+    }
+  }
+
+  if (!error.fetchError && !error.graphQLErrors) {
+    return false
+  }
+
+  return error.fetchError
+    ? (error.fetchError as any).type === ERROR_PERSISTED_QUERY_NOT_FOUND
+    : error.graphQLErrors?.some(
+        gqError => gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
+      )
+}
+
 /**
  * AutomaticPersistedQueryMiddleware - must be last in the middleware list
  * @param {function} makeRequest
@@ -27,7 +50,6 @@ export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
   { operation, client, resolve, reject },
   next
 ) => {
-  const ERROR_PERSISTED_QUERY_NOT_FOUND = 'PERSISTED_QUERY_NOT_FOUND'
   try {
     operation.extensions = {
       ...operation.extensions,
@@ -52,19 +74,8 @@ export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
 
     const { error } = res
 
-    if (!error.fetchError && !error.graphQLErrors) {
-      throw error
-    }
-
-    const persistedQueryNotFound = error.fetchError
-      ? (error.fetchError as any).type === ERROR_PERSISTED_QUERY_NOT_FOUND
-      : error.graphQLErrors?.some(
-          gqError =>
-            gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
-        )
-
     // If a server has not recognized the hash, send both query and hash
-    if (persistedQueryNotFound) {
+    if (isPersistedQueryNotFound(error)) {
       next()
     } else {
       throw error

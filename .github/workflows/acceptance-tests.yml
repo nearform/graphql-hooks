@@ -24,7 +24,7 @@ jobs:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
           start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
-      - name: Cypress persisted-queries Apollo
+      - name: Cypress persisted-queries Apollo Server
         uses: cypress-io/github-action@v3
         with:
           install: false
