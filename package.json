@@ -4,8 +4,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:acceptance": "cypress run",
-    "test:acceptance:open": "cypress open",
+    "test:acceptance": "cypress open",
     "build": "lerna run build",
     "build:packages": "lerna run build --no-private",
     "build:site": "lerna run build --scope=create-react-app",
@@ -38,7 +37,6 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "husky": "^7.0.0",
     "jest": "^27.5.1",
-    "json-graphql-server": "^2.3.1",
     "lerna": "^3.22.1",
     "lint-staged": "^12.1.2",
     "prettier": "^2.3.0",
