@@ -36,7 +36,7 @@ app.register(mercurius, {
 
 async function start() {
   try {
-    await app.listen(8000)
+    await app.listen(process.env.PORT ?? 8000)
   } catch (err) {
     app.log.error(err)
     process.exit(1)
