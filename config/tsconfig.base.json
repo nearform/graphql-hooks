@@ -4,6 +4,7 @@
     "module": "esnext",
     "target": "es2021",
     "moduleResolution": "node",
+    "importHelpers": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,6 +13,10 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     // Eventually those should be switched to more strict options, but we can ease into it while we're converting to typescript
-    "noImplicitAny": false
-  }
+    "noImplicitAny": false,
+    "baseUrl": "..",
+    "paths": {
+      "graphql-hooks": ["./packages/graphql-hooks/src/index.ts"],
+    },
+  },
 }
