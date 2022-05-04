@@ -23,11 +23,12 @@ jobs:
         with:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
+          env: SERVER_PORT=8001,PORT=3002
           start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
       - name: Cypress persisted-queries Apollo Server
         uses: cypress-io/github-action@v3
         with:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
-          env: SERVER_PORT=8001,PORT=3002
+          env: SERVER_PORT=8002,PORT=3003
           start: npm run start:apollo --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
