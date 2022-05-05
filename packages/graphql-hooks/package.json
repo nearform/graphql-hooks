@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@aws-crypto/sha256-browser": "^2.0.1",
+    "buffer": "^6.0.3",
     "dequal": "^2.0.0",
     "events": "^3.3.0",
     "extract-files": "^11.0.0"

@@ -1,0 +1,22 @@
+{
+  "name": "persisted-queries-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev --project ./tsconfig.json index.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "graphql": "^15.4.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
+    "@types/node": "^17.0.31",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.4"
+  }
+}

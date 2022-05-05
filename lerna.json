@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*", "examples/*"],
+  "packages": ["packages/*", "examples/*", "examples/persisted-queries/*"],
   "version": "independent",
   "command": {
     "publish": {

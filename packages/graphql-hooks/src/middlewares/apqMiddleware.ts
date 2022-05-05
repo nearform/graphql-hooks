@@ -1,4 +1,5 @@
 import { Sha256 } from '@aws-crypto/sha256-browser'
+import { Buffer } from 'buffer'
 import { MiddlewareFunction } from '../types/common-types'
 
 export async function sha256(query) {
