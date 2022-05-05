@@ -3,14 +3,14 @@ import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { Readable } from 'stream'
+import { createReadStream } from 'fs'
+import path from 'path'
+import { fileFromPathSync } from 'formdata-node/file-from-path'
 import {
   createMockCache,
   createMockResponse,
   createMockSubscriptionClient
 } from '../utils'
-
-// workaround for https://github.com/octet-stream/form-data/issues/50
-const { fileFromPathSync } = require('formdata-node/lib/cjs/fileFromPath')
 
 global.TextEncoder = TextEncoder
 
@@ -469,7 +469,8 @@ describe('GraphQLClient', () => {
       const originalFormData = global.FormData
 
       const client = new GraphQLClient({ ...validConfig, FormData })
-      const file = fileFromPathSync('test/mocks/sample.txt')
+      const blob = new Blob(['sample'], { type: 'text/plain' })
+      const file = new File([blob], 'sample.txt')
 
       const operation = { query: '', variables: { a: file } }
       const fetchOptions = client.getFetchOptions(operation)
