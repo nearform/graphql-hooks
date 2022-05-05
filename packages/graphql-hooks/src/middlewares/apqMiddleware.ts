@@ -19,26 +19,22 @@ type APQExtension = {
 }
 
 function isPersistedQueryNotFound(error: APIError) {
-  const ERROR_PERSISTED_QUERY_NOT_FOUND = 'PERSISTED_QUERY_NOT_FOUND'
+  if ((error?.fetchError as any)?.type === 'PERSISTED_QUERY_NOT_FOUND') {
+    return true
+  }
+
+  let errors = error?.graphQLErrors ?? []
 
   if (error.httpError) {
     try {
       const body = JSON.parse(error.httpError.body)
-      return (body.errors ?? [])[0]?.message === 'PersistedQueryNotFound'
+      errors = errors.concat(body.errors ?? [])
     } catch {
       return false
     }
   }
 
-  if (!error.fetchError && !error.graphQLErrors) {
-    return false
-  }
-
-  return error.fetchError
-    ? (error.fetchError as any).type === ERROR_PERSISTED_QUERY_NOT_FOUND
-    : error.graphQLErrors?.some(
-        gqError => gqError?.extensions?.code === ERROR_PERSISTED_QUERY_NOT_FOUND
-      )
+  return errors.some(e => e.message === 'PersistedQueryNotFound')
 }
 
 /**
