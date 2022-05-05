@@ -3,9 +3,6 @@ import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
 import { FormData, File as FormDataFile } from 'formdata-node'
 import { Readable } from 'stream'
-import { createReadStream } from 'fs'
-import path from 'path'
-import { fileFromPathSync } from 'formdata-node/file-from-path'
 import {
   createMockCache,
   createMockResponse,
