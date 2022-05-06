@@ -38,6 +38,7 @@
     "husky": "^7.0.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
+    "jest-environment-node": "^28.1.0",
     "lerna": "^3.22.1",
     "lint-staged": "^12.1.2",
     "prettier": "^2.3.0",
