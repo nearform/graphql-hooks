@@ -677,8 +677,8 @@ export default function PostForm() {
 ### File uploads Node.js
 
 ```js
-import { FormData } = from 'formdata-node'
-import { fileFromPath } = from 'formdata-node/file-from-path'
+import { FormData } from 'formdata-node'
+import { fileFromPath } from 'formdata-node/file-from-path'
 
 const client = new GraphQLClient({
   url: 'https://domain.com/graphql',

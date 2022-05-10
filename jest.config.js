@@ -12,10 +12,19 @@ const projects = [
   {
     ...commonConfig,
     ...{
-      displayName: 'graphql-hooks',
-      roots: ['./packages/graphql-hooks'],
-      setupFiles: ['<rootDir>/packages/graphql-hooks/test/setup.js'],
+      displayName: 'graphql-hooks-jsdom',
+      roots: ['./packages/graphql-hooks/test-jsdom'],
+      setupFiles: ['<rootDir>/packages/graphql-hooks/test-jsdom/setup.js'],
       automock: false
+    }
+  },
+  {
+    ...commonConfig,
+    ...{
+      displayName: 'graphql-hooks-node',
+      roots: ['./packages/graphql-hooks/test-node'],
+      automock: false,
+      testEnvironment: 'node'
     }
   },
   {
