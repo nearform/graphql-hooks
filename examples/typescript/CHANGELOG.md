@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.3](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.9.2...typescript-example@2.9.3) (2022-05-05)
+
+
+### Bug Fixes
+
+* update apq middleware build ([#839](https://github.com/nearform/graphql-hooks/issues/839)) ([0f5a91f](https://github.com/nearform/graphql-hooks/commit/0f5a91fa4ecd0047c55bac27ab0208fb0f6dc778))
+
+
+
+
+
 ## [2.9.2](https://github.com/nearform/graphql-hooks/compare/typescript-example@2.9.1...typescript-example@2.9.2) (2022-04-29)
 
 **Note:** Version bump only for package typescript-example

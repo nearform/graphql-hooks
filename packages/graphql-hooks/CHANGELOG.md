@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.11.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.2...graphql-hooks@5.11.3) (2022-05-05)
+
+
+### Bug Fixes
+
+* update apq middleware build ([#839](https://github.com/nearform/graphql-hooks/issues/839)) ([0f5a91f](https://github.com/nearform/graphql-hooks/commit/0f5a91fa4ecd0047c55bac27ab0208fb0f6dc778))
+* update error handling in apq middleware ([#851](https://github.com/nearform/graphql-hooks/issues/851)) ([8f6c178](https://github.com/nearform/graphql-hooks/commit/8f6c1787b19b9d6d93f221de2f63314ffd60ac9d))
+
+
+### Features
+
+* add apq example ([#848](https://github.com/nearform/graphql-hooks/issues/848)) ([edef262](https://github.com/nearform/graphql-hooks/commit/edef262309185d209e52e278e4e8267320fa8275))
+
+
+
+
+
 ## [5.11.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.1...graphql-hooks@5.11.2) (2022-04-29)
 
 **Note:** Version bump only for package graphql-hooks

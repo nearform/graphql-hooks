@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.3](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.10.2...create-react-app@2.10.3) (2022-05-05)
+
+
+### Bug Fixes
+
+* update apq middleware build ([#839](https://github.com/nearform/graphql-hooks/issues/839)) ([0f5a91f](https://github.com/nearform/graphql-hooks/commit/0f5a91fa4ecd0047c55bac27ab0208fb0f6dc778))
+
+
+### Features
+
+* add apq example ([#848](https://github.com/nearform/graphql-hooks/issues/848)) ([edef262](https://github.com/nearform/graphql-hooks/commit/edef262309185d209e52e278e4e8267320fa8275))
+
+
+
+
+
 ## [2.10.2](https://github.com/nearform/graphql-hooks/compare/create-react-app@2.10.1...create-react-app@2.10.2) (2022-04-29)
 
 **Note:** Version bump only for package create-react-app
