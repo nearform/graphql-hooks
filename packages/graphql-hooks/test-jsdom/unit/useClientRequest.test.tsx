@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 import React from 'react'
-import { ClientContext, useClientRequest, UseClientRequestOptions } from '../../src'
+import {
+  ClientContext,
+  useClientRequest,
+  UseClientRequestOptions
+} from '../../src'
 
 let mockClient
 
@@ -62,7 +66,10 @@ describe('useClientRequest', () => {
       },
       request: jest.fn().mockResolvedValue({ data: 'data' })
     }
-    const options: UseClientRequestOptions = { isMutation: false, client: mockClient2 };
+    const options: UseClientRequestOptions = {
+      isMutation: false,
+      client: mockClient2
+    }
     let fetchData
     renderHook(() => ([fetchData] = useClientRequest(TEST_QUERY, options)), {
       wrapper: Wrapper
@@ -81,7 +88,9 @@ describe('useClientRequest', () => {
 
     const { result } = renderHook(() => useClientRequest(TEST_QUERY, options))
 
-    expect(result.error?.message).toEqual( 'A client must be provided in order to use the useClientRequest hook.')
+    expect(result.error?.message).toEqual(
+      'A client must be provided in order to use the useClientRequest hook.'
+    )
   })
 
   it('resets data when reset function is called', async () => {
@@ -420,6 +429,21 @@ describe('useClientRequest', () => {
         () =>
           ([fetchData, state] = useClientRequest(TEST_QUERY, {
             isManual: true
+          })),
+        {
+          wrapper: Wrapper
+        }
+      )
+      expect(fetchData).toEqual(expect.any(Function))
+      expect(state).toEqual({ cacheHit: false, loading: false })
+    })
+
+    it('sets loading to false if skip is passed in', () => {
+      let fetchData, state
+      renderHook(
+        () =>
+          ([fetchData, state] = useClientRequest(TEST_QUERY, {
+            skip: true
           })),
         {
           wrapper: Wrapper

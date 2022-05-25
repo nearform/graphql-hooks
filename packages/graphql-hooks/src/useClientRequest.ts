@@ -127,7 +127,8 @@ function useClientRequest<
   }
 
   const cacheKey = client.getCacheKey(operation, initialOpts)
-  const isDeferred = initialOpts.isMutation || initialOpts.isManual
+  const isDeferred =
+    initialOpts.isMutation || initialOpts.isManual || initialOpts.skip
   const initialCacheHit =
     initialOpts.skipCache || !client.cache || !cacheKey
       ? null

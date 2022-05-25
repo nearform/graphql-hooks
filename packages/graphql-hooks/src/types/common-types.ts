@@ -166,6 +166,7 @@ export interface UseClientRequestOptions<
   useCache?: boolean
   isMutation?: boolean
   isManual?: boolean
+  skip?: boolean
   variables?: Variables
   operationName?: string
   skipCache?: boolean
@@ -181,7 +182,7 @@ export type RefetchAfterMutationItem = {
   filter?: (variables: object) => boolean
 }
 
-export type RefetchAferMutationsData =
+export type RefetchAfterMutationsData =
   | string
   | string[]
   | RefetchAfterMutationItem
@@ -190,8 +191,7 @@ export type RefetchAferMutationsData =
 export interface UseQueryOptions<ResponseData = any, Variables = object>
   extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
-  skip?: boolean
-  refetchAfterMutations?: RefetchAferMutationsData
+  refetchAfterMutations?: RefetchAfterMutationsData
   [key: string]: any
 }
 
