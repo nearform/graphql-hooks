@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.11.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.3...graphql-hooks@5.11.4) (2022-05-25)
+
+
+### Bug Fixes
+
+* set loading to false when skip is true ([#861](https://github.com/nearform/graphql-hooks/issues/861)) ([9d687d4](https://github.com/nearform/graphql-hooks/commit/9d687d49a70379061fca340fe448772eb2bc8ee7))
+* update jest and formdata test ([#852](https://github.com/nearform/graphql-hooks/issues/852)) ([14a7554](https://github.com/nearform/graphql-hooks/commit/14a7554dcfc13e1de28a9395a1c5a9a956e42172))
+
+
+
+
+
 ## [5.11.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.2...graphql-hooks@5.11.3) (2022-05-05)
 
 
