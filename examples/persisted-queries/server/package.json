@@ -14,7 +14,7 @@
     "@fastify/cors": "^7.0.0",
     "apollo-server": "^3.6.7",
     "fastify": "^3.29.0",
-    "graphql": "^15.4.0",
+    "graphql": "^16.5.0",
     "mercurius": "^9.5.0"
   },
   "devDependencies": {
