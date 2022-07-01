@@ -40,7 +40,7 @@
     "jest-environment-jsdom": "^28.1.0",
     "jest-environment-node": "^28.1.0",
     "lerna": "^3.22.1",
-    "lint-staged": "^12.1.2",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.3.0",
     "rollup": "^2.47.0",
     "rollup-plugin-babel": "^4.4.0",
