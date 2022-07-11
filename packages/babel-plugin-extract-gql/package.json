@@ -29,6 +29,8 @@
     "strings"
   ],
   "dependencies": {
+    "@fastify/cors": "^8.0.0",
+    "fastify": "^4.2.0",
     "pkg-dir": "^7.0.0"
   },
   "repository": {

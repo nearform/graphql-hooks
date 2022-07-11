@@ -3,9 +3,7 @@ import cors from '@fastify/cors'
 import mercurius from 'mercurius'
 
 const app = fastify({
-  logger: {
-    prettyPrint: true
-  }
+  logger: true
 })
 
 const schema = `
@@ -36,7 +34,7 @@ app.register(mercurius, {
 
 async function start() {
   try {
-    await app.listen(process.env.SERVER_PORT ?? 8000)
+    return app.listen({ port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT, 10) : 8000 })
   } catch (err) {
     app.log.error(err)
     process.exit(1)

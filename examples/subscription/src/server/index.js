@@ -6,7 +6,7 @@ import fastifyStatic from 'fastify-static'
 import { LowSync, JSONFileSync } from 'lowdb'
 import mq from 'mqemitter-redis'
 import { fileURLToPath } from 'url'
-import cors from 'fastify-cors'
+import cors from '@fastify/cors'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -135,4 +135,4 @@ app.get('/', async function (req, reply) {
   reply.header('Content-Type', 'text/html').send(indexHtml)
 })
 
-app.listen(APP_PORT)
+app.listen({ port: APP_PORT })
