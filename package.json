@@ -27,7 +27,7 @@
     "@testing-library/cypress": "^8.0.2",
     "@types/jest": "^28.1.5",
     "babel-jest": "^28.1.0",
-    "cypress": "^9.6.0",
+    "cypress": "^10.4.0",
     "esbuild": "^0.14.27",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.0.0",
