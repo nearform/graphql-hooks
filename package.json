@@ -28,7 +28,7 @@
     "@types/jest": "^28.1.5",
     "babel-jest": "^28.1.0",
     "cypress": "^9.6.0",
-    "esbuild": "^0.14.27",
+    "esbuild": "^0.15.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-config-react-app": "^7.0.0",
