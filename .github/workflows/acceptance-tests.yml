@@ -36,7 +36,7 @@ jobs:
           PORT: 3002
           CYPRESS_CLIENT_PORT: 3002
       - name: Cypress persisted-queries Apollo Server
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
