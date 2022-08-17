@@ -17,16 +17,18 @@ jobs:
       - name: Install root
         run: npm install
       - name: Cypress create-react-app
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           install: false
-          spec: cypress/integration/create-react-app.spec.ts
+          spec: cypress/e2e/create-react-app.cy.ts
           start: npm start --prefix ./examples/create-react-app
       - name: Cypress persisted-queries Mercurius
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           install: false
-          spec: cypress/integration/persisted-queries.spec.ts
+          spec: cypress/e2e/persisted-queries.cy.ts
           start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
         env:
           SERVER_PORT: 8001
@@ -34,10 +36,10 @@ jobs:
           PORT: 3002
           CYPRESS_CLIENT_PORT: 3002
       - name: Cypress persisted-queries Apollo Server
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
           install: false
-          spec: cypress/integration/persisted-queries.spec.ts
+          spec: cypress/e2e/persisted-queries.cy.ts
           start: npm run start:apollo --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
         env:
           SERVER_PORT: 8002
