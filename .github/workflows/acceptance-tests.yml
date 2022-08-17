@@ -17,14 +17,16 @@ jobs:
       - name: Install root
         run: npm install
       - name: Cypress create-react-app
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           install: false
           spec: cypress/integration/create-react-app.spec.ts
           start: npm start --prefix ./examples/create-react-app
       - name: Cypress persisted-queries Mercurius
-        uses: cypress-io/github-action@v3
+        uses: cypress-io/github-action@v4
         with:
+          browser: chrome
           install: false
           spec: cypress/integration/persisted-queries.spec.ts
           start: npm run start:mercurius --prefix ./examples/persisted-queries/server, npm start --prefix ./examples/persisted-queries/client
