@@ -1,5 +1,5 @@
 const Fastify = require('fastify')
-const GQL = require('fastify-gql')
+import mercurius from 'mercurius'
 const persistedQueries = require('./gql-queries.json')
 
 const app = Fastify()
@@ -18,7 +18,7 @@ const resolvers = {
 
 app.register(require('@fastify/cors'))
 
-app.register(GQL, {
+app.register(mercurius, {
   schema,
   resolvers,
   persistedQueries

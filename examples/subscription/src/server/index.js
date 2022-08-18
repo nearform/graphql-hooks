@@ -1,8 +1,8 @@
 import fastify from 'fastify'
-import GQL from 'fastify-gql'
+import mercurius from 'mercurius'
 import { join, dirname } from 'path'
 import fs from 'fs'
-import fastifyStatic from 'fastify-static'
+import fastifyStatic from '@fastify/static'
 import { LowSync, JSONFileSync } from 'lowdb'
 import mq from 'mqemitter-redis'
 import { fileURLToPath } from 'url'
@@ -123,7 +123,7 @@ const resolvers = {
   }
 }
 
-app.register(GQL, {
+app.register(mercurius, {
   schema,
   resolvers,
   subscription: {
