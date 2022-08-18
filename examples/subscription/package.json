@@ -20,7 +20,7 @@
     "fastify": "^4.2.0",
     "mercurius": "^10.1.1",
     "@fastify/static": "^6.5.0",
-    "graphql": "^15.4.0",
+    "graphql": "^16.6.0",
     "graphql-hooks": "^5.11.4",
     "graphql-hooks-memcache": "^2.3.1",
     "lowdb": "^3.0.0",
