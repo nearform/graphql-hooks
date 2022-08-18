@@ -15,7 +15,7 @@
     "apollo-server": "^3.6.7",
     "fastify": "^4.2.0",
     "graphql": "^15.4.0",
-    "mercurius": "^9.5.0"
+    "mercurius": "^10.1.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",

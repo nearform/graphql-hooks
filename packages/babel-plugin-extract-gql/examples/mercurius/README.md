@@ -1,6 +1,6 @@
-# fastify-gql example
+# mercurius example
 
-This is a sample project to demonstrate how [fastify-gql](https://github.com/mcollina/fastify-gql) uses the output of babel-plugin-extract-gql.
+This is a sample project to demonstrate how [mercurius](https://github.com/mercurius-js/mercurius) uses the output of babel-plugin-extract-gql.
 
 ```sh
 npm i

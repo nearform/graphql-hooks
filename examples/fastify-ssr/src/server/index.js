@@ -3,7 +3,7 @@ import fastify from 'fastify'
 
 // plugins
 import graphqlPlugin from './graphql/index.js'
-import fastifyStatic from 'fastify-static'
+import fastifyStatic from '@fastify/static'
 
 // handlers
 import appShellHandler from './handlers/app-shell.js'
