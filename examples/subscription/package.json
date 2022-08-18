@@ -15,9 +15,9 @@
     "build": "webpack"
   },
   "dependencies": {
+    "@fastify/cors": "^8.0.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "fastify": "^3.0.0",
-    "fastify-cors": "^6.0.2",
+    "fastify": "^4.2.0",
     "fastify-gql": "^5.0.0",
     "fastify-static": "^4.5.0",
     "graphql": "^15.4.0",

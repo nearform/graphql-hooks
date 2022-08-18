@@ -22,7 +22,7 @@ const startServer = () => {
   app.get('/', appShellHandler)
   app.get('/users', appShellHandler)
 
-  app.listen(3000)
+  app.listen({ port: 3000 })
 }
 
 export default startServer

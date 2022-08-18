@@ -16,7 +16,7 @@ const resolvers = {
   }
 }
 
-app.register(require('fastify-cors'))
+app.register(require('@fastify/cors'))
 
 app.register(GQL, {
   schema,

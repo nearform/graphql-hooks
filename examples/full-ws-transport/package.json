@@ -3,7 +3,7 @@
   "version": "0.6.4",
   "private": true,
   "dependencies": {
-    "fastify": "^3.25.3",
+    "fastify": "^4.2.0",
     "graphql-hooks": "^5.11.4",
     "graphql-ws": "^5.5.5",
     "mercurius": "^9.3.0",
