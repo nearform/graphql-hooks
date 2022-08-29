@@ -56,7 +56,7 @@
     "react-dom": "^17.0.0",
     "react-test-renderer": "^17.0.0",
     "subscriptions-transport-ws": "^0.11.0",
-    "tsd": "^0.22.0"
+    "tsd": "^0.23.0"
   },
   "repository": {
     "type": "git",
