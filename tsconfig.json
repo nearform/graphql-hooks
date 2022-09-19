@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es2021", "dom"],
+    "module": "esnext",
+    "target": "es2021",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "types": ["jest", "node"]
+  },
+  "exclude": ["cypress", "./cypress.config.ts"]
+}

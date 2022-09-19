@@ -1,11 +1,6 @@
 const commonConfig = {
   preset: 'ts-jest/presets/js-with-ts',
   testEnvironment: 'jsdom',
-  // globals: {
-  //   'ts-jest': {
-  //     tsconfig: '<rootDir>/config/tsconfig.base.json'
-  //   }
-  // }
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
   }

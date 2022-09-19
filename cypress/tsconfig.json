@@ -1,5 +1,5 @@
 {
-  "extends": "../config/tsconfig.base",
+  "extends": "../tsconfig",
   "compilerOptions": {
     "noEmit": true,
     // be explicit about types included
