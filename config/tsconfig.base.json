@@ -12,6 +12,8 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     // Eventually those should be switched to more strict options, but we can ease into it while we're converting to typescript
-    "noImplicitAny": false
-  }
+    "noImplicitAny": false,
+    "types": ["jest", "node"]
+  },
+  "exclude": ["cypress", "./cypress.config.ts"],
 }
