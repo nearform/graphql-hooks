@@ -5,7 +5,6 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:acceptance": "cypress open",
-    "cypress:run": "cypress run",
     "build": "lerna run build",
     "build:packages": "lerna run build --no-private",
     "build:site": "lerna run build --scope=create-react-app",
