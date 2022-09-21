@@ -1,8 +1,7 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "types": ["cypress", "@testing-library/cypress"],
-    "noEmit": true
+    "types": ["cypress", "@testing-library/cypress"]
   },
   "include": ["./**/*.ts"],
   "exclude": [],
