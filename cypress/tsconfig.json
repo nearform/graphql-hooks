@@ -3,8 +3,6 @@
   "include": ["./**/*.ts"],
   "exclude": [],
   "compilerOptions": {
-    "target": "es2019",
-    "lib": ["es2019", "dom"],
     "types": ["cypress", "@testing-library/cypress"],
     "isolatedModules": false,
     "noEmit": true
