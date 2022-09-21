@@ -1,13 +1,12 @@
 {
   "extends": "../tsconfig",
+  "include": ["./**/*.ts"],
+  "exclude": [],
   "compilerOptions": {
-    "noEmit": true,
-    // be explicit about types included
-    // to avoid clashing with Jest types
-    "types": ["cypress"]
-  },
-  "include": [
-    "../node_modules/cypress",
-    "./**/*.ts"
-  ]
+    "target": "es2021",
+    "lib": ["es2021", "dom"],
+    "types": ["cypress", "@testing-library/cypress", "node"],
+    "isolatedModules": false,
+    "noEmit": true
+  }
 }

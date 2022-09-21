@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es2021", "dom"],
-    "module": "esnext",
+    "baseUrl": ".",
+    "outDir": "lib",
     "target": "es2021",
+    "lib": ["es2021", "dom"],
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
