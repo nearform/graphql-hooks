@@ -247,7 +247,10 @@ function useClientRequest<
           })
         }
 
-        if (revisedOpts.onSuccess instanceof Function) {
+        if (
+          revisedOpts.onSuccess &&
+          typeof revisedOpts.onSuccess === 'function'
+        ) {
           revisedOpts.onSuccess(result, revisedOperation.variables)
         } else {
           if (revisedOpts.onSuccess) {
