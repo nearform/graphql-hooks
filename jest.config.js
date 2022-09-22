@@ -1,11 +1,5 @@
 const commonConfig = {
-  preset: 'ts-jest/presets/js-with-ts',
-  testEnvironment: 'jsdom',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/config/tsconfig.base.json'
-    }
-  }
+  testEnvironment: 'jsdom'
 }
 
 const projects = [
@@ -47,7 +41,7 @@ const projects = [
       roots: ['./examples/create-react-app'],
       coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/packages/*'],
       transform: {
-        '\\.jsx?$': 'babel-jest'
+        '\\.[jt]sx?$': 'babel-jest'
       },
       displayName: 'cra-example',
       testEnvironment: 'jsdom'
