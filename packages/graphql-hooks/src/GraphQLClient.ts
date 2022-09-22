@@ -417,9 +417,11 @@ class GraphQLClient {
     const cacheKey = this.getCacheKey({ query })
     if (this.cache && cacheKey) {
       this.removeCache(cacheKey)
-      this.request({ query }).then(result =>
-        this.mutationsEmitter.emit(Events.DATA_INVALIDATED, result)
-      ).catch(err => console.error(err))
+      this.request({ query })
+        .then(result => {
+          this.mutationsEmitter.emit(Events.DATA_INVALIDATED, result)
+        })
+        .catch(err => console.error(err))
     }
   }
 
