@@ -304,13 +304,13 @@ describe('useClientRequest', () => {
       let fetchData, state
 
       function Component({ variables }) {
-        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
+        [fetchData, state] = useClientRequest(TEST_QUERY, {
           variables
         })
       }
 
       // Mount hook for the first time
-      let { rerender } = renderHook(Component, {
+      renderHook(Component, {
         wrapper: Wrapper,
         initialProps: { variables: { test: 1 } }
       })
@@ -318,10 +318,7 @@ describe('useClientRequest', () => {
       // Fetch first set of data
       const doFetch = async () => await act(fetchData)
 
-      const doRerender = () =>
-        Promise.resolve(rerender({ variables: { test: 2 } }))
-
-      await Promise.all([doFetch(), doRerender(), doFetch()])
+      await Promise.all([doFetch(), doFetch()])
       expect(state.data.result).toBe(2)
     })
   })
