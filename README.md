@@ -346,11 +346,7 @@ import { useQueryClient } from 'graphql-hooks'
 function MyComponent() {
   const client = useQueryClient()
 
-  return (
-    <div>
-      ...
-    </div>
-  )
+  return <div>...</div>
 }
 ```
 
