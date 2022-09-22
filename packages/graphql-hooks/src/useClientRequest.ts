@@ -1,6 +1,7 @@
 import { dequal } from 'dequal'
 import React, { DependencyList } from 'react'
 import ClientContext from './ClientContext'
+import { Events } from './events'
 import {
   UseClientRequestOptions,
   FetchData,
@@ -246,6 +247,14 @@ function useClientRequest<
           })
         }
 
+        if (revisedOpts.onSuccess && revisedOpts.onSuccess instanceof Function) {
+          revisedOpts.onSuccess(result, revisedOperation.variables)
+        } else {
+          if (revisedOpts.onSuccess) {
+            throw new Error('options.onSuccess must be a function')
+          }
+        }
+
         return result
       })
     },
@@ -266,6 +275,22 @@ function useClientRequest<
       type: actionTypes.RESET_STATE,
       initialState: { ...initialState, ...desiredState }
     })
+
+  React.useEffect(() => {
+    const handleEvents = (payload, actionType) => {
+      dispatch({
+        type: actionType,
+        result: payload,
+      })
+    }
+
+    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload => handleEvents(payload, actionTypes.REQUEST_RESULT))
+    client.mutationsEmitter.on(Events.DATA_UPDATED, payload => handleEvents(payload, actionTypes.CACHE_HIT))
+    return () => {
+      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload => handleEvents(payload, actionTypes.REQUEST_RESULT))
+      client.mutationsEmitter.off(Events.DATA_UPDATED, payload => handleEvents(payload, actionTypes.CACHE_HIT))
+    }
+  }, [])
 
   return [fetchData, state, reset]
 }
