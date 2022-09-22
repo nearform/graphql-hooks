@@ -86,11 +86,9 @@ describe('useClientRequest', () => {
   it('returns an error if there is no client available', () => {
     const options: UseClientRequestOptions = { isMutation: false }
 
-    const { result } = renderHook(() => useClientRequest(TEST_QUERY, options))
+    const executeHook = () => renderHook(() => useClientRequest(TEST_QUERY, options))
 
-    expect(result.error?.message).toEqual(
-      'A client must be provided in order to use the useClientRequest hook.'
-    )
+    expect(executeHook).toThrowError('A client must be provided in order to use the useClientRequest hook.')
   })
 
   it('resets data when reset function is called', async () => {
