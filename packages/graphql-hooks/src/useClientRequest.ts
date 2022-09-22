@@ -247,7 +247,10 @@ function useClientRequest<
           })
         }
 
-        if (revisedOpts.onSuccess && revisedOpts.onSuccess instanceof Function) {
+        if (
+          revisedOpts.onSuccess &&
+          revisedOpts.onSuccess instanceof Function
+        ) {
           revisedOpts.onSuccess(result, revisedOperation.variables)
         } else {
           if (revisedOpts.onSuccess) {
@@ -280,15 +283,23 @@ function useClientRequest<
     const handleEvents = (payload, actionType) => {
       dispatch({
         type: actionType,
-        result: payload,
+        result: payload
       })
     }
 
-    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload => handleEvents(payload, actionTypes.REQUEST_RESULT))
-    client.mutationsEmitter.on(Events.DATA_UPDATED, payload => handleEvents(payload, actionTypes.CACHE_HIT))
+    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload =>
+      handleEvents(payload, actionTypes.REQUEST_RESULT)
+    )
+    client.mutationsEmitter.on(Events.DATA_UPDATED, payload =>
+      handleEvents(payload, actionTypes.CACHE_HIT)
+    )
     return () => {
-      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload => handleEvents(payload, actionTypes.REQUEST_RESULT))
-      client.mutationsEmitter.off(Events.DATA_UPDATED, payload => handleEvents(payload, actionTypes.CACHE_HIT))
+      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload =>
+        handleEvents(payload, actionTypes.REQUEST_RESULT)
+      )
+      client.mutationsEmitter.off(Events.DATA_UPDATED, payload =>
+        handleEvents(payload, actionTypes.CACHE_HIT)
+      )
     }
   }, [])
 
