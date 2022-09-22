@@ -243,6 +243,54 @@ describe('useClientRequest', () => {
     })
   })
 
+  it('should clear errors when calling fetchData', async () => {
+    let fetchData
+    let state
+
+    renderHook(
+      () =>
+        ([fetchData, state] = useClientRequest(TEST_QUERY, {
+          updateData: () => {}
+        })),
+      {
+        wrapper: Wrapper
+      }
+    )
+
+    mockClient.request.mockResolvedValueOnce({
+      data: 'data', // ensure data is maintained
+      error: {
+        graphQLErrors: ['oh no!']
+      }
+    })
+
+    await act(fetchData)
+
+    expect(state).toEqual({
+      cacheHit: false,
+      data: 'data',
+      error: {
+        graphQLErrors: ['oh no!']
+      },
+      loading: false
+    })
+
+    let promiseResolve
+    const promise = new Promise(resolve => {
+      promiseResolve = resolve
+    })
+
+    mockClient.request.mockResolvedValueOnce(promise)
+    const fetchDataPromise = act(fetchData)
+
+    promise.then(() => waitFor(() => {
+      expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
+    }))
+
+    promiseResolve()
+    return fetchDataPromise
+  })
+
   it('does not reset data when query or variables change if updateData is set', async () => {
     let fetchData
     let state
