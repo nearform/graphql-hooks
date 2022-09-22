@@ -6,6 +6,7 @@ import useClientRequest from './useClientRequest'
 import useQuery from './useQuery'
 import useQueryClient from './useQueryClient'
 import useSubscription from './useSubscription'
+import useMutation from './useMutation'
 import {
   UseClientRequestOptions,
   FetchData,
@@ -31,22 +32,6 @@ const useManualQuery = <
   ResetFunction
 ] =>
   useClientRequest(query, { useCache: true, isManual: true, ...options }) as any
-
-const useMutation = <
-  ResponseData = any,
-  Variables = object,
-  TGraphQLError = object
->(
-  query: string,
-  options: Omit<
-    UseClientRequestOptions<ResponseData, Variables>,
-    'isMutation'
-  > = {}
-): [
-  FetchData<ResponseData, Variables, TGraphQLError>,
-  UseClientRequestResult<ResponseData, TGraphQLError>,
-  ResetFunction
-] => useClientRequest(query, { isMutation: true, ...options }) as any
 
 export {
   ClientContext,
