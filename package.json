@@ -9,7 +9,6 @@
     "build:packages": "lerna run build --no-private",
     "build:site": "lerna run build --scope=create-react-app",
     "postinstall": "lerna bootstrap --hoist --no-ci && npm run build:packages",
-    "tsd": "lerna run tsd",
     "lint": "eslint .",
     "check-types": "lerna run check-types",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
