@@ -175,6 +175,7 @@ export interface UseClientRequestOptions<
   client?: GraphQLClient
   responseReducer?(data: object, response: object): object
   persisted?: boolean
+  onSuccess?(result: ResponseData, variables: Variables): void
 }
 
 export type RefetchAfterMutationItem = {
