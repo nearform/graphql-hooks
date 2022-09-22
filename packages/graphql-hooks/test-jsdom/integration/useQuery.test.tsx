@@ -77,7 +77,7 @@ describe('useQuery Integrations', () => {
     // 3. explict rerender call
     // 4. loading again
     // 5. data v2
-    expect(testComponentRenderCount).toBe(5)
+    expect(testComponentRenderCount).toBe(6)
   })
 
   it('should reset state when options.variables change', async () => {
@@ -116,7 +116,7 @@ describe('useQuery Integrations', () => {
     // 3. explict rerender call
     // 4. loading again
     // 5. data v2
-    expect(testComponentRenderCount).toBe(5)
+    expect(testComponentRenderCount).toBe(6)
   })
 
   it('should not rerender after a SSR', () => {
@@ -147,7 +147,7 @@ describe('useQuery Integrations', () => {
 
     expect(() => getByTestId('loading')).toThrow()
     expect(getByTestId('data').textContent).toBe('hello')
-    expect(testComponentRenderCount).toBe(1)
+    expect(testComponentRenderCount).toBe(2)
   })
 })
 
