@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:acceptance": "cypress open",
     "build": "lerna run build",
