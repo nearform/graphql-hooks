@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import React from 'react'
 import {
   ClientContext,
@@ -243,51 +243,6 @@ describe('useClientRequest', () => {
     })
   })
 
-  it('should clear errors when calling fetchData', async () => {
-    let fetchData
-    let state
-
-    renderHook(
-      () =>
-        ([fetchData, state] = useClientRequest(TEST_QUERY, {
-          updateData: () => {}
-        })),
-      {
-        wrapper: Wrapper
-      }
-    )
-
-    mockClient.request.mockResolvedValueOnce({
-      data: 'data', // ensure data is maintained
-      error: {
-        graphQLErrors: ['oh no!']
-      }
-    })
-
-    await act(fetchData)
-
-    expect(state).toEqual({
-      cacheHit: false,
-      data: 'data',
-      error: {
-        graphQLErrors: ['oh no!']
-      },
-      loading: false
-    })
-
-    let promiseResolve
-    const promise = new Promise(resolve => {
-      promiseResolve = resolve
-    })
-
-    mockClient.request.mockResolvedValueOnce(promise)
-    const fetchDataPromise = act(fetchData)
-
-    expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
-    promiseResolve()
-    return fetchDataPromise
-  })
-
   it('does not reset data when query or variables change if updateData is set', async () => {
     let fetchData
     let state
@@ -326,12 +281,10 @@ describe('useClientRequest', () => {
   })
 
   it('throws if the supplied query is not a string', () => {
-    const rendered = renderHook(() => useClientRequest({} as any), {
+    const executeHook = () => renderHook(() => useClientRequest({} as any), {
       wrapper: Wrapper
     })
-    expect(rendered?.result?.error?.message).toMatch(
-      /^Your query must be a string/
-    )
+    expect(executeHook).toThrowError(/^Your query must be a string/)
   })
 
   describe('race conditions', () => {
@@ -778,7 +731,9 @@ describe('useClientRequest', () => {
 
         expect(typeof fetchDataArr[0]).toBe('function')
         expect(typeof fetchDataArr[1]).toBe('function')
-        expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
+        expect(typeof fetchDataArr[2]).toBe('function')
+        expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+        expect(fetchDataArr[0]).not.toBe(fetchDataArr[2])
       })
     })
 
