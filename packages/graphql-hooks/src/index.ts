@@ -4,6 +4,7 @@ import LocalGraphQLClient from './LocalGraphQLClient'
 import LocalGraphQLError from './LocalGraphQLError'
 import useClientRequest from './useClientRequest'
 import useQuery from './useQuery'
+import useQueryClient from './useQueryClient'
 import useSubscription from './useSubscription'
 import {
   UseClientRequestOptions,
@@ -54,6 +55,7 @@ export {
   LocalGraphQLError,
   useClientRequest,
   useQuery,
+  useQueryClient,
   useSubscription,
   useManualQuery,
   // alias
