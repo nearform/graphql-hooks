@@ -32,7 +32,8 @@ const projects = [
     ...commonConfig,
     ...{
       roots: ['./packages/graphql-hooks-ssr'],
-      displayName: 'graphql-hooks-ssr'
+      displayName: 'graphql-hooks-ssr',
+      testEnvironment: 'node'
     }
   },
   {

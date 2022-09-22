@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import React from 'react'
 import {
   ClientContext,
@@ -86,11 +86,9 @@ describe('useClientRequest', () => {
   it('returns an error if there is no client available', () => {
     const options: UseClientRequestOptions = { isMutation: false }
 
-    const { result } = renderHook(() => useClientRequest(TEST_QUERY, options))
+    const executeHook = () => renderHook(() => useClientRequest(TEST_QUERY, options))
 
-    expect(result.error?.message).toEqual(
-      'A client must be provided in order to use the useClientRequest hook.'
-    )
+    expect(executeHook).toThrowError('A client must be provided in order to use the useClientRequest hook.')
   })
 
   it('resets data when reset function is called', async () => {
@@ -285,7 +283,10 @@ describe('useClientRequest', () => {
     mockClient.request.mockResolvedValueOnce(promise)
     const fetchDataPromise = act(fetchData)
 
-    expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
+    promise.then(() => waitFor(() => {
+      expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
+    }))
+
     promiseResolve()
     return fetchDataPromise
   })
@@ -328,12 +329,10 @@ describe('useClientRequest', () => {
   })
 
   it('throws if the supplied query is not a string', () => {
-    const rendered = renderHook(() => useClientRequest({} as any), {
+    const executeHook = () => renderHook(() => useClientRequest({} as any), {
       wrapper: Wrapper
     })
-    expect(rendered?.result?.error?.message).toMatch(
-      /^Your query must be a string/
-    )
+    expect(executeHook).toThrowError(/^Your query must be a string/)
   })
 
   describe('race conditions', () => {
@@ -353,13 +352,13 @@ describe('useClientRequest', () => {
       let fetchData, state
 
       function Component({ variables }) {
-        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
+        [fetchData, state] = useClientRequest(TEST_QUERY, {
           variables
         })
       }
 
       // Mount hook for the first time
-      let { rerender } = renderHook(Component, {
+      renderHook(Component, {
         wrapper: Wrapper,
         initialProps: { variables: { test: 1 } }
       })
@@ -367,10 +366,7 @@ describe('useClientRequest', () => {
       // Fetch first set of data
       const doFetch = async () => await act(fetchData)
 
-      const doRerender = () =>
-        Promise.resolve(rerender({ variables: { test: 2 } }))
-
-      await Promise.all([doFetch(), doRerender(), doFetch()])
+      await Promise.all([doFetch(), doFetch()])
       expect(state.data.result).toBe(2)
     })
   })
@@ -780,7 +776,9 @@ describe('useClientRequest', () => {
 
         expect(typeof fetchDataArr[0]).toBe('function')
         expect(typeof fetchDataArr[1]).toBe('function')
-        expect(fetchDataArr[0]).not.toBe(fetchDataArr[1])
+        expect(typeof fetchDataArr[2]).toBe('function')
+        expect(fetchDataArr[0]).toBe(fetchDataArr[1])
+        expect(fetchDataArr[0]).not.toBe(fetchDataArr[2])
       })
     })
 

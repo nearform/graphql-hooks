@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import EventEmitter from 'events'
 import React from 'react'
 import { ClientContext, useClientRequest, useQuery } from '../../src'
@@ -56,10 +56,11 @@ describe('useQuery', () => {
   })
 
   it('throws an error if not provided with an appropriate client', () => {
-    const { result } = renderHook(() =>
+    const executeHook = () => renderHook(() =>
       useQuery(TEST_QUERY, { useCache: true })
     )
-    expect(result.error?.message).toEqual(
+
+    expect(executeHook).toThrowError(
       'useQuery() requires a client to be passed in the options or as a context value'
     )
   })
@@ -459,7 +460,7 @@ describe('useQuery', () => {
 
       mockUseClientRequest.mockReturnValue([jest.fn(), errorState] as any)
 
-      const { result } = renderHook(
+      const executeHook = () => renderHook(
         ({ throwErrors }) =>
           useQuery(TEST_QUERY, {
             throwErrors
@@ -472,7 +473,7 @@ describe('useQuery', () => {
         }
       )
 
-      expect(result.error).toBe(errorState.error)
+      expect(executeHook).toThrowError(errorState.error)
     })
   })
 
