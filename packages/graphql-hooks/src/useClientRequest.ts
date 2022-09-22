@@ -247,10 +247,7 @@ function useClientRequest<
           })
         }
 
-        if (
-          revisedOpts.onSuccess &&
-          revisedOpts.onSuccess instanceof Function
-        ) {
+        if (revisedOpts.onSuccess instanceof Function) {
           revisedOpts.onSuccess(result, revisedOperation.variables)
         } else {
           if (revisedOpts.onSuccess) {

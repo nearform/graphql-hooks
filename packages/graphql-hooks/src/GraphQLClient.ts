@@ -202,9 +202,7 @@ class GraphQLClient {
   }
 
   removeCache(cacheKey) {
-    if (this.cache) {
-      this.cache.delete(cacheKey)
-    }
+    this.cache?.delete(cacheKey)
   }
 
   // Kudos to Jayden Seric (@jaydenseric) for this piece of code.
@@ -421,7 +419,7 @@ class GraphQLClient {
       this.removeCache(cacheKey)
       this.request({ query }).then(result =>
         this.mutationsEmitter.emit(Events.DATA_INVALIDATED, result)
-      )
+      ).catch(err => console.error(err))
     }
   }
 
@@ -431,9 +429,7 @@ class GraphQLClient {
       const oldState: any = this.cache.get(cacheKey)
       const newState = {
         ...oldState,
-        data: {
-          ...updater(oldState.data || null)
-        }
+        data: updater(oldState.data || null)
       }
       this.saveCache(cacheKey, newState)
       this.mutationsEmitter.emit(Events.DATA_UPDATED, newState)
