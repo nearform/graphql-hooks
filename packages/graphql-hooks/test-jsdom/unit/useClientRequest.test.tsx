@@ -30,7 +30,9 @@ describe('useClientRequest', () => {
   beforeEach(() => {
     mockClient = {
       mutationsEmitter: {
-        emit: jest.fn()
+        emit: jest.fn(),
+        on: jest.fn(),
+        off: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -55,7 +57,9 @@ describe('useClientRequest', () => {
   it('uses a passed client', async () => {
     const mockClient2: any = {
       mutationsEmitter: {
-        emit: jest.fn()
+        emit: jest.fn(),
+        on: jest.fn(),
+        off: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -844,7 +848,9 @@ describe('useClientRequest', () => {
     it('emits an event when a mutation returns its result', async () => {
       const mockClient: any = {
         mutationsEmitter: {
-          emit: jest.fn()
+          emit: jest.fn(),
+          on: jest.fn(),
+          off: jest.fn(),
         },
         getCacheKey: jest.fn().mockReturnValue('cacheKey'),
         getCache: jest.fn(),

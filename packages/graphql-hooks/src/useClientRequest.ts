@@ -1,6 +1,7 @@
 import { dequal } from 'dequal'
 import React, { DependencyList } from 'react'
 import ClientContext from './ClientContext'
+import { Events } from './events'
 import {
   UseClientRequestOptions,
   FetchData,
@@ -144,6 +145,7 @@ function useClientRequest<
   // in subsequent renders the operation could have changed
   // if so the state would be invalid, this effect ensures we reset it back
   const stringifiedCacheKey = JSON.stringify(cacheKey)
+
   React.useEffect(() => {
     if (!initialOpts.updateData) {
       // if using updateData we can assume that the consumer cares about the previous data
@@ -206,6 +208,7 @@ function useClientRequest<
       }
 
       dispatch({ type: actionTypes.LOADING, initialState })
+
       return client.request(revisedOperation, revisedOpts).then(result => {
         if (
           revisedOpts.updateData &&
@@ -246,6 +249,17 @@ function useClientRequest<
           })
         }
 
+        if (
+          revisedOpts.onSuccess &&
+          typeof revisedOpts.onSuccess === 'function'
+        ) {
+          revisedOpts.onSuccess(result, revisedOperation.variables)
+        } else {
+          if (revisedOpts.onSuccess) {
+            throw new Error('options.onSuccess must be a function')
+          }
+        }
+
         return result
       })
     },
@@ -266,6 +280,30 @@ function useClientRequest<
       type: actionTypes.RESET_STATE,
       initialState: { ...initialState, ...desiredState }
     })
+
+  React.useEffect(() => {
+    const handleEvents = (payload, actionType) => {
+      dispatch({
+        type: actionType,
+        result: payload
+      })
+    }
+
+    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload =>
+      handleEvents(payload, actionTypes.REQUEST_RESULT)
+    )
+    client.mutationsEmitter.on(Events.DATA_UPDATED, payload =>
+      handleEvents(payload, actionTypes.CACHE_HIT)
+    )
+    return () => {
+      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload =>
+        handleEvents(payload, actionTypes.REQUEST_RESULT)
+      )
+      client.mutationsEmitter.off(Events.DATA_UPDATED, payload =>
+        handleEvents(payload, actionTypes.CACHE_HIT)
+      )
+    }
+  }, [])
 
   return [fetchData, state, reset]
 }

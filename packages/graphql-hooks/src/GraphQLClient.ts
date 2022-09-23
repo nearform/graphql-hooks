@@ -19,6 +19,7 @@ import type {
   CacheKeyObject
 } from './types/common-types'
 import { pipeP } from './utils'
+import { Events } from './events'
 
 class GraphQLClient {
   url: string
@@ -198,6 +199,10 @@ class GraphQLClient {
     if (this.cache) {
       this.cache.set(cacheKey, value)
     }
+  }
+
+  removeCache(cacheKey) {
+    this.cache?.delete(cacheKey)
   }
 
   // Kudos to Jayden Seric (@jaydenseric) for this piece of code.
@@ -405,6 +410,31 @@ class GraphQLClient {
     } else {
       // subscriptions-transport-ws
       return this.subscriptionClient.request(operationPayload)
+    }
+  }
+
+  invalidateQuery(query: string): void {
+    const cacheKey = this.getCacheKey({ query })
+    if (this.cache && cacheKey) {
+      this.removeCache(cacheKey)
+      this.request({ query })
+        .then(result => {
+          this.mutationsEmitter.emit(Events.DATA_INVALIDATED, result)
+        })
+        .catch(err => console.error(err))
+    }
+  }
+
+  setQueryData(query: string, updater: (oldState?: any) => any): void {
+    const cacheKey = this.getCacheKey({ query })
+    if (this.cache && cacheKey) {
+      const oldState: any = this.cache.get(cacheKey)
+      const newState = {
+        ...oldState,
+        data: updater(oldState.data || null)
+      }
+      this.saveCache(cacheKey, newState)
+      this.mutationsEmitter.emit(Events.DATA_UPDATED, newState)
     }
   }
 }
