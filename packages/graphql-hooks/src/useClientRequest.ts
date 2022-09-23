@@ -266,7 +266,6 @@ function useClientRequest<
     [client, initialOpts, operation]
   )
 
-
   // We perform caching after reducer update
   // to include the outcome of updateData.
   // The cache is already saved if in ssrMode.
