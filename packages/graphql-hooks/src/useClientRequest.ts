@@ -145,6 +145,7 @@ function useClientRequest<
   // in subsequent renders the operation could have changed
   // if so the state would be invalid, this effect ensures we reset it back
   const stringifiedCacheKey = JSON.stringify(cacheKey)
+
   React.useEffect(() => {
     if (!initialOpts.updateData) {
       // if using updateData we can assume that the consumer cares about the previous data
@@ -207,6 +208,7 @@ function useClientRequest<
       }
 
       dispatch({ type: actionTypes.LOADING, initialState })
+
       return client.request(revisedOperation, revisedOpts).then(result => {
         if (
           revisedOpts.updateData &&
@@ -263,6 +265,7 @@ function useClientRequest<
     },
     [client, initialOpts, operation]
   )
+
 
   // We perform caching after reducer update
   // to include the outcome of updateData.

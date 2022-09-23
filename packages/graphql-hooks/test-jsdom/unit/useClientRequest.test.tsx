@@ -32,6 +32,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
+        off: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -58,6 +59,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
+        off: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -848,6 +850,7 @@ describe('useClientRequest', () => {
         mutationsEmitter: {
           emit: jest.fn(),
           on: jest.fn(),
+          off: jest.fn(),
         },
         getCacheKey: jest.fn().mockReturnValue('cacheKey'),
         getCache: jest.fn(),

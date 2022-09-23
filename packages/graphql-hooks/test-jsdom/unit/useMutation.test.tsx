@@ -1,5 +1,5 @@
 import React from 'react'
-import { act, renderHook } from '@testing-library/react-hooks'
+import { act, render, renderHook, screen, fireEvent } from '@testing-library/react'
 import { useMutation, useClientRequest, GraphQLClient, ClientContext } from '../../src'
 
 jest.mock('../../src/useMutation.ts')
@@ -16,11 +16,15 @@ const useMutationMock = useMutation as jest.MockedFunction<
 
 const client = new GraphQLClient({ url: 'http://localhost:8080' })
 
-const Wrapper = ({ children }) => (
-  <ClientContext.Provider value={client}>
-    {children}
-  </ClientContext.Provider>
-)
+const TestComponent = ({ onSuccess }) => {
+  const [callMutation] = useMutation(TEST_QUERY, { onSuccess }) || []
+
+  const handleButtonClick = () => callMutation ? callMutation({ variables: { hello: 'World' }}) : null
+
+  return (
+    <button data-testid="btn-test-me" onClick={handleButtonClick} type="button">Test me</button>
+  )
+}
 
 describe('useMutation', () => {
   const useClientRequestMock = jest.fn()
@@ -44,14 +48,15 @@ describe('useMutation', () => {
     useMutationMock.mockImplementationOnce(useClientRequest)
     client.request = jest.fn(() => Promise.resolve(resultMock)) as any
 
-    const { result, waitForNextUpdate } = renderHook(() => useMutation(TEST_QUERY, { onSuccess: onSuccessMock }), { wrapper: Wrapper })
-    const [callMutation] = result.current
+    render(
+      <ClientContext.Provider value={client}>
+        <TestComponent onSuccess={onSuccessMock} />
+      </ClientContext.Provider>
+    )
 
-    act(() => {
-      callMutation({ variables: variablesMock })
+    await act(async () => {
+      await fireEvent.click(screen.getByTestId('btn-test-me'))
     })
-
-    await waitForNextUpdate()
 
     expect(onSuccessMock).toHaveBeenCalledTimes(1)
     expect(onSuccessMock).toHaveBeenCalledWith(resultMock, variablesMock)

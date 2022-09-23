@@ -1,5 +1,5 @@
 import React from 'react'
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import { ClientContext, useQueryClient, GraphQLClient } from '../../src'
 
 const client = new GraphQLClient({ url: 'http://localhost:8080' })
