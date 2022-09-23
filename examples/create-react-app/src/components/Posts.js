@@ -1,7 +1,7 @@
 import { useQuery } from 'graphql-hooks'
 import T from 'prop-types'
 import React from 'react'
-import CreatePost, { createPostMutation } from './CreatePost'
+import CreatePost from './CreatePost'
 
 export const allPostsQuery = `
   query {
@@ -14,14 +14,12 @@ export const allPostsQuery = `
 `
 
 export default function Posts() {
-  const { loading, data, error, refetch } = useQuery(allPostsQuery, {
-    refetchAfterMutations: createPostMutation
-  })
+  const { loading, data, error } = useQuery(allPostsQuery)
 
   return (
     <>
       <h3>Add post</h3>
-      <CreatePost onSuccess={refetch} />
+      <CreatePost />
       <h3>Posts</h3>
       <PostList loading={loading} error={error} data={data} />
     </>

@@ -176,6 +176,12 @@ const client = new GraphQLClient(config)
   - `operation`: Object with `query`, `variables` and `operationName`
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
 - `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are merged to the `request` response under the `data` key. Example usage: `{responseReducer: (data, response) => ({...data, myKey: response.headers.get('content-length)})`
+- `client.invalidateQuery(query)`: Will delete the older cache, re-fetch the new data using the same query, and store it in the cache as a new value
+  - `query`: The GraphQL query as a plain string to be re-fetched
+- `client.setQueryData(query, (oldState) => [...oldState, newState]])`: Will override the older cache state with the new one provided by the function return
+  - `query`: The GraphQL query as a plain string
+  - `(oldState) => [...oldState, newState]]`: The callback function with returns will be the new state stored in the cache.
+    - `oldState`: The old value stored in the cache
 
 ## `ClientContext`
 
@@ -322,6 +328,28 @@ function MyComponent(props) {
 }
 ```
 
+## `useQueryClient`
+
+Will return the graphql client provided to `ClientContext.Provider` as `value`
+
+**Usage**:
+
+```js
+const client = useQueryClient()
+```
+
+**Example**:
+
+```js
+import { useQueryClient } from 'graphql-hooks'
+
+function MyComponent() {
+  const client = useQueryClient()
+
+  return <div>...</div>
+}
+```
+
 ## `useMutation`
 
 Mutations unlike Queries are not cached.
@@ -368,6 +396,7 @@ The `options` object that can be passed either to `useMutation(mutation, options
 - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
 - `fetchOptionsOverrides`: Object - Specific overrides for this query. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch) for info on what options can be passed
 - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
+- `onSuccess`: A function to be called after the mutation has been finished with success without raising any error
 
 In addition, there is an option to reset the current state before calling the mutation again, by calling `resetFn(desiredState)` where `desiredState` is optional and if passed, it will override the initial state with:
 
@@ -627,6 +656,57 @@ useQuery(allPostsByUserIdQuery, {
     }
   ]
 })
+```
+
+## Manually updating the cache after some mutation
+
+There are two ways to reach that:
+
+### By re-fetching the query
+
+```js
+import { useMutation, useQueryClient } from 'graphql-hooks'
+import React from 'react'
+
+const MY_MUTATION = `...`
+const MY_QUERY = `...`
+
+export default function MyComponent() {
+  const client = useQueryClient()
+  const [applyMutation, { ... }] = useMutation(MY_MUTATION, {
+    onSuccess: () => client.invalidateQuery(MY_QUERY)
+  })
+
+  return (
+    ...
+  )
+}
+```
+
+### By overring the old state in the cache without re-fetching data
+
+```js
+import { useMutation, useQueryClient } from 'graphql-hooks'
+import React from 'react'
+
+const MY_MUTATION = `...`
+const MY_QUERY = `...`
+
+export default function MyComponent() {
+  const client = useQueryClient()
+  const [applyMutation, { ... }] = useMutation(MY_MUTATION, {
+    onSuccess: (result) => {
+      client.setQueryData(MY_QUERY, oldState => [
+        ...oldState,
+        result,
+      ])
+    }
+  })
+
+  return (
+    ...
+  )
+}
 ```
 
 ## File uploads

@@ -1,0 +1,4 @@
+export enum Events {
+  DATA_INVALIDATED = 'DATA_INVALIDATED',
+  DATA_UPDATED = 'DATA_UPDATED'
+}

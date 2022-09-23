@@ -34,7 +34,9 @@ app.register(mercurius, {
 
 async function start() {
   try {
-    return app.listen({ port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT, 10) : 8000 })
+    return app.listen({
+      port: parseInt(process.env.SERVER_PORT || '8080', 10)
+    })
   } catch (err) {
     app.log.error(err)
     process.exit(1)
