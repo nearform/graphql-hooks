@@ -1,4 +1,4 @@
-import LRU from 'tiny-lru'
+import { lru as LRU } from 'tiny-lru'
 import fnv1a from './fnv1a'
 
 function generateKey(keyObj) {
