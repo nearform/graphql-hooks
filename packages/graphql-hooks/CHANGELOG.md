@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.4...graphql-hooks@6.0.0) (2022-09-26)
+
+**Note:** Version bump only for package graphql-hooks
+
+
+
+
+
 ## [5.11.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.3...graphql-hooks@5.11.4) (2022-05-25)
 
 

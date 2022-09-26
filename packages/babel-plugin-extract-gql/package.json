@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-extract-gql",
-  "version": "2.4.1",
+  "version": "3.0.0",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -16,8 +16,8 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.0.0",
-    "mercurius": "^11.0.0",
     "glob": "^8.0.1",
+    "mercurius": "^11.0.0",
     "mocha": "^10.0.0"
   },
   "author": "Salman Mitha <salmanmitha@gmail.com>",

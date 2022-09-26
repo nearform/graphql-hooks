@@ -1,6 +1,6 @@
 {
   "name": "subscription",
-  "version": "2.8.4",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -16,14 +16,14 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.0.0",
+    "@fastify/static": "^6.5.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
-    "mercurius": "^11.0.0",
-    "@fastify/static": "^6.5.0",
     "graphql": "^16.6.0",
-    "graphql-hooks": "^5.11.4",
-    "graphql-hooks-memcache": "^2.3.1",
+    "graphql-hooks": "^6.0.0",
+    "graphql-hooks-memcache": "^3.0.0",
     "lowdb": "^3.0.0",
+    "mercurius": "^11.0.0",
     "mqemitter-redis": "^5.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

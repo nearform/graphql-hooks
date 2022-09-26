@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@2.2.3...graphql-hooks-ssr@3.0.0) (2022-09-26)
+
+
+### Bug Fixes
+
+* removed ts jest ([#924](https://github.com/nearform/graphql-hooks/issues/924)) ([7089ccc](https://github.com/nearform/graphql-hooks/commit/7089ccc8ee0e3d84c9f0e59df4ab36778d7c17be))
+
+
+
+
+
 ## [2.2.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-ssr@2.2.2...graphql-hooks-ssr@2.2.3) (2022-04-29)
 
 **Note:** Version bump only for package graphql-hooks-ssr
