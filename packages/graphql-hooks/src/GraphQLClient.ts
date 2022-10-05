@@ -413,11 +413,13 @@ class GraphQLClient {
     }
   }
 
-  invalidateQuery(query: string): void {
-    const cacheKey = this.getCacheKey({ query })
+  invalidateQuery(query: Operation | string): void {
+    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+
+    const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {
       this.removeCache(cacheKey)
-      this.request({ query })
+      this.request(cacheKeyProp)
         .then(result => {
           this.mutationsEmitter.emit(Events.DATA_INVALIDATED, result)
         })
@@ -425,8 +427,10 @@ class GraphQLClient {
     }
   }
 
-  setQueryData(query: string, updater: (oldState?: any) => any): void {
-    const cacheKey = this.getCacheKey({ query })
+  setQueryData(query: Operation | string, updater: (oldState?: any) => any): void {
+    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+
+    const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {
       const oldState: any = this.cache.get(cacheKey)
       const newState = {

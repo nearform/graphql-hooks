@@ -177,9 +177,9 @@ const client = new GraphQLClient(config)
 - `options.fetchOptionsOverrides`: Object containing additional fetch options to be added to the default ones passed to `new GraphQLClient(config)`
 - `options.responseReducer`: Reducer function to pick values from the original Fetch Response object. Values are merged to the `request` response under the `data` key. Example usage: `{responseReducer: (data, response) => ({...data, myKey: response.headers.get('content-length)})`
 - `client.invalidateQuery(query)`: Will delete the older cache, re-fetch the new data using the same query, and store it in the cache as a new value
-  - `query`: The GraphQL query as a plain string to be re-fetched
+  - `query`: The GraphQL query as a plain string to be re-fetched, or an Operation object (with `query`, `variables` and `operationName`)
 - `client.setQueryData(query, (oldState) => [...oldState, newState]])`: Will override the older cache state with the new one provided by the function return
-  - `query`: The GraphQL query as a plain string
+  - `query`: The GraphQL query as a plain string, or an Operation object (with `query`, `variables` and `operationName`)
   - `(oldState) => [...oldState, newState]]`: The callback function with returns will be the new state stored in the cache.
     - `oldState`: The old value stored in the cache
 
