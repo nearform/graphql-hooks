@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.0...graphql-hooks@6.0.1) (2022-10-05)
+
+
+### Bug Fixes
+
+* 930: use operation object in setQueryData ([#931](https://github.com/nearform/graphql-hooks/issues/931)) ([e94200d](https://github.com/nearform/graphql-hooks/commit/e94200dc036c3e1a70c447681c134f321d1233f0))
+
+
+
+
+
 # [6.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@5.11.4...graphql-hooks@6.0.0) (2022-09-26)
 
 **Note:** Version bump only for package graphql-hooks
