@@ -74,7 +74,7 @@ export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
     if (isPersistedQueryNotFound(error)) {
       next()
     } else {
-      throw error
+      resolve(res);
     }
   } catch (err: any) {
     reject(err)
