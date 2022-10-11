@@ -249,7 +249,7 @@ function useClientRequest<
           })
         }
 
-        if (revisedOpts.onSuccess) {
+        if (!result?.error && revisedOpts.onSuccess) {
           if (typeof revisedOpts.onSuccess !== 'function') {
             throw new Error('options.onSuccess must be a function')
           }
