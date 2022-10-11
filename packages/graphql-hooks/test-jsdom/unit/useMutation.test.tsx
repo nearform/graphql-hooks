@@ -59,6 +59,6 @@ describe('useMutation', () => {
     })
 
     expect(onSuccessMock).toHaveBeenCalledTimes(1)
-    expect(onSuccessMock).toHaveBeenCalledWith(resultMock, variablesMock)
+    expect(onSuccessMock).toHaveBeenCalledWith(resultMock.data, variablesMock)
   })
 })
