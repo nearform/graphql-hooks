@@ -249,15 +249,11 @@ function useClientRequest<
           })
         }
 
-        if (
-          revisedOpts.onSuccess &&
-          typeof revisedOpts.onSuccess === 'function'
-        ) {
-          revisedOpts.onSuccess(result, revisedOperation.variables)
-        } else {
-          if (revisedOpts.onSuccess) {
+        if (!result?.error && revisedOpts.onSuccess) {
+          if (typeof revisedOpts.onSuccess !== 'function') {
             throw new Error('options.onSuccess must be a function')
           }
+          revisedOpts.onSuccess(result, revisedOperation.variables)
         }
 
         return result
