@@ -909,4 +909,44 @@ describe('useClientRequest', () => {
       })
     })
   })
+
+  it('correctly unmount', async () => {
+    const mockClient: any = {
+      mutationsEmitter: {
+        emit: jest.fn(),
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      getCacheKey: jest.fn().mockReturnValue('cacheKey'),
+      getCache: jest.fn(),
+      saveCache: jest.fn(),
+      cache: {
+        get: jest.fn(),
+        set: jest.fn()
+      },
+      request: jest.fn().mockResolvedValue({ data: 'data' })
+    }
+
+    const options: UseClientRequestOptions = {
+      isMutation: false,
+      client: mockClient
+    }
+    const {unmount} = renderHook(() => useClientRequest(TEST_QUERY, {client: mockClient}), {
+      wrapper: Wrapper
+    })
+
+    await waitFor(() => expect(mockClient.mutationsEmitter.on).toHaveBeenCalledTimes(2))
+
+    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
+
+    unmount()
+
+    expect(mockClient.mutationsEmitter.off).toHaveBeenCalledTimes(2)
+    expect(mockClient.mutationsEmitter.off).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.off).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
+
+    expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(mockClient.mutationsEmitter.off.mock.calls[0][1])
+    expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(mockClient.mutationsEmitter.off.mock.calls[1][1])
+  })
 })
