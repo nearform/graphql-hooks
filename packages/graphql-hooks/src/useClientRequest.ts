@@ -285,19 +285,17 @@ function useClientRequest<
       })
     }
 
-    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload =>
-      handleEvents(payload, actionTypes.REQUEST_RESULT)
-    )
-    client.mutationsEmitter.on(Events.DATA_UPDATED, payload =>
-      handleEvents(payload, actionTypes.CACHE_HIT)
-    )
+    const dataInvalidatedCallback = payload =>
+    handleEvents(payload, actionTypes.REQUEST_RESULT)
+
+    const dataUpdatedCallback = payload =>
+    handleEvents(payload, actionTypes.CACHE_HIT)
+
+    client.mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+    client.mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
     return () => {
-      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload =>
-        handleEvents(payload, actionTypes.REQUEST_RESULT)
-      )
-      client.mutationsEmitter.off(Events.DATA_UPDATED, payload =>
-        handleEvents(payload, actionTypes.CACHE_HIT)
-      )
+      client.mutationsEmitter.off(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+      client.mutationsEmitter.off(Events.DATA_UPDATED, dataUpdatedCallback)
     }
   }, [])
 
