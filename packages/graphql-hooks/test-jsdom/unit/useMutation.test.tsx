@@ -59,7 +59,7 @@ describe('useMutation', () => {
     })
 
     expect(onSuccessMock).toHaveBeenCalledTimes(1)
-    expect(onSuccessMock).toHaveBeenCalledWith(resultMock.data, variablesMock)
+    expect(onSuccessMock).toHaveBeenCalledWith(resultMock, variablesMock)
   })
 
   it('should not call onSuccess function when the request finish with an error', async () => {

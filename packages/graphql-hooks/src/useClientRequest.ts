@@ -253,7 +253,7 @@ function useClientRequest<
           if (typeof revisedOpts.onSuccess !== 'function') {
             throw new Error('options.onSuccess must be a function')
           }
-          revisedOpts.onSuccess(result.data, revisedOperation.variables)
+          revisedOpts.onSuccess(result, revisedOperation.variables)
         }
 
         return result
