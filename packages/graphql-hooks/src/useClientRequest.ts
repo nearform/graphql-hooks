@@ -249,15 +249,11 @@ function useClientRequest<
           })
         }
 
-        if (
-          revisedOpts.onSuccess &&
-          typeof revisedOpts.onSuccess === 'function'
-        ) {
-          revisedOpts.onSuccess(result, revisedOperation.variables)
-        } else {
-          if (revisedOpts.onSuccess) {
+        if (!result?.error && revisedOpts.onSuccess) {
+          if (typeof revisedOpts.onSuccess !== 'function') {
             throw new Error('options.onSuccess must be a function')
           }
+          revisedOpts.onSuccess(result, revisedOperation.variables)
         }
 
         return result
@@ -289,19 +285,17 @@ function useClientRequest<
       })
     }
 
-    client.mutationsEmitter.on(Events.DATA_INVALIDATED, payload =>
-      handleEvents(payload, actionTypes.REQUEST_RESULT)
-    )
-    client.mutationsEmitter.on(Events.DATA_UPDATED, payload =>
-      handleEvents(payload, actionTypes.CACHE_HIT)
-    )
+    const dataInvalidatedCallback = payload =>
+    handleEvents(payload, actionTypes.REQUEST_RESULT)
+
+    const dataUpdatedCallback = payload =>
+    handleEvents(payload, actionTypes.CACHE_HIT)
+
+    client.mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+    client.mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
     return () => {
-      client.mutationsEmitter.off(Events.DATA_INVALIDATED, payload =>
-        handleEvents(payload, actionTypes.REQUEST_RESULT)
-      )
-      client.mutationsEmitter.off(Events.DATA_UPDATED, payload =>
-        handleEvents(payload, actionTypes.CACHE_HIT)
-      )
+      client.mutationsEmitter.off(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+      client.mutationsEmitter.off(Events.DATA_UPDATED, dataUpdatedCallback)
     }
   }, [])
 

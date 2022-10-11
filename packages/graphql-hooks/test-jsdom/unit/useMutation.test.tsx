@@ -61,4 +61,25 @@ describe('useMutation', () => {
     expect(onSuccessMock).toHaveBeenCalledTimes(1)
     expect(onSuccessMock).toHaveBeenCalledWith(resultMock, variablesMock)
   })
+
+  it('should not call onSuccess function when the request finish with an error', async () => {
+    const resultMock = { error: 'Request error', data: 'It works!' }
+    const onSuccessMock = jest.fn()
+    const variablesMock = { hello: 'World' }
+
+    useMutationMock.mockImplementationOnce(useClientRequest)
+    client.request = jest.fn(() => Promise.resolve(resultMock)) as any
+
+    render(
+      <ClientContext.Provider value={client}>
+        <TestComponent onSuccess={onSuccessMock} />
+      </ClientContext.Provider>
+    )
+
+    await act(async () => {
+      await fireEvent.click(screen.getByTestId('btn-test-me'))
+    })
+
+    expect(onSuccessMock).toHaveBeenCalledTimes(0)
+  })
 })

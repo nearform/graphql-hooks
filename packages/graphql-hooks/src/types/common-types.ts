@@ -161,7 +161,8 @@ export interface GenerateResultOptions<
 
 export interface UseClientRequestOptions<
   ResponseData = any,
-  Variables = object
+  Variables = object,
+  TGraphQLError = GraphQLResponseError
 > {
   useCache?: boolean
   isMutation?: boolean
@@ -175,7 +176,7 @@ export interface UseClientRequestOptions<
   client?: GraphQLClient
   responseReducer?(data: object, response: object): object
   persisted?: boolean
-  onSuccess?(result: ResponseData, variables: Variables): void
+  onSuccess?(result: Result<ResponseData, TGraphQLError>, variables: Variables): void
 }
 
 export type RefetchAfterMutationItem = {
