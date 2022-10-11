@@ -1,13 +1,13 @@
 {
   "name": "persisted-queries-client",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "private": true,
   "dependencies": {
     "@types/jest": "^29.0.3",
     "@types/node": "^18.0.4",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "graphql-hooks": "^6.0.2",
+    "graphql-hooks": "^6.0.3",
     "graphql-hooks-memcache": "^3.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

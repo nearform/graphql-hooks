@@ -1,6 +1,6 @@
 {
   "name": "fastify-ssr",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "private": true,
   "description": "",
   "type": "module",
@@ -27,7 +27,7 @@
     "@fastify/static": "^6.5.0",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
-    "graphql-hooks": "^6.0.2",
+    "graphql-hooks": "^6.0.3",
     "graphql-hooks-memcache": "^3.0.0",
     "graphql-hooks-ssr": "^3.0.0",
     "isomorphic-unfetch": "^3.0.0",
