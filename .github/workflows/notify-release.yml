@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 8 * * *'
+  release:
+    types: [published]
 jobs:
   setup:
     runs-on: ubuntu-latest
