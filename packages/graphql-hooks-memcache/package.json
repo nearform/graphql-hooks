@@ -31,7 +31,7 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "tiny-lru": "^9.0.1"
+    "tiny-lru": "^10.0.0"
   },
   "repository": {
     "type": "git",
