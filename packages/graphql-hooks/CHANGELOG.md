@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.3...graphql-hooks@6.0.4) (2022-11-07)
+
+
+### Bug Fixes
+
+* **packages/graphql-hooks:** do not reset useClientRequest's state if loading is true ([#953](https://github.com/nearform/graphql-hooks/issues/953)) ([3cf6471](https://github.com/nearform/graphql-hooks/commit/3cf64714e277ab0a1fc518a7e1235df115138c2d))
+
+
+
+
+
 ## [6.0.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.2...graphql-hooks@6.0.3) (2022-10-11)
 
 
