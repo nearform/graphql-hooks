@@ -20,6 +20,10 @@ const actionTypes = {
 function reducer(state, action) {
   switch (action.type) {
     case actionTypes.RESET_STATE:
+      // Do not reset the state if it's loading
+      if (state.loading) {
+        return state
+      }
       return action.initialState
     case actionTypes.LOADING:
       // if the previous action resulted in an error - refetch should clear any errors
@@ -286,15 +290,18 @@ function useClientRequest<
     }
 
     const dataInvalidatedCallback = payload =>
-    handleEvents(payload, actionTypes.REQUEST_RESULT)
+      handleEvents(payload, actionTypes.REQUEST_RESULT)
 
     const dataUpdatedCallback = payload =>
-    handleEvents(payload, actionTypes.CACHE_HIT)
+      handleEvents(payload, actionTypes.CACHE_HIT)
 
     client.mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
     client.mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
     return () => {
-      client.mutationsEmitter.off(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+      client.mutationsEmitter.off(
+        Events.DATA_INVALIDATED,
+        dataInvalidatedCallback
+      )
       client.mutationsEmitter.off(Events.DATA_UPDATED, dataUpdatedCallback)
     }
   }, [])
