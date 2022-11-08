@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider rollup -c",
     "prepublishOnly": "npm run build && cp ../../LICENSE ."
   },
   "files": [
