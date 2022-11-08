@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "npm run build:code && npm run build:types",
-    "build:code": "rollup -c",
+    "build:code": "NODE_OPTIONS=--openssl-legacy-provider rollup -c",
     "build:types": "tsc --emitDeclarationOnly --declaration",
     "check-types": "tsc --noEmit",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
