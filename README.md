@@ -1058,9 +1058,28 @@ There is a `LocalGraphQLClient` class you can use to mock requests without a ser
 
 This client inherits from `GraphQLClient` and provides the same API, but doesn't connect to any server and instead responds to pre-defined queries.
 
-It needs to be supplied on creation with a `localQueries` object, which is an object of query functions.
+It needs to be supplied on creation with a `localQueries` object, which is an object where:
+
+- the keys are the queries defined in the application;
+- the values are query functions returning the mocked data.
 
 ```js
+// src/components/Post.js
+export const allPostsQuery = `
+  query {
+    allPosts {
+      id
+      title
+      url
+    }
+  }
+`
+```
+
+```js
+// test/Post.test.tsx
+import { allPostsQuery, createPostMutation } from '../src/components/Post'
+
 const localQueries = {
   [allPostsQuery]: () => ({
     allPosts: [
@@ -1075,7 +1094,7 @@ const localQueries = {
 }
 const client = new LocalGraphQLClient({ localQueries })
 const { data, error } = await client.request({
-  query: 'allPostsQuery'
+  query: allPostsQuery
 })
 ```
 
@@ -1107,8 +1126,11 @@ console.log(result.data.addedNumber) // Will be 5
 Errors can be simply mocked in `LocalGraphQLClient` queries by using the `LocalGraphQLError` class:
 
 ```js
+// test/Post.test.tsx
+import { allPostsQuery } from '../src/components/Post'
+
 const localQueries = {
-  ErrorQuery: () =>
+  [allPostsQuery]: () =>
     new LocalGraphQLError({
       httpError: {
         status: 404,
@@ -1119,7 +1141,7 @@ const localQueries = {
 }
 const client = new LocalGraphQLClient({ localQueries })
 const result = await client.request({
-  query: 'ErrorQuery'
+  query: allPostsQuery
 })
 console.log(result.error) // The `error` object will have an `httpError`
 ```
