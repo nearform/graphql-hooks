@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "build": "npm run build:code && npm run build:types",
-    "build:code": "NODE_OPTIONS=--openssl-legacy-provider rollup -c",
+    "build:code": "cross-env NODE_OPTIONS=--openssl-legacy-provider rollup -c",
     "build:types": "tsc --emitDeclarationOnly --declaration",
     "check-types": "tsc --noEmit",
     "prepublishOnly": "npm run build && cp ../../README.md . && cp ../../LICENSE ."
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@testing-library/react": "^13.0.0",
     "@types/extract-files": "^8.1.1",
+    "cross-env": "^7.0.3",
     "formdata-node": "^4.3.2",
     "graphql-hooks-memcache": "^3.0.0",
     "graphql-hooks-ssr": "^3.0.0",

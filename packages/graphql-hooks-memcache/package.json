@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider rollup -c",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider rollup -c",
     "prepublishOnly": "npm run build && cp ../../LICENSE ."
   },
   "files": [
@@ -40,5 +40,8 @@
   "bugs": {
     "url": "https://github.com/nearform/graphql-hooks/issues"
   },
-  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme"
+  "homepage": "https://github.com/nearform/graphql-hooks/blob/master/packages/graphql-hooks-memcache#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
 }
