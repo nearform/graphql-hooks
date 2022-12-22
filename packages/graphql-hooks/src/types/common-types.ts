@@ -186,9 +186,8 @@ export type RefetchAfterMutationItem = {
 
 export type RefetchAfterMutationsData =
   | string
-  | string[]
   | RefetchAfterMutationItem
-  | RefetchAfterMutationItem[]
+  | (string | RefetchAfterMutationItem)[]
 
 export interface UseQueryOptions<ResponseData = any, Variables = object>
   extends UseClientRequestOptions<ResponseData, Variables> {
