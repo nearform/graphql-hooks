@@ -181,7 +181,7 @@ export interface UseClientRequestOptions<
 
 export type RefetchAfterMutationItem = {
   mutation: string
-  filter?: (variables: object) => boolean
+  filter?: (variables: any) => boolean
 }
 
 export type RefetchAfterMutationsData =
