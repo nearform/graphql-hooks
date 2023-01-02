@@ -1,6 +1,6 @@
 {
   "name": "fastify-ssr",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "private": true,
   "description": "",
   "type": "module",

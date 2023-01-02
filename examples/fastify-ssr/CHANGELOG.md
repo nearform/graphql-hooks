@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.6](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@4.0.5...fastify-ssr@4.0.6) (2023-01-02)
+
+**Note:** Version bump only for package fastify-ssr
+
 ## [4.0.5](https://github.com/nearform/graphql-hooks/compare/fastify-ssr@4.0.4...fastify-ssr@4.0.5) (2022-11-16)
 
 **Note:** Version bump only for package fastify-ssr
