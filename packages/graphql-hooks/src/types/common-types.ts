@@ -176,11 +176,15 @@ export interface UseClientRequestOptions<
   client?: GraphQLClient
   responseReducer?(data: object, response: object): object
   persisted?: boolean
-  onSuccess?(result: Result<ResponseData, TGraphQLError>, variables: Variables): void
+  onSuccess?(
+    result: Result<ResponseData, TGraphQLError>,
+    variables: Variables
+  ): void
 }
 
 export type RefetchAfterMutationItem = {
   mutation: string
+  refetchOnMutationError?: boolean
   filter?: (variables: any) => boolean
 }
 
