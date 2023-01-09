@@ -13,7 +13,7 @@ describe('createRefetchMutationsMap', () => {
     const result = createRefetchMutationsMap({ mutation: 'my-mutation' })
 
     expect(result).toEqual({
-      'my-mutation': {}
+      'my-mutation': { refetchOnMutationError: true }
     })
   })
 
@@ -26,9 +26,9 @@ describe('createRefetchMutationsMap', () => {
     ])
 
     expect(result).toEqual({
-      'my-mutation': {},
+      'my-mutation': { refetchOnMutationError: true },
       'my-mutation-2': {},
-      'my-mutation-3': { filter }
+      'my-mutation-3': { filter, refetchOnMutationError: true }
     })
   })
 
@@ -41,7 +41,7 @@ describe('createRefetchMutationsMap', () => {
     ])
 
     expect(result).toEqual({
-      'my-mutation': {}
+      'my-mutation': { refetchOnMutationError: true }
     })
   })
 })

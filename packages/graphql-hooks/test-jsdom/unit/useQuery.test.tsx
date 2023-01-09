@@ -563,7 +563,7 @@ describe('useQuery', () => {
       expect(mockQueryReq).toHaveBeenCalledTimes(2)
     })
 
-    it("doesn't refetch the query when a mutation fails", async () => {
+    it("doesn't refetch the query when a mutation fails with refetchOnMutationError to false", async () => {
       const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
       const mockClient = {
         mutationsEmitter: new EventEmitter()
@@ -576,6 +576,7 @@ describe('useQuery', () => {
             refetchAfterMutations: [
               {
                 mutation: MY_MUTATION,
+                refetchOnMutationError: false,
                 filter: ({ userId }: any) => userId === 1
               }
             ]
@@ -618,6 +619,121 @@ describe('useQuery', () => {
       }) // not called
 
       expect(mockQueryReq).toHaveBeenCalledTimes(2)
+    })
+
+    it('does refetch the query when a mutation fails with refetchOnMutationError to true', async () => {
+      const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
+      const mockClient = {
+        mutationsEmitter: new EventEmitter()
+      }
+
+      renderHook(
+        () =>
+          useQuery(TEST_QUERY, {
+            client: mockClient as any,
+            refetchAfterMutations: [
+              {
+                mutation: MY_MUTATION,
+                refetchOnMutationError: true,
+                filter: ({ userId }: any) => userId === 1
+              }
+            ]
+          }),
+        {
+          wrapper: Wrapper
+        }
+      ) // 1
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 2
+        },
+        result: {}
+      }) // filtered out!
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // 2
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: {}
+      }) // 3
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // 4
+
+      expect(mockQueryReq).toHaveBeenCalledTimes(4)
+    })
+
+    it('does refetch the query when a mutation fails without refetchOnMutationError option', async () => {
+      const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
+      const mockClient = {
+        mutationsEmitter: new EventEmitter()
+      }
+
+      renderHook(
+        () =>
+          useQuery(TEST_QUERY, {
+            client: mockClient as any,
+            refetchAfterMutations: [
+              {
+                mutation: MY_MUTATION,
+                filter: ({ userId }: any) => userId === 1
+              }
+            ]
+          }),
+        {
+          wrapper: Wrapper
+        }
+      ) // 1
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 2
+        },
+        result: {}
+      }) // filtered out!
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // 2
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: {}
+      }) // 3
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // 4
+
+      expect(mockQueryReq).toHaveBeenCalledTimes(4)
     })
   })
 })

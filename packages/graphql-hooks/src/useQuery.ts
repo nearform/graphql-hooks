@@ -80,12 +80,14 @@ function useQuery<
       const mutations = Object.keys(mutationsMap)
 
       const afterConditionsCheckRefetch = ({ mutation, variables, result }) => {
-        const { filter } = mutationsMap[mutation]
+        const { filter, refetchOnMutationError } = mutationsMap[mutation]
 
         const hasValidFilterOrNoFilter =
           !filter || (variables && filter(variables))
 
-        if (hasValidFilterOrNoFilter && !result.error) {
+        const shouldRefetch = refetchOnMutationError || !result.error
+
+        if (hasValidFilterOrNoFilter && shouldRefetch) {
           refetch()
         }
       }

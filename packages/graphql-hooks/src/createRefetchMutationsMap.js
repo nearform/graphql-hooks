@@ -19,9 +19,14 @@ export default function createRefetchMutationsMap(refetchAfterMutations) {
     if (paramType === 'string') {
       result[mutationInfo] = {}
     } else if (paramType === 'object') {
-      const { filter, mutation } = mutationInfo
+      const { filter, mutation, refetchOnMutationError } = mutationInfo
 
-      result[mutation] = { filter }
+      result[mutation] = {
+        filter,
+        refetchOnMutationError:
+          typeof refetchOnMutationError === 'undefined' ||
+          refetchOnMutationError
+      }
     }
   })
 
