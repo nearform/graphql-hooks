@@ -56,9 +56,8 @@ describe('useQuery', () => {
   })
 
   it('throws an error if not provided with an appropriate client', () => {
-    const executeHook = () => renderHook(() =>
-      useQuery(TEST_QUERY, { useCache: true })
-    )
+    const executeHook = () =>
+      renderHook(() => useQuery(TEST_QUERY, { useCache: true }))
 
     expect(executeHook).toThrowError(
       'useQuery() requires a client to be passed in the options or as a context value'
@@ -460,18 +459,19 @@ describe('useQuery', () => {
 
       mockUseClientRequest.mockReturnValue([jest.fn(), errorState] as any)
 
-      const executeHook = () => renderHook(
-        ({ throwErrors }) =>
-          useQuery(TEST_QUERY, {
-            throwErrors
-          } as any),
-        {
-          wrapper: Wrapper,
-          initialProps: {
-            throwErrors: true
+      const executeHook = () =>
+        renderHook(
+          ({ throwErrors }) =>
+            useQuery(TEST_QUERY, {
+              throwErrors
+            } as any),
+          {
+            wrapper: Wrapper,
+            initialProps: {
+              throwErrors: true
+            }
           }
-        }
-      )
+        )
 
       expect(executeHook).toThrowError(errorState.error)
     })
@@ -499,13 +499,25 @@ describe('useQuery', () => {
         }
       ) // 1
 
-      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 2
-      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 3
-      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION }) // 4
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        result: {}
+      }) // 2
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        result: {}
+      }) // 3
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        result: {}
+      }) // 4
 
       unmount()
 
-      mockClient.mutationsEmitter.emit(MY_MUTATION, { mutation: MY_MUTATION })
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        result: {}
+      })
 
       expect(mockQueryReq).toHaveBeenCalledTimes(4)
     })
@@ -536,15 +548,74 @@ describe('useQuery', () => {
         mutation: MY_MUTATION,
         variables: {
           userId: 2
-        }
+        },
+        result: {}
       }) // filtered out!
 
       mockClient.mutationsEmitter.emit(MY_MUTATION, {
         mutation: MY_MUTATION,
         variables: {
           userId: 1
-        }
+        },
+        result: {}
       }) // 2
+
+      expect(mockQueryReq).toHaveBeenCalledTimes(2)
+    })
+
+    it("doesn't refetch the query when a mutation fails", async () => {
+      const MY_MUTATION = 'mutation { migrateUser(id: 3) { id } }'
+      const mockClient = {
+        mutationsEmitter: new EventEmitter()
+      }
+
+      renderHook(
+        () =>
+          useQuery(TEST_QUERY, {
+            client: mockClient as any,
+            refetchAfterMutations: [
+              {
+                mutation: MY_MUTATION,
+                filter: ({ userId }: any) => userId === 1
+              }
+            ]
+          }),
+        {
+          wrapper: Wrapper
+        }
+      ) // 1
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 2
+        },
+        result: {}
+      }) // filtered out!
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // not called
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: {}
+      }) // 2
+
+      mockClient.mutationsEmitter.emit(MY_MUTATION, {
+        mutation: MY_MUTATION,
+        variables: {
+          userId: 1
+        },
+        result: { error: { httpError: {} } }
+      }) // not called
 
       expect(mockQueryReq).toHaveBeenCalledTimes(2)
     })

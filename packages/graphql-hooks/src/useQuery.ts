@@ -79,22 +79,28 @@ function useQuery<
       const mutationsMap = createRefetchMutationsMap(opts.refetchAfterMutations)
       const mutations = Object.keys(mutationsMap)
 
-      const conditionalRefetch = ({ mutation, variables }) => {
+      const afterConditionsCheckRefetch = ({ mutation, variables, result }) => {
         const { filter } = mutationsMap[mutation]
 
-        if (!filter || (variables && filter(variables))) {
+        const hasValidFilterOrNoFilter =
+          !filter || (variables && filter(variables))
+
+        if (hasValidFilterOrNoFilter && !result.error) {
           refetch()
         }
       }
 
       mutations.forEach(mutation => {
         // this event is emitted from useClientRequest
-        client.mutationsEmitter.on(mutation, conditionalRefetch)
+        client.mutationsEmitter.on(mutation, afterConditionsCheckRefetch)
       })
 
       return () => {
         mutations.forEach(mutation => {
-          client.mutationsEmitter.removeListener(mutation, conditionalRefetch)
+          client.mutationsEmitter.removeListener(
+            mutation,
+            afterConditionsCheckRefetch
+          )
         })
       }
     },
