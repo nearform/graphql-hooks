@@ -255,7 +255,7 @@ This is a custom hook that takes care of fetching your query and storing the res
     - If it's a string, it's the mutation string
     - If it's an object then it has properties mutation and filter
       - `mutation`: String - The mutation string
-      - `refetchOnMutationError`: boolean (optional, fallback to `true`) - It indicates whether the query must be re-fetched due to a mutation error
+      - `refetchOnMutationError`: boolean (optional, fallback to `true`) - It indicates whether the query must be re-fetched if the mutation returns an error
       - `filter`: Function (optional) - It receives mutation's variables as parameter and blocks refetch if it returns false
     - If it's an array, the elements can be of either type above
 
