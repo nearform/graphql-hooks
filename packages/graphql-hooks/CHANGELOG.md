@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.5...graphql-hooks@6.1.0) (2023-01-10)
+
+### Bug Fixes
+
+- removed src folder from graphql-hooks and graphql-hooks-memcache package.json files entry ([#992](https://github.com/nearform/graphql-hooks/issues/992)) ([2a7225b](https://github.com/nearform/graphql-hooks/commit/2a7225b4ce64221cacdc554a4fd255c34a6d377f))
+
+### Features
+
+- refetch a query only if mutation doesn't fail (refetchAfterMutation option) ([#993](https://github.com/nearform/graphql-hooks/issues/993)) ([ba2139f](https://github.com/nearform/graphql-hooks/commit/ba2139fcd18cc7a0bcf5ae16cf93a192805f857c)), closes [#988](https://github.com/nearform/graphql-hooks/issues/988) [#988](https://github.com/nearform/graphql-hooks/issues/988) [#988](https://github.com/nearform/graphql-hooks/issues/988) [#988](https://github.com/nearform/graphql-hooks/issues/988)
+
 ## [6.0.5](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.4...graphql-hooks@6.0.5) (2022-11-16)
 
 ### Bug Fixes
