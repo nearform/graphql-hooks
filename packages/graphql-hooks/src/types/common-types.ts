@@ -1,6 +1,4 @@
-import EventEmitter from 'events'
 import { Client as GraphQLWsClient } from 'graphql-ws'
-import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import GraphQLClient from '../GraphQLClient'
 // Exports
@@ -129,10 +127,10 @@ export interface HttpError {
   body: string
 }
 
-export interface APIError<TGraphQLError = object> {
+export interface APIError<TGraphQLError = GraphQLResponseError> {
   fetchError?: Error
   httpError?: HttpError
-  graphQLErrors?: GraphQLResponseError[]
+  graphQLErrors?: TGraphQLError[]
 }
 
 export interface Result<
