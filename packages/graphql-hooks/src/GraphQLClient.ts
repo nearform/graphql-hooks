@@ -2,24 +2,24 @@ import EventEmitter from 'events'
 import { extractFiles } from 'extract-files'
 import { Client as GraphQLWsClient } from 'graphql-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import canUseDOM from './canUseDOM'
-import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import Middleware from './Middleware'
+import canUseDOM from './canUseDOM'
+import { Events } from './events'
+import isExtractableFileEnhanced from './isExtractableFileEnhanced'
 import type {
-  UseClientRequestOptions,
   Cache,
+  CacheKeyObject,
   ClientOptions,
   FetchFunction,
   GenerateResultOptions,
+  GraphQLResponseError,
   OnErrorFunction,
   Operation,
   RequestOptions,
   Result,
-  GraphQLResponseError,
-  CacheKeyObject
+  UseClientRequestOptions
 } from './types/common-types'
 import { pipeP } from './utils'
-import { Events } from './events'
 
 class GraphQLClient {
   url: string
@@ -414,7 +414,9 @@ class GraphQLClient {
   }
 
   invalidateQuery(query: Operation | string): void {
-    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+    const cacheKeyProp = (
+      typeof query === 'string' ? { query } : query
+    ) as Operation
 
     const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {
@@ -427,8 +429,13 @@ class GraphQLClient {
     }
   }
 
-  setQueryData(query: Operation | string, updater: (oldState?: any) => any): void {
-    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+  setQueryData(
+    query: Operation | string,
+    updater: (oldState?: any) => any
+  ): void {
+    const cacheKeyProp = (
+      typeof query === 'string' ? { query } : query
+    ) as Operation
 
     const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {

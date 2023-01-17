@@ -71,10 +71,8 @@ export interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
   url?: string
 }
 
-declare class LocalGraphQLError<TGraphQLError = object>
-  implements APIError<TGraphQLError>
-{
-  constructor(error: APIError<TGraphQLError>)
+declare class LocalGraphQLError implements APIError {
+  constructor(error: APIError)
 }
 
 export interface SubscriptionRequest {
@@ -127,10 +125,10 @@ export interface HttpError {
   body: string
 }
 
-export interface APIError<TGraphQLError = GraphQLResponseError> {
+export interface APIError {
   fetchError?: Error
   httpError?: HttpError
-  graphQLErrors?: TGraphQLError[]
+  graphQLErrors?: GraphQLResponseError[]
 }
 
 export interface Result<
@@ -138,7 +136,7 @@ export interface Result<
   TGraphQLError = GraphQLResponseError
 > {
   data?: ResponseData
-  error?: APIError<TGraphQLError>
+  error?: APIError
 }
 
 export interface RequestOptions {
@@ -206,7 +204,7 @@ export interface UseClientRequestResult<
   cacheHit: boolean
   cacheKey?: CacheKeyObject
   data?: ResponseData
-  error?: APIError<TGraphQLError>
+  error?: APIError
 }
 
 export interface UseQueryResult<
