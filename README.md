@@ -965,7 +965,6 @@ A lot of options can be carried over as-is, or have direct replacements:
 - `errorPolicy`: Any error will set the `error` to be truthy. See [useQuery](#useQuery) for more details.
 - `pollInterval`
 - `notifyOnNetworkStatusChange`
-- `skip`
 - `onCompleted`: Similar ability if using `useManualQuery`
 - `onError`: Similar ability if using `useManualQuery`
 - `partialRefetch`
