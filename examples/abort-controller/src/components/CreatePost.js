@@ -27,7 +27,6 @@ export default function CreatePost() {
   )
 
   async function handleSubmit({ title, url }) {
-    console.log('submitting')
     resetFn()
     controller = new AbortController()
     await createPost({
