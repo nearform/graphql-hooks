@@ -1258,6 +1258,53 @@ const client = new GraphQLClient({
 })
 ```
 
+### abortController
+
+if you wish to abort a fetch it is possible to pass an abort controller signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
+
+```js
+import { GraphQLClient, useMutation } from 'graphql-hooks'
+
+const client = new GraphQLClient({
+  url: '/graphql'
+})
+
+const controller
+
+function App() {
+  const [createPost, { loading, error }, resetFn] = useMutation(
+    `
+      mutation CreatePost($title: String!, $body: String!) {
+        createPost(title: $title, body: $body) {
+          id
+        }
+      }
+    `
+  )
+
+  const submit = () => {
+    controller = new AbortController()
+    await createPost({
+      variables: { title: hello, body: 'hello world' },
+      fetchOptionsOverrides: {
+        signal: controller.signal
+      }
+    })
+  }
+
+  const cancel = () => {
+    controller.abort()
+  }
+
+  return (
+    <ClientContext.Provider value={client}>
+      <button onClick={submit}>Create Post</button>
+      <button onClick={cancel}>Create Post</button>
+    </ClientContext.Provider>
+  )
+}
+```
+
 ## Community
 
 We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions). We encourage you to start a new discussion, share some ideas or ask questions from the community.
