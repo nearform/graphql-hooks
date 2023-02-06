@@ -1285,7 +1285,7 @@ function App() {
     `
   )
 
-  const submit = () => {
+  const handleFetch = () => {
     controller = new AbortController()
     await fetchPosts({
       fetchOptionsOverrides: {
@@ -1294,14 +1294,14 @@ function App() {
     })
   }
 
-  const cancel = () => {
+  const handleAbort = () => {
     controller.abort()
   }
 
   return (
     <ClientContext.Provider value={client}>
-      <button onClick={submit}>Fetch Posts</button>
-      {loading && <button onClick={cancel}>Abort</button>}
+      <button onClick={handleFetch}>Fetch Posts</button>
+      {loading && <button onClick={handleAbort}>Abort</button>}
     </ClientContext.Provider>
   )
 }
