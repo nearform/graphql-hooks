@@ -1285,7 +1285,7 @@ function App() {
   const submit = () => {
     controller = new AbortController()
     await createPost({
-      variables: { title: hello, body: 'hello world' },
+      variables: { title: 'hello', body: 'hello world' },
       fetchOptionsOverrides: {
         signal: controller.signal
       }
