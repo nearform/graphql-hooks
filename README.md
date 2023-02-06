@@ -129,6 +129,7 @@ If you need a client that offers more customization such as advanced cache confi
   - [Testing and mocking](#testing-and-mocking)
   - [Other]
     - [Request interceptors](#request-interceptors)
+    - [abortController](#abortController)
 
 ## API
 
@@ -1263,7 +1264,7 @@ const client = new GraphQLClient({
 if you wish to abort a fetch it is possible to pass an abort controller signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
 
 ```js
-import { GraphQLClient, useMutation } from 'graphql-hooks'
+import { GraphQLClient, useManualQuery } from 'graphql-hooks'
 
 const client = new GraphQLClient({
   url: '/graphql'
@@ -1272,11 +1273,13 @@ const client = new GraphQLClient({
 const controller
 
 function App() {
-  const [createPost, { loading, error }, resetFn] = useMutation(
+  const [fetchPosts, { loading, error }] = useManualQuery(
     `
-      mutation CreatePost($title: String!, $body: String!) {
-        createPost(title: $title, body: $body) {
+      query {
+        allPosts {
           id
+          title
+          body
         }
       }
     `
@@ -1284,8 +1287,7 @@ function App() {
 
   const submit = () => {
     controller = new AbortController()
-    await createPost({
-      variables: { title: 'hello', body: 'hello world' },
+    await fetchPosts({
       fetchOptionsOverrides: {
         signal: controller.signal
       }
@@ -1298,7 +1300,7 @@ function App() {
 
   return (
     <ClientContext.Provider value={client}>
-      <button onClick={submit}>Create Post</button>
+      <button onClick={submit}>Fetch Posts</button>
       {loading && <button onClick={cancel}>Abort</button>}
     </ClientContext.Provider>
   )
