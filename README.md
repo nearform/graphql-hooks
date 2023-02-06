@@ -1299,7 +1299,7 @@ function App() {
   return (
     <ClientContext.Provider value={client}>
       <button onClick={submit}>Create Post</button>
-      <button onClick={cancel}>Abort</button>
+      {loading && <button onClick={cancel}>Abort</button>}
     </ClientContext.Provider>
   )
 }
