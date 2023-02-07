@@ -1286,7 +1286,7 @@ function AbortControllerExample() {
 
   return (
     <>
-      <button onClick={handleFetch}>Fetch Posts</button>
+      <button onClick={handleFetch}>Fetch Data</button>
       {loading && <button onClick={handleAbort}>Abort</button>}
     </>
   )
