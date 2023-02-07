@@ -129,7 +129,7 @@ If you need a client that offers more customization such as advanced cache confi
   - [Testing and mocking](#testing-and-mocking)
   - [Other]
     - [Request interceptors](#request-interceptors)
-    - [abortController](#abortController)
+    - [AbortController](#abortController)
 
 ## API
 
@@ -1259,9 +1259,9 @@ const client = new GraphQLClient({
 })
 ```
 
-### abortController
+### AbortController
 
-if you wish to abort a fetch it is possible to pass an abort controller signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
+if you wish to abort a fetch it is possible to pass an AbortController signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
 
 ```js
 import { GraphQLClient, useManualQuery } from 'graphql-hooks'
