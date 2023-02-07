@@ -1271,8 +1271,8 @@ const client = new GraphQLClient({
 })
 
 function App() {
-  const abortControllerRef = useRef(new AbortController())
-  const [fetchPosts, { loading, error }] = useManualQuery(
+  const abortControllerRef = useRef(null)
+  const [fetchPosts, { loading }] = useManualQuery(
     `
       query {
         allPosts {
@@ -1285,6 +1285,7 @@ function App() {
   )
 
   const handleFetch = () => {
+    abortControllerRef.current = new AbortController()
     const { signal } = abortControllerRef.current
     fetchPosts({
       fetchOptionsOverrides: {
