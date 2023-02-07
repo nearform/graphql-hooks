@@ -1264,7 +1264,7 @@ const client = new GraphQLClient({
 if you wish to abort a fetch it is possible to pass an AbortController signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
 
 ```js
-import { GraphQLClient, useManualQuery } from 'graphql-hooks'
+import { useManualQuery } from 'graphql-hooks'
 
 function AbortControllerExample() {
   const abortControllerRef = useRef()
