@@ -295,14 +295,18 @@ function useClientRequest<
     const dataUpdatedCallback = payload =>
       handleEvents(payload, actionTypes.CACHE_HIT)
 
-    client.mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
-    client.mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
+    const mutationsEmitter = client.mutationsEmitter
+    mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
+    mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
+
     return () => {
-      client.mutationsEmitter.off(
-        Events.DATA_INVALIDATED,
-        dataInvalidatedCallback
-      )
-      client.mutationsEmitter.off(Events.DATA_UPDATED, dataUpdatedCallback)
+      if(mutationsEmitter){
+        mutationsEmitter.removeListener(
+          Events.DATA_INVALIDATED,
+          dataInvalidatedCallback
+        )
+        mutationsEmitter.removeListener(Events.DATA_UPDATED, dataUpdatedCallback)
+      }
     }
   }, [])
 
