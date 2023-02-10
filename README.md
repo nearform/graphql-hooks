@@ -129,6 +129,7 @@ If you need a client that offers more customization such as advanced cache confi
   - [Testing and mocking](#testing-and-mocking)
   - [Other]
     - [Request interceptors](#request-interceptors)
+    - [AbortController](#abortController)
 
 ## API
 
@@ -1256,6 +1257,40 @@ const client = new GraphQLClient({
   url: '/graphql',
   fetch: buildAxiosFetch(gqlAxios)
 })
+```
+
+### AbortController
+
+if you wish to abort a fetch it is possible to pass an AbortController signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
+
+```js
+import { useManualQuery } from 'graphql-hooks'
+
+function AbortControllerExample() {
+  const abortControllerRef = useRef()
+  const [fetchData, { loading }] = useManualQuery(`...`)
+
+  const handleFetch = () => {
+    abortControllerRef.current = new AbortController()
+    const { signal } = abortControllerRef.current
+    fetchData({
+      fetchOptionsOverrides: {
+        signal
+      }
+    })
+  }
+
+  const handleAbort = () => {
+    abortControllerRef.current?.abort()
+  }
+
+  return (
+    <>
+      <button onClick={handleFetch}>Fetch Data</button>
+      {loading && <button onClick={handleAbort}>Abort</button>}
+    </>
+  )
+}
 ```
 
 ## Community
