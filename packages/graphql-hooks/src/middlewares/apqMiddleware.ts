@@ -1,6 +1,6 @@
 import { Sha256 } from '@aws-crypto/sha256-browser'
 import { Buffer } from 'buffer'
-import { APIError, MiddlewareFunction } from '../types/common-types'
+import { APIError, MiddlewareFunction, GraphQLResponseError } from '../types/common-types'
 
 export async function sha256(query) {
   const hash = new Sha256()
@@ -18,7 +18,7 @@ type APQExtension = {
   }
 }
 
-function isPersistedQueryNotFound(error: APIError) {
+function isPersistedQueryNotFound(error: APIError<GraphQLResponseError>) {
   if ((error?.fetchError as any)?.type === 'PERSISTED_QUERY_NOT_FOUND') {
     return true
   }
@@ -56,7 +56,7 @@ export const APQMiddleware: MiddlewareFunction<APQExtension> = async (
     }
 
     // Try to send just the hash
-    const res = await client.requestViaHttp(
+    const res = await client.requestViaHttp<any, GraphQLResponseError>(
       { ...operation, query: null },
       {
         fetchOptionsOverrides: { method: 'GET' }
