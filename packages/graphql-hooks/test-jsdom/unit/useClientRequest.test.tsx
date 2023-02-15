@@ -32,7 +32,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        off: jest.fn(),
+        removeListener: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -59,7 +59,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        off: jest.fn(),
+        removeListener: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -850,7 +850,7 @@ describe('useClientRequest', () => {
         mutationsEmitter: {
           emit: jest.fn(),
           on: jest.fn(),
-          off: jest.fn(),
+          removeListener: jest.fn(),
         },
         getCacheKey: jest.fn().mockReturnValue('cacheKey'),
         getCache: jest.fn(),
@@ -915,7 +915,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        off: jest.fn(),
+        removeListener: jest.fn(),
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -942,11 +942,11 @@ describe('useClientRequest', () => {
 
     unmount()
 
-    expect(mockClient.mutationsEmitter.off).toHaveBeenCalledTimes(2)
-    expect(mockClient.mutationsEmitter.off).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
-    expect(mockClient.mutationsEmitter.off).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenCalledTimes(2)
+    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
 
-    expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(mockClient.mutationsEmitter.off.mock.calls[0][1])
-    expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(mockClient.mutationsEmitter.off.mock.calls[1][1])
+    expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[0][1])
+    expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[1][1])
   })
 })
