@@ -22,12 +22,12 @@ export type FetchFunction = (
   init?: RequestInit
 ) => Promise<Response>
 
-export type OnErrorFunction<TVariables = any> = ({
+export type OnErrorFunction<ResponseData = any, TGraphQLError = GraphQLResponseError, TVariables = any> = ({
   result,
   operation
 }: {
   operation: Operation<TVariables>
-  result: Result
+  result: Result<ResponseData, TGraphQLError>
 }) => void
 
 export type MiddlewareOptions<T> = {
@@ -132,7 +132,7 @@ export interface HttpError {
 export interface APIError<TGraphQLError = object> {
   fetchError?: Error
   httpError?: HttpError
-  graphQLErrors?: GraphQLResponseError[]
+  graphQLErrors?: TGraphQLError[]
 }
 
 export interface Result<

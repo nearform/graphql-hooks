@@ -13,17 +13,17 @@ const defaultOpts = {
 
 function useQuery<
   ResponseData = any,
-  Variables = object,
+  TVariables = object,
   TGraphQLError = object
 >(
   query: string,
-  opts: UseQueryOptions<ResponseData, Variables> = {}
-): UseQueryResult<ResponseData, Variables, TGraphQLError> {
+  opts: UseQueryOptions<ResponseData, TVariables> = {}
+): UseQueryResult<ResponseData, TVariables, TGraphQLError> {
   const allOpts = { ...defaultOpts, ...opts }
   const contextClient = React.useContext(ClientContext)
   const client = opts.client || contextClient
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
-  const [queryReq, state] = useClientRequest(query, allOpts)
+  const [queryReq, state] = useClientRequest<ResponseData, TVariables, TGraphQLError>(query, allOpts)
 
   if (!client) {
     throw new Error(
