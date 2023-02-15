@@ -23,7 +23,7 @@ function useQuery<
   const contextClient = React.useContext(ClientContext)
   const client = opts.client || contextClient
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)
-  const [queryReq, state] = useClientRequest(query, allOpts)
+  const [queryReq, state] = useClientRequest<ResponseData, Variables, TGraphQLError>(query, allOpts)
 
   if (!client) {
     throw new Error(

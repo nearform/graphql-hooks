@@ -154,14 +154,14 @@ class GraphQLClient {
   }
   /* eslint-enable no-console */
 
-  generateResult<ResponseData = any>({
+  generateResult<ResponseData = any, TGraphQLError = object>({
     fetchError,
     httpError,
     graphQLErrors,
     data
-  }: GenerateResultOptions<ResponseData, GraphQLResponseError>): Result<
+  }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
     ResponseData,
-    GraphQLResponseError
+    TGraphQLError
   > {
     const errorFound = !!(
       (graphQLErrors && graphQLErrors.length > 0) ||
@@ -290,7 +290,7 @@ class GraphQLClient {
           }
 
           if (this.url) {
-            return this.requestViaHttp(updatedOperation, options)
+            return this.requestViaHttp<ResponseData, TGraphQLError, TVariables>(updatedOperation, options)
               .then(transformResponse)
               .then(resolve)
               .catch(reject)
@@ -331,7 +331,7 @@ class GraphQLClient {
         if (!response.ok) {
           return response.text().then(body => {
             const { status, statusText } = response
-            return this.generateResult({
+            return this.generateResult<ResponseData, TGraphQLError>({
               httpError: {
                 status,
                 statusText,
@@ -341,7 +341,7 @@ class GraphQLClient {
           })
         } else {
           return response.json().then(({ errors, data }) => {
-            return this.generateResult({
+            return this.generateResult<ResponseData, TGraphQLError>({
               graphQLErrors: errors,
               data:
                 // enrich data with responseReducer if defined
@@ -353,7 +353,7 @@ class GraphQLClient {
         }
       })
       .catch(error => {
-        return this.generateResult({
+        return this.generateResult<ResponseData, TGraphQLError>({
           fetchError: error
         })
       })
@@ -364,7 +364,7 @@ class GraphQLClient {
           }
 
           if (this.onError) {
-            this.onError({ result, operation })
+            (this.onError as OnErrorFunction<ResponseData, TGraphQLError, TVariables>)({ result, operation })
           }
         }
         return result
