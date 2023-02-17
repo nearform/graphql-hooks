@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.1.0...graphql-hooks@6.2.0) (2023-02-17)
+
+
+### Bug Fixes
+
+* [#1007](https://github.com/nearform/graphql-hooks/issues/1007) client.mutationsEmmiter.off is not a function ([#1011](https://github.com/nearform/graphql-hooks/issues/1011)) ([e4b7a66](https://github.com/nearform/graphql-hooks/commit/e4b7a661690ca93fddd3076b581f5590d494ca21))
+
+
+
+
+
 # [6.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.0.5...graphql-hooks@6.1.0) (2023-01-10)
 
 ### Bug Fixes
