@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.2.0...graphql-hooks@6.2.1) (2023-02-25)
+
+
+### Bug Fixes
+
+* import type only to avoid type errors ([#1015](https://github.com/nearform/graphql-hooks/issues/1015)) ([6ceb264](https://github.com/nearform/graphql-hooks/commit/6ceb2641c0e8264be653ff2fc0a170bc7615839f)), closes [#1012](https://github.com/nearform/graphql-hooks/issues/1012)
+
+
+
+
+
 # [6.2.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.1.0...graphql-hooks@6.2.0) (2023-02-17)
 
 
