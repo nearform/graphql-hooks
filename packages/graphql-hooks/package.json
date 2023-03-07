@@ -43,7 +43,7 @@
     "extract-files": "^11.0.0"
   },
   "devDependencies": {
-    "@testing-library/react": "^13.0.0",
+    "@testing-library/react": "^14.0.0",
     "@types/extract-files": "^8.1.1",
     "cross-env": "^7.0.3",
     "formdata-node": "^4.3.2",
