@@ -17,7 +17,7 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.0.0",
     "glob": "^9.2.1",
-    "mercurius": "^11.0.0",
+    "mercurius": "^12.2.0",
     "mocha": "^10.0.0"
   },
   "author": "Salman Mitha <salmanmitha@gmail.com>",
