@@ -300,12 +300,15 @@ function useClientRequest<
     mutationsEmitter.on(Events.DATA_UPDATED, dataUpdatedCallback)
 
     return () => {
-      if(mutationsEmitter){
+      if (mutationsEmitter) {
         mutationsEmitter.removeListener(
           Events.DATA_INVALIDATED,
           dataInvalidatedCallback
         )
-        mutationsEmitter.removeListener(Events.DATA_UPDATED, dataUpdatedCallback)
+        mutationsEmitter.removeListener(
+          Events.DATA_UPDATED,
+          dataUpdatedCallback
+        )
       }
     }
   }, [])

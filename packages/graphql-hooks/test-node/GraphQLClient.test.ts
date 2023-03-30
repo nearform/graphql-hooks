@@ -121,7 +121,7 @@ describe('with files in Node JS', () => {
       query: validQuery,
       operationName: 'Operation'
     }
-    
+
     const client = new GraphQLClient(validConfig)
     const mutationsEmitterMock = {
       ...new EventEmitter(),
