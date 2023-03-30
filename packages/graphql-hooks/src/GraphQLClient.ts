@@ -290,7 +290,10 @@ class GraphQLClient {
           }
 
           if (this.url) {
-            return this.requestViaHttp<ResponseData, TGraphQLError, TVariables>(updatedOperation, options)
+            return this.requestViaHttp<ResponseData, TGraphQLError, TVariables>(
+              updatedOperation,
+              options
+            )
               .then(transformResponse)
               .then(resolve)
               .catch(reject)
@@ -364,7 +367,13 @@ class GraphQLClient {
           }
 
           if (this.onError) {
-            (this.onError as OnErrorFunction<ResponseData, TGraphQLError, TVariables>)({ result, operation })
+            ;(
+              this.onError as OnErrorFunction<
+                ResponseData,
+                TGraphQLError,
+                TVariables
+              >
+            )({ result, operation })
           }
         }
         return result
@@ -414,7 +423,9 @@ class GraphQLClient {
   }
 
   invalidateQuery(query: Operation | string): void {
-    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+    const cacheKeyProp = (
+      typeof query === 'string' ? { query } : query
+    ) as Operation
 
     const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {
@@ -427,8 +438,13 @@ class GraphQLClient {
     }
   }
 
-  setQueryData(query: Operation | string, updater: (oldState?: any) => any): void {
-    const cacheKeyProp = (typeof query === 'string' ? { query } : query) as Operation
+  setQueryData(
+    query: Operation | string,
+    updater: (oldState?: any) => any
+  ): void {
+    const cacheKeyProp = (
+      typeof query === 'string' ? { query } : query
+    ) as Operation
 
     const cacheKey = this.getCacheKey(cacheKeyProp)
     if (this.cache && cacheKey) {

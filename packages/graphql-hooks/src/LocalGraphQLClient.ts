@@ -1,6 +1,6 @@
 import GraphQLClient from './GraphQLClient'
 import LocalGraphQLError from './LocalGraphQLError'
-import { LocalClientOptions, LocalQueries, Result } from './types/common-types';
+import { LocalClientOptions, LocalQueries, Result } from './types/common-types'
 
 /** Local version of the GraphQLClient which only returns specified queries
  * Meant to be used as a way to easily mock and test queries during development. This client never contacts any actual server.
@@ -41,7 +41,9 @@ class LocalGraphQLClient extends GraphQLClient {
     // Skips all config verification from the parent class because we're mocking the client
   }
 
-  request<ResponseData = any, TGraphQLError = object, TVariables = object>(operation): Promise<Result<any, TGraphQLError>> {
+  request<ResponseData = any, TGraphQLError = object, TVariables = object>(
+    operation
+  ): Promise<Result<any, TGraphQLError>> {
     if (!this.localQueries[operation.query]) {
       throw new Error(
         `LocalGraphQLClient: no query match for: ${operation.query}`
