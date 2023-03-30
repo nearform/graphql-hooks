@@ -1,6 +1,10 @@
 import { Sha256 } from '@aws-crypto/sha256-browser'
 import { Buffer } from 'buffer'
-import { APIError, MiddlewareFunction, GraphQLResponseError } from '../types/common-types'
+import {
+  APIError,
+  MiddlewareFunction,
+  GraphQLResponseError
+} from '../types/common-types'
 
 export async function sha256(query) {
   const hash = new Sha256()

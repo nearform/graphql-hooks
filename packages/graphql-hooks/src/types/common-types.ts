@@ -22,7 +22,11 @@ export type FetchFunction = (
   init?: RequestInit
 ) => Promise<Response>
 
-export type OnErrorFunction<ResponseData = any, TGraphQLError = GraphQLResponseError, TVariables = any> = ({
+export type OnErrorFunction<
+  ResponseData = any,
+  TGraphQLError = GraphQLResponseError,
+  TVariables = any
+> = ({
   result,
   operation
 }: {
