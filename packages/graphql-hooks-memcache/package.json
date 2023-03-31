@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks-memcache",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "In memory cache for graphql-hooks",
   "main": "lib/graphql-hooks-memcache.js",
   "module": "es/graphql-hooks-memcache.js",
