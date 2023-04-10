@@ -16,7 +16,7 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.0.0",
-    "glob": "^9.2.1",
+    "glob": "^10.0.0",
     "mercurius": "^12.2.0",
     "mocha": "^10.0.0"
   },
