@@ -1,21 +1,22 @@
 name: notify-release
-on:
+'on':
   workflow_dispatch:
   schedule:
-    - cron: '30 8 * * *'
+    - cron: 30 8 * * *
   release:
-    types: [published]
+    types:
+      - published
   issues:
-    types: [closed]
+    types:
+      - closed
 jobs:
   setup:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      contents: read
     steps:
       - name: Notify release
         uses: nearform-actions/github-action-notify-release@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-
