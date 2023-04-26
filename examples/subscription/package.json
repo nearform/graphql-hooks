@@ -1,6 +1,6 @@
 {
   "name": "subscription",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "private": true,
   "type": "module",
   "engines": {
@@ -20,8 +20,8 @@
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
     "graphql": "^16.6.0",
-    "graphql-hooks": "^6.2.2",
-    "graphql-hooks-memcache": "^3.1.1",
+    "graphql-hooks": "^6.2.3",
+    "graphql-hooks-memcache": "^3.1.2",
     "lowdb": "^5.0.5",
     "mercurius": "^12.2.0",
     "mqemitter-redis": "^5.0.0",
