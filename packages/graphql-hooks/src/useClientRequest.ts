@@ -42,7 +42,7 @@ function reducer(state, action) {
         ...state,
         loading: true
       }
-    case action.DATA_UPDATED:
+    case actionTypes.DATA_UPDATED:
       return {
         ...state,
         data: action.result.data
