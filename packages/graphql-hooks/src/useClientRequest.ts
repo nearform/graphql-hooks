@@ -14,7 +14,8 @@ const actionTypes = {
   RESET_STATE: 'RESET_STATE',
   LOADING: 'LOADING',
   CACHE_HIT: 'CACHE_HIT',
-  REQUEST_RESULT: 'REQUEST_RESULT'
+  REQUEST_RESULT: 'REQUEST_RESULT',
+  DATA_UPDATED: 'DATA_UPDATED'
 }
 
 function reducer(state, action) {
@@ -40,6 +41,11 @@ function reducer(state, action) {
       return {
         ...state,
         loading: true
+      }
+    case action.DATA_UPDATED:
+      return {
+        ...state,
+        data: action.result.data
       }
     case actionTypes.CACHE_HIT:
       if (state.cacheHit && !action.resetState) {
@@ -293,7 +299,7 @@ function useClientRequest<
       handleEvents(payload, actionTypes.REQUEST_RESULT)
 
     const dataUpdatedCallback = payload =>
-      handleEvents(payload, actionTypes.CACHE_HIT)
+      handleEvents(payload, actionTypes.DATA_UPDATED)
 
     const mutationsEmitter = client.mutationsEmitter
     mutationsEmitter.on(Events.DATA_INVALIDATED, dataInvalidatedCallback)
