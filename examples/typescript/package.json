@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/jest": "^29.0.3",
-    "@types/node": "^18.0.4",
+    "@types/node": "^20.2.4",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "graphql-hooks": "^6.2.3",
