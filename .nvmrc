@@ -1,1 +1,2 @@
-lts/*
+18
+node-options="--openssl-legacy-provider"

@@ -25,7 +25,6 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/static": "^6.5.0",
-    "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
     "graphql-hooks": "^6.2.3",
     "graphql-hooks-memcache": "^3.1.2",
@@ -40,6 +39,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^9.1.0",

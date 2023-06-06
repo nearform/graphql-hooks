@@ -42,6 +42,7 @@
     "lerna": "^6.0.3",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
+    "rimraf": "^4.4.1",
     "rollup": "^2.47.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.0.0",
@@ -60,6 +61,6 @@
     ]
   },
   "engines": {
-    "node": "^16"
+    "node": "^18"
   }
 }
