@@ -1,10 +1,12 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import React from 'react'
+import EventEmitter from 'events'
 import {
   ClientContext,
   useClientRequest,
   UseClientRequestOptions
 } from '../../src'
+import { Events } from '../../src/events'
 
 let mockClient
 
@@ -949,4 +951,37 @@ describe('useClientRequest', () => {
     expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[0][1])
     expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[1][1])
   })
+  
+  it('should update state data on DATA_UPDATED event', async () => {
+    const mutationsEmitter = new EventEmitter()
+    const mockClient2 = {
+      ...mockClient,
+      mutationsEmitter
+    }
+    mockClient2.cache.get.mockReturnValueOnce({ data: 'data' })
+
+    const options: UseClientRequestOptions = {
+      client: mockClient2
+    }
+    let state
+    renderHook(
+      () => ([, state] = useClientRequest(TEST_QUERY, options)),
+      {
+        wrapper: Wrapper
+      }
+    )
+
+    expect(state).toEqual({
+      cacheHit: true,
+      loading: false,
+      data: 'data'
+    })
+
+    let updatedData = 'data 2'
+
+    act(() => mutationsEmitter.emit(Events.DATA_UPDATED, {...state, data: updatedData}))
+
+    expect(state.data).toEqual(updatedData)
+  })
+
 })
