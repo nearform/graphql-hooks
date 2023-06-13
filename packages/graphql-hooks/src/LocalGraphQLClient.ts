@@ -59,7 +59,7 @@ class LocalGraphQLClient extends GraphQLClient {
         )
       )
       .then(result => {
-        if (result instanceof LocalGraphQLError<TGraphQLError>) {
+        if (result instanceof LocalGraphQLError) {
           return { error: result }
         }
         return { data: result }
