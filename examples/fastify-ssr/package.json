@@ -43,7 +43,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^9.1.0",
-    "nodemon": "^2.0.0",
+    "nodemon": "^3.0.1",
     "pino-pretty": "^10.0.0",
     "webpack": "^5.64.4",
     "webpack-cli": "^5.0.1",
