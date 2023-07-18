@@ -1148,6 +1148,28 @@ const result = await client.request({
 console.log(result.error) // The `error` object will have an `httpError`
 ```
 
+It is also possible to mock a partial error response (for example where one resolver encounters an error but other resolvers return successfully). To do this, include `Error` objects in the mock query resolver:
+
+```js
+import { allPostsQuery } from '../src/components/Post'
+
+const localQueries = {
+  [allPostsQuery]: () => ({
+    field1: 'foo',
+    field2: new Error('something went wrong'),
+    nested: {
+      field3: new Error('a nested error')
+    }
+  })
+}
+const client = new LocalGraphQLClient({ localQueries })
+const result = await client.request({
+  query: allPostsQuery
+})
+console.log(result.data) // The `data` object will have the correct value for `field1` and `null` for any fields returning `Error` objects
+console.log(result.error) // The `error` object will have a `graphQLErrors` array containing each of the `Error` objects created above
+```
+
 ### Testing with React
 
 Example tests that use the `LocalGraphQLClient` are provided in [the examples/create-react-app/test folder](https://github.com/nearform/graphql-hooks/blob/master/mock-client/examples/create-react-app/test/Posts.test.js).

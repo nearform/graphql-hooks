@@ -62,7 +62,12 @@ class LocalGraphQLClient extends GraphQLClient {
         if (result instanceof LocalGraphQLError) {
           return { error: result }
         }
-        return { data: result }
+        const {data, errors} = collectErrorsFromObject(result)
+        if (errors.length > 0) {
+          return {data, error: new LocalGraphQLError({graphQLErrors: errors as TGraphQLError[]})}
+        } else {
+          return {data}
+        }
       })
   }
 }
@@ -72,4 +77,51 @@ function timeoutPromise(delayInMs) {
     setTimeout(resolve, delayInMs)
   })
 }
+
+function isObject(o: unknown): o is object {
+  return o === Object(o)
+}
+
+function collectErrorsFromObject(objectIn: object): {data: object | null, errors: Error[]} {
+  const data: object = {}
+  const errors: Error[] = []
+
+  for (const [key, value] of Object.entries(objectIn)) {
+    const child = collectErrorsFromChild(value)
+    data[key] = child.data
+    if (child.errors != null) {
+      errors.push(...child.errors)
+    }
+  }
+
+  return {data, errors}
+}
+
+function collectErrorsFromArray(arrayIn: object[]): {data: (object | null)[], errors: Error[]} {
+  const data: (object | null)[] = Array(arrayIn.length)
+  const errors: Error[] = []
+
+  for (const [idx, entry] of arrayIn.entries()) {
+    const child = collectErrorsFromChild(entry)
+    data[idx] = child.data
+    if (child.errors != null) {
+      errors.push(...child.errors)
+    }
+  }
+
+  return {data, errors}
+}
+
+function collectErrorsFromChild(entry: object) {
+  if (entry instanceof Error) {
+    return {data: null, errors: [entry]}
+  } else if (Array.isArray(entry)) {
+    return collectErrorsFromArray(entry)
+  } else if (isObject(entry)) {
+    return collectErrorsFromObject(entry)
+  } else {
+    return {data: entry, errors: null}
+  }
+}
+
 export default LocalGraphQLClient

@@ -21,6 +21,14 @@ const QUERY_ERRORS = {
   query: 'ErrorQuery'
 }
 
+const QUERY_PARTIAL_ERROR = {
+  query: 'PartialErrorQuery'
+}
+
+const QUERY_PARTIAL_ERROR_WITH_ARRAY = {
+  query: 'PartialErrorQueryWithArray'
+}
+
 const HooksTestQuery = `
 query {
   testQuery {
@@ -43,6 +51,18 @@ const localQueries = {
         body: 'Not found'
       }
     }),
+  PartialErrorQuery: () => ({
+    property1: 'Hello World',
+    property2: new Error('failed to resolve property 2'),
+    nested: {property3: new Error('failed to resolve nested property 3'), property4: 'Hello again'}
+  }),
+  PartialErrorQueryWithArray: () => ({
+    property1: 'Hello World',
+    arrayProperty: [
+      {item: 'Hello item'},
+      new Error('failed to resolve child of array')
+    ]
+  }),
   [HooksTestQuery]: () => ({
     testQuery: {
       value: 2
@@ -91,6 +111,36 @@ describe('LocalGraphQLClient', () => {
       const result = await client.request(QUERY_ERRORS)
       expect(result.error).toBeDefined()
       expect(result.error.httpError.status).toBe(404)
+    })
+    it('collects property errors into an error object, while still returning other data fields', async () => {
+      const result = await client.request(QUERY_PARTIAL_ERROR)
+      expect(result.data).toBeDefined()
+      expect(result.data).toHaveProperty('property1', 'Hello World')
+      expect(result.data).toHaveProperty('property2', null)
+      expect(result.data).toHaveProperty('nested.property3', null)
+      expect(result.data).toHaveProperty('nested.property4', 'Hello again')
+      expect(result.error).toBeDefined()
+      expect(result.error.graphQLErrors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ message: 'failed to resolve property 2' }),
+          expect.objectContaining({ message: 'failed to resolve nested property 3' })
+        ])
+      )
+    })
+    it('collects property errors into an error object, accounting for arrays in the response, while still returning other data fields', async () => {
+      const result = await client.request(QUERY_PARTIAL_ERROR_WITH_ARRAY)
+      expect(result.data).toBeDefined()
+      expect(result.data).toHaveProperty('property1', 'Hello World')
+      expect(result.data).toHaveProperty('arrayProperty')
+      expect(result.data.arrayProperty).toHaveLength(2)
+      expect(result.data.arrayProperty[0]).toHaveProperty('item', 'Hello item')
+      expect(result.data.arrayProperty[1]).toBeNull()
+      expect(result.error).toBeDefined()
+      expect(result.error.graphQLErrors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ message: 'failed to resolve child of array' }),
+        ])
+      )
     })
   })
   describe('integration with hooks', () => {
