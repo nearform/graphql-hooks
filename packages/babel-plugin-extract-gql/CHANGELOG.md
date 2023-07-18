@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/nearform/graphql-hooks/compare/babel-plugin-extract-gql@3.0.2...babel-plugin-extract-gql@3.0.3) (2023-07-18)
+
+**Note:** Version bump only for package babel-plugin-extract-gql
+
+
+
+
+
 ## [3.0.2](https://github.com/nearform/graphql-hooks/compare/babel-plugin-extract-gql@3.0.1...babel-plugin-extract-gql@3.0.2) (2023-04-26)
 
 **Note:** Version bump only for package babel-plugin-extract-gql

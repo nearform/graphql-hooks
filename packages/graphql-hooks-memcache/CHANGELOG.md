@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@3.1.2...graphql-hooks-memcache@3.1.3) (2023-07-18)
+
+
+### Bug Fixes
+
+* build and update major versions of typescript and lerna ([#1080](https://github.com/nearform/graphql-hooks/issues/1080)) ([0697b2e](https://github.com/nearform/graphql-hooks/commit/0697b2e7f6184eee5a5e32b3b49aaf7b100c0843))
+
+
+
+
+
 ## [3.1.2](https://github.com/nearform/graphql-hooks/compare/graphql-hooks-memcache@3.1.1...graphql-hooks-memcache@3.1.2) (2023-04-26)
 
 **Note:** Version bump only for package graphql-hooks-memcache

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.2.3...graphql-hooks@6.3.0) (2023-07-18)
+
+
+### Bug Fixes
+
+* build and update major versions of typescript and lerna ([#1080](https://github.com/nearform/graphql-hooks/issues/1080)) ([0697b2e](https://github.com/nearform/graphql-hooks/commit/0697b2e7f6184eee5a5e32b3b49aaf7b100c0843))
+
+
+### Features
+
+* add partial error response mocking ([#1096](https://github.com/nearform/graphql-hooks/issues/1096)) ([d38d844](https://github.com/nearform/graphql-hooks/commit/d38d84477124fc20a3d8e57e2d2b3370f8294427))
+
+
+
+
+
 ## [6.2.3](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.2.2...graphql-hooks@6.2.3) (2023-04-26)
 
 **Note:** Version bump only for package graphql-hooks
