@@ -1,6 +1,7 @@
 import { useContext, useRef, useEffect } from 'react'
 
 import ClientContext from './ClientContext'
+import { isEqualFirstLevel } from './utils'
 
 import { UseSubscriptionOperation } from './types/common-types'
 
@@ -34,7 +35,7 @@ function useSubscription<
   if (
     !variablesRef.current ||
     !options.variables ||
-    !isEqual(variablesRef.current, options.variables)
+    !isEqualFirstLevel(variablesRef.current, options.variables)
   ) {
     variablesRef.current = options.variables
   }
@@ -66,31 +67,3 @@ function useSubscription<
 }
 
 export default useSubscription
-
-/**
- * Compares two objects for equality _only considering the first level of object keys_.
- * @example
- * var o1 = {a: 1, b: 2}
- * var o2 = {a: 1, b: 2}
- * isEqual(o1, o2) === true
- *
- * var o1 = {a: 2, b: 4}
- * var o2 = {a: 9, b: 'fish', c: 'why is this here?'}
- * isEqual(o1, o2) === false
- */
-function isEqual(o1: object, o2: object): boolean {
-  // just in case
-  if (o1 === o2) return true
-
-  const o1Keys = Object.keys(o1)
-  const o2Keys = Object.keys(o2)
-
-  if (o1Keys.length !== o2Keys.length) return false
-
-  for (let i = 0; i < o1Keys.length; i++) {
-    const key = o1Keys[i]
-    if (!(key in o2) || !Object.is(o1[key], o2[key])) return false
-  }
-
-  return true
-}
