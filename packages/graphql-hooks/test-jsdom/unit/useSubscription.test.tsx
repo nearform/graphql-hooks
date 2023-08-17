@@ -82,7 +82,7 @@ class MockSubscriptionClient {
 let mockClient
 
 const Wrapper = props => (
-  <ClientContext.Provider value={mockClient} >
+  <ClientContext.Provider value={mockClient}>
     {props.children}
   </ClientContext.Provider>
 )

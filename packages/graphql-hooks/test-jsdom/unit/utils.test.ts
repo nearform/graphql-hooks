@@ -1,4 +1,4 @@
-import { isEqualFirstLevel, pipeP } from '../../src/utils'
+import { pipeP } from '../../src/utils'
 
 describe('GraphQLClient utils', () => {
   describe('pipeP', () => {
