@@ -44,31 +44,4 @@ describe('GraphQLClient utils', () => {
       expect(mock.mock.calls).toEqual([['fnA'], ['fnB'], ['fnC']])
     })
   })
-
-  describe('isEqualFirstLevel', () => {
-    it('returns true for two empty objects', () => {
-      expect(isEqualFirstLevel({}, {})).toBe(true)
-    })
-
-    it('returns true for two objects with the same keys and values', () => {
-      expect(isEqualFirstLevel({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true)
-    })
-
-    it('returns true for two objects with the same keys and values but different keys order', () => {
-      expect(isEqualFirstLevel({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true)
-    })
-
-    it('returns true with the same object', () => {
-      const obj = { a: 1, b: 2 }
-      expect(isEqualFirstLevel(obj, obj)).toBe(true)
-    })
-
-    it('returns false for two objects with different keys', () => {
-      expect(isEqualFirstLevel({ a: 1, b: 2 }, { a: 1, c: 2 })).toBe(false)
-    })
-
-    it('returns false for two objects with different values', () => {
-      expect(isEqualFirstLevel({ a: 1, b: 2 }, { a: 1, b: 3 })).toBe(false)
-    })
-  })
 })

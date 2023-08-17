@@ -1,7 +1,7 @@
 import { useContext, useRef, useEffect } from 'react'
 
 import ClientContext from './ClientContext'
-import { isEqualFirstLevel } from './utils'
+import useDeepCompareEffect from './useDeepCompareEffect'
 
 import { UseSubscriptionOperation } from './types/common-types'
 
@@ -28,22 +28,10 @@ function useSubscription<
     )
   }
 
-  // we need a persistent reference to the variables object to compare against new versions, and to use as a `useEffect` dependency
-  const variablesRef = useRef<Variables | undefined>()
-
-  // we check the new variables object outside of any hook to prevent useEffect from trying to call the unsubscribe return function when it shouldn't
-  if (
-    !variablesRef.current ||
-    !options.variables ||
-    !isEqualFirstLevel(variablesRef.current, options.variables)
-  ) {
-    variablesRef.current = options.variables
-  }
-
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     const request = {
       query: options.query,
-      variables: variablesRef.current
+      variables: options.variables
     }
 
     const observable = client.createSubscription(request)
@@ -63,7 +51,7 @@ function useSubscription<
     return () => {
       subscription.unsubscribe()
     }
-  }, [options.query, variablesRef.current])
+  }, [options.query, options.variables])
 }
 
 export default useSubscription
