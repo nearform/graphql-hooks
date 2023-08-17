@@ -1,7 +1,7 @@
-import { useContext, useRef, useEffect } from 'react'
+import { useContext, useRef } from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 import ClientContext from './ClientContext'
-import useDeepCompareEffect from './useDeepCompareEffect'
 
 import { UseSubscriptionOperation } from './types/common-types'
 
