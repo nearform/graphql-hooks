@@ -54,6 +54,10 @@ describe('GraphQLClient utils', () => {
       expect(isEqualFirstLevel({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true)
     })
 
+    it('returns true for two objects with the same keys and values but different keys order', () => {
+      expect(isEqualFirstLevel({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true)
+    })
+
     it('returns true with the same object', () => {
       const obj = { a: 1, b: 2 }
       expect(isEqualFirstLevel(obj, obj)).toBe(true)

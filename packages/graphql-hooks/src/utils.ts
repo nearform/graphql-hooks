@@ -30,10 +30,9 @@ export function isEqualFirstLevel<T extends Record<string, any>>(
     return false
   }
 
-  for (const key of keys1) {
-    if (!keys2.includes(key) || obj1[key] !== obj2[key]) {
-      return false
-    }
+  for (let i = 0; i < keys1.length; i++) {
+    const key = keys2[i]
+    if (!(key in obj2) || !Object.is(obj1[key], obj2[key])) return false
   }
 
   return true
