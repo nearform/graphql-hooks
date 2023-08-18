@@ -3,7 +3,11 @@ import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'
 import useClientRequest from './useClientRequest'
 
-import { UseQueryOptions, UseQueryResult } from './types/common-types'
+import {
+  GraphQLResponseError,
+  UseQueryOptions,
+  UseQueryResult
+} from './types/common-types'
 
 const defaultOpts = {
   useCache: true,
@@ -14,7 +18,7 @@ const defaultOpts = {
 function useQuery<
   ResponseData = any,
   Variables = object,
-  TGraphQLError = object
+  TGraphQLError extends GraphQLResponseError = GraphQLResponseError
 >(
   query: string,
   opts: UseQueryOptions<ResponseData, Variables> = {}
