@@ -283,4 +283,92 @@ describe('useSubscription', () => {
     })
     unmount()
   })
+
+  describe('resubscription/rerendering', () => {
+    it('resubscribes when inputs change', () => {
+      const { createSubscription, unsubscribe } = createMockClient()
+
+      const query = TEST_SUBSCRIPTION
+      const variables = { id: 1 }
+
+      const result = renderHook(
+        ({ request }) => useSubscription(request, () => { }),
+        { wrapper: Wrapper, initialProps: { request: { query, variables } } }
+      )
+
+      expect(createSubscription).toHaveBeenCalledTimes(1)
+      expect(unsubscribe).toHaveBeenCalledTimes(0)
+
+      result.rerender({
+        request: { query, variables: { id: 123 } }
+      })
+
+      expect(createSubscription).toHaveBeenCalledTimes(2)
+      expect(unsubscribe).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not resubscribe if inputs remain the same between renders', () => {
+      const { createSubscription, unsubscribe } = createMockClient()
+
+      const query = TEST_SUBSCRIPTION
+      const variables = { id: 1 }
+
+      const request = { query, variables }
+
+      const result = renderHook(
+        ({ request }) => useSubscription(request, () => { }),
+        { wrapper: Wrapper, initialProps: { request } }
+      )
+
+      expect(createSubscription).toHaveBeenCalledTimes(1)
+      expect(unsubscribe).toHaveBeenCalledTimes(0)
+
+      result.rerender({
+        request
+      })
+
+      expect(createSubscription).toHaveBeenCalledTimes(1)
+      expect(unsubscribe).toHaveBeenCalledTimes(0)
+    })
+
+    it('does not resubscribe if variables object is cloned between renders', () => {
+      const { createSubscription, unsubscribe } = createMockClient()
+
+      const query = TEST_SUBSCRIPTION
+      const variables = { id: 1 }
+
+      const result = renderHook(
+        ({ request }) => useSubscription(request, () => { }),
+        { wrapper: Wrapper, initialProps: { request: { query, variables } } }
+      )
+
+      expect(createSubscription).toHaveBeenCalledTimes(1)
+      expect(unsubscribe).toHaveBeenCalledTimes(0)
+
+      result.rerender({
+        request: { query, variables: structuredClone(variables) }
+      })
+
+      expect(createSubscription).toHaveBeenCalledTimes(1)
+      expect(unsubscribe).toHaveBeenCalledTimes(0)
+    })
+
+    function createMockClient() {
+      const unsubscribe = jest.fn()
+
+      const subscriptionClient = new MockSubscriptionClient({
+        type: 'DATA',
+        data: {},
+        unsubscribe
+      })
+      mockClient = {
+        createSubscription: jest.fn(() => {
+          return subscriptionClient.request()
+        }),
+        subscriptionClient
+      }
+
+      return { unsubscribe, createSubscription: mockClient.createSubscription }
+    }
+  })
 })

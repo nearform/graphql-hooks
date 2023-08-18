@@ -1,13 +1,14 @@
-import { dequal } from 'dequal'
-import React, { DependencyList } from 'react'
+import React from 'react'
 import ClientContext from './ClientContext'
 import { Events } from './events'
+import { useDeepCompareCallback } from './useDeepCompareCallback'
 import {
   UseClientRequestOptions,
   FetchData,
   UseClientRequestResult,
   ResetFunction,
-  CacheKeyObject
+  CacheKeyObject,
+  GraphQLResponseError
 } from './types/common-types'
 
 const actionTypes = {
@@ -73,16 +74,6 @@ function reducer(state, action) {
   }
 }
 
-function useDeepCompareCallback(callback, deps: DependencyList) {
-  const ref = React.useRef<DependencyList>()
-
-  if (!dequal(deps, ref.current)) {
-    ref.current = deps
-  }
-
-  return React.useCallback(callback, ref.current as any)
-}
-
 /*
   options include:
 
@@ -94,7 +85,7 @@ function useDeepCompareCallback(callback, deps: DependencyList) {
 function useClientRequest<
   ResponseData = any,
   Variables = object,
-  TGraphQLError = object
+  TGraphQLError extends GraphQLResponseError = GraphQLResponseError
 >(
   query: string,
   initialOpts: UseClientRequestOptions<ResponseData, Variables> = {}
@@ -171,106 +162,118 @@ function useClientRequest<
   }, [])
 
   // arguments to fetchData override the useClientRequest arguments
-  const fetchData = useDeepCompareCallback(
-    newOpts => {
-      const revisedOpts = {
-        ...initialOpts,
-        ...newOpts
-      }
-
-      const revisedOperation = {
-        ...operation,
-        variables: revisedOpts.variables,
-        operationName: revisedOpts.operationName
-      }
-
-      if (!isMounted.current) {
-        return Promise.resolve({
-          error: {
-            fetchError: new Error(
-              'fetchData should not be called after hook unmounted'
-            )
-          },
-          loading: false,
-          cacheHit: false
-        })
-      }
-
-      const revisedCacheKey = client.getCacheKey(revisedOperation, revisedOpts)
-
-      // NOTE: There is a possibility of a race condition whereby
-      // the second query could finish before the first one, dispatching an old result
-      // see https://github.com/nearform/graphql-hooks/issues/150
-      activeCacheKey.current = revisedCacheKey
-
-      const cacheHit = revisedOpts.skipCache
-        ? null
-        : client.getCache(revisedCacheKey)
-
-      if (cacheHit) {
-        dispatch({
-          type: actionTypes.CACHE_HIT,
-          result: cacheHit,
-          resetState: stringifiedCacheKey !== JSON.stringify(state.cacheKey)
-        })
-
-        return Promise.resolve(cacheHit)
-      }
-
-      dispatch({ type: actionTypes.LOADING, initialState })
-
-      return client.request(revisedOperation, revisedOpts).then(result => {
-        if (
-          revisedOpts.updateData &&
-          typeof revisedOpts.updateData !== 'function'
-        ) {
-          throw new Error('options.updateData must be a function')
+  const fetchData: FetchData<ResponseData, Variables, TGraphQLError> =
+    useDeepCompareCallback(
+      newOpts => {
+        const revisedOpts = {
+          ...initialOpts,
+          ...newOpts
         }
 
-        const actionResult: any = { ...result }
-        if (revisedOpts.useCache) {
-          actionResult.useCache = true
-          actionResult.cacheKey = revisedCacheKey
-
-          if (client.ssrMode) {
-            const cacheValue = {
-              error: actionResult.error,
-              data: revisedOpts.updateData
-                ? revisedOpts.updateData(state.data, actionResult.data)
-                : actionResult.data
-            }
-            client.saveCache(revisedCacheKey, cacheValue)
-          }
+        const revisedOperation = {
+          ...operation,
+          variables: revisedOpts.variables,
+          operationName: revisedOpts.operationName
         }
 
-        if (isMounted.current && revisedCacheKey === activeCacheKey.current) {
+        if (!isMounted.current) {
+          return Promise.resolve({
+            error: {
+              fetchError: new Error(
+                'fetchData should not be called after hook unmounted'
+              )
+            },
+            loading: false,
+            cacheHit: false
+          })
+        }
+
+        const revisedCacheKey = client.getCacheKey(
+          revisedOperation,
+          revisedOpts
+        )
+
+        // NOTE: There is a possibility of a race condition whereby
+        // the second query could finish before the first one, dispatching an old result
+        // see https://github.com/nearform/graphql-hooks/issues/150
+        activeCacheKey.current = revisedCacheKey
+
+        const cacheHit = revisedOpts.skipCache
+          ? null
+          : (client.getCache(revisedCacheKey) as UseClientRequestResult<
+              ResponseData,
+              TGraphQLError
+            >)
+
+        if (cacheHit) {
           dispatch({
-            type: actionTypes.REQUEST_RESULT,
-            updateData: revisedOpts.updateData,
-            result: actionResult
+            type: actionTypes.CACHE_HIT,
+            result: cacheHit,
+            resetState: stringifiedCacheKey !== JSON.stringify(state.cacheKey)
           })
+
+          return Promise.resolve(cacheHit)
         }
 
-        if (initialOpts.isMutation) {
-          client.mutationsEmitter.emit(query, {
-            ...revisedOperation,
-            mutation: query,
-            result: actionResult
+        dispatch({ type: actionTypes.LOADING, initialState })
+
+        return client
+          .request<ResponseData, TGraphQLError>(revisedOperation, revisedOpts)
+          .then(result => {
+            if (
+              revisedOpts.updateData &&
+              typeof revisedOpts.updateData !== 'function'
+            ) {
+              throw new Error('options.updateData must be a function')
+            }
+
+            const actionResult: any = { ...result }
+            if (revisedOpts.useCache) {
+              actionResult.useCache = true
+              actionResult.cacheKey = revisedCacheKey
+
+              if (client.ssrMode) {
+                const cacheValue = {
+                  error: actionResult.error,
+                  data: revisedOpts.updateData
+                    ? revisedOpts.updateData(state.data, actionResult.data)
+                    : actionResult.data
+                }
+                client.saveCache(revisedCacheKey, cacheValue)
+              }
+            }
+
+            if (
+              isMounted.current &&
+              revisedCacheKey === activeCacheKey.current
+            ) {
+              dispatch({
+                type: actionTypes.REQUEST_RESULT,
+                updateData: revisedOpts.updateData,
+                result: actionResult
+              })
+            }
+
+            if (initialOpts.isMutation) {
+              client.mutationsEmitter.emit(query, {
+                ...revisedOperation,
+                mutation: query,
+                result: actionResult
+              })
+            }
+
+            if (!result?.error && revisedOpts.onSuccess) {
+              if (typeof revisedOpts.onSuccess !== 'function') {
+                throw new Error('options.onSuccess must be a function')
+              }
+              revisedOpts.onSuccess(result, revisedOperation.variables)
+            }
+
+            return result as UseClientRequestResult<ResponseData, TGraphQLError>
           })
-        }
-
-        if (!result?.error && revisedOpts.onSuccess) {
-          if (typeof revisedOpts.onSuccess !== 'function') {
-            throw new Error('options.onSuccess must be a function')
-          }
-          revisedOpts.onSuccess(result, revisedOperation.variables)
-        }
-
-        return result
-      })
-    },
-    [client, initialOpts, operation]
-  )
+      },
+      [client, initialOpts, operation]
+    )
 
   // We perform caching after reducer update
   // to include the outcome of updateData.

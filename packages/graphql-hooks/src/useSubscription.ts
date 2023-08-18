@@ -1,4 +1,5 @@
-import { useContext, useRef, useEffect } from 'react'
+import { useContext, useRef } from 'react'
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 import ClientContext from './ClientContext'
 
@@ -27,12 +28,12 @@ function useSubscription<
     )
   }
 
-  const request = {
-    query: options.query,
-    variables: options.variables
-  }
+  useDeepCompareEffect(() => {
+    const request = {
+      query: options.query,
+      variables: options.variables
+    }
 
-  useEffect(() => {
     const observable = client.createSubscription(request)
 
     const subscription = observable.subscribe({
@@ -50,8 +51,7 @@ function useSubscription<
     return () => {
       subscription.unsubscribe()
     }
-  }, []) // eslint-disable-line
-  // the effect should be run when component is mounted and unmounted
+  }, [options.query, options.variables])
 }
 
 export default useSubscription
