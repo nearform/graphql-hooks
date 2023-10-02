@@ -62,11 +62,16 @@ class LocalGraphQLClient extends GraphQLClient {
         if (result instanceof LocalGraphQLError) {
           return { error: result }
         }
-        const {data, errors} = collectErrorsFromObject(result)
+        const { data, errors } = collectErrorsFromObject(result)
         if (errors.length > 0) {
-          return {data, error: new LocalGraphQLError({graphQLErrors: errors as TGraphQLError[]})}
+          return {
+            data,
+            error: new LocalGraphQLError({
+              graphQLErrors: errors as TGraphQLError[]
+            })
+          }
         } else {
-          return {data}
+          return { data }
         }
       })
   }
@@ -82,7 +87,10 @@ function isObject(o: unknown): o is object {
   return o === Object(o)
 }
 
-function collectErrorsFromObject(objectIn: object): {data: object | null, errors: Error[]} {
+function collectErrorsFromObject(objectIn: object): {
+  data: object | null
+  errors: Error[]
+} {
   const data: object = {}
   const errors: Error[] = []
 
@@ -94,10 +102,13 @@ function collectErrorsFromObject(objectIn: object): {data: object | null, errors
     }
   }
 
-  return {data, errors}
+  return { data, errors }
 }
 
-function collectErrorsFromArray(arrayIn: object[]): {data: (object | null)[], errors: Error[]} {
+function collectErrorsFromArray(arrayIn: object[]): {
+  data: (object | null)[]
+  errors: Error[]
+} {
   const data: (object | null)[] = Array(arrayIn.length)
   const errors: Error[] = []
 
@@ -109,18 +120,18 @@ function collectErrorsFromArray(arrayIn: object[]): {data: (object | null)[], er
     }
   }
 
-  return {data, errors}
+  return { data, errors }
 }
 
 function collectErrorsFromChild(entry: object) {
   if (entry instanceof Error) {
-    return {data: null, errors: [entry]}
+    return { data: null, errors: [entry] }
   } else if (Array.isArray(entry)) {
     return collectErrorsFromArray(entry)
   } else if (isObject(entry)) {
     return collectErrorsFromObject(entry)
   } else {
-    return {data: entry, errors: null}
+    return { data: entry, errors: null }
   }
 }
 
