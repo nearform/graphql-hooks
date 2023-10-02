@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.3.0...graphql-hooks@6.3.1) (2023-10-02)
+
+
+### Bug Fixes
+
+* setQueryData not updating the UI ([#1064](https://github.com/nearform/graphql-hooks/issues/1064)) ([0f0a6a6](https://github.com/nearform/graphql-hooks/commit/0f0a6a6dfaab2103465e3944d5c7d7e918ca8edc))
+* useSubscription handles prop changes ([#1105](https://github.com/nearform/graphql-hooks/issues/1105)) ([9f9f3eb](https://github.com/nearform/graphql-hooks/commit/9f9f3eb60ae6953cf5399abc0b49f0c081e8695b))
+
+
+
+
+
 # [6.3.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.2.3...graphql-hooks@6.3.0) (2023-07-18)
 
 
