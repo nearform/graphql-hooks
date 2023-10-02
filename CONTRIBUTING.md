@@ -68,7 +68,7 @@ For more information on `@all-contributors` see it's [usage docs](https://allcon
 
 When merging a pull request to `master`, the squashed commit message should follow the [Conventional Commits](https://www.conventionalcommits.org) specification. This enables us to automatically generate CHANGELOGs & determine a semantic version bump.
 
-Follow the [guide found here](./release-process.md) to make a release.
+Follow the [guide found here](./RELEASE_PROCESS.md) to make a release.
 
 ---
 
