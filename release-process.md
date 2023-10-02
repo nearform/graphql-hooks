@@ -25,6 +25,8 @@ If you need to release graphql-hooks, you should follow these steps:
 
 - Authenticate to npm in the same terminal by running `npm login`.
 
-- Run `npm run release` to run the release script. The script will ask you to verify to npm with 2FA, so have your authentication service ready.
+- Check the tests are passing with `npm test`
+
+- Run `npm run release` to run the release script. Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish), the script will ask you to verify to npm with 2FA, so have your authentication service ready.
 
 - Once the script has finished running, the release is complete. You can verify this by checking the [npm page](https://www.npmjs.com/package/graphql-hooks), and the [latest releases on the GitHub repo](https://github.com/nearform/graphql-hooks/releases/tag/graphql-hooks%406.3.1).
