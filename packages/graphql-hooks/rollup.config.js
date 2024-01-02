@@ -1,4 +1,4 @@
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import esbuild from 'rollup-plugin-esbuild' // Used for TS transpiling
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 

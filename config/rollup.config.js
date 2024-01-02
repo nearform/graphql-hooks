@@ -1,9 +1,9 @@
 import path from 'path'
-import nodeResolve from 'rollup-plugin-node-resolve'
-import babel from 'rollup-plugin-babel'
+import nodeResolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
 import replace from 'rollup-plugin-replace'
-import commonjs from 'rollup-plugin-commonjs'
-import { terser } from 'rollup-plugin-terser'
+import commonjs from '@rollup/plugin-commonjs'
+import terser from '@rollup/plugin-terser'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import esbuild from 'rollup-plugin-esbuild' // Used for TS transpiling
 
@@ -42,9 +42,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       external,
       plugins: [
         commonjs(),
-        nodeResolve({
-          jsnext: true
-        }),
+        nodeResolve(),
         esbuild(),
         replace({
           'process.env.NODE_ENV': JSON.stringify('production')
@@ -74,9 +72,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       external,
       plugins: [
         commonjs(),
-        nodeResolve({
-          jsnext: true
-        }),
+        nodeResolve(),
         esbuild(),
         babel({
           exclude: 'node_modules/**'
@@ -101,9 +97,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       external,
       plugins: [
         commonjs(),
-        nodeResolve({
-          jsnext: true
-        }),
+        nodeResolve(),
         esbuild(),
         babel({
           exclude: 'node_modules/**'
