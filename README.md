@@ -127,6 +127,7 @@ If you need a client that offers more customization such as advanced cache confi
     - [Query Component ➡️ useQuery](#query-component-️-usequery)
     - [Mutation Component ➡️ useMutation](#mutation-component-️-usemutation)
   - [Testing and mocking](#testing-and-mocking)
+  - [Typescript Support](#typescript-support)
   - [Other]
     - [Request interceptors](#request-interceptors)
     - [AbortController](#abortController)
@@ -619,7 +620,7 @@ export default function PostList() {
 
 ## Refetch queries with mutations subscription
 
-We can have a query to automatically refetch when any mutation from a provided list execute.
+We can have a query to automatically refetch when any mutation from a provided list is executed.
 In the following example we are refetching a list of posts for a given user.
 
 **Example**
@@ -685,7 +686,7 @@ export default function MyComponent() {
 }
 ```
 
-### By overring the old state in the cache without re-fetching data
+### By overriding the old state in the cache without re-fetching data
 
 ```js
 import { useMutation, useQueryClient } from 'graphql-hooks'
@@ -813,9 +814,9 @@ const client = new GraphQLClient({
 
 ## Authentication
 
-You can have access the to the graphql-hooks client context by using the React's new context API. `ClientContext` is actually the result of `React.createContext()`.
+You can have access to the graphql-hooks client context by using React's new context API. `ClientContext` is actually the result of `React.createContext()`.
 
-**Login example**
+**Login Example**
 
 ```jsx
 import React, { useState, useContext } from 'react'
@@ -869,7 +870,7 @@ export default Login
 
 In the above example we use `useContext()` hook to get access to the graphql-hooks clientContext.
 Then we request the token from the server by performing the `loginUser` mutation.
-In the case the login is success we set the token to the client's header (`client.setHeader`), otherwise we need to handle the error.
+In the case the login is successful we set the token to the client's header (`client.setHeader`), otherwise we need to handle the error.
 For more information about graphql-hooks clientContext refer to [GraphQLClient](#GraphQLClient) section.
 
 ## Fragments
@@ -955,8 +956,8 @@ A lot of options can be carried over as-is, or have direct replacements:
 - `variables` ➡️ `useQuery(query, { variables })`
 - `ssr` ➡️ `useQuery(query, { ssr })`
 - **Fetch Policies**: See [#75](https://github.com/nearform/graphql-hooks/issues/75) for more info
-  - `cache-first`: This the default behaviour of `graphql-hooks`
-  - `cache-and-network`: The refetch function provides this behaviour it will set loading: true, but the old data will be still set until the fetch resolves.
+  - `cache-first`: This is the default behaviour of `graphql-hooks`
+  - `cache-and-network`: The refetch function provides this behavior it will set loading: true, but the old data will be still set until the fetch resolves.
   - `network-only` ➡️ `useQuery(QUERY, { skipCache: true })`
   - `cache-only`: Not supported
   - `no-cache` ➡️ `useQuery(QUERY, { useCache: false })`
@@ -1203,7 +1204,7 @@ export * from '@testing-library/react'
 export { customRender as render }
 ```
 
-Using this allows to easily render a component using the `LocalGraphQLClient` with local queries when writing tests:
+Using this allows us to easily render a component using the `LocalGraphQLClient` with local queries when writing tests:
 
 ```js
 // Comes from the above code
@@ -1315,6 +1316,54 @@ function AbortControllerExample() {
 }
 ```
 
+## Typescript Support
+
+All client methods support the ability to provide type information for response data, query variables and error responses.
+
+```typescript
+import { useQuery } from 'graphql-hooks'
+
+type User = {
+  id: string
+  name: string
+}
+
+type CustomError = {
+  message: string
+  extensions?: Record<string, any>
+}
+
+const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
+  users(limit: $limit) {
+    id
+    name
+  }
+}`
+
+function MyComponent() {
+  const { loading, error, data } = useQuery<
+    User,
+    { limit: number },
+    CustomError
+  >(HOMEPAGE_QUERY, {
+    variables: {
+      limit: 10
+    }
+  })
+
+  if (loading) return 'Loading...'
+  if (error) return 'Something Bad Happened'
+
+  return (
+    <ul>
+      {data.users.map(({ id, name }) => (
+        <li key={id}>{name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
 ## Community
 
 We now use GitHub Discussions for our community. To join, click on ["Discussions"](https://github.com/nearform/graphql-hooks/discussions). We encourage you to start a new discussion, share some ideas or ask questions from the community.
@@ -1369,4 +1418,4 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!
