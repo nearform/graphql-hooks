@@ -239,7 +239,7 @@ function MyComponent() {
 
 This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
 
-- `query`: Your GraphQL query as a plain string
+- `query`: Your GraphQL query as a plain string or DocumentNode
 - `options`: Object with the following optional properties
   - `variables`: Object e.g. `{ limit: 10 }`
   - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
@@ -279,7 +279,7 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 
 ## `useManualQuery`
 
-Use this when you don't want a query to automatically be fetched, or wish to call a query programmatically.
+Use this when you don't want a query to automatically be fetched or wish to call a query programmatically.
 
 **Usage**:
 
@@ -416,7 +416,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 `useSubscription(operation, callback)`
 
-- `operation`: Object - The GraphQL operation the following properties:
+- `operation`: Object - The GraphQL operation has the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
   - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
@@ -425,7 +425,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 **Usage**:
 
-First follow the [quick start guide](#Quick-Start) to create the client and povider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
+First, follow the [quick start guide](#Quick-Start) to create the client and provider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
 
 ```js
 import { GraphQLClient } from 'graphql-hooks'
@@ -1363,6 +1363,43 @@ function MyComponent() {
   )
 }
 ```
+
+`graphql-hooks` also supports `TypedDocumentNode`. This allows you to use GraphQL code gen to create `DocumentNode`s for your GQL queries and receive full type support.
+
+```typescript
+import { useQuery } from 'graphql-hooks'
+import { graphql } from './gql'
+
+const HOMEPAGE_QUERY = graphql(`query HomePage($limit: Int) {
+  users(limit: $limit) {
+    id
+    name
+  }
+}`)
+
+function MyComponent() {
+  // data will be typed as User objects with id, name properties
+  const { loading, error, data } = useQuery(HOMEPAGE_QUERY, {
+    variables: {
+      limit: 10
+    }
+  })
+
+  if (loading) return 'Loading...'
+  if (error) return 'Something Bad Happened'
+
+  return (
+    <ul>
+      {data.users.map(({ id, name }) => (
+        <li key={id}>{name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Full details of the features of `TypedDocumentNode` and GraphQL Code Generator can be found [here](https://the-guild.dev/graphql/codegen). Full examples of this implementation are in the examples folder.
+
 
 ## Community
 
