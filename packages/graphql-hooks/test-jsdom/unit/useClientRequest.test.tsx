@@ -1,6 +1,8 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import React from 'react'
 import EventEmitter from 'events'
+import gql from 'graphql-tag'
+
 import {
   ClientContext,
   useClientRequest,
@@ -15,6 +17,8 @@ const Wrapper = props => (
     {props.children}
   </ClientContext.Provider>
 )
+
+const getDocument = (query: string) => gql(query)
 
 const TEST_QUERY = `query Test($limit: Int) {
   tests(limit: $limit) {
@@ -34,7 +38,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        removeListener: jest.fn(),
+        removeListener: jest.fn()
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -61,7 +65,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        removeListener: jest.fn(),
+        removeListener: jest.fn()
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -92,9 +96,12 @@ describe('useClientRequest', () => {
   it('returns an error if there is no client available', () => {
     const options: UseClientRequestOptions = { isMutation: false }
 
-    const executeHook = () => renderHook(() => useClientRequest(TEST_QUERY, options))
+    const executeHook = () =>
+      renderHook(() => useClientRequest(TEST_QUERY, options))
 
-    expect(executeHook).toThrowError('A client must be provided in order to use the useClientRequest hook.')
+    expect(executeHook).toThrow(
+      'A client must be provided in order to use the useClientRequest hook.'
+    )
   })
 
   it('resets data when reset function is called', async () => {
@@ -289,9 +296,11 @@ describe('useClientRequest', () => {
     mockClient.request.mockResolvedValueOnce(promise)
     const fetchDataPromise = act(fetchData)
 
-    promise.then(() => waitFor(() => {
-      expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
-    }))
+    promise.then(() =>
+      waitFor(() => {
+        expect(state).toEqual({ cacheHit: false, loading: true, data: 'data' })
+      })
+    )
 
     promiseResolve()
     return fetchDataPromise
@@ -334,13 +343,6 @@ describe('useClientRequest', () => {
     })
   })
 
-  it('throws if the supplied query is not a string', () => {
-    const executeHook = () => renderHook(() => useClientRequest({} as any), {
-      wrapper: Wrapper
-    })
-    expect(executeHook).toThrowError(/^Your query must be a string/)
-  })
-
   describe('race conditions', () => {
     it('dispatches only second result if second response is faster than first', async () => {
       const res1 = new Promise(resolve =>
@@ -358,7 +360,7 @@ describe('useClientRequest', () => {
       let fetchData, state
 
       function Component({ variables }) {
-        [fetchData, state] = useClientRequest(TEST_QUERY, {
+        ;[fetchData, state] = useClientRequest(TEST_QUERY, {
           variables
         })
       }
@@ -457,6 +459,72 @@ describe('useClientRequest', () => {
   })
 
   describe('fetchData', () => {
+    describe('when the request is a document node', () => {
+      const TEST_DOCUMENT = getDocument(TEST_QUERY)
+
+      it('calls request with options & updates the state with the result', async () => {
+        let fetchData, state
+        renderHook(
+          () =>
+            ([fetchData, state] = useClientRequest(TEST_DOCUMENT, {
+              variables: { limit: 2 },
+              operationName: 'test'
+            })),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        await act(fetchData)
+
+        expect(mockClient.request).toHaveBeenCalledWith(
+          { operationName: 'test', variables: { limit: 2 }, query: TEST_QUERY },
+          { operationName: 'test', variables: { limit: 2 } }
+        )
+        expect(state).toEqual({ cacheHit: false, loading: false, data: 'data' })
+      })
+
+      it('skips the request & returns the cached data if it exists', async () => {
+        let fetchData, state
+        renderHook(
+          () => ([fetchData, state] = useClientRequest(TEST_DOCUMENT)),
+          {
+            wrapper: Wrapper
+          }
+        )
+
+        mockClient.getCache.mockReturnValueOnce({ some: 'cached data' })
+        await act(fetchData)
+
+        expect(mockClient.request).not.toHaveBeenCalled()
+        expect(state).toEqual({
+          cacheHit: true,
+          loading: false,
+          some: 'cached data'
+        })
+      })
+
+      it('sets the result from the request in the cache', async () => {
+        let fetchData
+        const { rerender } = renderHook(
+          () =>
+            ([fetchData] = useClientRequest(TEST_DOCUMENT, { useCache: true })),
+          { wrapper: Wrapper }
+        )
+
+        await act(fetchData)
+        rerender()
+
+        expect(mockClient.saveCache).toHaveBeenCalledWith('cacheKey', {
+          cacheHit: false,
+          cacheKey: 'cacheKey',
+          data: 'data',
+          loading: false,
+          useCache: true
+        })
+      })
+    })
+
     it('calls request with options & updates the state with the result', async () => {
       let fetchData, state
       renderHook(
@@ -852,7 +920,7 @@ describe('useClientRequest', () => {
         mutationsEmitter: {
           emit: jest.fn(),
           on: jest.fn(),
-          removeListener: jest.fn(),
+          removeListener: jest.fn()
         },
         getCacheKey: jest.fn().mockReturnValue('cacheKey'),
         getCache: jest.fn(),
@@ -917,7 +985,7 @@ describe('useClientRequest', () => {
       mutationsEmitter: {
         emit: jest.fn(),
         on: jest.fn(),
-        removeListener: jest.fn(),
+        removeListener: jest.fn()
       },
       getCacheKey: jest.fn().mockReturnValue('cacheKey'),
       getCache: jest.fn(),
@@ -933,25 +1001,50 @@ describe('useClientRequest', () => {
       isMutation: false,
       client: mockClient
     }
-    const {unmount} = renderHook(() => useClientRequest(TEST_QUERY, {client: mockClient}), {
-      wrapper: Wrapper
-    })
+    const { unmount } = renderHook(
+      () => useClientRequest(TEST_QUERY, { client: mockClient }),
+      {
+        wrapper: Wrapper
+      }
+    )
 
-    await waitFor(() => expect(mockClient.mutationsEmitter.on).toHaveBeenCalledTimes(2))
+    await waitFor(() =>
+      expect(mockClient.mutationsEmitter.on).toHaveBeenCalledTimes(2)
+    )
 
-    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
-    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(
+      1,
+      'DATA_INVALIDATED',
+      expect.any(Function)
+    )
+    expect(mockClient.mutationsEmitter.on).toHaveBeenNthCalledWith(
+      2,
+      'DATA_UPDATED',
+      expect.any(Function)
+    )
 
     unmount()
 
     expect(mockClient.mutationsEmitter.removeListener).toHaveBeenCalledTimes(2)
-    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(1, "DATA_INVALIDATED", expect.any(Function))
-    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(2, "DATA_UPDATED", expect.any(Function))
+    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(
+      1,
+      'DATA_INVALIDATED',
+      expect.any(Function)
+    )
+    expect(mockClient.mutationsEmitter.removeListener).toHaveBeenNthCalledWith(
+      2,
+      'DATA_UPDATED',
+      expect.any(Function)
+    )
 
-    expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[0][1])
-    expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(mockClient.mutationsEmitter.removeListener.mock.calls[1][1])
+    expect(mockClient.mutationsEmitter.on.mock.calls[0][1]).toBe(
+      mockClient.mutationsEmitter.removeListener.mock.calls[0][1]
+    )
+    expect(mockClient.mutationsEmitter.on.mock.calls[1][1]).toBe(
+      mockClient.mutationsEmitter.removeListener.mock.calls[1][1]
+    )
   })
-  
+
   it('should update state data on DATA_UPDATED event', async () => {
     const mutationsEmitter = new EventEmitter()
     const mockClient2 = {
@@ -964,12 +1057,9 @@ describe('useClientRequest', () => {
       client: mockClient2
     }
     let state
-    renderHook(
-      () => ([, state] = useClientRequest(TEST_QUERY, options)),
-      {
-        wrapper: Wrapper
-      }
-    )
+    renderHook(() => ([, state] = useClientRequest(TEST_QUERY, options)), {
+      wrapper: Wrapper
+    })
 
     expect(state).toEqual({
       cacheHit: true,
@@ -979,9 +1069,13 @@ describe('useClientRequest', () => {
 
     let updatedData = 'data 2'
 
-    act(() => mutationsEmitter.emit(Events.DATA_UPDATED, {...state, data: updatedData}))
+    act(() =>
+      mutationsEmitter.emit(Events.DATA_UPDATED, {
+        ...state,
+        data: updatedData
+      })
+    )
 
     expect(state.data).toEqual(updatedData)
   })
-
 })
