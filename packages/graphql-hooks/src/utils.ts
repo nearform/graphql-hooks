@@ -13,9 +13,7 @@ import { print } from 'graphql/language/printer'
 export const pipeP = (fns: (() => any)[]) => (arg: any) =>
   fns.reduce((p, f) => p.then(f), Promise.resolve(arg))
 
-export function extractOperationName(document: DocumentNode | string): {
-  operationName: string | undefined
-} {
+export function extractOperationName(document: DocumentNode | string): string | undefined {
   let operationName: string | undefined = undefined
 
   if (typeof document !== 'string') {
@@ -27,7 +25,7 @@ export function extractOperationName(document: DocumentNode | string): {
       operationName = operationDefinitions[0]?.name?.value
     }
   }
-  return { operationName }
+  return operationName
 }
 
 export function stringifyDocumentNode<TNode extends DocumentNode | string>(

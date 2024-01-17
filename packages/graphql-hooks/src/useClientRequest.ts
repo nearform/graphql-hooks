@@ -100,7 +100,6 @@ function useClientRequest<
   const queryString = stringifyDocumentNode(query)
   const operationName = extractOperationName(query) ?? initialOpts.operationName
 
-
   const contextClient = React.useContext(ClientContext)
   const client = initialOpts.client || contextClient
 
