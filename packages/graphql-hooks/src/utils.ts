@@ -2,8 +2,7 @@ import type {
   DocumentNode,
   OperationDefinitionNode
 } from 'graphql/language/ast'
-import { Kind } from 'graphql/language/kinds'
-import { print } from 'graphql/language/printer'
+import { Kind, print } from 'graphql'
 
 /**
  * Pipe with support for async functions
