@@ -38,13 +38,13 @@
   },
   "dependencies": {
     "@aws-crypto/sha256-browser": "^4.0.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "buffer": "^6.0.3",
     "events": "^3.3.0",
     "extract-files": "^11.0.0",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@graphql-typed-document-node/core": "^3.2.0",
     "@testing-library/react": "^14.0.0",
     "@types/extract-files": "^8.1.1",
     "cross-env": "^7.0.3",
