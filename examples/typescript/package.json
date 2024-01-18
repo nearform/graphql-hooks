@@ -18,7 +18,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:server": "json-graphql-server server/db.cjs --h 0.0.0.0 --p 8080",
     "generate-schema": "graphql-codegen",
     "prestart": "npm run generate-schema"
   },

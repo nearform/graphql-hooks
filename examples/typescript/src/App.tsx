@@ -17,7 +17,7 @@ interface PostData {
 }
 
 const client = new GraphQLClient({
-  url: 'http://localhost:8080/graphql'
+  url: 'https://create-react-app-server-kqtv5azt3q-ew.a.run.app'
 })
 
 export const allPostsQuery = graphql(`

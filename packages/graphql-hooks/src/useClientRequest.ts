@@ -98,7 +98,7 @@ function useClientRequest<
   ResetFunction
 ] {
   const queryString = stringifyDocumentNode(query)
-  const operationName = extractOperationName(query) ?? initialOpts.operationName
+  const operationName = initialOpts.operationName ?? extractOperationName(query)
 
   const contextClient = React.useContext(ClientContext)
   const client = initialOpts.client || contextClient

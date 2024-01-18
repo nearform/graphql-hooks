@@ -131,6 +131,7 @@ If you need a client that offers more customization such as advanced cache confi
   - [Other]
     - [Request interceptors](#request-interceptors)
     - [AbortController](#abortController)
+    - [GraphQL document support](#graphql-document-support)
 
 ## API
 
@@ -1255,67 +1256,6 @@ it('shows "No posts" if 0 posts are returned', async () => {
 })
 ```
 
-## Other
-
-### Request interceptors
-
-It is possible to provide a custom library to handle network requests. Having that there is more control on how to handle the requests. The following example shows how to supply axios HTTP client with interceptors. It can be handy in the situations where JWT token has expired, needs to be refreshed and request retried.
-
-```js
-import axios from 'axios'
-import { buildAxiosFetch } from '@lifeomic/axios-fetch'
-import { GraphQLClient } from 'graphql-hooks'
-
-const gqlAxios = axios.create()
-gqlAxios.interceptors.response.use(
-  function (response) {
-    return response
-  },
-  function (error) {
-    // Handle expired JWT and refresh token
-  }
-)
-
-const client = new GraphQLClient({
-  url: '/graphql',
-  fetch: buildAxiosFetch(gqlAxios)
-})
-```
-
-### AbortController
-
-if you wish to abort a fetch it is possible to pass an AbortController signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
-
-```js
-import { useManualQuery } from 'graphql-hooks'
-
-function AbortControllerExample() {
-  const abortControllerRef = useRef()
-  const [fetchData, { loading }] = useManualQuery(`...`)
-
-  const handleFetch = () => {
-    abortControllerRef.current = new AbortController()
-    const { signal } = abortControllerRef.current
-    fetchData({
-      fetchOptionsOverrides: {
-        signal
-      }
-    })
-  }
-
-  const handleAbort = () => {
-    abortControllerRef.current?.abort()
-  }
-
-  return (
-    <>
-      <button onClick={handleFetch}>Fetch Data</button>
-      {loading && <button onClick={handleAbort}>Abort</button>}
-    </>
-  )
-}
-```
-
 ## Typescript Support
 
 All client methods support the ability to provide type information for response data, query variables and error responses.
@@ -1400,6 +1340,101 @@ function MyComponent() {
 
 Full details of the features of `TypedDocumentNode` and GraphQL Code Generator can be found [here](https://the-guild.dev/graphql/codegen). Full examples of this implementation are in the examples folder.
 
+
+## Other
+
+### Request interceptors
+
+It is possible to provide a custom library to handle network requests. Having that there is more control on how to handle the requests. The following example shows how to supply axios HTTP client with interceptors. It can be handy in the situations where JWT token has expired, needs to be refreshed and request retried.
+
+```js
+import axios from 'axios'
+import { buildAxiosFetch } from '@lifeomic/axios-fetch'
+import { GraphQLClient } from 'graphql-hooks'
+
+const gqlAxios = axios.create()
+gqlAxios.interceptors.response.use(
+  function (response) {
+    return response
+  },
+  function (error) {
+    // Handle expired JWT and refresh token
+  }
+)
+
+const client = new GraphQLClient({
+  url: '/graphql',
+  fetch: buildAxiosFetch(gqlAxios)
+})
+```
+
+### AbortController
+
+if you wish to abort a fetch it is possible to pass an AbortController signal to the `fetchOptionsOverrides` option of the fetch function. This is not `graphql-hooks` specific functionality, rather just an example of how to use it with the library.
+
+```js
+import { useManualQuery } from 'graphql-hooks'
+
+function AbortControllerExample() {
+  const abortControllerRef = useRef()
+  const [fetchData, { loading }] = useManualQuery(`...`)
+
+  const handleFetch = () => {
+    abortControllerRef.current = new AbortController()
+    const { signal } = abortControllerRef.current
+    fetchData({
+      fetchOptionsOverrides: {
+        signal
+      }
+    })
+  }
+
+  const handleAbort = () => {
+    abortControllerRef.current?.abort()
+  }
+
+  return (
+    <>
+      <button onClick={handleFetch}>Fetch Data</button>
+      {loading && <button onClick={handleAbort}>Abort</button>}
+    </>
+  )
+}
+```
+
+### GraphQL Document Support
+
+As well as supporting input of your queries as strings, this library also supports using a `DocumentNode`. Document nodes can be generated using a code-generation tool such as [GraphQL codegen](https://the-guild.dev/graphql/codegen) which will provide typing information for your queries based on your GraphQL schema (see the typescript example). If you don't want to use a code-generation library you can use `graphql-tag` to generate a `DocumentNode`.
+
+
+```js
+import gql from 'graphql-tag'
+
+const allPostsQuery = gql`
+  query {
+     posts {
+      id
+      name
+     }
+  }
+`
+
+function Posts() {
+  const { loading, error, data, refetch } = useQuery(allPostsQuery)
+
+  return (
+    <>
+      <h2>Add post</h2>
+      <AddPost />
+      <h2>Posts</h2>
+      <button onClick={() => refetch()}>Reload</button>
+      <PostList loading={loading} error={error} data={data} />
+    </>
+  )
+}
+
+...
+```
 
 ## Community
 
