@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks-full-ws-transport-example",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "private": true,
   "dependencies": {
     "fastify": "^4.2.0",

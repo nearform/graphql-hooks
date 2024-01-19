@@ -1,6 +1,6 @@
 {
   "name": "persisted-queries-client",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "private": true,
   "dependencies": {
     "@types/jest": "^29.0.3",
