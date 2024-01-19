@@ -2,6 +2,8 @@ import EventEmitter from 'events'
 import { Client as GraphQLWsClient } from 'graphql-ws'
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
+
 import GraphQLClient from '../GraphQLClient'
 // Exports
 
@@ -72,7 +74,7 @@ declare class LocalGraphQLClient extends GraphQLClient {
 }
 export interface LocalClientOptions extends Omit<ClientOptions, 'url'> {
   localQueries: LocalQueries
-  // Delay before sending responses in miliseconds for simulating latency
+  // Delay before sending responses in milliseconds for simulating latency
   requestDelayMs?: number
   url?: string
 }
@@ -192,15 +194,24 @@ export type RefetchAfterMutationItem = {
   filter?: (variables: any) => boolean
 }
 
-export type RefetchAfterMutationsData =
+export type RefetchAfterMutationsData<TResult = any, TVariables = object> =
   | string
   | RefetchAfterMutationItem
-  | (string | RefetchAfterMutationItem)[]
+  | TypedDocumentNode<TResult, TVariables>
+  | (
+      | string
+      | RefetchAfterMutationItem
+      | TypedDocumentNode<TResult, TVariables>
+    )[]
 
-export interface UseQueryOptions<ResponseData = any, Variables = object>
-  extends UseClientRequestOptions<ResponseData, Variables> {
+export interface UseQueryOptions<
+  ResponseData = any,
+  Variables = object,
+  TRefetchData = any,
+  TRefetchVariables = object
+> extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
-  refetchAfterMutations?: RefetchAfterMutationsData
+  refetchAfterMutations?: RefetchAfterMutationsData<TRefetchData, TRefetchVariables>
   [key: string]: any
 }
 

@@ -11,14 +11,15 @@
     "graphql-hooks-memcache": "^3.2.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-scripts": "^5.0.0",
-    "typescript": "^4.1.2"
+    "react-scripts": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-schema": "graphql-codegen",
+    "prestart": "npm run generate-schema"
   },
   "browserslist": [
     ">0.2%",
@@ -31,5 +32,12 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
+    "graphql": "^16.8.1",
+    "graphql-codegen-typescript-client": "0.18.2",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,4 +1,6 @@
 import React from 'react'
+import { TypedDocumentNode } from '@graphql-typed-document-node/core'
+
 import ClientContext from './ClientContext'
 import { Events } from './events'
 import { useDeepCompareCallback } from './useDeepCompareCallback'
@@ -10,6 +12,7 @@ import {
   CacheKeyObject,
   GraphQLResponseError
 } from './types/common-types'
+import { extractOperationName, stringifyDocumentNode } from './utils'
 
 const actionTypes = {
   RESET_STATE: 'RESET_STATE',
@@ -87,18 +90,15 @@ function useClientRequest<
   Variables = object,
   TGraphQLError extends GraphQLResponseError = GraphQLResponseError
 >(
-  query: string,
+  query: string | TypedDocumentNode<ResponseData, Variables>,
   initialOpts: UseClientRequestOptions<ResponseData, Variables> = {}
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
   ResetFunction
 ] {
-  if (typeof query !== 'string') {
-    throw new Error(
-      'Your query must be a string. If you are using the `gql` template literal from graphql-tag, remove it from your query.'
-    )
-  }
+  const queryString = stringifyDocumentNode(query)
+  const operationName = initialOpts.operationName ?? extractOperationName(query)
 
   const contextClient = React.useContext(ClientContext)
   const client = initialOpts.client || contextClient
@@ -112,9 +112,9 @@ function useClientRequest<
   const isMounted = React.useRef(true)
   const activeCacheKey = React.useRef<CacheKeyObject | null>(null)
   const operation = {
-    query,
+    query: queryString,
     variables: initialOpts.variables,
-    operationName: initialOpts.operationName,
+    operationName,
     persisted: initialOpts.persisted
   } as any
 
@@ -255,9 +255,9 @@ function useClientRequest<
             }
 
             if (initialOpts.isMutation) {
-              client.mutationsEmitter.emit(query, {
+              client.mutationsEmitter.emit(queryString, {
                 ...revisedOperation,
-                mutation: query,
+                mutation: queryString,
                 result: actionResult
               })
             }

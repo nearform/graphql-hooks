@@ -6,7 +6,9 @@ import {
   useMutation,
   useQuery
 } from 'graphql-hooks'
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { graphql } from './gql'
+import { GetAllPostsQuery } from './gql/graphql'
 
 interface PostData {
   id: string
@@ -18,25 +20,25 @@ const client = new GraphQLClient({
   url: 'https://create-react-app-server-kqtv5azt3q-ew.a.run.app'
 })
 
-export const allPostsQuery = `
-  query {
+export const allPostsQuery = graphql(`
+  query GetAllPosts {
     allPosts {
       id
       title
       url
     }
   }
-`
+`)
 
-const createPostMutation = `
+const createPostMutation = graphql(`
   mutation CreatePost($title: String!, $url: String!) {
     createPost(title: $title, url: $url) {
       id
     }
   }
-`
+`)
 
-const postQuery = `
+const postQuery = graphql(`
   query Post($id: ID!) {
     Post(id: $id) {
       id
@@ -44,7 +46,7 @@ const postQuery = `
       title
     }
   }
-`
+`)
 
 function AddPost() {
   const [title, setTitle] = useState('')
@@ -104,7 +106,7 @@ function PostList({
 }: {
   loading: boolean
   error?: APIError
-  data: any
+  data?: GetAllPostsQuery
 }) {
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error!</p>
@@ -112,12 +114,15 @@ function PostList({
 
   return (
     <ul>
-      {data.allPosts.map((post: PostData) => (
-        <li key={post.id}>
-          <a href={post.url}>{post.title}</a>
-          <small>(id: {post.id})</small>
-        </li>
-      ))}
+      {data.allPosts.map((post: PostData | null) => {
+        if (!post) return undefined
+        return (
+          <li key={post.id}>
+            <a href={post.url}>{post.title}</a>
+            <small>(id: {post.id})</small>
+          </li>
+        )
+      })}
     </ul>
   )
 }

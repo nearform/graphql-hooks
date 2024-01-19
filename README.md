@@ -131,6 +131,7 @@ If you need a client that offers more customization such as advanced cache confi
   - [Other]
     - [Request interceptors](#request-interceptors)
     - [AbortController](#abortController)
+    - [GraphQL document support](#graphql-document-support)
 
 ## API
 
@@ -239,7 +240,7 @@ function MyComponent() {
 
 This is a custom hook that takes care of fetching your query and storing the result in the cache. It won't refetch the query unless `query` or `options.variables` changes.
 
-- `query`: Your GraphQL query as a plain string
+- `query`: Your GraphQL query as a plain string or DocumentNode
 - `options`: Object with the following optional properties
   - `variables`: Object e.g. `{ limit: 10 }`
   - `operationName`: If your query has multiple operations, pass the name of the operation you wish to execute.
@@ -279,7 +280,7 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 
 ## `useManualQuery`
 
-Use this when you don't want a query to automatically be fetched, or wish to call a query programmatically.
+Use this when you don't want a query to automatically be fetched or wish to call a query programmatically.
 
 **Usage**:
 
@@ -416,7 +417,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 `useSubscription(operation, callback)`
 
-- `operation`: Object - The GraphQL operation the following properties:
+- `operation`: Object - The GraphQL operation has the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
   - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
@@ -425,7 +426,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 **Usage**:
 
-First follow the [quick start guide](#Quick-Start) to create the client and povider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
+First, follow the [quick start guide](#Quick-Start) to create the client and provider. Then we need to update the config for our `GraphQLClient` passing in the `subscriptionClient`:
 
 ```js
 import { GraphQLClient } from 'graphql-hooks'
@@ -1255,6 +1256,91 @@ it('shows "No posts" if 0 posts are returned', async () => {
 })
 ```
 
+## Typescript Support
+
+All client methods support the ability to provide type information for response data, query variables and error responses.
+
+```typescript
+import { useQuery } from 'graphql-hooks'
+
+type User = {
+  id: string
+  name: string
+}
+
+type CustomError = {
+  message: string
+  extensions?: Record<string, any>
+}
+
+const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
+  users(limit: $limit) {
+    id
+    name
+  }
+}`
+
+function MyComponent() {
+  const { loading, error, data } = useQuery<
+    User,
+    { limit: number },
+    CustomError
+  >(HOMEPAGE_QUERY, {
+    variables: {
+      limit: 10
+    }
+  })
+
+  if (loading) return 'Loading...'
+  if (error) return 'Something Bad Happened'
+
+  return (
+    <ul>
+      {data.users.map(({ id, name }) => (
+        <li key={id}>{name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+`graphql-hooks` also supports `TypedDocumentNode`. This allows you to use GraphQL code gen to create `DocumentNode`s for your GQL queries and receive full type support.
+
+```typescript
+import { useQuery } from 'graphql-hooks'
+import { graphql } from './gql'
+
+const HOMEPAGE_QUERY = graphql(`query HomePage($limit: Int) {
+  users(limit: $limit) {
+    id
+    name
+  }
+}`)
+
+function MyComponent() {
+  // data will be typed as User objects with id, name properties
+  const { loading, error, data } = useQuery(HOMEPAGE_QUERY, {
+    variables: {
+      limit: 10
+    }
+  })
+
+  if (loading) return 'Loading...'
+  if (error) return 'Something Bad Happened'
+
+  return (
+    <ul>
+      {data.users.map(({ id, name }) => (
+        <li key={id}>{name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Full details of the features of `TypedDocumentNode` and GraphQL Code Generator can be found [here](https://the-guild.dev/graphql/codegen). Full examples of this implementation are in the examples folder.
+
+
 ## Other
 
 ### Request interceptors
@@ -1316,52 +1402,38 @@ function AbortControllerExample() {
 }
 ```
 
-## Typescript Support
+### GraphQL Document Support
 
-All client methods support the ability to provide type information for response data, query variables and error responses.
+As well as supporting input of your queries as strings, this library also supports using a `DocumentNode`. Document nodes can be generated using a code-generation tool such as [GraphQL codegen](https://the-guild.dev/graphql/codegen) which will provide typing information for your queries based on your GraphQL schema (see the typescript example). If you don't want to use a code-generation library you can use `graphql-tag` to generate a `DocumentNode`.
 
-```typescript
-import { useQuery } from 'graphql-hooks'
 
-type User = {
-  id: string
-  name: string
-}
+```js
+import gql from 'graphql-tag'
 
-type CustomError = {
-  message: string
-  extensions?: Record<string, any>
-}
-
-const HOMEPAGE_QUERY = `query HomePage($limit: Int) {
-  users(limit: $limit) {
-    id
-    name
+const allPostsQuery = gql`
+  query {
+     posts {
+      id
+      name
+     }
   }
-}`
+`
 
-function MyComponent() {
-  const { loading, error, data } = useQuery<
-    User,
-    { limit: number },
-    CustomError
-  >(HOMEPAGE_QUERY, {
-    variables: {
-      limit: 10
-    }
-  })
-
-  if (loading) return 'Loading...'
-  if (error) return 'Something Bad Happened'
+function Posts() {
+  const { loading, error, data, refetch } = useQuery(allPostsQuery)
 
   return (
-    <ul>
-      {data.users.map(({ id, name }) => (
-        <li key={id}>{name}</li>
-      ))}
-    </ul>
+    <>
+      <h2>Add post</h2>
+      <AddPost />
+      <h2>Posts</h2>
+      <button onClick={() => refetch()}>Reload</button>
+      <PostList loading={loading} error={error} data={data} />
+    </>
   )
 }
+
+...
 ```
 
 ## Community

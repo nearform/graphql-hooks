@@ -1,4 +1,6 @@
 import React from 'react'
+import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
+
 import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'
 import useClientRequest from './useClientRequest'
@@ -18,12 +20,17 @@ const defaultOpts = {
 function useQuery<
   ResponseData = any,
   Variables = object,
-  TGraphQLError extends GraphQLResponseError = GraphQLResponseError
+  TGraphQLError extends GraphQLResponseError = GraphQLResponseError,
+  TRefetchData = any,
+  TRefetchVariables = object
 >(
-  query: string,
-  opts: UseQueryOptions<ResponseData, Variables> = {}
+  query: string | TypedDocumentNode<ResponseData, Variables>,
+  opts: UseQueryOptions<ResponseData, Variables, TRefetchData, TRefetchVariables> = {}
 ): UseQueryResult<ResponseData, Variables, TGraphQLError> {
-  const allOpts = { ...defaultOpts, ...opts }
+  const allOpts = {
+    ...defaultOpts,
+    ...opts
+  }
   const contextClient = React.useContext(ClientContext)
   const client = opts.client || contextClient
   const [calledDuringSSR, setCalledDuringSSR] = React.useState(false)

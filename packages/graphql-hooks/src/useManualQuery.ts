@@ -1,14 +1,14 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
-import useClientRequest from './useClientRequest'
 import {
-  UseClientRequestOptions,
   FetchData,
-  UseClientRequestResult,
-  ResetFunction
+  ResetFunction,
+  UseClientRequestOptions,
+  UseClientRequestResult
 } from './types/common-types'
+import useClientRequest from './useClientRequest'
 
-const useMutation = <
+const useManualQuery = <
   ResponseData = any,
   Variables = object,
   TGraphQLError = object
@@ -16,16 +16,13 @@ const useMutation = <
   query: string | TypedDocumentNode<ResponseData, Variables>,
   options: Omit<
     UseClientRequestOptions<ResponseData, Variables>,
-    'isMutation'
+    'useCache' | 'isManual'
   > = {}
 ): [
   FetchData<ResponseData, Variables, TGraphQLError>,
   UseClientRequestResult<ResponseData, TGraphQLError>,
   ResetFunction
 ] =>
-  useClientRequest(query, {
-    isMutation: true,
-    ...options
-  }) as any
+  useClientRequest(query, { useCache: true, isManual: true, ...options }) as any
 
-export default useMutation
+export default useManualQuery
