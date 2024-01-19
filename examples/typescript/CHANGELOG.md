@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/nearform/graphql-hooks/compare/typescript-example@3.3.0...typescript-example@4.0.0) (2024-01-19)
+
+
+### Features
+
+* add support for GQL document input ([#1151](https://github.com/nearform/graphql-hooks/issues/1151)) ([02261fe](https://github.com/nearform/graphql-hooks/commit/02261fe42dc6b90dcdb2b233ef175f12e1467581))
+
+
+
+
+
 # [3.3.0](https://github.com/nearform/graphql-hooks/compare/typescript-example@3.2.5...typescript-example@3.3.0) (2024-01-19)
 
 **Note:** Version bump only for package typescript-example
