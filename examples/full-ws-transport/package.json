@@ -6,7 +6,7 @@
     "fastify": "^4.2.0",
     "graphql-hooks": "^7.0.0",
     "graphql-ws": "^5.5.5",
-    "mercurius": "^13.1.0",
+    "mercurius": "^14.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.0"
