@@ -19,7 +19,7 @@ describe('Posts', () => {
     render(<Posts />, {
       localQueries
     })
-
+    
     expect(
       await screen.findByRole('link', {
         name: /Test/i

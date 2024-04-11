@@ -322,8 +322,19 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "edge33",
+      "name": "Francesco Maida",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5662280?v=4",
+      "profile": "http://edge33.github.io",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
