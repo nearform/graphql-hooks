@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.0.0",
-    "@fastify/static": "^6.5.0",
+    "@fastify/static": "^7.0.3",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
     "graphql": "^16.6.0",
