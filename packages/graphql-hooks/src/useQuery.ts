@@ -61,7 +61,7 @@ function useQuery<
     setCalledDuringSSR(true)
   }
 
-  const { client, allOptsToStringify } = allOpts
+  const { client: clientFromOpts, allOptsToStringify } = allOpts
   const stringifiedAllOpts = JSON.stringify(allOptsToStringify)
   React.useEffect(() => {
     if (allOpts.skip) {
