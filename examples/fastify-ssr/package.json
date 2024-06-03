@@ -24,7 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/static": "^6.5.0",
+    "@fastify/static": "^7.0.4",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
     "graphql-hooks": "^7.0.0",
