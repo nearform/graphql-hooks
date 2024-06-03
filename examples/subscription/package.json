@@ -22,7 +22,7 @@
     "graphql": "^16.6.0",
     "graphql-hooks": "^7.0.0",
     "graphql-hooks-memcache": "^3.2.0",
-    "lowdb": "^6.0.1",
+    "lowdb": "^7.0.1",
     "mercurius": "^14.0.0",
     "mqemitter-redis": "^5.0.0",
     "react": "^18.0.0",
