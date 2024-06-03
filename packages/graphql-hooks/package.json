@@ -45,7 +45,7 @@
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^15.0.7",
     "@types/extract-files": "^8.1.1",
     "cross-env": "^7.0.3",
     "formdata-node": "^4.3.2",
