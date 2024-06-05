@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { Client as GraphQLWsClient } from 'graphql-ws'
 import * as React from 'react'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
+import type { TypedDocumentNode } from './typedDocumentNode'
 
 import GraphQLClient from '../GraphQLClient'
 // Exports

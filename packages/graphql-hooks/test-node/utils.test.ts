@@ -1,4 +1,4 @@
-import { DefinitionNode, DocumentNode, Kind } from 'graphql'
+import { DefinitionNode, DocumentNode, Kind } from '@0no-co/graphql.web'
 import { extractOperationName } from '../src/utils'
 
 describe('extractOperationName', () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
+import { TypedDocumentNode } from './types/typedDocumentNode'
 
 import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'

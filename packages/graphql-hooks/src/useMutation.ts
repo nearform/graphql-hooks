@@ -1,4 +1,4 @@
-import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
+import { TypedDocumentNode } from './types/typedDocumentNode'
 
 import useClientRequest from './useClientRequest'
 import {

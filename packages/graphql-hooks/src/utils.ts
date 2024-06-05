@@ -2,7 +2,7 @@ import type {
   DocumentNode,
   OperationDefinitionNode
 } from 'graphql/language/ast'
-import { Kind, print } from 'graphql'
+import { Kind, print } from '@0no-co/graphql.web'
 
 /**
  * Pipe with support for async functions
@@ -12,7 +12,9 @@ import { Kind, print } from 'graphql'
 export const pipeP = (fns: (() => any)[]) => (arg: any) =>
   fns.reduce((p, f) => p.then(f), Promise.resolve(arg))
 
-export function extractOperationName(document: DocumentNode | string): string | undefined {
+export function extractOperationName(
+  document: DocumentNode | string
+): string | undefined {
   let operationName: string | undefined = undefined
 
   if (typeof document !== 'string') {
