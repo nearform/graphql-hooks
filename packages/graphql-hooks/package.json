@@ -38,7 +38,6 @@
   "dependencies": {
     "@0no-co/graphql.web": "^1.0.7",
     "@aws-crypto/sha256-browser": "^5.2.0",
-    "@graphql-typed-document-node/core": "^3.2.0",
     "buffer": "^6.0.3",
     "events": "^3.3.0",
     "extract-files": "^11.0.0",
