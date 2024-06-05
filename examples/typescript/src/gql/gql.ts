@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as types from './graphql';
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import * as types from './graphql'
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,10 +13,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n": types.GetAllPostsDocument,
-    "\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n": types.CreatePostDocument,
-    "\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n": types.PostDocument,
-};
+  '\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n':
+    types.GetAllPostsDocument,
+  '\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n':
+    types.CreatePostDocument,
+  '\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n':
+    types.PostDocument
+}
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -30,23 +33,30 @@ const documents = {
  * The query argument is unknown!
  * Please regenerate the types.
  */
-export function graphql(source: string): unknown;
+export function graphql(source: string): unknown
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n"): (typeof documents)["\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n"];
+export function graphql(
+  source: '\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n'
+): (typeof documents)['\n  query GetAllPosts {\n    allPosts {\n      id\n      title\n      url\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n"];
+export function graphql(
+  source: '\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n'
+): (typeof documents)['\n  mutation CreatePost($title: String!, $url: String!) {\n    createPost(title: $title, url: $url) {\n      id\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n"): (typeof documents)["\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n"];
+export function graphql(
+  source: '\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n'
+): (typeof documents)['\n  query Post($id: ID!) {\n    Post(id: $id) {\n      id\n      url\n      title\n    }\n  }\n']
 
 export function graphql(source: string) {
-  return (documents as any)[source] ?? {};
+  return (documents as any)[source] ?? {}
 }
 
-export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> =
+  TDocumentNode extends DocumentNode<infer TType, any> ? TType : never
