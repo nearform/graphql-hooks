@@ -1,4 +1,4 @@
-import { TypedDocumentNode } from './types/typedDocumentNode'
+import type { TypedDocumentNode } from './types/typedDocumentNode'
 
 import useClientRequest from './useClientRequest'
 import {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { TypedDocumentNode } from './types/typedDocumentNode'
+import type { TypedDocumentNode } from './types/typedDocumentNode'
 
 import ClientContext from './ClientContext'
 import createRefetchMutationsMap from './createRefetchMutationsMap'
@@ -25,12 +25,7 @@ function useQuery<
   TRefetchVariables = object
 >(
   query: string | TypedDocumentNode<ResponseData, Variables>,
-  opts: UseQueryOptions<
-    ResponseData,
-    Variables,
-    TRefetchData,
-    TRefetchVariables
-  > = {}
+  opts: UseQueryOptions<ResponseData, Variables, TRefetchData, TRefetchVariables> = {}
 ): UseQueryResult<ResponseData, Variables, TGraphQLError> {
   const allOpts = {
     ...defaultOpts,
