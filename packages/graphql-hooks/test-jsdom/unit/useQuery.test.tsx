@@ -379,6 +379,17 @@ describe('useQuery', () => {
     expect(mockClient2.ssrPromises[0]).resolves.toBe('data')
   })
 
+  it('does not run when client headers change', () => {
+    const { rerender } = renderHook(() => useQuery(TEST_QUERY, { client: mockClient }), {
+      wrapper: Wrapper
+    })
+    mockClient.headers = {
+      trace_id: '123'
+    }
+    rerender()
+    expect(mockQueryReq).toHaveBeenCalledTimes(1)
+  })
+
   describe('skip option', () => {
     it('should skip query if `skip` is `true`', () => {
       const queryReqMock = jest.fn()
