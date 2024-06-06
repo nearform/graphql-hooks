@@ -8,7 +8,7 @@
   "dependencies": {
     "graphql-hooks": "^7.0.0",
     "graphql-hooks-memcache": "^3.2.0",
-    "json-graphql-server": "^2.3.1",
+    "json-graphql-server": "^3.0.1",
     "prop-types": "^15.7.2",
     "react": "^18.0.0",
     "react-app-polyfill": "^2.0.0",

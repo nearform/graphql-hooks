@@ -11,7 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@fastify/cors": "^8.0.0",
+    "@fastify/cors": "^9.0.1",
     "apollo-server": "^3.6.7",
     "fastify": "^4.2.0",
     "graphql": "^16.6.0",

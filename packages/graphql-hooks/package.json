@@ -33,19 +33,18 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "graphql": "^16.8.1",
     "react": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
+    "@0no-co/graphql.web": "^1.0.7",
     "@aws-crypto/sha256-browser": "^5.2.0",
-    "@graphql-typed-document-node/core": "^3.2.0",
     "buffer": "^6.0.3",
     "events": "^3.3.0",
     "extract-files": "^11.0.0",
     "use-deep-compare-effect": "^1.8.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^15.0.7",
     "@types/extract-files": "^8.1.1",
     "cross-env": "^7.0.3",
     "formdata-node": "^4.3.2",

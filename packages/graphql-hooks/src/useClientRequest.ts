@@ -1,5 +1,5 @@
 import React from 'react'
-import { TypedDocumentNode } from '@graphql-typed-document-node/core'
+import { TypedDocumentNode } from './types/typedDocumentNode'
 
 import ClientContext from './ClientContext'
 import { Events } from './events'

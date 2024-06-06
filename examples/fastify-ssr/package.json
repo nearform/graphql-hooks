@@ -24,7 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fastify/static": "^6.5.0",
+    "@fastify/static": "^7.0.4",
     "babel-plugin-dynamic-import-node": "^2.2.0",
     "fastify": "^4.2.0",
     "graphql-hooks": "^7.0.0",
@@ -44,7 +44,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^9.1.0",
     "nodemon": "^3.0.1",
-    "pino-pretty": "^10.0.0",
+    "pino-pretty": "^11.1.0",
     "webpack": "^5.64.4",
     "webpack-cli": "^5.0.1",
     "webpack-manifest-plugin": "^4.0.2",
