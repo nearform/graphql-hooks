@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@7.0.0...graphql-hooks@8.0.0) (2024-06-07)
+
+
+### Bug Fixes
+
+* removed dependency on graphQL ([#1184](https://github.com/nearform/graphql-hooks/issues/1184)) ([8ae0b1c](https://github.com/nearform/graphql-hooks/commit/8ae0b1c594191b01dc051649c9e4780aee749025))
+
+
+
+
+
 # [7.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@6.4.0...graphql-hooks@7.0.0) (2024-01-19)
 
 

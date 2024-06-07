@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/nearform/graphql-hooks/compare/typescript-example@4.0.1...typescript-example@5.0.0) (2024-06-07)
+
+
+### Bug Fixes
+
+* removed dependency on graphQL ([#1184](https://github.com/nearform/graphql-hooks/issues/1184)) ([8ae0b1c](https://github.com/nearform/graphql-hooks/commit/8ae0b1c594191b01dc051649c9e4780aee749025))
+
+
+
+
+
 ## [4.0.1](https://github.com/nearform/graphql-hooks/compare/typescript-example@4.0.0...typescript-example@4.0.1) (2024-04-11)
 
 **Note:** Version bump only for package typescript-example
