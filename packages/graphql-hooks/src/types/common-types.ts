@@ -147,6 +147,7 @@ export interface Result<
 > {
   data?: ResponseData
   error?: APIError<TGraphQLError>
+  headers?: Response['headers']
 }
 
 export interface RequestOptions {
@@ -163,6 +164,7 @@ export interface GenerateResultOptions<
   httpError?: HttpError
   graphQLErrors?: TGraphQLError[]
   data?: ResponseData
+  headers?: Response['headers']
 }
 
 export interface UseClientRequestOptions<
