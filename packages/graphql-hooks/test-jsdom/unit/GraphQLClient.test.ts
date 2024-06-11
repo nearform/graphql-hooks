@@ -331,7 +331,8 @@ describe('GraphQLClient', () => {
       }
       const result = client.generateResult(data)
       expect(result).toEqual({
-        data: data.data
+        data: data.data,
+        headers: undefined
       })
     })
 
@@ -353,8 +354,36 @@ describe('GraphQLClient', () => {
           fetchError: data.fetchError,
           httpError: data.httpError
         },
-        data: data.data
+        data: data.data,
+        headers: undefined
       })
+    })
+
+    it('returns headers if available', () => {
+      const client = new GraphQLClient({ ...validConfig })
+      const data = {
+        graphQLErrors: [
+          { message: 'graphQL error 1' },
+          { message: 'graphQL error 2' }
+        ],
+        fetchError: new Error('fetch error'),
+        httpError: { status: 400, statusText: '', body: 'http error' },
+        data: 'data!',
+        headers: new Headers({
+          'header-name': 'header-value'
+        })
+      }
+      const result = client.generateResult(data)
+      expect(result).toEqual({
+        error: {
+          graphQLErrors: data.graphQLErrors,
+          fetchError: data.fetchError,
+          httpError: data.httpError
+        },
+        data: data.data,
+        headers: expect.any(Headers)
+      })
+      expect(result.headers?.get('header-name')).toBe('header-value')
     })
   })
 
@@ -554,7 +583,8 @@ describe('GraphQLClient', () => {
                 status: 403,
                 statusText: 'Forbidden'
               }
-            }
+            },
+            headers: expect.any(Headers)
           }
         })
       })
@@ -631,6 +661,34 @@ describe('GraphQLClient', () => {
       expect(_data.statusText).toBe(statusText)
       expect(_data.cacheTags).toEqual(headers['x-cache-tags'])
       expect(_data.contentType).toEqual(headers['content-type'])
+    })
+
+    it('will pass headers to middleware', async () => {
+      const data = { some: 'data' },
+        status = 200,
+        statusText = 'OK',
+        headers = {
+          'content-type': 'application/json',
+          'trace-id': '123456789000'
+        }
+      let responseHeaders = new Headers;
+      const client = new GraphQLClient({ ...validConfig, middleware: [({ addResponseHook }, next) => {
+        addResponseHook(response => {
+          responseHeaders = response.headers as Headers
+          return response
+        })
+        next()
+      }] })
+      fetchMock.mockResponseOnce(JSON.stringify({ data }), {
+        status,
+        statusText,
+        headers
+      })
+      const { data: _data, headers: _headers } = await client.request<any>(
+        { query: TEST_QUERY },
+      )
+      expect((_headers as Headers).get('trace-id')).toBe('123456789000')
+      expect(responseHeaders.get('trace-id')).toBe('123456789000')
     })
 
     describe('GET Support', () => {

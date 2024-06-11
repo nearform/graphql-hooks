@@ -158,7 +158,8 @@ class GraphQLClient {
     fetchError,
     httpError,
     graphQLErrors,
-    data
+    data,
+    headers
   }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
     ResponseData,
     TGraphQLError
@@ -169,8 +170,8 @@ class GraphQLClient {
       httpError
     )
     return !errorFound
-      ? { data }
-      : { data, error: { fetchError, httpError, graphQLErrors } }
+      ? { data, headers }
+      : { data, error: { fetchError, httpError, graphQLErrors }, headers }
   }
 
   getCacheKey<Variables = object>(
@@ -339,7 +340,8 @@ class GraphQLClient {
                 status,
                 statusText,
                 body
-              }
+              },
+              headers: response.headers
             })
           })
         } else {
@@ -350,7 +352,8 @@ class GraphQLClient {
                 // enrich data with responseReducer if defined
                 (typeof options.responseReducer === 'function' &&
                   options.responseReducer(data, response)) ||
-                data
+                data,
+              headers: response.headers,
             })
           })
         }

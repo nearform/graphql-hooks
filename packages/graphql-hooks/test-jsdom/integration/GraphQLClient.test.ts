@@ -27,7 +27,7 @@ describe('GraphQLClient', () => {
     })
 
     it('caches + logs', async () => {
-      const MOCK_DATA = { data: 'data' }
+      const MOCK_DATA = { data: 'data', headers: expect.any(Headers) }
       fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
 
       await client.request({
@@ -81,7 +81,7 @@ describe('GraphQLClient', () => {
     })
 
     it('Handles async response hooks in correct order', async () => {
-      const MOCK_DATA = { data: 'data' }
+      const MOCK_DATA = { data: 'data', headers: expect.any(Headers) }
       fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
 
       await client.request({
@@ -111,7 +111,7 @@ describe('GraphQLClient', () => {
     })
 
     it('logs request start and end', async () => {
-      const MOCK_DATA = { data: 'data' }
+      const MOCK_DATA = { data: 'data', headers: expect.any(Headers) }
       fetchMock.mockResponseOnce(JSON.stringify(MOCK_DATA))
 
       const res = await client.request({
@@ -142,7 +142,7 @@ describe('GraphQLClient', () => {
     })
 
     it('caches first result', async () => {
-      const MOCK_DATA = { data: 'data' }
+      const MOCK_DATA = { data: 'data', headers: expect.any(Headers) }
       fetchMock.mockResponseOnce(() =>
         Promise.resolve(JSON.stringify(MOCK_DATA))
       )
