@@ -47,7 +47,7 @@
     "@testing-library/react": "^15.0.7",
     "@types/extract-files": "^8.1.1",
     "cross-env": "^7.0.3",
-    "formdata-node": "^4.3.2",
+    "formdata-node": "^6.0.3",
     "graphql": "^16.8.1",
     "graphql-hooks-memcache": "^3.2.0",
     "graphql-hooks-ssr": "^3.0.1",
