@@ -159,7 +159,7 @@ class GraphQLClient {
     httpError,
     graphQLErrors,
     data,
-    headers,
+    headers
   }: GenerateResultOptions<ResponseData, TGraphQLError>): Result<
     ResponseData,
     TGraphQLError
@@ -341,7 +341,7 @@ class GraphQLClient {
                 statusText,
                 body
               },
-              headers: response.headers,
+              headers: response.headers
             })
           })
         } else {
@@ -360,7 +360,7 @@ class GraphQLClient {
       })
       .catch(error => {
         return this.generateResult<ResponseData, TGraphQLError>({
-          fetchError: error,
+          fetchError: error
         })
       })
       .then(result => {

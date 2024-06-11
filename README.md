@@ -167,7 +167,7 @@ const client = new GraphQLClient(config)
 - `middleware`: Accepts an array of middleware functions, default: none, see more in [middlewares readme](packages/graphql-hooks/src/middlewares/README.md)
 - `onError({ operation, result })`: Custom error handler
   - `operation`: Object with `query`, `variables` and `operationName`
-  - `result`: Object containing `data` and `error` object that contains `fetchError`, `httpError` and `graphqlErrors`
+  - `result`: Object containing `data`, `headers` and `error` object that contains `fetchError`, `httpError` and `graphqlErrors`
 
 ### `client` methods
 
@@ -270,6 +270,7 @@ const { loading, error, data, refetch, cacheHit } = useQuery(QUERY)
 
 - `loading`: Boolean - `true` if the query is in flight
 - `data`: Object - the result of your GraphQL query
+- `headers`: Object - response headers
 - `refetch(options)`: Function - useful when refetching the same query after a mutation; NOTE this presets `skipCache=true` & will bypass the `options.updateData` function that was passed into `useQuery`. You can pass a new `updateData` into `refetch` if necessary.
   - `options`: Object - options that will be merged into the `options` that were passed into `useQuery` (see above).
 - `cacheHit`: Boolean - `true` if the query result came from the cache, useful for debugging
@@ -405,6 +406,7 @@ The `options` object that can be passed either to `useMutation(mutation, options
 In addition, there is an option to reset the current state before calling the mutation again, by calling `resetFn(desiredState)` where `desiredState` is optional and if passed, it will override the initial state with:
 
 - `data`: Object - the data
+- `headers`: Object - response headers
 - `error`: Error - the error
 - `loading`: Boolean - true if it is still loading
 - `cacheHit`: Boolean - true if the result was cached
