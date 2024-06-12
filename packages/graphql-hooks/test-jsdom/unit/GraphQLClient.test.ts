@@ -630,37 +630,52 @@ describe('GraphQLClient', () => {
       expect(actual).toMatchObject(expected)
     })
 
-    it('will use responseReducer option implementation', async () => {
-      const data = { some: 'data' },
-        status = 200,
-        statusText = 'OK',
-        headers = {
-          'content-type': 'application/json',
-          'x-cache-tags': '1234,5678,9000'
-        }
-      const client = new GraphQLClient({ ...validConfig })
-      fetchMock.mockResponseOnce(JSON.stringify({ data }), {
-        status,
-        statusText,
-        headers
+    describe('responseReducer option implementation', () => {
+      it('should respond based on the function implementation', async () => {
+        const data = { some: 'data' },
+          status = 200,
+          statusText = 'OK',
+          headers = {
+            'content-type': 'application/json',
+            'x-cache-tags': '1234,5678,9000'
+          }
+        const client = new GraphQLClient({ ...validConfig })
+        fetchMock.mockResponseOnce(JSON.stringify({ data }), {
+          status,
+          statusText,
+          headers
+        })
+        const { data: _data } = await client.request<any>(
+          { query: TEST_QUERY },
+          {
+            responseReducer: (fetchedData, response) => ({
+              ...fetchedData,
+              cacheTags: response.headers.get('x-cache-tags'),
+              contentType: response.headers.get('content-type'),
+              status: response.status,
+              statusText: response.statusText
+            })
+          }
+        )
+        expect(_data.some).toBe(data.some)
+        expect(_data.status).toBe(status)
+        expect(_data.statusText).toBe(statusText)
+        expect(_data.cacheTags).toEqual(headers['x-cache-tags'])
+        expect(_data.contentType).toEqual(headers['content-type'])
       })
-      const { data: _data } = await client.request<any>(
-        { query: TEST_QUERY },
-        {
-          responseReducer: (fetchedData, response) => ({
-            ...fetchedData,
-            cacheTags: response.headers.get('x-cache-tags'),
-            contentType: response.headers.get('content-type'),
-            status: response.status,
-            statusText: response.statusText
-          })
-        }
-      )
-      expect(_data.some).toBe(data.some)
-      expect(_data.status).toBe(status)
-      expect(_data.statusText).toBe(statusText)
-      expect(_data.cacheTags).toEqual(headers['x-cache-tags'])
-      expect(_data.contentType).toEqual(headers['content-type'])
+
+      it('should respond with implementation result, even if falsy', async () => {
+        const data = { foo: undefined, bar: 'baz' }
+        const client = new GraphQLClient({ ...validConfig })
+        fetchMock.mockResponseOnce(JSON.stringify({ data }))
+        const { data: _data } = await client.request<any>(
+          { query: TEST_QUERY },
+          {
+            responseReducer: (fetchedData, response) => fetchedData?.foo
+          }
+        )
+        expect(_data).toBe(undefined)
+      })
     })
 
     it('will pass headers to middleware', async () => {
@@ -671,22 +686,27 @@ describe('GraphQLClient', () => {
           'content-type': 'application/json',
           'trace-id': '123456789000'
         }
-      let responseHeaders = new Headers;
-      const client = new GraphQLClient({ ...validConfig, middleware: [({ addResponseHook }, next) => {
-        addResponseHook(response => {
-          responseHeaders = response.headers as Headers
-          return response
-        })
-        next()
-      }] })
+      let responseHeaders = new Headers()
+      const client = new GraphQLClient({
+        ...validConfig,
+        middleware: [
+          ({ addResponseHook }, next) => {
+            addResponseHook(response => {
+              responseHeaders = response.headers as Headers
+              return response
+            })
+            next()
+          }
+        ]
+      })
       fetchMock.mockResponseOnce(JSON.stringify({ data }), {
         status,
         statusText,
         headers
       })
-      const { data: _data, headers: _headers } = await client.request<any>(
-        { query: TEST_QUERY },
-      )
+      const { data: _data, headers: _headers } = await client.request<any>({
+        query: TEST_QUERY
+      })
       expect((_headers as Headers).get('trace-id')).toBe('123456789000')
       expect(responseHeaders.get('trace-id')).toBe('123456789000')
     })

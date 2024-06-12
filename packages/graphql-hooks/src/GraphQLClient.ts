@@ -350,10 +350,10 @@ class GraphQLClient {
               graphQLErrors: errors,
               data:
                 // enrich data with responseReducer if defined
-                (typeof options.responseReducer === 'function' &&
-                  options.responseReducer(data, response)) ||
-                data,
-              headers: response.headers,
+                typeof options.responseReducer === 'function'
+                  ? options.responseReducer(data, response)
+                  : data,
+              headers: response.headers
             })
           })
         }
