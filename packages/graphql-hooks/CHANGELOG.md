@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@8.0.0...graphql-hooks@8.0.1) (2024-06-15)
+
+
+### Bug Fixes
+
+* return response reducer even if falsy ([#1193](https://github.com/nearform/graphql-hooks/issues/1193)) ([c7b32e3](https://github.com/nearform/graphql-hooks/commit/c7b32e3525f3ee18bc5b4a6e302c4df4027f28cb))
+
+
+### Features
+
+* **graphql-hooks:** add headers to client response ([#1186](https://github.com/nearform/graphql-hooks/issues/1186)) ([e61f713](https://github.com/nearform/graphql-hooks/commit/e61f713893fdfacf18026b55d1b68b3318cabb79))
+
+
+
+
+
 # [8.0.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@7.0.0...graphql-hooks@8.0.0) (2024-06-07)
 
 
