@@ -22,7 +22,7 @@ Middleware is a function with 2 parameters:
   - `operation` - GraphQL operation object - includes `query`, `variables` etc.
   - `addResponseHook` - a function that can be called from within the middleware to add a response hook - it accepts a handler to read/transform and return the data - passthrough ex.: `addResponseHook(response => response)`
   - `client` - the GraphQLClient instance
-  - `resolve`, `reject` - advanced usage only, these would be used only when we want to resolve/reject the request `Promise` early without doing the usual fetch (see [example](examples/cacheMiddleware.js))
+  - `resolve`, `reject` - advanced usage only, these would be used only when we want to resolve/reject the request `Promise` early without doing the usual fetch (see [example](examples/cacheMiddleware.ts))
 - `next` function - calls the next middleware function in line. Generally it should always be called, unless we want to change the control flow
 
 ## Automatic Persisted Queries (APQ) middleware
