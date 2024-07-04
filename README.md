@@ -1176,9 +1176,9 @@ console.log(result.error) // The `error` object will have a `graphQLErrors` arra
 
 ### Testing with React
 
-Example tests that use the `LocalGraphQLClient` are provided in [the examples/create-react-app/test folder](https://github.com/nearform/graphql-hooks/blob/master/mock-client/examples/create-react-app/test/Posts.test.js).
+Example tests that use the `LocalGraphQLClient` are provided in [the examples/create-react-app/test folder](https://github.com/nearform/graphql-hooks/blob/master/examples/create-react-app/test/Posts.test.tsx).
 
-The [test-utils.js](https://github.com/nearform/graphql-hooks/blob/liana/mock-client/examples/create-react-app/test/test-utils.js) is a good example of how to create a custom render function using [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) which can wrap the render of a React component in a `ClientContext` setup to use the `LocalGraphQLClient` with supplied local queries:
+The [test-utils.js](https://github.com/nearform/graphql-hooks/blob/master/examples/create-react-app/test/test-utils.tsx) is a good example of how to create a custom render function using [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro/) which can wrap the render of a React component in a `ClientContext` setup to use the `LocalGraphQLClient` with supplied local queries:
 
 ```js
 const customRender = (ui, options) => {
