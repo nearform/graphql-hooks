@@ -29,6 +29,10 @@ const QUERY_PARTIAL_ERROR_WITH_ARRAY = {
   query: 'PartialErrorQueryWithArray'
 }
 
+const QUERY_ARRAY = {
+  query: 'ArrayQuery'
+}
+
 const HooksTestQuery = `
 query {
   testQuery {
@@ -54,15 +58,19 @@ const localQueries = {
   PartialErrorQuery: () => ({
     property1: 'Hello World',
     property2: new Error('failed to resolve property 2'),
-    nested: {property3: new Error('failed to resolve nested property 3'), property4: 'Hello again'}
+    nested: {
+      property3: new Error('failed to resolve nested property 3'),
+      property4: 'Hello again'
+    }
   }),
   PartialErrorQueryWithArray: () => ({
     property1: 'Hello World',
     arrayProperty: [
-      {item: 'Hello item'},
+      { item: 'Hello item' },
       new Error('failed to resolve child of array')
     ]
   }),
+  ArrayQuery: () => [{ item: 'Hello item' }],
   [HooksTestQuery]: () => ({
     testQuery: {
       value: 2
@@ -123,7 +131,9 @@ describe('LocalGraphQLClient', () => {
       expect(result.error.graphQLErrors).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ message: 'failed to resolve property 2' }),
-          expect.objectContaining({ message: 'failed to resolve nested property 3' })
+          expect.objectContaining({
+            message: 'failed to resolve nested property 3'
+          })
         ])
       )
     })
@@ -138,9 +148,17 @@ describe('LocalGraphQLClient', () => {
       expect(result.error).toBeDefined()
       expect(result.error.graphQLErrors).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ message: 'failed to resolve child of array' }),
+          expect.objectContaining({
+            message: 'failed to resolve child of array'
+          })
         ])
       )
+    })
+    it('should handle array result', async () => {
+      const result = await client.request(QUERY_ARRAY)
+      expect(result.data).toBeInstanceOf(Array)
+      expect(result.data).toHaveLength(1)
+      expect(result.data[0]).toHaveProperty('item', 'Hello item')
     })
   })
   describe('integration with hooks', () => {
@@ -157,6 +175,50 @@ describe('LocalGraphQLClient', () => {
       expect(getByTestId('loading')).toBeTruthy()
       dataNode = await screen.findByTestId('data')
       expect(dataNode.textContent).toBe('2')
+    })
+  })
+  describe('middleware', () => {
+    let client: LocalGraphQLClient
+    const middlewareSpy = jest.fn()
+    const addResponseHookSpy = jest.fn()
+
+    beforeEach(() => {
+      client = new LocalGraphQLClient({
+        localQueries,
+        middleware: [
+          ({ addResponseHook }, next) => {
+            addResponseHook(response => {
+              addResponseHookSpy()
+              return response
+            })
+            middlewareSpy()
+            next()
+          }
+        ]
+      })
+    })
+    it('should run middleware', async () => {
+      const result = await client.request(QUERY_BASIC)
+
+      expect(result.data.hello).toBe('Hello world')
+      expect(middlewareSpy).toHaveBeenCalledTimes(1)
+      expect(addResponseHookSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+  describe('responseReducer option', () => {
+    let client: LocalGraphQLClient
+
+    beforeEach(() => {
+      client = new LocalGraphQLClient({
+        localQueries
+      })
+    })
+    it('should return responseReducer result', async () => {
+      const result = await client.request<string[]>(QUERY_ARRAY, {
+        responseReducer: fetchedData => [...fetchedData, 'foo']
+      })
+
+      expect(result.data).toStrictEqual([{ item: 'Hello item' }, 'foo'])
     })
   })
 })

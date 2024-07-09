@@ -348,11 +348,11 @@ class GraphQLClient {
           return response.json().then(({ errors, data }) => {
             return this.generateResult<ResponseData, TGraphQLError>({
               graphQLErrors: errors,
-              data:
-                // enrich data with responseReducer if defined
-                typeof options.responseReducer === 'function'
-                  ? options.responseReducer(data, response)
-                  : data,
+              data: applyResponseReducer(
+                options.responseReducer,
+                data,
+                response
+              ),
               headers: response.headers
             })
           })
@@ -464,6 +464,17 @@ class GraphQLClient {
 
 function isGraphQLWsClient(value: any): value is GraphQLWsClient {
   return typeof value.subscribe === 'function'
+}
+
+export function applyResponseReducer(
+  responseReducer: RequestOptions['responseReducer'],
+  data,
+  response: Response
+) {
+  // enrich data with responseReducer if defined
+  return typeof responseReducer === 'function'
+    ? responseReducer(data, response)
+    : data
 }
 
 export default GraphQLClient
