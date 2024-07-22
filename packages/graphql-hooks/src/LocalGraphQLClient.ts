@@ -1,6 +1,12 @@
-import GraphQLClient from './GraphQLClient'
+import GraphQLClient, { applyResponseReducer } from './GraphQLClient'
 import LocalGraphQLError from './LocalGraphQLError'
-import { LocalClientOptions, LocalQueries, Result } from './types/common-types'
+import {
+  LocalClientOptions,
+  LocalQueries,
+  Operation,
+  RequestOptions,
+  Result
+} from './types/common-types'
 
 /** Local version of the GraphQLClient which only returns specified queries
  * Meant to be used as a way to easily mock and test queries during development. This client never contacts any actual server.
@@ -27,7 +33,7 @@ class LocalGraphQLClient extends GraphQLClient {
   // Delay before sending responses in miliseconds for simulating latency
   requestDelayMs: number
   constructor(config: LocalClientOptions) {
-    super({ url: '', ...config })
+    super({ url: 'http://localhost', ...config })
     this.localQueries = config.localQueries
     this.requestDelayMs = config.requestDelayMs || 0
     if (!this.localQueries) {
@@ -41,29 +47,38 @@ class LocalGraphQLClient extends GraphQLClient {
     // Skips all config verification from the parent class because we're mocking the client
   }
 
-  request<ResponseData = any, TGraphQLError = object, TVariables = object>(
-    operation
-  ): Promise<Result<any, TGraphQLError>> {
-    if (!this.localQueries[operation.query]) {
-      throw new Error(
-        `LocalGraphQLClient: no query match for: ${operation.query}`
-      )
-    }
-    return timeoutPromise(this.requestDelayMs)
-      .then(() =>
-        Promise.resolve(
-          this.localQueries[operation.query](
-            operation.variables,
-            operation.operationName
-          )
+  requestViaHttp<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options: RequestOptions = {}
+  ): Promise<Result<ResponseData, TGraphQLError>> {
+    return timeoutPromise(this.requestDelayMs).then(() => {
+      if (!operation.query || !this.localQueries[operation.query]) {
+        throw new Error(
+          `LocalGraphQLClient: no query match for: ${operation.query}`
         )
+      }
+
+      const data = this.localQueries[operation.query](
+        operation.variables,
+        operation.operationName
       )
+
+      return applyResponseReducer(options.responseReducer, data, new Response())
+    })
+  }
+
+  request<ResponseData, TGraphQLError = object, TVariables = object>(
+    operation: Operation<TVariables>,
+    options?: RequestOptions
+  ): Promise<Result<any, TGraphQLError>> {
+    return super
+      .request<ResponseData, TGraphQLError, TVariables>(operation, options)
       .then(result => {
         if (result instanceof LocalGraphQLError) {
           return { error: result }
         }
-        const { data, errors } = collectErrorsFromObject(result)
-        if (errors.length > 0) {
+        const { data, errors } = collectErrors(result)
+        if (errors && errors.length > 0) {
           return {
             data,
             error: new LocalGraphQLError({
@@ -76,7 +91,6 @@ class LocalGraphQLClient extends GraphQLClient {
       })
   }
 }
-
 function timeoutPromise(delayInMs) {
   return new Promise(resolve => {
     setTimeout(resolve, delayInMs)
@@ -95,7 +109,7 @@ function collectErrorsFromObject(objectIn: object): {
   const errors: Error[] = []
 
   for (const [key, value] of Object.entries(objectIn)) {
-    const child = collectErrorsFromChild(value)
+    const child = collectErrors(value)
     data[key] = child.data
     if (child.errors != null) {
       errors.push(...child.errors)
@@ -113,7 +127,7 @@ function collectErrorsFromArray(arrayIn: object[]): {
   const errors: Error[] = []
 
   for (const [idx, entry] of arrayIn.entries()) {
-    const child = collectErrorsFromChild(entry)
+    const child = collectErrors(entry)
     data[idx] = child.data
     if (child.errors != null) {
       errors.push(...child.errors)
@@ -123,7 +137,7 @@ function collectErrorsFromArray(arrayIn: object[]): {
   return { data, errors }
 }
 
-function collectErrorsFromChild(entry: object) {
+function collectErrors(entry: object) {
   if (entry instanceof Error) {
     return { data: null, errors: [entry] }
   } else if (Array.isArray(entry)) {

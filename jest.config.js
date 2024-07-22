@@ -45,7 +45,8 @@ const projects = [
         '\\.[jt]sx?$': 'babel-jest'
       },
       displayName: 'cra-example',
-      testEnvironment: 'jsdom'
+      testEnvironment: 'jsdom',
+      setupFiles: ['<rootDir>/examples/create-react-app/test/setup.js']
     }
   }
 ]
