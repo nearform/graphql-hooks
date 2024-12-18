@@ -38,7 +38,7 @@
     "webpack": "^5.64.4",
     "webpack-cli": "^5.0.1",
     "webpack-manifest-plugin": "^4.0.2",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^6.0.1"
   },
   "author": "",
   "license": "ISC",
