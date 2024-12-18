@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/nearform/graphql-hooks/compare/create-react-app@5.0.1...create-react-app@5.1.0) (2024-12-18)
+
+
+### Bug Fixes
+
+* **LocalGraphQLClient:** handle middleware and responseReducer ([#1206](https://github.com/nearform/graphql-hooks/issues/1206)) ([95219cd](https://github.com/nearform/graphql-hooks/commit/95219cdcd98520aeebc7f413f294730052b042b8))
+
+
+
+
+
 ## [5.0.1](https://github.com/nearform/graphql-hooks/compare/create-react-app@5.0.0...create-react-app@5.0.1) (2024-06-15)
 
 **Note:** Version bump only for package create-react-app
