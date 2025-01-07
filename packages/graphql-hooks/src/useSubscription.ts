@@ -10,7 +10,7 @@ function useSubscription<
   Variables extends object = object,
   TGraphQLError = object
 >(
-  options: UseSubscriptionOperation<Variables>,
+  options: UseSubscriptionOperation<Variables> & { skip?: boolean },
   callback: (response: {
     data?: ResponseData
     errors?: TGraphQLError[]
@@ -29,6 +29,10 @@ function useSubscription<
   }
 
   useDeepCompareEffect(() => {
+    if (options.skip) {
+      return
+    }
+
     const request = {
       query: options.query,
       variables: options.variables
@@ -51,7 +55,7 @@ function useSubscription<
     return () => {
       subscription.unsubscribe()
     }
-  }, [options.query, options.variables])
+  }, [options.query, options.variables, options.skip])
 }
 
 export default useSubscription

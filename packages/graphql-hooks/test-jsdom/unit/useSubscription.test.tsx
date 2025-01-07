@@ -371,4 +371,29 @@ describe('useSubscription', () => {
       return { unsubscribe, createSubscription: mockClient.createSubscription }
     }
   })
+
+  it('skips creating the subscription when skip is true', () => {
+    const subscriptionClient = new MockSubscriptionClient({
+      type: 'DATA',
+      data: {}
+    })
+    mockClient = {
+      createSubscription: jest.fn(() => {
+        return subscriptionClient.request()
+      }),
+      subscriptionClient
+    }
+    const request = {
+      query: TEST_SUBSCRIPTION,
+      variables: {
+        id: 1
+      },
+      skip: true
+    }
+    renderHook(() => useSubscription(request, jest.fn()), {
+      wrapper: Wrapper
+    })
+
+    expect(mockClient.createSubscription).not.toHaveBeenCalled()
+  })
 })
