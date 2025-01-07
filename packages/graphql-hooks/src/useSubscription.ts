@@ -10,7 +10,7 @@ function useSubscription<
   Variables extends object = object,
   TGraphQLError = object
 >(
-  options: UseSubscriptionOperation<Variables>,
+  options: UseSubscriptionOperation<Variables> & { skip?: boolean },
   callback: (response: {
     data?: ResponseData
     errors?: TGraphQLError[]
@@ -21,6 +21,10 @@ function useSubscription<
 
   const contextClient = useContext(ClientContext)
   const client = options.client || contextClient
+
+  if (options.skip) {
+    return
+  }
 
   if (!client) {
     throw new Error(
