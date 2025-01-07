@@ -419,7 +419,7 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 `useSubscription(operation, callback)`
 
-- `options`: Object - The GraphQL operation has the following properties:
+- `operation`: Object - The GraphQL operation has the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
   - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
