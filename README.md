@@ -419,11 +419,12 @@ To use subscription you can use either [subscriptions-transport-ws](https://gith
 
 `useSubscription(operation, callback)`
 
-- `operation`: Object - The GraphQL operation has the following properties:
+- `options`: Object - The GraphQL operation has the following properties:
   - `query`: String (required) - the GraphQL query
   - `variables`: Object (optional) - Any variables the query might need
   - `operationName`: String (optional) - If your query has multiple operations, you can choose which operation you want to call.
   - `client`: GraphQLClient - If a GraphQLClient is explicitly passed as an option, then it will be used instead of the client from the `ClientContext`.
+  - `skip`: Boolean (optional) - If true, the subscription will not be created.
 - `callback`: Function - This will be invoked when the subscription receives an event from your GraphQL server - it will receive an object with the typical GraphQL response of `{ data: <your result>, errors?: [Error] }`
 
 **Usage**:
