@@ -22,10 +22,6 @@ function useSubscription<
   const contextClient = useContext(ClientContext)
   const client = options.client || contextClient
 
-  if (options.skip) {
-    return
-  }
-
   if (!client) {
     throw new Error(
       'useSubscription() requires a client to be passed in the options or as a context value'
@@ -33,6 +29,10 @@ function useSubscription<
   }
 
   useDeepCompareEffect(() => {
+    if (options.skip) {
+      return
+    }
+
     const request = {
       query: options.query,
       variables: options.variables
@@ -55,7 +55,7 @@ function useSubscription<
     return () => {
       subscription.unsubscribe()
     }
-  }, [options.query, options.variables])
+  }, [options.query, options.variables, options.skip])
 }
 
 export default useSubscription
