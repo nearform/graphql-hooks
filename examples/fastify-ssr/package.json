@@ -26,7 +26,7 @@
   "dependencies": {
     "@fastify/static": "^7.0.4",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "fastify": "^4.2.0",
+    "fastify": "^5.2.1",
     "graphql-hooks": "^8.2.0",
     "graphql-hooks-memcache": "^3.2.0",
     "graphql-hooks-ssr": "^3.0.1",
