@@ -1,6 +1,6 @@
 {
   "name": "graphql-hooks",
-  "version": "8.1.0",
+  "version": "8.2.0",
   "description": "Graphql Hooks",
   "main": "lib/graphql-hooks.js",
   "module": "es/graphql-hooks.js",

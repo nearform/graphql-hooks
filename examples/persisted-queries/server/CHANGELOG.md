@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/nearform/graphql-hooks/compare/persisted-queries-server@3.0.0...persisted-queries-server@3.0.1) (2025-01-08)
+
+**Note:** Version bump only for package persisted-queries-server
+
+
+
+
+
 # [3.0.0](https://github.com/nearform/graphql-hooks/compare/persisted-queries-server@2.0.5...persisted-queries-server@3.0.0) (2024-06-07)
 
 **Note:** Version bump only for package persisted-queries-server

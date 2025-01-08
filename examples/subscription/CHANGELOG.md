@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/nearform/graphql-hooks/compare/subscription@5.1.0...subscription@5.1.1) (2025-01-08)
+
+**Note:** Version bump only for package subscription
+
+
+
+
+
 # [5.1.0](https://github.com/nearform/graphql-hooks/compare/subscription@5.0.1...subscription@5.1.0) (2024-12-18)
 
 **Note:** Version bump only for package subscription

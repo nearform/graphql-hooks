@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@8.1.0...graphql-hooks@8.2.0) (2025-01-08)
+
+
+### Features
+
+* skip option for subscription ([#1229](https://github.com/nearform/graphql-hooks/issues/1229)) ([bb2183b](https://github.com/nearform/graphql-hooks/commit/bb2183b61c71df224ce29fb4bebe1f525e193c81))
+
+
+
+
+
 # [8.1.0](https://github.com/nearform/graphql-hooks/compare/graphql-hooks@8.0.1...graphql-hooks@8.1.0) (2024-12-18)
 
 
