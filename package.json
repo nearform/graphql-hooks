@@ -48,7 +48,7 @@
     "jest-environment-node": "^29.0.1",
     "lerna": "^8.1.2",
     "lint-staged": "^15.2.0",
-    "prettier": "^2.7.1",
+    "prettier": "^3.5.3",
     "rollup": "^2.47.0",
     "rollup-plugin-esbuild": "^5.0.0",
     "rollup-plugin-replace": "^2.2.0",
