@@ -320,6 +320,7 @@ describe('useClientRequest', () => {
     )
 
     // initial state
+    console.log({ initialState: state })
     expect(state).toEqual({ cacheHit: false, loading: true })
 
     await act(fetchData)
