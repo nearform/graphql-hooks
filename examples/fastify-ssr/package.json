@@ -33,7 +33,7 @@
     "isomorphic-unfetch": "^4.0.2",
     "mercurius": "^14.0.0",
     "prop-types": "^15.7.2",
-    "react": "^18.0.0",
+    "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.0.2"
   },

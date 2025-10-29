@@ -1313,12 +1313,14 @@ function MyComponent() {
 import { useQuery } from 'graphql-hooks'
 import { graphql } from './gql'
 
-const HOMEPAGE_QUERY = graphql(`query HomePage($limit: Int) {
-  users(limit: $limit) {
-    id
-    name
+const HOMEPAGE_QUERY = graphql(`
+  query HomePage($limit: Int) {
+    users(limit: $limit) {
+      id
+      name
+    }
   }
-}`)
+`)
 
 function MyComponent() {
   // data will be typed as User objects with id, name properties
@@ -1342,7 +1344,6 @@ function MyComponent() {
 ```
 
 Full details of the features of `TypedDocumentNode` and GraphQL Code Generator can be found [here](https://the-guild.dev/graphql/codegen). Full examples of this implementation are in the examples folder.
-
 
 ## Other
 
@@ -1408,7 +1409,6 @@ function AbortControllerExample() {
 ### GraphQL Document Support
 
 As well as supporting input of your queries as strings, this library also supports using a `DocumentNode`. Document nodes can be generated using a code-generation tool such as [GraphQL codegen](https://the-guild.dev/graphql/codegen) which will provide typing information for your queries based on your GraphQL schema (see the typescript example). If you don't want to use a code-generation library you can use `graphql-tag` to generate a `DocumentNode`.
-
 
 ```js
 import gql from 'graphql-tag'

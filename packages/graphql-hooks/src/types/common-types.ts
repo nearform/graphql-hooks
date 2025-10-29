@@ -213,7 +213,10 @@ export interface UseQueryOptions<
   TRefetchVariables = object
 > extends UseClientRequestOptions<ResponseData, Variables> {
   ssr?: boolean
-  refetchAfterMutations?: RefetchAfterMutationsData<TRefetchData, TRefetchVariables>
+  refetchAfterMutations?: RefetchAfterMutationsData<
+    TRefetchData,
+    TRefetchVariables
+  >
   [key: string]: any
 }
 
