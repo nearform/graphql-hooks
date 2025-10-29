@@ -1,7 +1,7 @@
 import { ClientContext, GraphQLClient } from 'graphql-hooks'
 import memCache from 'graphql-hooks-memcache'
 import React from 'react'
-import { createRoot } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import AppShell from '../../app/AppShell.js'
 
