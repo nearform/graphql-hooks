@@ -12,7 +12,9 @@ import { Kind, print } from '@0no-co/graphql.web'
 export const pipeP = (fns: (() => any)[]) => (arg: any) =>
   fns.reduce((p, f) => p.then(f), Promise.resolve(arg))
 
-export function extractOperationName(document: DocumentNode | string): string | undefined {
+export function extractOperationName(
+  document: DocumentNode | string
+): string | undefined {
   let operationName: string | undefined = undefined
 
   if (typeof document !== 'string') {

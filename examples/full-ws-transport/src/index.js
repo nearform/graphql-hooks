@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { createClient } from 'graphql-ws'
 import { GraphQLClient, ClientContext } from 'graphql-hooks'
 import App from './App'
@@ -16,11 +16,11 @@ const client = new GraphQLClient({
   subscriptionClient
 })
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
   <React.StrictMode>
     <ClientContext.Provider value={client}>
       <App />
     </ClientContext.Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )

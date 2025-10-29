@@ -12,7 +12,10 @@ const TEST_QUERY = /* GraphQL */ `
 `
 
 describe('APQMiddleware', () => {
-  const MOCK_DATA = { data: [{ id: 1 }, { id: 2 }, { id: 3 }], headers: expect.any(Headers) }
+  const MOCK_DATA = {
+    data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+    headers: expect.any(Headers)
+  }
   const MOCK_ERROR_RESP = {
     errors: [
       {

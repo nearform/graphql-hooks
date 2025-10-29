@@ -1,7 +1,7 @@
 import { ClientContext, GraphQLClient } from 'graphql-hooks'
 import memCache from 'graphql-hooks-memcache'
 import React from 'react'
-import { hydrate } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import AppShell from '../../app/AppShell.js'
 
@@ -19,4 +19,5 @@ const App = (
   </BrowserRouter>
 )
 
-hydrate(App, document.getElementById('app-root'))
+const root = createRoot(document.getElementById('app-root'))
+root.hydrate(App)
