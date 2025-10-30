@@ -16,9 +16,10 @@ function isTypedDocumentNode(item: unknown): item is TypedDocumentNode {
   return typeof item === 'object' && item != null && 'kind' in item
 }
 
-export default function createRefetchMutationsMap<TResult = any, TVariables = object>(
-  refetchAfterMutations?: RefetchAfterMutationsData<TResult, TVariables>
-) {
+export default function createRefetchMutationsMap<
+  TResult = any,
+  TVariables = object
+>(refetchAfterMutations?: RefetchAfterMutationsData<TResult, TVariables>) {
   if (!refetchAfterMutations) return {}
 
   const mutations = Array.isArray(refetchAfterMutations)
