@@ -1,4 +1,4 @@
-const ReactDOMServer = require('react-dom/server')
+const ReactDOMServer = require('react-dom/server.edge')
 
 async function getInitialState(opts) {
   const { App, client, render = ReactDOMServer.renderToStaticMarkup } = opts
