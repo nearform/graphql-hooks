@@ -15,9 +15,9 @@ const client = new GraphQLClient({
   })
 })
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
   <ClientContext.Provider value={client}>
     <App />
-  </ClientContext.Provider>,
-  document.getElementById('root')
+  </ClientContext.Provider>
 )

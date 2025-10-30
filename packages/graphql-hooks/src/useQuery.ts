@@ -25,7 +25,12 @@ function useQuery<
   TRefetchVariables = object
 >(
   query: string | TypedDocumentNode<ResponseData, Variables>,
-  opts: UseQueryOptions<ResponseData, Variables, TRefetchData, TRefetchVariables> = {}
+  opts: UseQueryOptions<
+    ResponseData,
+    Variables,
+    TRefetchData,
+    TRefetchVariables
+  > = {}
 ): UseQueryResult<ResponseData, Variables, TGraphQLError> {
   const allOpts = {
     ...defaultOpts,
