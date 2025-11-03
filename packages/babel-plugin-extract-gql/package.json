@@ -31,7 +31,7 @@
   "dependencies": {
     "@fastify/cors": "^9.0.1",
     "fastify": "^4.2.0",
-    "pkg-dir": "^8.0.0"
+    "pkg-dir": "^9.0.0"
   },
   "repository": {
     "type": "git",
