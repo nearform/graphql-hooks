@@ -24,7 +24,7 @@
     "graphql-hooks-memcache": "^3.2.0",
     "lowdb": "^7.0.1",
     "mercurius": "^14.0.0",
-    "mqemitter-redis": "^5.0.0",
+    "mqemitter-redis": "^7.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "subscriptions-transport-ws": "^0.11.0"
