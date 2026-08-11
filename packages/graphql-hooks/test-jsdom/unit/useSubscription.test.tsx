@@ -128,7 +128,7 @@ describe('useSubscription', () => {
 
     const executeHook = () => renderHook(() => useSubscription(request, jest.fn()))
 
-    expect(executeHook).toThrowError('useSubscription() requires a client to be passed in the options or as a context value')
+    expect(executeHook).toThrow('useSubscription() requires a client to be passed in the options or as a context value')
   })
 
   it('calls the update callback when subscription receives data', () => {

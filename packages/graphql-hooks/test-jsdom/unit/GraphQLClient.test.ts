@@ -1,7 +1,7 @@
 import { GraphQLClient } from '../../src'
 import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
-import { FormData, File } from 'formdata-node'
+import { FormData } from 'formdata-node'
 import {
   createMockCache,
   createMockResponse,
