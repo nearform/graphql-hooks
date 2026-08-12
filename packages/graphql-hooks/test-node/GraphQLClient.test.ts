@@ -380,3 +380,29 @@ describe('with files in Node JS', () => {
     })
   })
 })
+
+describe('when instantiated on the server', () => {
+  // Lives in the node test project rather than the jsdom one: it needs an
+  // environment with genuinely no `window`, and jsdom 26 makes `window`
+  // non-configurable, so `delete global.window` no longer simulates a server.
+  it("doesn't require fetch to be polyfilled when ssrMode is false", () => {
+    const oldFetch = global.fetch
+    try {
+      expect(typeof window).toBe('undefined')
+      //@ts-ignore
+      delete global.fetch
+      // Assert the premise: without this the case would pass vacuously, since
+      // an un-deleted `fetch` also satisfies the constructor.
+      expect(typeof fetch).toBe('undefined')
+
+      const client = new GraphQLClient({
+        ...validConfig,
+        ssrMode: false
+      })
+
+      expect(client.ssrMode).toBe(false)
+    } finally {
+      global.fetch = oldFetch
+    }
+  })
+})
