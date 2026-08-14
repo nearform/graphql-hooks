@@ -1,7 +1,7 @@
 import { GraphQLClient } from '../../src'
 import { TextEncoder } from 'util'
 import fetchMock from 'jest-fetch-mock'
-import { FormData, File } from 'formdata-node'
+import { FormData } from 'formdata-node'
 import {
   createMockCache,
   createMockResponse,
@@ -110,25 +110,10 @@ describe('GraphQLClient', () => {
       }
     })
 
-    it("doesn't require fetch to be polyfilled when ssrMode is false and running on the server", () => {
-      const oldFetch = global.fetch
-      const oldWindow = global.window
-      try {
-        //@ts-ignore
-        delete global.fetch
-        expect(global.window.document.createElement).toBeTruthy()
-        //@ts-ignore
-        delete global.window
-        const client = new GraphQLClient({
-          ...validConfig,
-          ssrMode: false
-        })
-        expect(client.ssrMode).toBe(false)
-      } finally {
-        global.fetch = oldFetch
-        global.window = oldWindow
-      }
-    })
+    // The "running on the server" counterpart of this case lives in
+    // test-node/GraphQLClient.test.ts — it needs an environment with no `window`
+    // at all, and jsdom 26 makes `window` non-configurable so it cannot be
+    // deleted from under the jsdom test project.
 
     it('throws if config.ssrMode is true and no config.cache is provided', () => {
       expect(() => {

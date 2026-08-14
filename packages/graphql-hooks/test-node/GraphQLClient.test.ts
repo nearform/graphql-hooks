@@ -91,14 +91,14 @@ describe('with files in Node JS', () => {
 
     client.invalidateQuery(validQuery)
 
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith({ query: validQuery })
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith({ query: validQuery })
 
-    expect(cacheMock.delete).toBeCalledTimes(1)
-    expect(cacheMock.delete).toBeCalledWith({ query: validQuery })
+    expect(cacheMock.delete).toHaveBeenCalledTimes(1)
+    expect(cacheMock.delete).toHaveBeenCalledWith({ query: validQuery })
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(1)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(1)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(
       Events.DATA_INVALIDATED,
       resultMock
     )
@@ -113,7 +113,7 @@ describe('with files in Node JS', () => {
 
     client.invalidateQuery(validQuery)
 
-    expect(requestMock).not.toBeCalled()
+    expect(requestMock).not.toHaveBeenCalled()
   })
 
   it('correctly uses the invalidateQuery function when using an Operation object', () => {
@@ -152,14 +152,14 @@ describe('with files in Node JS', () => {
 
     client.invalidateQuery(operation)
 
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith(operation)
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith(operation)
 
-    expect(cacheMock.delete).toBeCalledTimes(1)
-    expect(cacheMock.delete).toBeCalledWith(operation)
+    expect(cacheMock.delete).toHaveBeenCalledTimes(1)
+    expect(cacheMock.delete).toHaveBeenCalledWith(operation)
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(1)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(1)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(
       Events.DATA_INVALIDATED,
       resultMock
     )
@@ -209,14 +209,14 @@ describe('with files in Node JS', () => {
 
     client.invalidateQuery(operation)
 
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith(operation)
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith(operation)
 
-    expect(cacheMock.delete).toBeCalledTimes(1)
-    expect(cacheMock.delete).toBeCalledWith(operation)
+    expect(cacheMock.delete).toHaveBeenCalledTimes(1)
+    expect(cacheMock.delete).toHaveBeenCalledWith(operation)
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(1)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(1)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(
       Events.DATA_INVALIDATED,
       resultMock
     )
@@ -248,17 +248,17 @@ describe('with files in Node JS', () => {
 
     client.setQueryData(validQuery, updaterMock)
 
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith({ query: validQuery })
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith({ query: validQuery })
 
-    expect(cacheMock.get).toBeCalledTimes(1)
-    expect(cacheMock.get).toBeCalledWith({ query: validQuery })
+    expect(cacheMock.get).toHaveBeenCalledTimes(1)
+    expect(cacheMock.get).toHaveBeenCalledWith({ query: validQuery })
 
-    expect(updaterMock).toBeCalledTimes(1)
-    expect(updaterMock).toBeCalledWith(resultMock)
+    expect(updaterMock).toHaveBeenCalledTimes(1)
+    expect(updaterMock).toHaveBeenCalledWith(resultMock)
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(1)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(Events.DATA_UPDATED, {
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(1)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(Events.DATA_UPDATED, {
       data: resultMock
     })
   })
@@ -271,7 +271,7 @@ describe('with files in Node JS', () => {
 
     client.setQueryData(validQuery, updaterMock)
 
-    expect(updaterMock).not.toBeCalled()
+    expect(updaterMock).not.toHaveBeenCalled()
   })
 
   it('correctly sets the query data when operationName changes (using Operation object)', () => {
@@ -304,24 +304,24 @@ describe('with files in Node JS', () => {
     client.mutationsEmitter = mutationsEmitterMock
 
     client.setQueryData(operation, updaterMock)
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith(operation)
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith(operation)
 
     operation.operationName = 'Operation2'
 
     client.setQueryData(operation, updaterMock)
 
-    expect(getCacheKeyMock).toBeCalledTimes(2)
-    expect(getCacheKeyMock).toBeCalledWith(operation)
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(2)
+    expect(getCacheKeyMock).toHaveBeenCalledWith(operation)
 
-    expect(cacheMock.get).toBeCalledTimes(2)
-    expect(cacheMock.get).toBeCalledWith(operation)
+    expect(cacheMock.get).toHaveBeenCalledTimes(2)
+    expect(cacheMock.get).toHaveBeenCalledWith(operation)
 
-    expect(updaterMock).toBeCalledTimes(2)
-    expect(updaterMock).toBeCalledWith(resultMock)
+    expect(updaterMock).toHaveBeenCalledTimes(2)
+    expect(updaterMock).toHaveBeenCalledWith(resultMock)
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(2)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(Events.DATA_UPDATED, {
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(2)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(Events.DATA_UPDATED, {
       data: resultMock
     })
   })
@@ -365,18 +365,44 @@ describe('with files in Node JS', () => {
 
     client.setQueryData(operation, updaterMock)
 
-    expect(getCacheKeyMock).toBeCalledTimes(1)
-    expect(getCacheKeyMock).toBeCalledWith(operation)
+    expect(getCacheKeyMock).toHaveBeenCalledTimes(1)
+    expect(getCacheKeyMock).toHaveBeenCalledWith(operation)
 
-    expect(cacheMock.get).toBeCalledTimes(1)
-    expect(cacheMock.get).toBeCalledWith(operation)
+    expect(cacheMock.get).toHaveBeenCalledTimes(1)
+    expect(cacheMock.get).toHaveBeenCalledWith(operation)
 
-    expect(updaterMock).toBeCalledTimes(1)
-    expect(updaterMock).toBeCalledWith(resultMock)
+    expect(updaterMock).toHaveBeenCalledTimes(1)
+    expect(updaterMock).toHaveBeenCalledWith(resultMock)
 
-    expect(mutationsEmitterMock.emit).toBeCalledTimes(1)
-    expect(mutationsEmitterMock.emit).toBeCalledWith(Events.DATA_UPDATED, {
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledTimes(1)
+    expect(mutationsEmitterMock.emit).toHaveBeenCalledWith(Events.DATA_UPDATED, {
       data: resultMock
     })
+  })
+})
+
+describe('when instantiated on the server', () => {
+  // Lives in the node test project rather than the jsdom one: it needs an
+  // environment with genuinely no `window`, and jsdom 26 makes `window`
+  // non-configurable, so `delete global.window` no longer simulates a server.
+  it("doesn't require fetch to be polyfilled when ssrMode is false", () => {
+    const oldFetch = global.fetch
+    try {
+      expect(typeof window).toBe('undefined')
+      //@ts-ignore
+      delete global.fetch
+      // Assert the premise: without this the case would pass vacuously, since
+      // an un-deleted `fetch` also satisfies the constructor.
+      expect(typeof fetch).toBe('undefined')
+
+      const client = new GraphQLClient({
+        ...validConfig,
+        ssrMode: false
+      })
+
+      expect(client.ssrMode).toBe(false)
+    } finally {
+      global.fetch = oldFetch
+    }
   })
 })

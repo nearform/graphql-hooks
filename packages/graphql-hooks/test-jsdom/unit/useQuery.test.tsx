@@ -59,7 +59,7 @@ describe('useQuery', () => {
     const executeHook = () =>
       renderHook(() => useQuery(TEST_QUERY, { useCache: true }))
 
-    expect(executeHook).toThrowError(
+    expect(executeHook).toThrow(
       'useQuery() requires a client to be passed in the options or as a context value'
     )
   })
@@ -484,7 +484,7 @@ describe('useQuery', () => {
           }
         )
 
-      expect(executeHook).toThrowError(errorState.error)
+      expect(executeHook).toThrow(errorState.error)
     })
   })
 
