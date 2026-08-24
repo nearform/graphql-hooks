@@ -2,10 +2,7 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
-import esbuild from 'rollup-plugin-esbuild' // Used for TS transpiling
-import generateRollupConfig, {
-  ESBUILD_TARGET
-} from '../../config/rollup.config'
+import generateRollupConfig, { esbuildTs } from '../../config/rollup.config'
 
 const pkg = require('./package.json')
 const externalPeerDeps = [...Object.keys(pkg.peerDependencies || {})]
@@ -17,7 +14,7 @@ const overrides = {
     nodeResolve({
       jsnext: true
     }),
-    esbuild({ target: ESBUILD_TARGET }),
+    esbuildTs(),
     babel(),
     sizeSnapshot()
   ]

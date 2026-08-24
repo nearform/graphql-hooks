@@ -7,11 +7,11 @@ import terser from '@rollup/plugin-terser'
 import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import esbuild from 'rollup-plugin-esbuild' // Used for TS transpiling
 
-// rollup-plugin-esbuild 5 defaulted to `target: 'es2017'`; 6 changed that default
-// to 'es2020'. Left implicit, the upgrade would silently raise the floor of the
-// published bundles by emitting untranspiled optional chaining. Pin the target so
-// the plugin's default can never move the output again.
-export const ESBUILD_TARGET = 'es2017'
+// rollup-plugin-esbuild 5 defaulted to `target: 'es2017'`, 6 changed that
+// default to 'es2020'. Left implicit, the upgrade would silently raise the
+// floor of the published bundles by emitting untranspiled optional chaining.
+// Always build the plugin through here so the default cannot move the output.
+export const esbuildTs = () => esbuild({ target: 'es2017' })
 
 // get the package.json for the current package
 const packageDir = path.join(__filename, '..')
@@ -28,12 +28,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       input: entryPoint,
       output: { file: `lib/${pkg.name}.js`, format: 'cjs', indent: false },
       external,
-      plugins: [
-        commonjs(),
-        esbuild({ target: ESBUILD_TARGET }),
-        babel(),
-        sizeSnapshot()
-      ],
+      plugins: [commonjs(), esbuildTs(), babel(), sizeSnapshot()],
       ...overrides
     },
 
@@ -42,12 +37,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       input: entryPoint,
       output: { file: `es/${pkg.name}.js`, format: 'es', indent: false },
       external,
-      plugins: [
-        commonjs(),
-        esbuild({ target: ESBUILD_TARGET }),
-        babel(),
-        sizeSnapshot()
-      ],
+      plugins: [commonjs(), esbuildTs(), babel(), sizeSnapshot()],
       ...overrides
     },
 
@@ -59,7 +49,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       plugins: [
         commonjs(),
         nodeResolve(),
-        esbuild({ target: ESBUILD_TARGET }),
+        esbuildTs(),
         replace({
           'process.env.NODE_ENV': JSON.stringify('production')
         }),
@@ -89,7 +79,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       plugins: [
         commonjs(),
         nodeResolve(),
-        esbuild({ target: ESBUILD_TARGET }),
+        esbuildTs(),
         babel({
           exclude: 'node_modules/**'
         }),
@@ -114,7 +104,7 @@ const generateRollupConfig = ({ name, overrides, entryPoint }) => {
       plugins: [
         commonjs(),
         nodeResolve(),
-        esbuild({ target: ESBUILD_TARGET }),
+        esbuildTs(),
         babel({
           exclude: 'node_modules/**'
         }),
