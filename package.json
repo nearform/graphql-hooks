@@ -37,7 +37,7 @@
     "cypress": "^13.11.0",
     "esbuild": "^0.23.1",
     "eslint": "^8.7.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.23.2",
