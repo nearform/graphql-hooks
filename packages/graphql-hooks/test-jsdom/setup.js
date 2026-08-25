@@ -1,15 +1,13 @@
 // jest-fetch-mock 4 no longer installs its globals as a side effect of being
-// required. enableMocks() is the documented entry point and sets `fetch`,
-// `Headers`, `Request` and `Response` from the same implementation, which keeps
-// `expect.any(Headers)` matching what the mocked responses actually carry.
-require('jest-fetch-mock').enableMocks()
+// required; enableMocks() is the documented entry point.
+const fetchMock = require('jest-fetch-mock')
+fetchMock.enableMocks()
 
-// ...and make the same implementation's classes the globals the tests compare
-// against. Under jsdom, `Headers` would otherwise resolve to the environment's
-// own class while the mocked responses carry cross-fetch's, so
-// `expect.any(Headers)` never matches.
-const { Headers, Request, Response } = require('cross-fetch')
-Object.assign(global, { Headers, Request, Response })
+// enableMocks() only fills globals that are undefined, and jsdom already defines
+// its own `Headers` — so the mocked responses carry the mock's class while
+// `expect.any(Headers)` would resolve to jsdom's, and `instanceof` never
+// matches. Align the global with the class actually in use.
+global.Headers = fetchMock.Headers
 
 if (typeof global.TextEncoder === 'undefined') {
   const { TextEncoder } = require('util')
