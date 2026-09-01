@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=12.0.0"
+    "node": "^20.9.0 || >=22.0.0"
   },
   "description": "",
   "scripts": {
@@ -15,15 +15,15 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@fastify/cors": "^9.0.1",
-    "@fastify/static": "^7.0.4",
+    "@fastify/cors": "^11.3.0",
+    "@fastify/static": "^10.1.3",
     "babel-plugin-dynamic-import-node": "^2.2.0",
-    "fastify": "^4.2.0",
+    "fastify": "^5.12.1",
     "graphql": "^16.6.0",
     "graphql-hooks": "^8.2.0",
     "graphql-hooks-memcache": "^3.2.0",
     "lowdb": "^7.0.1",
-    "mercurius": "^14.0.0",
+    "mercurius": "^16.10.0",
     "mqemitter-redis": "^7.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
