@@ -1,9 +1,24 @@
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
-const pkgDir = require('pkg-dir')
 
-const pkgRoot = pkgDir.sync()
+// The nearest directory with a package.json, from the current working
+// directory upwards. pkg-dir used to do this, but it has been ESM-only since
+// version 6 and cannot be require()d from here.
+function findPackageRoot(dir = process.cwd()) {
+  for (;;) {
+    if (fs.existsSync(path.join(dir, 'package.json'))) return dir
+    const parent = path.dirname(dir)
+    if (parent === dir) {
+      throw new Error(
+        `babel-plugin-extract-gql: no package.json found in ${process.cwd()} or any parent directory`
+      )
+    }
+    dir = parent
+  }
+}
+
+const pkgRoot = findPackageRoot()
 const outputFile = path.join(pkgRoot, 'gql-queries.json')
 
 function appendJSON(json) {
