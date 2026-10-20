@@ -4,6 +4,11 @@
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 0",
