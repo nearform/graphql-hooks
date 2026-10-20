@@ -59,6 +59,40 @@ describe('findPackageRoot', () => {
     assert.strictEqual(findPackageRoot(nested), tmp)
   })
 
+  describe('with a symlinked package.json', () => {
+    // Creating a symlink needs a privilege on Windows that a test run often
+    // lacks, so those runs skip instead of failing.
+    const symlinkOrSkip = (test, target, link) => {
+      try {
+        fs.symlinkSync(target, link)
+      } catch (e) {
+        if (e.code === 'EPERM' || e.code === 'EACCES') return test.skip()
+        throw e
+      }
+    }
+
+    it('counts a symlink to a file', function () {
+      const real = path.join(tmp, 'real-package.json')
+      fs.writeFileSync(real, '{}')
+      const project = mkdir('project')
+      symlinkOrSkip(this, real, path.join(project, 'package.json'))
+
+      assert.strictEqual(findPackageRoot(project), project)
+    })
+
+    it('skips a dangling symlink and keeps looking', function () {
+      writePackage(tmp)
+      const project = mkdir('project')
+      symlinkOrSkip(
+        this,
+        path.join(tmp, 'missing.json'),
+        path.join(project, 'package.json')
+      )
+
+      assert.strictEqual(findPackageRoot(project), tmp)
+    })
+  })
+
   it('starts from the working directory by default', () => {
     writePackage(tmp)
     const nested = mkdir('src')
