@@ -1,9 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
-const pkgDir = require('pkg-dir')
+const findPackageRoot = require('./findPackageRoot')
 
-const pkgRoot = pkgDir.sync()
+const pkgRoot = findPackageRoot()
 const outputFile = path.join(pkgRoot, 'gql-queries.json')
 
 function appendJSON(json) {
