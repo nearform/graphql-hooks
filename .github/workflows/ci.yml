@@ -25,6 +25,9 @@ jobs:
       - run: npm run test:coverage -- --silent
       - run: npm run check-types
       - run: npm run build
+      # Its suite is mocha, which test:coverage (jest) does not run, and it needs
+      # the build above for the tests that load the built lib.
+      - run: npm test --workspace=babel-plugin-extract-gql
       - uses: coverallsapp/github-action@v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
