@@ -28,6 +28,10 @@ jobs:
       # Its suite is mocha, which test:coverage (jest) does not run, and it needs
       # the build above for the tests that load the built lib.
       - run: npm test --workspace=babel-plugin-extract-gql
+      # graphql-hooks-ssr supports React 18 and 19, but its unit tests only run on
+      # the workspace's 19, so render a real app against each.
+      - run: node packages/graphql-hooks-ssr/test-react/smoke.js 18
+      - run: node packages/graphql-hooks-ssr/test-react/smoke.js 19
       - uses: coverallsapp/github-action@v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

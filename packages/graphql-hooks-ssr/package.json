@@ -4,6 +4,11 @@
   "description": "Server side rendering utils for graphql-hooks",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "clean": "rm -rf ./dist ./es ./lib",
     "test": "echo \"Error: no test specified\" && exit 0",
@@ -21,8 +26,8 @@
   "author": "Brian Mullan <bmullan91@gmail.com>",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.0",
