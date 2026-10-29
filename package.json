@@ -12,7 +12,6 @@
     "lint": "eslint .",
     "check-types": "lerna run check-types",
     "prettier": "prettier '**/*.js' '**/*.md' '**/*.ts' --write",
-    "release": "lerna publish",
     "clean": "lerna run clean && lerna clean && rm -rf ./node_modules",
     "prepare": "husky"
   },

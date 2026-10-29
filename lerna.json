@@ -2,13 +2,8 @@
   "packages": ["packages/*", "examples/*", "examples/persisted-queries/*"],
   "version": "independent",
   "command": {
-    "publish": {
-      "conventionalCommits": true,
-      "message": "chore(release): :rocket:"
-    },
     "version": {
-      "conventionalCommits": true,
-      "createRelease": "github"
+      "conventionalCommits": true
     }
   },
   "$schema": "node_modules/lerna/schemas/lerna-schema.json"

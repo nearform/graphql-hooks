@@ -33,7 +33,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/nearform/graphql-hooks.git"
+    "url": "git+https://github.com/nearform/graphql-hooks.git",
+    "directory": "packages/babel-plugin-extract-gql"
   },
   "bugs": {
     "url": "https://github.com/nearform/graphql-hooks/issues"

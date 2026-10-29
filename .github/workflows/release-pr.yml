@@ -1,0 +1,74 @@
+name: release-pr
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: release-pr
+  cancel-in-progress: false
+
+jobs:
+  release-pr:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+      - run: npm install --ignore-scripts
+      - name: Refuse to run while a release PR is open
+        run: |
+          open_release_prs="$(gh pr list --state open --limit 1000 --json headRefName --jq '[.[] | select(.headRefName | startswith("release/"))] | length')"
+          if [ "$open_release_prs" != "0" ]; then
+            echo "A release PR is already open. Merge or close it first." >&2
+            exit 1
+          fi
+      # Lerna counts commits since each package's last tag, and tags only appear once the release workflow has finished.
+      - name: Refuse to run while the previous release is unpublished
+        run: |
+          set -euo pipefail
+          release_tags="$(npx lerna ls --no-private --json | jq -r '.[] | "\(.name)@\(.version)"')"
+          unpublished=0
+          for release_tag in $release_tags; do
+            if npm view "$release_tag" version > npm-view-output.txt 2>&1; then
+              continue
+            elif grep -q E404 npm-view-output.txt; then
+              echo "$release_tag is not on npm. Finish the previous release first." >&2
+            else
+              echo "Could not check whether $release_tag is on npm:" >&2
+              cat npm-view-output.txt >&2
+            fi
+            unpublished=1
+          done
+          rm -f npm-view-output.txt
+          exit "$unpublished"
+      - name: Bump versions and changelogs
+        run: npx lerna version --conventional-commits --no-git-tag-version --no-push --no-private --yes
+      - name: Open the release PR and run CI on it
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- packages; then
+            echo "No package has releasable changes since its last release."
+            exit 0
+          fi
+          release_branch="release/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          release_title="chore(release): publish updated packages"
+          changed_packages="$(git diff --name-only -- 'packages/*/package.json' | xargs jq -r '"- \(.name)@\(.version)"')"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$release_branch"
+          git add packages
+          git commit -m "$release_title"
+          git push origin "$release_branch"
+          printf 'Versions and changelogs bumped by `lerna version` from conventional commits.\n\n%s\n\nMerging this PR starts the `release` workflow, which waits for approval in the `release` environment and then publishes to npm.\n' "$changed_packages" > release-pr-body.md
+          gh pr create --base master --head "$release_branch" --title "$release_title" --body-file release-pr-body.md
+          gh workflow run ci.yml --ref "$release_branch"

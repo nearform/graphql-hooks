@@ -2,31 +2,55 @@
 
 _Note that this guide is intended for people in charge of managing internal releases in NearForm. If you have made changes to this repository, in most cases you should not need to take any action for the repo to be released._
 
-If you need to release graphql-hooks, you should follow these steps:
+Releases run from GitHub Actions. Nobody needs npm credentials, a GitHub personal access token or a local checkout: npm accepts the publish through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC), every published version carries npm provenance, and every release is a workflow run with a recorded actor.
 
-- Ensure you have sufficient permissions to publish the graphql-hooks package on npm. If you require permissions, contact IT.
+The four packages under `packages/` (`graphql-hooks`, `graphql-hooks-memcache`, `graphql-hooks-ssr`, `babel-plugin-extract-gql`) are versioned independently from conventional commits, as before. The private packages under `examples/` are never published.
 
-- Clone this repository locally
+## Releasing
 
-- Run `npm install` in the root directory. When the installation is complete, the script will automatically run the build command, `npm run build:packages`. Ensure the builds complete successfully, if they do not, you may need to use a different version of node and re-run the command.
+1. Open the Actions tab, choose the **release-pr** workflow and run it on `master`. It runs `lerna version` to bump versions and write changelogs from the conventional commits since each package's last release, then opens a `chore(release)` pull request from a `release/<run id>-<run attempt>` branch and dispatches **ci** against that branch. If no package has releasable changes, it does nothing. It refuses to run while another release PR is open, or while a version in the repo is not yet on npm (a previous release that is merged but unfinished).
+2. Review the release PR (versions and CHANGELOG entries) and wait for the `build` check. Merge it with a squash, keeping the `chore(release)` title: the next step is triggered by that prefix (a merge commit also works, since its message names the `release/` branch). Do not merge anything else to `master` while the release PR is open. If `master` has moved on, do not use "Update branch": close the PR and run **release-pr** again, because the versions and changelogs were computed from the commits that existed when it was cut.
+3. Merging starts the **release** workflow, which reruns the CI checks and then waits for a reviewer to approve the `release` environment. Approving it first checks that the merged PR's head is a `release/` branch of this repository (not a fork) and that it was merged onto the commit it was cut from, then publishes every package whose version is not yet on npm (in dependency order, with `npm publish --provenance`). For each package whose `package.json` the release commit bumped, it then creates an annotated `<name>@<version>` tag on the merge commit and a GitHub release for that tag, using that package's changelog entry. Packages the release commit did not touch get no tag or release.
+4. Check the [npm pages](https://www.npmjs.com/package/graphql-hooks) and the [GitHub releases](https://github.com/nearform/graphql-hooks/releases).
 
-- Create a GitHub personal access token with the following permissions on the graphql-hooks repo:
+If the release workflow fails part way (for example two of four packages published), use "Re-run failed jobs" on that run. Packages already on npm and releases already created are skipped, so a re-run only completes what is missing. Finish a failed release before running **release-pr** again.
 
-  - Metadata read-only
-  - Content read and write
-  - Issues read and write
-  - Pull Requests read and write
+If **release-pr** fails after pushing its branch, it leaves a `release/<run id>-<run attempt>` branch behind, possibly with an open PR, and its "release PR is open" check then blocks new runs. If the PR exists but has no `build` check, run **ci** on that branch from the Actions tab (Run workflow, choose the `release/` branch) and carry on. Otherwise close the PR, if any, and delete the branch, then run **release-pr** again.
 
-- Set a the `GH_TOKEN` environment variable in your terminal to the token you just made using
+Releases are created with the built-in token, so they do not trigger **notify-release**'s `release: published` trigger. That workflow only lists unreleased commits in an issue and closes the issue after a release; it does not use the release payload. After a release it now closes that issue on its next daily run (08:30 UTC) or when run manually, instead of immediately.
 
-  ```
-  export GH_TOKEN=<your-token-here>
-  ```
+If the release workflow stops at the "Require a release PR that master has not moved past" step, nothing was published. Revert the release commit through a PR and run **release-pr** again. If a merged release PR starts no release run, its title or merge message lost the `chore(release)` prefix; the same revert applies.
 
-- Authenticate to npm in the same terminal by running `npm login`.
+## One-time setup (maintainers)
 
-- Check the tests are passing with `npm test`
+These cannot be done from the repo and must be in place before the first release.
 
-- Run `npm run release` to run the release script. Follow the prompts from [`lerna publish`](https://lernajs.io/#command-publish), the script will ask you to verify to npm with 2FA, so have your authentication service ready.
+- On npmjs.com, for each of the four packages, add a trusted publisher (package Settings, Trusted Publisher, GitHub Actions): organisation `nearform`, repository `graphql-hooks`, workflow filename `release.yml`, environment `release`. The filename must match exactly. Someone with publish rights on each package has to do this.
+- In the repository settings, create an environment named `release`. Add required reviewers, and restrict deployment branches to `master`.
+- In Settings, Actions, General, enable "Allow GitHub Actions to create and approve pull requests" so **release-pr** can open the PR with the built-in token.
+- Recommended before the first release, not enforced by the pipeline: tag the two commits that are already published but untagged, `graphql-hooks-memcache@3.2.0` and `graphql-hooks-ssr@3.0.1`, so Lerna counts from them instead of `3.1.3` and `3.0.0` (see Known limitation). Find each commit with `npm view <name>@<version> gitHead`, which can be empty for versions published without it; then fall back to the release commit in `git log` that bumped that package's `package.json`. Create each tag as an annotated tag with `git tag -a <name>@<version> -m <name>@<version> <sha>` and push it with `git push origin <name>@<version>` (pushing an annotated tag works like any other). Lerna only recognises annotated tags, so any tag made by hand must be annotated: a lightweight tag (plain `git tag <name> <sha>`) is ignored. Without this, expect repeated changelog entries for those two packages in the first release PR.
+- No secrets are needed. Do not add an npm token or a personal access token: with trusted publishing neither is used, and a leftover token would be a long-lived credential again.
 
-- Once the script has finished running, the release is complete. You can verify this by checking the [npm page](https://www.npmjs.com/package/graphql-hooks), and the [latest releases on the GitHub repo](https://github.com/nearform/graphql-hooks/releases/tag/graphql-hooks%406.3.1).
+## Why it works this way
+
+- **A release PR rather than a push.** `master` requires a reviewed PR and the `build` check, and the workflow token cannot push to it. Rather than add a bypass, the version bump goes through the same review as any change, and the merge commit is the release commit. Lerna therefore runs only as `lerna version --no-git-tag-version`; it does not commit, tag, push or call GitHub.
+- **CI on the release PR.** Pushes and PRs made with the built-in token do not trigger other workflows, so `build` would never report on the release PR. **release-pr** dispatches `ci.yml` on the release branch instead (`workflow_dispatch` is exempt from that rule), which reports `build` on the branch head without a personal token or GitHub App. Updating the branch from the PR page is done by a person and triggers CI normally.
+- **`npm publish` rather than `lerna publish`.** Lerna 8 publishes through libnpmpublish, which uses OIDC only for provenance and cannot authenticate to npm with it. npm 11.5.1 or later can, so the workflow asserts that version (Node on `lts/*` ships it) and publishes each package itself. Tags and releases are created by the workflow instead of Lerna, in the same `<name>@<version>` format, with the tag name as the tag message as Lerna does.
+- **Environment gate.** The publish job runs in the `release` environment, so an approval by an authorised reviewer is recorded in the deployment history alongside the workflow run. This is the control that decides whether anything is published. The `chore(release)` title match and the `release/` head-branch check are sanity checks that stop an unrelated merge from reaching the approval prompt: anyone with write access can create a branch named `release/x` and use that title, so neither is an access control. A merge that is not from a `release/` branch fails before publishing anything.
+- **Install scripts off in the publish job.** Dependencies are installed with `--ignore-scripts` and the packages are built explicitly, so third-party install scripts do not run in the job that holds the OIDC token. This is a partial mitigation only. The build (`build:packages`) and each package's `prepublishOnly` (graphql-hooks and graphql-hooks-memcache rebuild with Rollup, Babel and TypeScript) still run third-party code while the token is available, and `.npmrc` sets `package-lock=false`, so dependency versions are resolved afresh on every run. Splitting build and publish into separate jobs was considered and not done: `prepublishOnly` also copies the README and LICENSE into the package, so it would have to be replicated, and the added artifact hand-off is more to get wrong than the reduced exposure is worth.
+- **Annotated tags through the Git Data API.** Lerna finds a package's previous release with `git describe` without `--tags`, so it only sees annotated tags. `gh release create` on a missing tag makes a lightweight one, so `scripts/create-annotated-tag.sh` first creates the tag object and the `refs/tags/<name>@<version>` ref through the API, and the release is then created with `--verify-tag` so it can never create a tag itself. The API needs only the job's existing `contents: write` token, so the checkout keeps `persist-credentials: false` and no git credentials are added. A re-run reuses an existing tag that points at the release commit; a tag pointing elsewhere, or a lightweight one, fails the job and is never moved or deleted. It is tested in `scripts/create-annotated-tag.test.js` against a stubbed `gh`.
+- **Release notes from the changelog.** `scripts/release-notes.js` extracts a version's section, accepting both the `#` headings Lerna writes for minor and major releases and the `##` ones it writes for patches. It is tested in `scripts/release-notes.test.js`.
+- **Known limitation.** `graphql-hooks-memcache@3.2.0` and `graphql-hooks-ssr@3.0.1` are on npm but have no git tag, so Lerna counts commits for those two from `3.1.3` and `3.0.0` until a release tags them (with annotated tags: see One-time setup). There is no tag check before **release-pr** for that reason: a package published to npm whose tag step then failed is not caught, so re-run a failed release workflow before starting the next release.
+
+## Not verified until the first real release
+
+This pipeline could not be exercised end to end before it was merged. Watch the first release for:
+
+- The OIDC token exchange with npm, and provenance, including that the `repository` fields in the four `package.json` files (`git+https` URL and `directory`) satisfy npm's provenance check.
+- The `build` check reporting on the release PR from the dispatched **ci** run.
+- The `release` environment approval prompt.
+- Installing with `--ignore-scripts` and then `build:packages` in CI producing a publishable build.
+- The `chore(release)` title surviving the squash merge and starting the **release** workflow.
+- The "Require a release PR that master has not moved past" step finding the release PR through the GitHub API and reading `head.ref` and `head.repo.full_name` from it.
+- The Git Data API call creating an annotated tag that Lerna's `git describe` recognises in this repository (checked only with tags made by `git tag -a` in a scratch repo), including who GitHub records as the tagger for a tag created with the workflow token.
+- `gh release create --verify-tag` accepting the tag created by the preceding step.

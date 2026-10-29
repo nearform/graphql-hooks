@@ -1,0 +1,94 @@
+name: release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  checks:
+    if: startsWith(github.event.head_commit.message, 'chore(release)') || contains(github.event.head_commit.message, format(' {0}/release/', github.repository_owner))
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    environment: release
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pull-requests: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      # The job-level gate only sees the commit message; the PR's head branch is only available from the API.
+      - name: Require a release PR that master has not moved past
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pull_request="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0] // empty')"
+          if [ -z "$pull_request" ]; then
+            echo "No pull request is associated with ${GITHUB_SHA}. Nothing was published." >&2
+            exit 1
+          fi
+          pull_number="$(jq -r '.number' <<< "$pull_request")"
+          head_ref="$(jq -r '.head.ref' <<< "$pull_request")"
+          head_repository="$(jq -r '.head.repo.full_name' <<< "$pull_request")"
+          case "${head_repository}:${head_ref}" in
+            "${GITHUB_REPOSITORY}:release/"*) ;;
+            *)
+              printf 'PR #%s was merged from "%s" branch "%s", not a release/ branch of this repository. Nothing was published.\n' "$pull_number" "$head_repository" "$head_ref" >&2
+              exit 1
+              ;;
+          esac
+          cut_from="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pull_number}/commits" --jq '.[0].parents[0].sha')"
+          merged_onto="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" --jq '.parents[0].sha')"
+          if [ "$cut_from" != "$merged_onto" ]; then
+            echo "The release PR (#${pull_number}) was cut from ${cut_from} but merged onto ${merged_onto}. Nothing was published. Revert the release commit and run release-pr again." >&2
+            exit 1
+          fi
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+      - name: Require an npm that supports trusted publishing
+        run: |
+          npm_version="$(npm --version)"
+          if ! printf '11.5.1\n%s\n' "$npm_version" | sort -V -C; then
+            echo "npm $npm_version is older than 11.5.1, which trusted publishing requires." >&2
+            exit 1
+          fi
+      - run: npm install --ignore-scripts
+      - run: npm run build:packages
+      # npm publishes, not Lerna: Lerna 8 cannot authenticate to npm with OIDC. Packages already on npm are skipped, so re-runs are safe.
+      - name: Publish unpublished packages, then tag and release them
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          npx lerna ls --no-private --toposort --json | jq -r '.[] | [.name, .version, .location] | @tsv' > publishable-packages.tsv
+          while IFS=$'\t' read -r package_name package_version package_location <&3; do
+            release_tag="${package_name}@${package_version}"
+            if npm view "$release_tag" version > npm-view-output.txt 2>&1; then
+              echo "$release_tag is already on npm"
+            elif grep -q E404 npm-view-output.txt; then
+              (cd "$package_location" && npm publish --provenance --access public)
+            else
+              cat npm-view-output.txt >&2
+              exit 1
+            fi
+            if git diff --quiet HEAD^ HEAD -- "$package_location/package.json"; then
+              echo "$release_tag was not bumped by this release commit, so it gets no tag or GitHub release"
+            elif gh release view "$release_tag" > /dev/null 2>&1; then
+              echo "$release_tag already has a GitHub release"
+            else
+              node scripts/release-notes.js "$package_location/CHANGELOG.md" "$package_version" > release-notes.md
+              scripts/create-annotated-tag.sh "$release_tag" "$GITHUB_SHA"
+              gh release create "$release_tag" --verify-tag --title "$release_tag" --notes-file release-notes.md
+            fi
+          done 3< publishable-packages.tsv
