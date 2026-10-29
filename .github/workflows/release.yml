@@ -88,6 +88,7 @@ jobs:
               echo "$release_tag already has a GitHub release"
             else
               node scripts/release-notes.js "$package_location/CHANGELOG.md" "$package_version" > release-notes.md
-              gh release create "$release_tag" --target "$GITHUB_SHA" --title "$release_tag" --notes-file release-notes.md
+              scripts/create-annotated-tag.sh "$release_tag" "$GITHUB_SHA"
+              gh release create "$release_tag" --verify-tag --title "$release_tag" --notes-file release-notes.md
             fi
           done 3< publishable-packages.tsv
