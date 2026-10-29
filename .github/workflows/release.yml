@@ -6,7 +6,7 @@ on:
 
 jobs:
   checks:
-    if: startsWith(github.event.head_commit.message, 'chore(release)')
+    if: startsWith(github.event.head_commit.message, 'chore(release)') || contains(github.event.head_commit.message, format(' {0}/release/', github.repository_owner))
     permissions:
       contents: read
     uses: ./.github/workflows/ci.yml
@@ -20,11 +20,25 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+      pull-requests: read
       id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
+          fetch-depth: 2
           persist-credentials: false
+      # Versions and changelogs were computed when the release PR was cut. A commit merged to master since then ships without a bump or changelog entry.
+      - name: Require that master has not moved since the release PR was cut
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pull_number="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].number')"
+          cut_from="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pull_number}/commits" --jq '.[0].parents[0].sha')"
+          merged_onto="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" --jq '.parents[0].sha')"
+          if [ -z "$pull_number" ] || [ "$pull_number" = null ] || [ "$cut_from" != "$merged_onto" ]; then
+            echo "The release PR (#${pull_number}) was cut from ${cut_from} but merged onto ${merged_onto}. Nothing was published. Revert the release commit and run release-pr again." >&2
+            exit 1
+          fi
       - uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
@@ -45,8 +59,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          npx lerna ls --no-private --toposort --json > publishable-packages.json
-          jq -r '.[] | [.name, .version, .location] | @tsv' publishable-packages.json | while IFS=$'\t' read -r package_name package_version package_location; do
+          npx lerna ls --no-private --toposort --json | jq -r '.[] | [.name, .version, .location] | @tsv' > publishable-packages.tsv
+          while IFS=$'\t' read -r package_name package_version package_location <&3; do
             release_tag="${package_name}@${package_version}"
             if npm view "$release_tag" version > npm-view-output.txt 2>&1; then
               echo "$release_tag is already on npm"
@@ -56,10 +70,12 @@ jobs:
               cat npm-view-output.txt >&2
               exit 1
             fi
-            if gh release view "$release_tag" > /dev/null 2>&1; then
+            if git diff --quiet HEAD^ HEAD -- "$package_location/package.json"; then
+              echo "$release_tag was not bumped by this release commit, so it gets no tag or GitHub release"
+            elif gh release view "$release_tag" > /dev/null 2>&1; then
               echo "$release_tag already has a GitHub release"
             else
-              awk '/^## /{if (seen) exit; seen = 1} seen' "$package_location/CHANGELOG.md" > release-notes.md
+              node scripts/release-notes.js "$package_location/CHANGELOG.md" "$package_version" > release-notes.md
               gh release create "$release_tag" --target "$GITHUB_SHA" --title "$release_tag" --notes-file release-notes.md
             fi
-          done
+          done 3< publishable-packages.tsv

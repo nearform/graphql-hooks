@@ -27,11 +27,23 @@ jobs:
       - run: npm install --ignore-scripts
       - name: Refuse to run while a release PR is open
         run: |
-          open_release_prs="$(gh pr list --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("release/"))] | length')"
+          open_release_prs="$(gh pr list --state open --limit 1000 --json headRefName --jq '[.[] | select(.headRefName | startswith("release/"))] | length')"
           if [ "$open_release_prs" != "0" ]; then
             echo "A release PR is already open. Merge or close it first." >&2
             exit 1
           fi
+      # Lerna counts commits since each package's last tag, and tags only appear once the release workflow has finished.
+      - name: Refuse to run while the previous release is unpublished
+        run: |
+          release_tags="$(npx lerna ls --no-private --json | jq -r '.[] | "\(.name)@\(.version)"')"
+          unpublished=0
+          for release_tag in $release_tags; do
+            if ! npm view "$release_tag" version > /dev/null 2>&1; then
+              echo "$release_tag is not on npm. Finish the previous release first." >&2
+              unpublished=1
+            fi
+          done
+          exit "$unpublished"
       - name: Bump versions and changelogs
         run: npx lerna version --conventional-commits --no-git-tag-version --no-push --no-private --yes
       - name: Open the release PR and run CI on it
@@ -40,7 +52,7 @@ jobs:
             echo "No package has releasable changes since its last release."
             exit 0
           fi
-          release_branch="release/${GITHUB_RUN_ID}"
+          release_branch="release/${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           release_title="chore(release): publish updated packages"
           changed_packages="$(git diff --name-only -- 'packages/*/package.json' | xargs jq -r '"- \(.name)@\(.version)"')"
           git config user.name "github-actions[bot]"

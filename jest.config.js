@@ -39,6 +39,14 @@ const projects = [
   {
     ...commonConfig,
     ...{
+      roots: ['./scripts'],
+      displayName: 'release-scripts',
+      testEnvironment: 'node'
+    }
+  },
+  {
+    ...commonConfig,
+    ...{
       roots: ['./examples/create-react-app'],
       coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/packages/*'],
       transform: {
