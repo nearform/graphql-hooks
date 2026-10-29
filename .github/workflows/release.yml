@@ -1,0 +1,65 @@
+name: release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  checks:
+    if: startsWith(github.event.head_commit.message, 'chore(release)')
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    environment: release
+    concurrency:
+      group: release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+      - name: Require an npm that supports trusted publishing
+        run: |
+          npm_version="$(npm --version)"
+          if ! printf '11.5.1\n%s\n' "$npm_version" | sort -V -C; then
+            echo "npm $npm_version is older than 11.5.1, which trusted publishing requires." >&2
+            exit 1
+          fi
+      - run: npm install --ignore-scripts
+      - run: npm run build:packages
+      # Lerna 8 publishes through libnpmpublish, which only uses OIDC for provenance and
+      # cannot authenticate to npm with it, so npm publishes each package instead.
+      # A package already on npm is skipped, which makes re-running a failed release safe.
+      - name: Publish unpublished packages, then tag and release them
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          npx lerna ls --no-private --toposort --json > publishable-packages.json
+          jq -r '.[] | [.name, .version, .location] | @tsv' publishable-packages.json | while IFS=$'\t' read -r package_name package_version package_location; do
+            release_tag="${package_name}@${package_version}"
+            if npm view "$release_tag" version > npm-view-output.txt 2>&1; then
+              echo "$release_tag is already on npm"
+            elif grep -q E404 npm-view-output.txt; then
+              (cd "$package_location" && npm publish --provenance --access public)
+            else
+              cat npm-view-output.txt >&2
+              exit 1
+            fi
+            if gh release view "$release_tag" > /dev/null 2>&1; then
+              echo "$release_tag already has a GitHub release"
+            else
+              awk '/^## /{if (seen) exit; seen = 1} seen' "$package_location/CHANGELOG.md" > release-notes.md
+              gh release create "$release_tag" --target "$GITHUB_SHA" --title "$release_tag" --notes-file release-notes.md
+            fi
+          done

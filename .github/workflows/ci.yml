@@ -5,6 +5,9 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  # Dispatched against the release branch because pushes made with GITHUB_TOKEN do not trigger pull_request runs.
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
@@ -33,5 +36,6 @@ jobs:
       - run: node packages/graphql-hooks-ssr/test-react/smoke.js 18
       - run: node packages/graphql-hooks-ssr/test-react/smoke.js 19
       - uses: coverallsapp/github-action@v2.3.8
+        if: github.event_name != 'workflow_dispatch'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
