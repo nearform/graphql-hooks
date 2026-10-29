@@ -35,6 +35,7 @@ jobs:
       # Lerna counts commits since each package's last tag, and tags only appear once the release workflow has finished.
       - name: Refuse to run while the previous release is unpublished
         run: |
+          set -euo pipefail
           release_tags="$(npx lerna ls --no-private --json | jq -r '.[] | "\(.name)@\(.version)"')"
           unpublished=0
           for release_tag in $release_tags; do
@@ -54,6 +55,7 @@ jobs:
         run: npx lerna version --conventional-commits --no-git-tag-version --no-push --no-private --yes
       - name: Open the release PR and run CI on it
         run: |
+          set -euo pipefail
           if git diff --quiet -- packages; then
             echo "No package has releasable changes since its last release."
             exit 0

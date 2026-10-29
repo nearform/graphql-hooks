@@ -39,10 +39,11 @@ jobs:
           fi
           pull_number="$(jq -r '.number' <<< "$pull_request")"
           head_ref="$(jq -r '.head.ref' <<< "$pull_request")"
-          case "$head_ref" in
-            release/*) ;;
+          head_repository="$(jq -r '.head.repo.full_name' <<< "$pull_request")"
+          case "${head_repository}:${head_ref}" in
+            "${GITHUB_REPOSITORY}:release/"*) ;;
             *)
-              printf 'PR #%s was merged from branch "%s", not a release/ branch. Nothing was published.\n' "$pull_number" "$head_ref" >&2
+              printf 'PR #%s was merged from "%s" branch "%s", not a release/ branch of this repository. Nothing was published.\n' "$pull_number" "$head_repository" "$head_ref" >&2
               exit 1
               ;;
           esac
