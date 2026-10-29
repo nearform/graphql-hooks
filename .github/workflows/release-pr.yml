@@ -38,17 +38,23 @@ jobs:
           release_tags="$(npx lerna ls --no-private --json | jq -r '.[] | "\(.name)@\(.version)"')"
           unpublished=0
           for release_tag in $release_tags; do
-            if ! npm view "$release_tag" version > /dev/null 2>&1; then
+            if npm view "$release_tag" version > npm-view-output.txt 2>&1; then
+              continue
+            elif grep -q E404 npm-view-output.txt; then
               echo "$release_tag is not on npm. Finish the previous release first." >&2
-              unpublished=1
+            else
+              echo "Could not check whether $release_tag is on npm:" >&2
+              cat npm-view-output.txt >&2
             fi
+            unpublished=1
           done
+          rm -f npm-view-output.txt
           exit "$unpublished"
       - name: Bump versions and changelogs
         run: npx lerna version --conventional-commits --no-git-tag-version --no-push --no-private --yes
       - name: Open the release PR and run CI on it
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- packages; then
             echo "No package has releasable changes since its last release."
             exit 0
           fi

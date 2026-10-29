@@ -27,15 +27,28 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      # Versions and changelogs were computed when the release PR was cut. A commit merged to master since then ships without a bump or changelog entry.
-      - name: Require that master has not moved since the release PR was cut
+      # The job-level gate only sees the commit message; the PR's head branch is only available from the API.
+      - name: Require a release PR that master has not moved past
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pull_number="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0].number')"
+          pull_request="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" --jq '.[0] // empty')"
+          if [ -z "$pull_request" ]; then
+            echo "No pull request is associated with ${GITHUB_SHA}. Nothing was published." >&2
+            exit 1
+          fi
+          pull_number="$(jq -r '.number' <<< "$pull_request")"
+          head_ref="$(jq -r '.head.ref' <<< "$pull_request")"
+          case "$head_ref" in
+            release/*) ;;
+            *)
+              printf 'PR #%s was merged from branch "%s", not a release/ branch. Nothing was published.\n' "$pull_number" "$head_ref" >&2
+              exit 1
+              ;;
+          esac
           cut_from="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pull_number}/commits" --jq '.[0].parents[0].sha')"
           merged_onto="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}" --jq '.parents[0].sha')"
-          if [ -z "$pull_number" ] || [ "$pull_number" = null ] || [ "$cut_from" != "$merged_onto" ]; then
+          if [ "$cut_from" != "$merged_onto" ]; then
             echo "The release PR (#${pull_number}) was cut from ${cut_from} but merged onto ${merged_onto}. Nothing was published. Revert the release commit and run release-pr again." >&2
             exit 1
           fi
@@ -51,9 +64,7 @@ jobs:
           fi
       - run: npm install --ignore-scripts
       - run: npm run build:packages
-      # Lerna 8 publishes through libnpmpublish, which only uses OIDC for provenance and
-      # cannot authenticate to npm with it, so npm publishes each package instead.
-      # A package already on npm is skipped, which makes re-running a failed release safe.
+      # npm publishes, not Lerna: Lerna 8 cannot authenticate to npm with OIDC. Packages already on npm are skipped, so re-runs are safe.
       - name: Publish unpublished packages, then tag and release them
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

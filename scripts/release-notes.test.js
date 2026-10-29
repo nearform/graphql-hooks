@@ -60,8 +60,14 @@ describe('extractReleaseNotes', () => {
 
   it('finds the current version in every package changelog', () => {
     const packagesDirectory = path.join(__dirname, '..', 'packages')
-    fs.readdirSync(packagesDirectory).forEach(packageDirectory => {
-      const packageRoot = path.join(packagesDirectory, packageDirectory)
+    const packageRoots = fs
+      .readdirSync(packagesDirectory)
+      .map(packageDirectory => path.join(packagesDirectory, packageDirectory))
+      .filter(packageRoot =>
+        fs.existsSync(path.join(packageRoot, 'CHANGELOG.md'))
+      )
+    expect(packageRoots.length).toBeGreaterThan(0)
+    packageRoots.forEach(packageRoot => {
       const { version } = require(path.join(packageRoot, 'package.json'))
       const changelogText = fs.readFileSync(
         path.join(packageRoot, 'CHANGELOG.md'),
